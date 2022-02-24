@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Snut</title>
+</head>
+<body>
+    <h1>Main Page</h1>
+    <hr>
+    <fieldset>
+        <legend>Collection</legend>
+        <a th:href="@{col/col}">Collection Search Page</a>
+    </fieldset>
+    <br>
+    <fieldset>
+        <legend>Feedback</legend>
+        <a th:href="@{fd/info}">Information Page</a><br>
+        <a th:href="@{fd/faq}">FAQ Page</a><br>
+        <a th:href="@{fd/send}">Send Page</a>
+    </fieldset>
+    <br>
+    <fieldset>
+        <legend>Member Page</legend>
+        <a th:href="@{/mp}">Member Page</a><br>
+    </fieldset>
+    <br>
+    <fieldset>
+        <legend>Member Collection Page</legend>
+        <a th:href="@{mcol/main}">Member Collection Page</a><br>
+    </fieldset>
+    <br>
+    <fieldset>
+        <legend>Community Page</legend>
+        <a th:href="@{com/com}">Community Page</a><br>
+    </fieldset>
+
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Snut</title>
+</head>
+<body>
+<h1>Member Collection Page</h1>
+<hr>
+
+<fieldset>
+    <legend>
+        Member Collection Page
+    </legend>
+    <a th:href="@{../mcol/note}">Member Note Page</a><br>
+    <a th:href="@{../mcol/store/folder}">Stored Folder Page</a><br>
+    <a th:href="@{../mcol/store/cur}">Stored Curation Page</a><br>
+    <a th:href="@{../mcol/store/col}">Stored Collection Page</a><br>
+    <hr>
+    <a th:href="@{../mcol/mc}">Make Curation Page</a><br>
+    <hr>
+    <a th:href="@{../mcol/col}">My Collection Page</a><br>
+</fieldset>
+<a th:href="@{/}">Home</a><br>
+
+</body>
+</html>
