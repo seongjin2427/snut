@@ -3,6 +3,7 @@
     <h1>{{ msg }}</h1>
     <input type="text" v-model="text">
     <p>{{ text }}</p>
+    <p>나는 샘플 데이터 입니다</p>
   </div>
 </template>
 
