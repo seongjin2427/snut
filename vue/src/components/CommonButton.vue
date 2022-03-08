@@ -6,19 +6,24 @@
 
 <script>
 export default {
-  name: "MainButton",
+  name: "CommonButton",
   props: ['buttonName']
 }
 </script>
 
 <style scoped>
 .button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 130px;
   height: 40px;
   background-color: rgb(232, 236, 230);
-  display: flex;
-  padding: 8px 44px;
-  align-items: flex-start;
+  font-family: 'Alegreya';
+  font-weight: 700;
+  color: black;
+  font-size: 16px;
   border-radius: 20px;
+  border: 1px solid black;
 }
 </style>

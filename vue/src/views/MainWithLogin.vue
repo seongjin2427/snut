@@ -1,19 +1,29 @@
 <template>
   <div>
     <img class="main-logo-text" src="@/assets/logo_text.png" alt="logo_text">
-    <input class="main-search-input" type="text" placeholder="SEARCH">
-    <h1>MainWithLogin 페이지 입니다</h1>
-    <main-button buttonName="Log in" />
+    <common-input-box placeholderContent="SEARCH" />
+    <common-button v-if="loginBool" class="loginBtn" buttonName="Log in" />
+    <common-button v-if="!loginBool" class="loginBtn" buttonName="Log out" />
+    <common-button class="registerBtn" buttonName="Register" />
+    <img class="center-logo" src="@/assets/large_logo.png" alt="Large_logo">
+    <pick-your-snut class="pick-your-snut" />
   </div>
 </template>
 
 <script>
-import MainButton from "@/components/MainButton.vue"
+import CommonButton from "@/components/CommonButton.vue"
+import CommonInputBox from "@/components/CommonInputBox.vue"
+import PickYourSnut from "@/components/PickYourSnut.vue"
 
 export default {
   name: "MainWithLogin",
   components: {
-    MainButton
+    CommonButton, CommonInputBox, PickYourSnut
+  },
+  data() {
+    return {
+      loginBool: true
+    }
   }
 }
 </script>
@@ -28,24 +38,33 @@ export default {
 input:focus {
   outline: none;
 }
-.main-search-input {
-    top: 72px;
-    left: 702px;
-    width: 510px;
-    height: 40px;
-    padding: 0 15px;
-    border-color: #00000099;
-    border-style: solid;
-    border-width: 0.5px;
-    letter-spacing: 0.00px;
-    line-height: normal;
+.loginBtn {
+  left: 1430px;
+  top: 70px;
+  position: absolute;
+  cursor: pointer;
+}
+.registerBtn {
+  left: 1588px;
+  top: 70px;
+  position: absolute;
+  cursor: pointer;
+}
+.center-logo {
+    height: 406px;
+    left: 689px;
+    mix-blend-mode: normal;
+    object-fit: cover;
+    position: absolute;
+    top: 296px;
+    width: 507px;
+}
+.pick-your-snut {    
+    height: 80px;
+    left: 758px;
     mix-blend-mode: normal;
     position: absolute;
-    resize: none;
-    text-align: left;
-    background-color: rgb(232, 236, 230);
-}
-.main-search-input::placeholder {
-  color: #00000099;
+    top: 757px;
+    width: 50%;
 }
 </style>
