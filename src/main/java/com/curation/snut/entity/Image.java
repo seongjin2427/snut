@@ -1,6 +1,7 @@
 package com.curation.snut.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 
 import lombok.AllArgsConstructor;
@@ -20,6 +21,6 @@ public class Image{
     private Long ino;
 
     private String image;
-    @OnetoMany(fetch = FetchType.LAZY)
-    private Curation cno;
+//    @OnetoMany(fetch = FetchType.LAZY)
+//    private Curation cno;
 }

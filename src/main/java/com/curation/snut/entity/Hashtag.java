@@ -1,6 +1,7 @@
 package com.curation.snut.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 
 import lombok.AllArgsConstructor;
@@ -21,6 +22,7 @@ public class Hashtag {
 
     private String tag;
 
-    @OnetoMany(fetch = FetchType.LAZY)
-    private Curation cno;
+//    @OnetoMany(fetch = FetchType.LAZY)
+//    private Curation cno;
+
 }
