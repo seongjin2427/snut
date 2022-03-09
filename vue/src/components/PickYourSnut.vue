@@ -1,4 +1,5 @@
 <template>
+  <img class="center-logo" src="@/assets/large_logo.png" alt="Large_logo">
   <div class="pick-your-nut-box">
     <span class="nutbox0">PICK YOUR "</span>
     <span class="nutbox1">S</span>
@@ -15,20 +16,21 @@ export default {
 </script>
 
 <style scoped>
+.center-logo {
+    width: 507px; 
+    height: 406px;
+    object-fit: cover;
+    margin-bottom: 50px;
+}
 .pick-your-nut-box {
   font-family: 'alegreya';
   font-size: 40px;
   font-style: normal;
   font-weight: 800;
-  height: auto;
-  left: 0px;
+  width: 507px;
+  line-height: 100px;
   letter-spacing: 4.00px;
-  line-height: 80px;
-  position: absolute;
-  text-align: left;
-  top: 0px;
-  white-space: nowrap;
-  width: auto;
+  text-align: center;
   letter-spacing: 1.60px;
 }
 .nutbox1 {
