@@ -4,7 +4,7 @@
     <!-- header 구간 -->
     <div class="main-header">
       <img class="main-logo-text" src="@/assets/logo_text.png" alt="logo_text">
-      <common-input-box placeholderContent="SEARCH" />
+      <common-input-box placeholderContent="SEARCH" @keyup.enter="$router.push({path: 'col'})" />
 
       <!-- 미 로그인 시 Login 버튼 활성화 -->
       <common-button v-if="loginBool" class="commonBtn" buttonName="Log in" />
@@ -13,7 +13,7 @@
       <common-button v-if="!loginBool" class="commonBtn" buttonName="Log out" />
 
       <common-button class="registerBtn" buttonName="Register" />
-      <hamburger-button />
+      <hamburger-button @click="occurNavBarEvent"/>
 
       <!-- 미 로그인/로그인 전환 테스트용 버튼 -->
       <button @click="testBtn">test</button>
@@ -50,6 +50,9 @@
       <p class="sign-recommend-area">{{ signText }}</p>
     </div>
 
+    <!-- 네브 바 구역 -->
+    <navigator-bar ref="navbar" />
+
     <!-- 푸터 구간 -->
     <main-footer />
 
@@ -62,7 +65,9 @@ import CommonInputBox from "@/components/CommonInputBox.vue"
 import PickYourSnut from "@/components/PickYourSnut.vue"
 import CommonCollection from '@/components/CommonCollection.vue'
 import MainFooter from '@/components/MainFooter.vue'
-import HamburgerButton from '../components/HamburgerButton.vue'
+import HamburgerButton from '@/components/HamburgerButton.vue'
+import NavigatorBar from '../components/NavigatorBar.vue'
+
 
 export default {
   name: "MainWithLogin",
@@ -72,7 +77,8 @@ export default {
     PickYourSnut, 
     CommonCollection, 
     MainFooter, 
-    HamburgerButton
+    HamburgerButton,
+    NavigatorBar
   },
   data() {
     return {
@@ -86,6 +92,9 @@ export default {
     testBtn() {
       console.log(this.loginBool);
       this.loginBool = !this.loginBool;
+    },
+    occurNavBarEvent() {
+      this.$refs.navbar.openNavBar();
     }
   }
 }

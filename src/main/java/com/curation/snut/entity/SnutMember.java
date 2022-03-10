@@ -9,14 +9,25 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @ToString
-public class Sticker {
+public class SnutMember extends BaseEntity {
+
     @Id
-    private Long sno;
-    private String sticker;
+    private String email;
+    
+    private String name;
+    private String mobile;
+    private String pw;
+    private Boolean gender;
+    private LocalDateTime birth;
+    private String nickname;
+    private String authId;
+
 }

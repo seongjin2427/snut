@@ -25,6 +25,7 @@ export default {
 
 <style scoped>
 .hamburgerBtn p{
+  cursor: pointer;
   margin: -7px 0;
 }
 </style>

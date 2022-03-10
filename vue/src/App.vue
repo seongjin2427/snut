@@ -15,7 +15,10 @@ export default {
   margin: 0;
   padding: 0;
 }
-body {
+
+html, body {
   background-color: rgb(232, 236, 230);
+  width: 100%;
+  height: 100%;
 }
 </style>

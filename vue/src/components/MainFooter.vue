@@ -29,7 +29,7 @@ export default {
 .rectangle-5 {
   background-color: rgba(196, 196, 196, 1);
   height: 2px;
-  width: 1920px;
+  width: 100%;
 }
 img {
   margin: 40px 0 40px;
