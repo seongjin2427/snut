@@ -19,7 +19,8 @@ export default {
 
 <style scoped>
 .footer-area {
-  top: 1800px;
+  /* top: 1800px; */
+  margin-top: 200px;
   position: absolute;
   width: 1920px;
   display: flex;

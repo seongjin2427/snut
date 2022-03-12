@@ -1,7 +1,7 @@
 <template>
   <div class="common-collection" @mouseover="inCollection(num)" @mouseleave="outCollection(num)">
-    <img :src="image[num].url" alt="col_image">
-    <div class="text" v-if="image[num].testBoolean">
+    <img class="col-img" :src="image[num].url" alt="col_image" />
+    <div class="text1" v-if="image[num].testBoolean">
       <p>테스트 중입니다 아아아 {{ num }}</p>
     </div>
   </div>
@@ -46,10 +46,13 @@ export default{
   },
   methods: {
     inCollection(num) {
-      this.image[num].testBoolean = !this.image[num].testBoolean;
+      this.image[num].testBoolean = true;
+      document.querySelector('.col-img').classList.add('lowerBrightness');
+      // console.log(document.querySelectorAll('.col-img').)
     },
     outCollection(num) {
-      this.image[num].testBoolean = !this.image[num].testBoolean;
+      this.image[num].testBoolean = false;
+      document.querySelector('.col-img').classList.remove('lowerBrightness');
     }
   }
 };
@@ -60,24 +63,32 @@ export default{
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 250px;
+  height: 250px;
+  position: relative
 }
-img{
+.col-img{
   width: 250px;
   height: 250px;
   /* background: red; */
   transition: all .3s;
 }
-img:hover {
+.col-img:hover {
   transition: all .3s;
   filter: brightness(60%);
-}
-.text {
+  }
+.text1 {
   position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   top: 0;
   left: 0;
+  opacity: 100%;
 }
-.text p {
+.text1 p {
   color: white;
   font-weight: bold;
+  position: relative;
 }
 </style>

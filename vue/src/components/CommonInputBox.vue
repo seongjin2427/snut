@@ -1,11 +1,25 @@
 <template>
-  <input class="main-search-input" type="text" :placeholder="placeholderContent">
+  <input class="main-search-input" 
+        type="text" 
+        :placeholder="placeholderContent"
+        v-model="upToWord"
+        @keyup.enter="doSearch">
 </template>
 
 <script>
 export default {
   name: 'CommonInputBox',
-  props: ['placeholderContent']
+  props: ['placeholderContent'],
+  data() {
+    return {
+      upToWord: ""
+    }
+  },
+  methods: {
+    doSearch() {
+      this.$emit('mainDoSearch', this.upToWord);
+    }
+  }
 }
 </script>
 

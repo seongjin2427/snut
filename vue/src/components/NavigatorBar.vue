@@ -38,12 +38,12 @@ export default {
 .navigator {
   /* opacity: 0.5; */
   position: fixed;
-  width: 538px;
+  width: 400px;
   height: 200%;
   top: 0;
   background: #FFFFFF;
   transition: all .2s;
-  right: -538px;
+  right: -400px;
 }
 .openNavBar {
   right: 0px;

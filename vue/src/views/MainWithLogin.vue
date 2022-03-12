@@ -4,7 +4,10 @@
     <!-- header 구간 -->
     <div class="main-header">
       <img class="main-logo-text" src="@/assets/logo_text.png" alt="logo_text">
-      <common-input-box placeholderContent="SEARCH" @keyup.enter="$router.push({path: 'col'})" />
+      <common-input-box placeholderContent="SEARCH" @mainDoSearch="mainDoSearch" />
+
+      <!-- 샘플 -->
+      <!-- @keyup.enter="$router.push({path: `/col/${searchWord}`})" -->
 
       <!-- 미 로그인 시 Login 버튼 활성화 -->
       <common-button v-if="loginBool" class="commonBtn" buttonName="Log in" />
@@ -58,7 +61,7 @@
     <navigator-bar ref="navbar" />
 
     <!-- 푸터 구간 -->
-    <main-footer />
+    <main-footer class="main-footer"/>
 
   </div>
 </template>
@@ -113,6 +116,11 @@ export default {
       axios.get("http://localhost:8080/get/all").then((res) => {
         console.log(res.data);
       })
+    },
+    mainDoSearch(searchWord) {
+      // this.$router.push(`/col/${searchWord}`);
+      console.log(searchWord);
+      this.$router.push(`/col`);
     }
   }
 }
@@ -285,5 +293,8 @@ input:focus {
   font-family: 'alegreya';
   font-size: 30px;
   font-weight: 800;
+}
+.main-footer {
+  top: 1600px;
 }
 </style>
