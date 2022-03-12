@@ -16,7 +16,11 @@
       <hamburger-button @click="occurNavBarEvent"/>
 
       <!-- 미 로그인/로그인 전환 테스트용 버튼 -->
-      <button @click="testBtn">test</button>
+      <br>
+      <button @click="testBtn">test</button><br>
+      <button @click="getUserInfo">getUserInfo</button><br>
+      <input type="text" v-model="userId"><br>
+      <button @click="getAllUserInfo">gitAllUserInfo</button>
     </div>
 
     <!-- 메인 로고 -->
@@ -60,13 +64,15 @@
 </template>
 
 <script>
-import CommonButton from "@/components/CommonButton.vue"
-import CommonInputBox from "@/components/CommonInputBox.vue"
-import PickYourSnut from "@/components/PickYourSnut.vue"
-import CommonCollection from '@/components/CommonCollection.vue'
-import MainFooter from '@/components/MainFooter.vue'
-import HamburgerButton from '@/components/HamburgerButton.vue'
-import NavigatorBar from '../components/NavigatorBar.vue'
+import CommonButton from "@/components/CommonButton.vue";
+import CommonInputBox from "@/components/CommonInputBox.vue";
+import PickYourSnut from "@/components/PickYourSnut.vue";
+import CommonCollection from '@/components/CommonCollection.vue';
+import MainFooter from '@/components/MainFooter.vue';
+import HamburgerButton from '@/components/HamburgerButton.vue';
+import NavigatorBar from '../components/NavigatorBar.vue';
+
+import axios from 'axios';
 
 
 export default {
@@ -85,7 +91,8 @@ export default {
       loginBool: true,
       number1: [0, 1, 2, 3, 4],
       number2: [5, 6, 7, 8, 1],
-      signText: "if you want to see more, just sign in!"
+      signText: "if you want to see more, just sign in!",
+      userId: ''
     }
   },
   methods: {
@@ -95,6 +102,17 @@ export default {
     },
     occurNavBarEvent() {
       this.$refs.navbar.openNavBar();
+    },
+    getUserInfo() {
+      axios.get("http://localhost:8080/get/" + this.userId).then((res) => {
+        var data = res.data;
+        console.log(data);
+      });
+    },
+    getAllUserInfo() {
+      axios.get("http://localhost:8080/get/all").then((res) => {
+        console.log(res.data);
+      })
     }
   }
 }
