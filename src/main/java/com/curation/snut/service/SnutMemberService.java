@@ -3,6 +3,9 @@ package com.curation.snut.service;
 import com.curation.snut.dto.SnutMemberDTO;
 import com.curation.snut.entity.SnutMember;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public interface SnutMemberService {
 
     String register(SnutMemberDTO snutMemberDTO);
@@ -10,6 +13,7 @@ public interface SnutMemberService {
     SnutMemberDTO get(String email);
 
     default SnutMember dtoToEntity(SnutMemberDTO snutMemberDTO) {
+
         SnutMember snutMember = SnutMember.builder()
                 .email(snutMemberDTO.getEmail())
                 .mobile(snutMemberDTO.getMobile())
@@ -20,6 +24,7 @@ public interface SnutMemberService {
                 .nickname(snutMemberDTO.getNickname())
                 .authId(snutMemberDTO.getAuthId())
                 .build();
+
         return snutMember;
     }
 

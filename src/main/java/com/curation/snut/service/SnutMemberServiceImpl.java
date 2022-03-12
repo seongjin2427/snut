@@ -27,6 +27,7 @@ public class SnutMemberServiceImpl implements SnutMemberService{
     @Override
     public SnutMemberDTO get(String email) {
         Optional<SnutMember> result = Optional.of(snutMemberRepository.getById(email));
+        log.info("get.............." + result);
         return result.isPresent() ? entitiesToDTO(result.get()) : null;
     }
 }
