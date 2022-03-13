@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <div>
+        <table>
+            <tbody>
+                <tr th:each="List : ${commentList}">
+                    <td th:text="${List.cno}"></td>
+                    <td th:text="${List.text}"></td>
+                    <td th:text="${List.regDate}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <form action="/comment" method="post">
+            <input type="text" name="text">
+            <input type="text" name="writer" placeholder="작성자">
+            <button type="submit">작성</button>
+        </form>
+    </div>
+</body>
+</html>
