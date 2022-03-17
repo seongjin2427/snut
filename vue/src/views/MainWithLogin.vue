@@ -6,14 +6,11 @@
       <img class="main-logo-text" src="@/assets/logo_text.png" alt="logo_text">
       <common-input-box placeholderContent="SEARCH" @mainDoSearch="mainDoSearch" />
 
-      <!-- 샘플 -->
-      <!-- @keyup.enter="$router.push({path: `/col/${searchWord}`})" -->
-
       <!-- 미 로그인 시 Login 버튼 활성화 -->
-      <common-button v-if="loginBool" class="commonBtn" buttonName="Log in" />
+      <common-button v-if="!loginBool" class="commonBtn" buttonName="Log in" />
 
       <!-- 로그인 시 Log out 버튼 활성화 -->
-      <common-button v-if="!loginBool" class="commonBtn" buttonName="Log out" />
+      <common-button v-if="loginBool" class="commonBtn" buttonName="Log out" />
 
       <common-button class="registerBtn" buttonName="Register" />
       <hamburger-button @click="occurNavBarEvent"/>
@@ -38,7 +35,7 @@
         <span class="more-col1 text-area-text"><a href="#">더보기</a></span>
       </div>
       <div class="col-area1">
-          <common-collection class="sample1" :num="num1" v-for="num1 in number1" :key="num1"/>
+          <common-collection class="recom-col" :num="[num1, idx]" v-for="(num1, idx) in number1" :key="num1"/>
       </div>
     </div>
 
@@ -48,7 +45,7 @@
         <span class="hot-col2 text-area-text">개인 추천 컬렉션</span>
       </div>
       <div class="col-area2">
-          <common-collection class="sample2" :num="num2" v-for="num2 in number2" :key="num2"/>
+          <common-collection class="personal-col" :num="[num2, num2]" v-for="num2 in number2" :key="num2"/>
       </div>
     </div>
     
@@ -61,7 +58,7 @@
     <navigator-bar ref="navbar" />
 
     <!-- 푸터 구간 -->
-    <main-footer class="main-footer"/>
+    <main-footer class="main-footer" />
 
   </div>
 </template>
@@ -93,7 +90,7 @@ export default {
     return {
       loginBool: true,
       number1: [0, 1, 2, 3, 4],
-      number2: [5, 6, 7, 8, 1],
+      number2: [5, 6, 7, 8, 9],
       signText: "if you want to see more, just sign in!",
       userId: ''
     }
@@ -205,24 +202,24 @@ input:focus {
   margin: 0 auto;
   justify-content: space-around;
 }
-.sample1 {
+.recom-col {
   top: 90px;
   mix-blend-mode: normal;
   position: absolute;
 }
-.sample1:nth-child(1) {
+.recom-col:nth-child(1) {
     left: 136px;
 }
-.sample1:nth-child(2) {
+.recom-col:nth-child(2) {
     left: 484px;
 }
-.sample1:nth-child(3) {
+.recom-col:nth-child(3) {
     left: 832px;
 }
-.sample1:nth-child(4) {
+.recom-col:nth-child(4) {
     left: 1180px;
 }
-.sample1:nth-child(5) {
+.recom-col:nth-child(5) {
     left: 1528px;
 }
 .col-container2 {
@@ -256,24 +253,24 @@ input:focus {
   margin: 0 auto;
   justify-content: space-around;
 }
-.sample2 {
+.personal-col {
   top: 90px;
   mix-blend-mode: normal;
   position: absolute;
 }
-.sample2:nth-child(1) {
+.personal-col:nth-child(1) {
     left: 136px;
 }
-.sample2:nth-child(2) {
+.personal-col:nth-child(2) {
     left: 484px;
 }
-.sample2:nth-child(3) {
+.personal-col:nth-child(3) {
     left: 832px;
 }
-.sample2:nth-child(4) {
+.personal-col:nth-child(4) {
     left: 1180px;
 }
-.sample2:nth-child(5) {
+.personal-col:nth-child(5) {
     left: 1528px;
 }
 .sign-recommend {

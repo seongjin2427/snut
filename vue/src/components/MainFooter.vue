@@ -26,6 +26,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  z-index: -1;
 }
 .rectangle-5 {
   background-color: rgba(196, 196, 196, 1);
