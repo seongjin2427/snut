@@ -9,16 +9,30 @@ export default {
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css?family=Noto+Sans:400,700,300,500,600|Montserrat:400|Alegreya:400,700,800");
 
 * {
   margin: 0;
   padding: 0;
 }
-
-html, body {
+  html, body {
   background-color: rgb(232, 236, 230);
   width: 100%;
   height: 100%;
+  }
+@media (max-width: 1680px) {
+html, body {
+  max-width: 1680px;
+}
+}
+@media (min-width: 1680px){
+  html, body {
+    max-width: 1920px;
+  }
+}
+@font-face {
+
+  font-family: 'Noto Sans KR', 'Apple SD Gothic Neo',sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  font-family: 'Alegreya', serif;
 }
 </style>

@@ -215,7 +215,7 @@ input:focus {
   margin: 0 auto;
 }
 .text-area-text {
-  font-family: 'noto-sans';
+  font-family: 'Noto-sans KR','Apple SD Gothic Neo', sans-serif ;
   font-weight: 600;
   font-size: 30px;
   margin-bottom: 40px;

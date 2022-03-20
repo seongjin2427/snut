@@ -40,10 +40,13 @@ export default {
     resize: none;
     text-align: left;
     background-color: rgb(232, 236, 230);
+  font-family: 'Noto-sans KR','Apple SD Gothic Neo', sans-serif ;
+  font-size: 16px;
 }
 .main-search-input::placeholder {
   color: #00000099;
-  font-family: 'Noto Sans';
-  font: 16px black;
+  font-family: 'Noto-sans KR','Apple SD Gothic Neo', sans-serif ;
+  font-size: 16px;
+font-weight: 600;
 }
 </style>
