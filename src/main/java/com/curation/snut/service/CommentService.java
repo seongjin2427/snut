@@ -3,42 +3,54 @@ package com.curation.snut.service;
 import java.util.List;
 
 import com.curation.snut.dto.CommentDTO;
+import com.curation.snut.entity.Community;
 import com.curation.snut.entity.CommunityComment;
 import com.curation.snut.entity.Member;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 public interface CommentService {
 
-    void write(CommentDTO commentDTO);
+        void write(CommentDTO commentDTO);
 
-    public List<CommentDTO> commentList(String email); // 리스트
+        void delete(Long id);
 
-    default CommunityComment dtoToEntity(CommentDTO dto) {
-        // Member member = Member.builder()
-        // .email(dto.getWriter())
-        // .build();
+        public Page<CommentDTO> commentList2(Pageable pageable, Long no); // 실험리스트
 
-        Member member = Member.builder()
-                .email(dto.getWriter().getEmail())
-                .build();
+        public Page<CommentDTO> commentList(Pageable pageable);
 
-        CommunityComment comment = CommunityComment.builder()
-                .cno(dto.getCno())
-                .text(dto.getText())
-                .announcement(dto.getAnnouncement())
-                .writer(member)
-                .build();
-        return comment;
-    }
+        default CommunityComment dtoToEntity(CommentDTO dto) {
 
-    default CommentDTO entityToDTO(CommunityComment comment, String email) {
-        CommentDTO commentDTO = CommentDTO.builder()
-                .cno(comment.getCno())
-                .text(comment.getText())
-                .announcement(comment.getAnnouncement())
-                .writer(Member.builder().email(email).build())
-                .regDate(comment.getRegDate())
-                .modDate(comment.getModDate())
-                .build();
-        return commentDTO;
-    }
+                Member member = Member.builder()
+                                .email(dto.getWriter().getEmail())
+                                .build();
+                Community community = Community.builder()
+                                .no(dto.getCommunityName().getNo())
+                                .build();
+
+                CommunityComment comment = CommunityComment.builder()
+                                .cno(dto.getCno())
+                                .text(dto.getText())
+                                .parentNo(dto.getParentNo())
+                                .announcement(dto.isAnnouncement())
+                                .writer(member)
+                                .communityName(community)
+                                .build();
+                return comment;
+        }
+
+        default CommentDTO entityToDTO(CommunityComment comment) {
+                CommentDTO commentDTO = CommentDTO.builder()
+                                .cno(comment.getCno())
+                                .text(comment.getText())
+                                .parentNo(comment.getParentNo())
+                                .announcement(comment.isAnnouncement())
+                                .writer(comment.getWriter())
+                                .communityName(comment.getCommunityName())
+                                .regDate(comment.getRegDate())
+                                .modDate(comment.getModDate())
+                                .build();
+                return commentDTO;
+        }
 }

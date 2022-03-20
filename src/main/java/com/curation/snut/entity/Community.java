@@ -19,17 +19,14 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @ToString
-public class Reply extends BaseEntity {
-
+public class Community extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long rno;
+    private Long no;
 
-    private String text;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private CommunityComment cno;
+    private String title;
+    private String thumbnail;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member writer;
+    private Member creater;
 }

@@ -24,9 +24,12 @@ public class CommunityComment extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cno;
     private String text;
-    private String announcement;
+    private Long parentNo;
+    private boolean announcement;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Member writer;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Community communityName;
 }

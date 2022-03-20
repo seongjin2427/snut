@@ -2,6 +2,7 @@ package com.curation.snut.dto;
 
 import java.time.LocalDateTime;
 
+import com.curation.snut.entity.Community;
 import com.curation.snut.entity.Member;
 
 import lombok.AllArgsConstructor;
@@ -18,8 +19,11 @@ import lombok.ToString;
 public class CommentDTO {
     private Long cno;
     private String text;
-    private String announcement;
+    private boolean announcement;
+    private Long parentNo;
+    private Long depth;
     private Member writer;
+    private Community communityName;
     private LocalDateTime regDate;
     private LocalDateTime modDate;
 }

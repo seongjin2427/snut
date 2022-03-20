@@ -15,7 +15,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @ToString
-public class Member {
+public class Member extends BaseEntity {
     @Id
     private String email;
 
@@ -25,5 +25,4 @@ public class Member {
     private String birth;
     private String gender;
     private String nickname;
-    // private String AuthId;
 }

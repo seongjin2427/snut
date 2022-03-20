@@ -15,13 +15,27 @@ public class MemberRepositoryTest {
     @Test
     public void insertMember() {
         Member member = Member.builder()
+                .email("456@456.456")
+                .name("456")
+                .pw("456")
+                .mobile("456456")
+                .birth("456")
+                .gender("male")
+                .nickname("Def")
+                .build();
+        memberRepository.save(member);
+    }
+
+    @Test
+    public void insertMember2() {
+        Member member = Member.builder()
                 .email("123@123.123")
                 .name("123")
                 .pw("123")
-                .mobile("123123")
+                .mobile("123")
                 .birth("123")
-                .gender("male")
-                .nickname("nickname")
+                .gender("female")
+                .nickname("Abc")
                 .build();
         memberRepository.save(member);
     }

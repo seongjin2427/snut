@@ -1,17 +1,21 @@
 package com.curation.snut.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.curation.snut.dto.CommentDTO;
-
+import com.curation.snut.entity.Community;
 import com.curation.snut.entity.CommunityComment;
-import com.curation.snut.entity.Member;
 import com.curation.snut.repository.CommentRepository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,31 +30,34 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentDTO> commentList(String email) {
-        List<CommunityComment> communityComments = commentRepository.findAll();
-        List<CommentDTO> commentDTOList = new ArrayList<>();
-        for (CommunityComment comment : communityComments) {
-            // CommentDTO commentDTO = CommentDTO.builder()
-            // .cno(comment.getCno())
-            // .text(comment.getText())
-            // .writer(Member.builder().email(email).build())
-            // .announcement(comment.getAnnouncement())
-            // .regDate(comment.getRegDate())
-            // .modDate(comment.getModDate())
-            // .build();
+    public Page<CommentDTO> commentList(Pageable pageable) {
+        Page<CommunityComment> communityComments = commentRepository.list(pageable);
+        List<CommentDTO> commentDTOList = communityComments.stream()
+                .map(comment -> entityToDTO(comment)).collect(Collectors.toList());
+        return new PageImpl<>(commentDTOList, pageable, communityComments.getTotalElements());
 
-            CommentDTO commentDTO = CommentDTO.builder()
-                    .cno(comment.getCno())
-                    .text(comment.getText())
-                    .writer(Member.builder().email(email).build())
-                    .announcement(comment.getAnnouncement())
-                    .regDate(comment.getRegDate())
-                    .modDate(comment.getModDate())
-                    .build();
+    }
 
-            commentDTOList.add(commentDTO);
+    @Transactional
+    @Override
+    public void delete(Long id) {
+        Long CommentLists = commentRepository.searchComment(id);
+        if (CommentLists != null) {
+            commentRepository.deleteById(id);
+            commentRepository.deleteReply(id);
+        } else {
+            commentRepository.deleteById(id);
         }
-        return commentDTOList;
+    }
+
+    // 실험용
+    @Override
+    public Page<CommentDTO> commentList2(Pageable pageable, Long no) {
+        Page<CommunityComment> communityComments = commentRepository.list2(pageable, no);
+        List<CommentDTO> commentDTOList = communityComments.stream()
+                .map(comment -> entityToDTO(comment)).collect(Collectors.toList());
+        return new PageImpl<>(commentDTOList, pageable, communityComments.getTotalElements());
+
     }
 
 }
