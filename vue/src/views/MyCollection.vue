@@ -122,7 +122,7 @@ export default {
 
 <style scoped>
 .mcol-text {
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: 'Noto-sans KR','Apple SD Gothic Neo', sans-serif ;
   font-weight: 600;
   font-size: 30px;
   margin-bottom: 40px;

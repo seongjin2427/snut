@@ -61,6 +61,7 @@ export default{
   opacity: 100%;
 }
 .text1 p {
+  font-family: 'Noto-sans KR','Apple SD Gothic Neo', sans-serif ;
   color: white;
   font-weight: bold;
   position: relative;

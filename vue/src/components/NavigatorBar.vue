@@ -7,7 +7,7 @@
       <li><router-link to="/mcol/main">My collection</router-link></li>
       <li>Community</li>
       <li>My Page</li>
-      <li>Feedback</li>
+      <li><router-link to="/fb">Feedback</router-link></li>
     </ul>
   </div>
 </template>
@@ -22,12 +22,12 @@ export default {
   methods: {
     openNavBar() {
       var a = document.querySelector('.navigator');
-      a.classList.add('openNavBar');
+      a.classList.toggle('openNavBar');
       
     },
     closeNavBar() {
       var a = document.querySelector('.navigator');
-      a.classList.remove('openNavBar');
+      a.classList.toggle('openNavBar');
     },
 
   }
@@ -44,7 +44,6 @@ export default {
   background: #FFFFFF;
   transition: all .2s;
   right: -400px;
-  z-index: 9999;
 }
 .openNavBar {
   right: 0px;
@@ -68,9 +67,5 @@ li {
   font-family: 'alegreya';
   font-weight: 700;
   font-size: 30px;
-}
-a {
-  text-decoration: none;
-  color: black;
 }
 </style>

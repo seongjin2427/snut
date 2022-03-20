@@ -1,7 +1,7 @@
 <template>
   <div class="footer-area">
-    <div class="rectangle-5"></div>
     <img src="../assets/small_logo.png" alt="footer_logo">
+    <br>
     <p class="footer-text">{{ cText }}</p>
   </div>
 </template>
@@ -22,26 +22,20 @@ export default {
   /* top: 1800px; */
   margin-top: 200px;
   position: absolute;
-  width: 1920px;
   display: flex;
+  width: 100vw;
   flex-direction: column;
   align-items: center;
-  z-index: -1;
-}
-.rectangle-5 {
-  background-color: rgba(196, 196, 196, 1);
-  height: 2px;
-  width: 100%;
 }
 img {
-  margin: 40px 0 40px;
-  width: 203px;
-  height: 162px;
+
+  width: 10.5625rem;
+  height: 8.5rem;
   object-fit: cover;
 }
 .footer-text {
   width: 301px;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: 'Noto-sans KR','Apple SD Gothic Neo', sans-serif ;
   font-size: 15px;
   letter-spacing: -0.23px;
   line-height: 24px;
