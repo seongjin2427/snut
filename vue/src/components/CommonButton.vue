@@ -1,5 +1,5 @@
 <template>
-  <div class="button">
+  <div class="button" :style=" { width: width+'px', height: height+'px', border: border, background: bgcolor }">
     {{ buttonName }}
   </div>
 </template>
@@ -7,7 +7,7 @@
 <script>
 export default {
   name: "CommonButton",
-  props: ['buttonName']
+  props: ['buttonName', 'width', 'height', 'border', 'bgcolor']
 }
 </script>
 

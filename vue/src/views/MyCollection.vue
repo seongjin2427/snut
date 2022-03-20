@@ -1,61 +1,44 @@
 <template>
   <div class="main-with-login">
     
-    <!-- header 구간 -->
-    <div class="main-header">
-      <img class="main-logo-text" src="@/assets/logo_text.png" alt="logo_text">
-      <common-input-box placeholderContent="SEARCH" @mainDoSearch="mainDoSearch" />
+    <!-- 네비바 구역 -->
+    <hamburger-button @click="occurNavBarEvent"/>
+    <navigator-bar ref="navbar" />
 
-      <!-- 미 로그인 시 Login 버튼 활성화 -->
-      <common-button v-if="!loginBool" class="commonBtn" buttonName="Log in" />
-
-      <!-- 로그인 시 Log out 버튼 활성화 -->
-      <common-button v-if="loginBool" class="commonBtn" buttonName="Log out" />
-
-      <common-button class="registerBtn" buttonName="Register" />
-      <hamburger-button @click="occurNavBarEvent"/>
-
-      <!-- 미 로그인/로그인 전환 테스트용 버튼 -->
-      <br>
-      <button @click="testBtn">test</button><br>
-      <button @click="getUserInfo">getUserInfo</button><br>
-      <!-- <input type="text" v-model="userId"><br> -->
-      <button @click="getAllUserInfo">gitAllUserInfo</button>
-    </div>
-
-    <!-- 메인 로고 -->
-    <div class="main-logo">
-      <pick-your-snut />
+    <div class="mcol-header">
+      <div class="levelArea mcol-text">
+        <p>활동레벨</p>
+      </div>
+      <div class="button-container">
+        <common-button buttonName="나만의 기록" class="commonBtn mcol-text" width="250" height="50" border="none" bgcolor="white" />
+        <common-button buttonName="내 컬렉션 보기" class="commonBtn mcol-text" width="250" height="50" border="none" bgcolor="white" />
+        <common-button buttonName="Collection 만들기" class="commonBtn mcol-text" width="250" height="50" border="none" bgcolor="white" />
+        <common-button buttonName="Community 만들기" class="commonBtn mcol-text" width="250" height="50" border="none" bgcolor="white" />
+      </div>
     </div>
 
     <!-- 인기 컬렉션 구간 -->
     <div class="col-container1">
       <div class="text-area1">
-        <span class="hot-col1 text-area-text">인기컬렉션</span>
-        <span class="more-col1 text-area-text"><a href="#">더보기</a></span>
+        <span class="hot-col1 mcol-text">인기컬렉션</span>
+        <span class="more-col1 mcol-text"><a href="#">더보기</a></span>
       </div>
       <div class="col-area1">
           <common-collection class="recom-col" :info="num1" v-for="(num1, idx) in number1" :key="idx"/>
       </div>
     </div>
 
-    <!-- 개인 추천 컬렉션 구간 -->
+    <!-- 취향분석 구간 -->
     <div class="col-container2" v-if="loginBool">
       <div class="text-area2">
-        <span class="hot-col2 text-area-text">개인 추천 컬렉션</span>
+        <span class="hot-col2 mcol-text">취향분석</span>
       </div>
       <div class="col-area2">
-          <common-collection class="personal-col" :info="num2" v-for="(num2, idx) in number2" :key="idx"/>
+        <div class="sampleBtn mcol-text" v-for="(text, idx) in tasteAnalysisText" :key="idx">
+          <p>{{ text }}</p>
+        </div>
       </div>
     </div>
-    
-    <!-- 로그인 안됐을 때, 회원가입 유도 버튼 -->
-    <div class="sign-recommend" v-if="!loginBool">
-      <p class="sign-recommend-area">{{ signText }}</p>
-    </div>
-
-    <!-- 네브 바 구역 -->
-    <navigator-bar ref="navbar" />
 
     <!-- 푸터 구간 -->
     <main-footer class="main-footer" />
@@ -65,8 +48,6 @@
 
 <script>
 import CommonButton from "@/components/CommonButton.vue";
-import CommonInputBox from "@/components/CommonInputBox.vue";
-import PickYourSnut from "@/components/PickYourSnut.vue";
 import CommonCollection from '@/components/CommonCollection.vue';
 import MainFooter from '@/components/MainFooter.vue';
 import HamburgerButton from '@/components/HamburgerButton.vue';
@@ -78,11 +59,9 @@ import sampleData from '@/assets/sampleData.json';
 
 
 export default {
-  name: "MainWithLogin",
+  name: "MyCollection",
   components: {
     CommonButton, 
-    CommonInputBox, 
-    PickYourSnut, 
     CommonCollection, 
     MainFooter, 
     HamburgerButton,
@@ -91,34 +70,14 @@ export default {
   data() {
     return {
       loginBool: true,
-      signText: 'If you want to see more, just sign in!',
       number1: {},
       number2: {},
+      tasteAnalysisText: ['더 추천받기', '현 활동에 대한 분석', '내 커뮤니티 보기']
     }
   },
   methods: {
-    testBtn() {
-      console.log(this.loginBool);
-      this.loginBool = !this.loginBool;
-    },
     occurNavBarEvent() {
       this.$refs.navbar.openNavBar();
-    },
-    getUserInfo() {
-      // axios.get("http://localhost:8080/get/" + this.userId).then((res) => {
-      //   var data = res.data;
-      //   console.log(data);
-      // });
-    },
-    getAllUserInfo() {
-      // axios.get("http://localhost:8080/get/all").then((res) => {
-      //   console.log(res.data);
-      // })
-    },
-    mainDoSearch(searchWord) {
-      // this.$router.push(`/col/${searchWord}`);
-      console.log(searchWord);
-      this.$router.push(`/col`);
     }
   },
   mounted() {
@@ -141,7 +100,6 @@ export default {
     sampleData.data = {};
     for(let i = 5; i < 10; i++) {
       let random = Math.floor(Math.random() * 9) + 1;
-      console.log(i);
       sampleData.data[i] = {};
       sampleData.data[i].id = i;
       sampleData.data[i].email = "user" + i + "@naver.com"; 
@@ -155,34 +113,19 @@ export default {
       sampleData.data[i].imgUrl = sampleData.imgUrl[random];
     }
     this.number2 = sampleData.data;
-    console.log("this.number2 : ")
-    console.log(this.number2)
     
+    console.log("this.number1", this.number1)
+    console.log("this.number2", this.number2)
   }
 }
 </script>
 
 <style scoped>
-.main-logo-text {
-    height: 59px;
-    margin-left: 117px;
-    margin-top: 49px;
-    width: 169px;
-}
-input:focus {
-  outline: none;
-}
-.commonBtn {
-  left: 1430px;
-  top: 70px;
-  position: absolute;
-  cursor: pointer;
-}
-.registerBtn {
-  left: 1588px;
-  top: 70px;
-  position: absolute;
-  cursor: pointer;
+.mcol-text {
+  font-family: 'noto-sans';
+  font-weight: 600;
+  font-size: 30px;
+  margin-bottom: 40px;
 }
 .hamburgerBtn {
   position: absolute;
@@ -192,33 +135,44 @@ input:focus {
   width: 40px;
   cursor: pointer;
 }
-.main-logo {
+.mcol-header {
+  width: 1920px;
+  height: 800px;
+}
+.levelArea {
+  width: 1920px;
+  height: 494px;
   display: flex;
-  flex-direction: column;
+  align-items: flex-end;
   justify-content: center;
+}
+.levelArea p {
+  display: flex;
+  width: 350px;
+  height: 350px;
+  background: white;
+  border-radius: 50%;
   align-items: center;
-  position: absolute;
-  top: 230px;
-  left: 700px;
-  height: 700px;
-  margin: 0 auto;
-  text-align: center;
+  justify-content: center;
+}
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 110px;
+}
+.commonBtn {
+  margin: 0 75px;
+  font-size: 25px;
 }
 .col-container1 {
   position: absolute;
-  top: 920px;
+  top: 800px;
   width: 1920px;
 }
 .text-area1 {
   display: flex;
   width: 90%;
   margin: 0 auto;
-}
-.text-area-text {
-  font-family: 'noto-sans';
-  font-weight: 600;
-  font-size: 30px;
-  margin-bottom: 40px;
 }
 .hot-col1 {
   display: inline-block;
@@ -263,7 +217,7 @@ input:focus {
 }
 .col-container2 {
   position: absolute;
-  top: 1325px;
+  top: 1205px;
   width: 1920px;
 }
 .text-area2 {
@@ -290,47 +244,20 @@ input:focus {
 .col-area2 {
   display: flex;
   margin: 0 auto;
-  justify-content: space-around;
+  justify-content: center;
 }
-.personal-col {
-  top: 90px;
-  mix-blend-mode: normal;
-  position: absolute;
-}
-.personal-col:nth-child(1) {
-    left: 136px;
-}
-.personal-col:nth-child(2) {
-    left: 484px;
-}
-.personal-col:nth-child(3) {
-    left: 832px;
-}
-.personal-col:nth-child(4) {
-    left: 1180px;
-}
-.personal-col:nth-child(5) {
-    left: 1528px;
-}
-.sign-recommend {
+.sampleBtn {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 1142px;
-  height: 250px;
-  position: absolute;
-  top: 1376px;
-  left: 397px;
-  background-color: #AED8ED;
+  width: 350px;
+  height: 130px;
+  color: white;
+  background: #dc8552;
+  margin: 0 23px;
   border-radius: 12px;
-  cursor: pointer;
-}
-.sign-recommend-area {
-  font-family: 'alegreya';
-  font-size: 30px;
-  font-weight: 800;
 }
 .main-footer {
-  top: 1600px;
+  top: 1350px;
 }
 </style>

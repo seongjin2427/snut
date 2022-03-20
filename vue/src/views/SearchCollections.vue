@@ -9,7 +9,7 @@
     </div>
     <div class="col-container">
       <div class="col-area">
-        <common-collection :num="[num3, idx]" v-for="(num3, idx) in number3" :key="num3" @click="sendInfo()" />
+        <common-curation :info="info" v-for="(info, idx) in testContent" :key="idx" @click="sendInfo(info.id)" />
       </div>
     </div>
 
@@ -18,7 +18,11 @@
     <!-- 네브 바 구역 -->
     <navigator-bar ref="navbar" />
     <!-- 모달창 구역 -->
-    <common-modal @returnModal="returnShow" :curShow="curInfo" :propThat="testContent" />
+    <common-modal 
+        @returnModal="returnShow" 
+        :curShow="curInfo" 
+        :curationInfo="testCuration" 
+        :involedPic="testCuration.involvePicBoolean" />
 
   </div>
 </template>
@@ -27,7 +31,7 @@
 import CommonInputBox from '@/components/CommonInputBox.vue';
 import HamburgerButton from '@/components/HamburgerButton.vue';
 import NavigatorBar from '@/components/NavigatorBar.vue';
-import CommonCollection from '@/components/CommonCollection.vue';
+import CommonCuration from '@/components/CommonCuration.vue';
 import MainFooter from '@/components/MainFooter.vue';
 import CommonButton from '@/components/CommonButton.vue';
 import CommonModal from '@/components/CommonModal.vue';
@@ -36,12 +40,12 @@ import sampleData from '@/assets/sampleData.json';
 
 
 export default {
-  name: 'SearchCollections',
+  name: 'SearchCurations',
   components: {
     CommonInputBox, 
     HamburgerButton, 
     NavigatorBar, 
-    CommonCollection, 
+    CommonCuration, 
     MainFooter,
     CommonButton,
     CommonModal
@@ -50,16 +54,19 @@ export default {
     return {
       number3: [],
       curInfo: false,
-      testContent: {}
+      testContent: {},
+      testCuration: {}
     }
   },
   methods: {
     occurNavBarEvent() {
       this.$refs.navbar.openNavBar();
     },
-    sendInfo() {
+    sendInfo(id) {
       this.curInfo = true;
-      console.log(this.curInfo);
+      this.testCuration = this.testContent[id];
+      this.$refs.navbar.closeNavBar();
+
     },
     returnShow() {
       this.curInfo = false;
@@ -70,7 +77,6 @@ export default {
   },
   created() {
     for(let i = 0; i < 50; i++) {
-      let random = Math.floor(Math.random() * 9) + 1;
       sampleData.data[i] = {};
       sampleData.data[i].id = i;
       sampleData.data[i].email = "user" + i + "@naver.com"; 
@@ -78,17 +84,29 @@ export default {
       sampleData.data[i].colNum = "colId" + i;
       sampleData.data[i].title = "Title..." + i;
       sampleData.data[i].content = "Content..." + i;
+
       sampleData.data[i].open = true;
+
+      if(i < 25) {
+        sampleData.data[i].involvePicBoolean = true;
+      } else {
+        sampleData.data[i].involvePicBoolean = false;
+        }
+
+
       sampleData.data[i].redDate = "2022-01-01";
       sampleData.data[i].modDate = "2022-01-02";
-      sampleData.data[i].imgUrl = sampleData.imgUrl[random];
+      
+      sampleData.data[i].hashtag = [];
+      sampleData.data[i].imgUrl = [];
+      for(let j = 0; j < 3; j++) {
+        let random = Math.floor(Math.random() * 9) + 1;
+        sampleData.data[i].hashtag[j] = `Hash${i}${j}`;
+        sampleData.data[i].imgUrl[j] = sampleData.imgUrl[random];
+      }
     }
     this.testContent = sampleData.data;
-  },
-  mounted() {
-    for(let i = 0; i < 50; i++) {
-      this.number3[i] = Math.ceil(Math.random() * 9);
-    }
+    // console.log(sampleData.data[0].imgUrl)
   }
 }
 </script>
