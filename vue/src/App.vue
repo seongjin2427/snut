@@ -9,7 +9,7 @@ export default {
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css?family=Noto+Sans:400,700,300,500,600|Montserrat:400|Alegreya:400,700,800");
+@import url("https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,700;0,800;1,400&family=Baloo+Bhaijaan+2:wght@500&family=Montserrat&family=Noto+Sans+KR:wght@300;400;500;700&display=swap");
 
 * {
   margin: 0;

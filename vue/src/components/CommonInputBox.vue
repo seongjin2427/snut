@@ -43,7 +43,7 @@ export default {
 }
 .main-search-input::placeholder {
   color: #00000099;
-  font-family: 'Noto Sans';
+  font-family: 'Noto Sans KR', sans-serif;
   font: 16px black;
 }
 </style>

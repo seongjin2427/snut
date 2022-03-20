@@ -1,11 +1,13 @@
 <template>
-  <img class="center-logo" src="@/assets/large_logo.png" alt="Large_logo">
-  <div class="pick-your-nut-box">
-    <span class="nutbox0">PICK YOUR "</span>
-    <span class="nutbox1">S</span>
-    <span class="nutbox2">N</span>
-    <span class="nutbox3">UT</span>
-    <span class="nutbox0">"</span>
+  <div>  
+    <img class="center-logo" src="@/assets/large_logo.png" alt="Large_logo">
+    <div class="pick-your-nut-box">
+      <span class="nutbox0">PICK YOUR "</span>
+      <span class="nutbox1">S</span>
+      <span class="nutbox2">N</span>
+      <span class="nutbox3">UT</span>
+      <span class="nutbox0">"</span>
+    </div>
   </div>
 </template>
 

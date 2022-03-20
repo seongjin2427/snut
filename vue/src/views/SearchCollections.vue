@@ -76,7 +76,7 @@ export default {
     }
   },
   created() {
-    for(let i = 0; i < 50; i++) {
+    for(let i = 0; i < 100; i++) {
       sampleData.data[i] = {};
       sampleData.data[i].id = i;
       sampleData.data[i].email = "user" + i + "@naver.com"; 
@@ -87,7 +87,7 @@ export default {
 
       sampleData.data[i].open = true;
 
-      if(i < 25) {
+      if(i < 50) {
         sampleData.data[i].involvePicBoolean = true;
       } else {
         sampleData.data[i].involvePicBoolean = false;

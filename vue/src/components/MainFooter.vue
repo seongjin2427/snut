@@ -41,7 +41,7 @@ img {
 }
 .footer-text {
   width: 301px;
-  font-family: 'noto-sans';
+  font-family: 'Noto Sans KR', sans-serif;
   font-size: 15px;
   letter-spacing: -0.23px;
   line-height: 24px;

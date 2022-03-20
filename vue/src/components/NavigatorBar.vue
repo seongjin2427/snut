@@ -7,7 +7,7 @@
       <li><router-link to="/mcol/main">My collection</router-link></li>
       <li>Community</li>
       <li>My Page</li>
-      <li> Feedback</li>
+      <li>Feedback</li>
     </ul>
   </div>
 </template>
