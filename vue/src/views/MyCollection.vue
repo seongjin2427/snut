@@ -223,7 +223,7 @@ export default {
 .text-area2 {
   display: flex;
   width: 90%;
-  margin: 0 auto;
+  margin: 10px auto 50px auto;
 }
 .hot-col2 {
   display: inline-block;
@@ -258,6 +258,6 @@ export default {
   border-radius: 12px;
 }
 .main-footer {
-  top: 1350px;
+  top: 1400px;
 }
 </style>

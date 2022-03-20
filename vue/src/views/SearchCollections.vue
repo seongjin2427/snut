@@ -91,7 +91,7 @@ export default {
         sampleData.data[i].involvePicBoolean = true;
       } else {
         sampleData.data[i].involvePicBoolean = false;
-        }
+      }
 
 
       sampleData.data[i].redDate = "2022-01-01";

@@ -34,7 +34,7 @@
           <button @click="nextImg" class="next">&#62;</button>
           </div>
 
-          <div :class="{modalBodyContents: involedPic, noPic: !involedPic}">
+          <div :class="{modalBodyContents: involedPic, noPic: !involedPic, fontSize16:true}">
             <p><b>{{ curationInfo.nickName }}</b></p>
             <p><b>{{ curationInfo.title }}</b></p>
             <p>{{ curationInfo.content }}</p>
@@ -55,7 +55,7 @@ export default {
   props: ['curShow', 'curationInfo', 'involedPic'],
   data() {
     return {
-      editMode: false,
+      editMode: true,
       showModal: false,
       isInvolvePic: this.involedPic,
       modalHashTags: ['aa', 'bb', 'cc']
@@ -244,5 +244,8 @@ export default {
   border: 1px solid black;
   border-radius: 12px;
   padding: 30px;
+}
+.modalBodyContents * {
+  font-size: 20px;
 }
 </style>
