@@ -30,14 +30,12 @@ export default {
 
 <style scoped>
 .snutinfo {
-
-  min-width: 1280px;
+  min-width: 1520px;
   height: 100%;
+  display: flex;
 }
-
 .info-area {
-
-  min-width: 1280px;
+  min-width: 1520px;
   margin-left: 400px;
   display: flex;
   flex-direction: column;
@@ -101,7 +99,8 @@ export default {
 }
 
 .center-logo {
-
+  width: 350px;
+  height: 350px;
 
 }
 

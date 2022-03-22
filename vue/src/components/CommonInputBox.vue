@@ -3,7 +3,7 @@
         type="text" 
         :placeholder="placeholderContent"
         v-model="upToWord"
-        @keyup.enter="doSearch">
+        @keyup.enter="doSearch(), doSearchCuration()">
 </template>
 
 <script>
@@ -18,6 +18,9 @@ export default {
   methods: {
     doSearch() {
       this.$emit('mainDoSearch', this.upToWord);
+    },
+    doSearchCuration() {
+      this.$emit('doSearchCuration', this.upToWord)
     }
   }
 }

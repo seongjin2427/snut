@@ -67,7 +67,7 @@ li{
   margin: 85px auto;
   text-align: center;
   font-weight: 700;
-  font-size: 30px;
+  font-size: 25px;
 
 }
 </style>

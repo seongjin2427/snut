@@ -1,5 +1,6 @@
 <template>
   <div class="footer-area">
+    <div class="rectangle"></div>
     <img src="../assets/small_logo.png" alt="footer_logo">
     <br>
     <p class="footer-text">{{ cText }}</p>
@@ -19,7 +20,6 @@ export default {
 
 <style scoped>
 .footer-area {
-  /* top: 1800px; */
   margin-top: 200px;
   position: absolute;
   display: flex;
@@ -27,11 +27,16 @@ export default {
   flex-direction: column;
   align-items: center;
 }
+.rectangle {
+  width: 100vw;
+  height: 2px;
+  background: rgba(196, 196, 196, 1);
+}
 img {
-
   width: 10.5625rem;
   height: 8.5rem;
   object-fit: cover;
+  margin-top: 50px;
 }
 .footer-text {
   width: 301px;

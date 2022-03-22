@@ -1,64 +1,59 @@
 <template>
   <div class="main-with-login">
-    
-    <!-- header 구간 -->
-    <div class="main-header">
-      <img class="main-logo-text" src="@/assets/logo_text.png" alt="logo_text">
-      <common-input-box placeholderContent="SEARCH" @mainDoSearch="mainDoSearch" />
 
-      <!-- 미 로그인 시 Login 버튼 활성화 -->
-      <common-button v-if="!loginBool" class="commonBtn" buttonName="Log in" />
-
-      <!-- 로그인 시 Log out 버튼 활성화 -->
-      <common-button v-if="loginBool" class="commonBtn" buttonName="Log out" />
-
-      <common-button class="registerBtn" buttonName="Register" />
-      <hamburger-button @click="occurNavBarEvent"/>
-
-      <!-- 미 로그인/로그인 전환 테스트용 버튼 -->
-      <br>
-      <button @click="testBtn">test</button><br>
-      <button @click="getUserInfo">getUserInfo</button><br>
-      <!-- <input type="text" v-model="userId"><br> -->
-      <button @click="getAllUserInfo">gitAllUserInfo</button>
-    </div>
-
-    <!-- 메인 로고 -->
-    <div class="main-logo">
-      <pick-your-snut />
-    </div>
-
-    <!-- 인기 컬렉션 구간 -->
-    <div class="col-container1">
-      <div class="text-area1">
-        <span class="hot-col1 text-area-text">인기컬렉션</span>
-        <span class="more-col1 text-area-text"><a href="#">더보기</a></span>
+    <div class="main-body">
+      
+      <!-- header 구간 -->
+      <div class="main-header">
+        <img class="main-logo-text" src="@/assets/logo_text.png" alt="logo_text">
+        <common-input-box placeholderContent="SEARCH" @mainDoSearch="mainDoSearch" />
+        <!-- 미 로그인 시 Login 버튼 활성화 -->
+        <common-button v-if="!loginBool" class="commonBtn" buttonName="Log in" />
+        <!-- 로그인 시 Log out 버튼 활성화 -->
+        <common-button v-if="loginBool" class="commonBtn" buttonName="Log out" />
+        <common-button class="registerBtn" buttonName="Register" />
+        <hamburger-button @click="occurNavBarEvent"/>
+        <!-- 미 로그인/로그인 전환 테스트용 버튼 -->
+        <br>
+        <button @click="testBtn">test</button><br>
+        <button @click="getUserInfo">getUserInfo</button><br>
+        <!-- <input type="text" v-model="userId"><br> -->
+        <button @click="getAllUserInfo">gitAllUserInfo</button>
       </div>
-      <div class="col-area1">
-          <common-collection class="recom-col" :info="num1" v-for="(num1, idx) in number1" :key="idx"/>
+      <!-- 메인 로고 -->
+      <div class="main-logo">
+        <pick-your-snut />
       </div>
-    </div>
-
-    <!-- 개인 추천 컬렉션 구간 -->
-    <div class="col-container2" v-if="loginBool">
-      <div class="text-area2">
-        <span class="hot-col2 text-area-text">개인 추천 컬렉션</span>
+      <!-- 인기 컬렉션 구간 -->
+      <div class="col-container1">
+        <div class="text-area1">
+          <span class="hot-col1 text-area-text">인기컬렉션</span>
+          <span class="more-col1 text-area-text"><a href="#">더보기</a></span>
+        </div>
+        <div class="col-area1">
+            <common-collection class="recom-col" :info="num1" v-for="(num1, idx) in number1" :key="idx"/>
+        </div>
       </div>
-      <div class="col-area2">
-          <common-collection class="personal-col" :info="num2" v-for="(num2, idx) in number2" :key="idx"/>
+      <!-- 개인 추천 컬렉션 구간 -->
+      <div class="col-container2" v-if="loginBool">
+        <div class="text-area2">
+          <span class="hot-col2 text-area-text">개인 추천 컬렉션</span>
+        </div>
+        <div class="col-area2">
+            <common-collection class="personal-col" :info="num2" v-for="(num2, idx) in number2" :key="idx"/>
+        </div>
       </div>
-    </div>
-    
-    <!-- 로그인 안됐을 때, 회원가입 유도 버튼 -->
-    <div class="sign-recommend" v-if="!loginBool">
-      <p class="sign-recommend-area">{{ signText }}</p>
-    </div>
+      
+      <!-- 로그인 안됐을 때, 회원가입 유도 버튼 -->
+      <div class="sign-recommend" v-if="!loginBool">
+        <p class="sign-recommend-area">{{ signText }}</p>
+      </div>
+      <!-- 네브 바 구역 -->
+      <navigator-bar ref="navbar" />
+      <!-- 푸터 구간 -->
+      <main-footer class="main-footer" />
 
-    <!-- 네브 바 구역 -->
-    <navigator-bar ref="navbar" />
-
-    <!-- 푸터 구간 -->
-    <main-footer class="main-footer" />
+    </div>
 
   </div>
 </template>
@@ -118,7 +113,9 @@ export default {
     mainDoSearch(searchWord) {
       // this.$router.push(`/col/${searchWord}`);
       console.log(searchWord);
-      this.$router.push(`/col`);
+      if (searchWord != '') {
+        this.$router.push(`/col/${searchWord}`);
+      }
     }
   },
   mounted() {
@@ -163,6 +160,14 @@ export default {
 </script>
 
 <style scoped>
+.main-with-login {
+  margin: 0 auto;
+}
+.main-body {
+  max-width: 1720px;
+  height: 100%;
+  background: grey;
+}
 .main-logo-text {
     height: 59px;
     margin-left: 117px;
@@ -207,7 +212,7 @@ input:focus {
 .col-container1 {
   position: absolute;
   top: 920px;
-  width: 1920px;
+  width: 1720px;
 }
 .text-area1 {
   display: flex;

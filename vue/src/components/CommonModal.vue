@@ -55,28 +55,10 @@ export default {
   props: ['curShow', 'curationInfo', 'involedPic'],
   data() {
     return {
-      editMode: true,
+      editMode: false,
       showModal: false,
       isInvolvePic: this.involedPic,
       modalHashTags: ['aa', 'bb', 'cc']
-      // curationData: {
-      //   author: 'Hong Gil Dong',
-      //   curationId: 1,
-      //   title: 'imageGallery title',
-      //   content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus omnis voluptate similique veritatis dolores minima qui blanditiis tenetur repudiandae, quis, eos, expedita earum incidunt voluptas optio neque laudantium. Praesentium, impedit.
-      //       Dolore dolores cum aliquam impedit hic? Non pariatur veniam cum incidunt molestiae! Perspiciatis quae quidem voluptate fugiat, libero doloremque cupiditate voluptatibus nihil ab dolorum eveniet quam saepe vel quis error?
-      //       In perspiciatis corrupti, sapiente culpa nobis porro velit nemo sequi eos quos ut quia rem optio, delectus voluptatibus reprehenderit distinctio nam. Blanditiis nisi veniam eveniet quod, natus repellat! Soluta, fugit.
-      //       Ducimus dolorem earum quidem harum dignissimos nulla eveniet labore quibusdam officia odio porro omnis saepe perferendis maiores tempore, nisi suscipit mollitia ea voluptas iste consequuntur. Voluptatem dolorum laudantium eius nulla?
-      //       Quam, et? Hic voluptatum eos amet similique, commodi repellendus. Facilis fugiat nihil saepe, temporibus at labore inventore voluptatem perspiciatis repellendus? Nulla reprehenderit cupiditate maxime. Iusto nulla quae nostrum cumque.`,
-      //   image: [
-      //       'https://mblogthumb-phinf.pstatic.net/MjAxODAzMTlfODMg/MDAxNTIxNDQ4Nzc3MzIy.ZPHs5SBp-cbfbheZIB3u-c3ZXfU3MhOthXCr8dc-4vkg.kdcIWkz4HQFjSDrj44aVGncFza7jDbWCBIj7cXktgbMg.JPEG.knicjin/beautiful_nature_wallpaper08.jpg?type=w800',
-      //       'https://mblogthumb-phinf.pstatic.net/MjAxODAzMTlfMjgx/MDAxNTIxNDQ4Nzg1NjI3.4pKlyXsFWII-_eaoOIWl8inGh54_smXTXGgvSfNZGZ0g.nbbgwGRhTMKIn7MVPUKxXTPl6UW7jZrMMaX48jzf2NMg.JPEG.knicjin/beautiful_nature_wallpaper01.jpg?type=w800',
-      //       'https://mblogthumb-phinf.pstatic.net/MjAxODAzMTlfNDQg/MDAxNTIxNDQ4Nzg2MTY3.j7jUt6z1A-DUCu1V_dMiW7HSAE3UiIYDhNfvsiE6M1Ag.Rfrir8lYV72jslM-Zuy1DaWLrE_gue_HJrZCLHhmZw8g.JPEG.knicjin/beautiful_nature_wallpaper05.jpg?type=w800'
-      //   ],
-      //   open: true,
-      //   regdate: '2022-01-01',
-      //   moddate: '2022-02-01'
-      // }
     }
   },
   methods: {
@@ -108,7 +90,6 @@ export default {
       this.$emit('returnModal');
     },
     saveText(text) {
-      // console.log(text);
       this.modalHashTags[text[0]] = text[1];
     }
   },

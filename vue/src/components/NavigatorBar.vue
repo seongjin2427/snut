@@ -22,12 +22,12 @@ export default {
   methods: {
     openNavBar() {
       var a = document.querySelector('.navigator');
-      a.classList.toggle('openNavBar');
+      a.classList.add('openNavBar');
       
     },
     closeNavBar() {
       var a = document.querySelector('.navigator');
-      a.classList.toggle('openNavBar');
+      a.classList.remove('openNavBar');
     },
 
   }
@@ -44,6 +44,7 @@ export default {
   background: #FFFFFF;
   transition: all .2s;
   right: -400px;
+  z-index: 9999
 }
 .openNavBar {
   right: 0px;
@@ -67,5 +68,9 @@ li {
   font-family: 'alegreya';
   font-weight: 700;
   font-size: 30px;
+}
+a {
+  text-decoration: none;
+  color: black;
 }
 </style>
