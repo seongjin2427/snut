@@ -1,7 +1,7 @@
 package com.curation.snut.controller;
 
 import com.curation.snut.dto.CommentDTO;
-import com.curation.snut.entity.Community;
+
 import com.curation.snut.service.CommentService;
 
 import org.springframework.data.domain.Page;
@@ -12,7 +12,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 // import org.springframework.web.bind.annotation.RequestMapping;
 // import org.springframework.web.bind.annotation.RestController;
@@ -52,9 +51,10 @@ public class CommentController {
 
     @GetMapping("/comment")
     public String comment(Model model,
-            @PageableDefault(page = 0, size = 10, sort = "cno", direction = Direction.ASC) Pageable pageable) {
+            @PageableDefault(size = 2, sort = "cno", direction = Direction.ASC) Pageable pageable,
+            Long no) {
         log.info("comment......");
-        Page<CommentDTO> commentDTOList = commentService.commentList(pageable);
+        Page<CommentDTO> commentDTOList = commentService.commentList(pageable, no);
         model.addAttribute("commentList", commentDTOList);
 
         int nowPage = pageable.getPageNumber() + 1;
@@ -69,8 +69,10 @@ public class CommentController {
     @PostMapping("/comment")
     public String commentWrite(CommentDTO commentDTO) {
         log.info("writed......." + commentDTO);
+        log.info("writed2......." + commentDTO.getCommunityName().getNo());
+        Long no = commentDTO.getCommunityName().getNo();
         commentService.write(commentDTO);
-        return "redirect:/comment";
+        return "redirect:/comment?no=" + no;
     }
 
     @GetMapping("/comment/delete")
@@ -78,4 +80,5 @@ public class CommentController {
         commentService.delete(id);
         return "redirect:/comment";
     }
+
 }

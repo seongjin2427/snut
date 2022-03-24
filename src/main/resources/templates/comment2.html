@@ -31,14 +31,13 @@
             </tbody>
         </table>
         <th:block th:each = "page : ${#numbers.sequence(startPage,endPage)}">
-            <a th:if="${page != nowPage}" th:href="@{/comment2(page = ${page - 1})}" th:text="${page}"></a>
+            <a th:if="${page != nowPage}" th:href="@{/comment2(page = ${page - 1},no=${param.no})}" th:text="${page}"></a>
             <strong th:if="${page == nowPage}" th:text="${page}" style="color : red" ></strong>
         </th:block>
     </div>
-
     <div>
         <form action="/comment" method="post">
-            <input type="text" name="communityName" placeholder="커뮤이름">
+            <input type="text" name="communityName" th:value="${param.no}">
             <input type="text" name="parentNo" placeholder="대댓글 적을 글번호">
             <input type="text" name="text" placeholder="내용">
             <input type="text" name="writer" placeholder="작성자">

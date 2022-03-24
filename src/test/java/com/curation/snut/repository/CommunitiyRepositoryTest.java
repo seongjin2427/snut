@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class CommunitiyRepositoryTest {
 
     @Autowired
-    CommunitiyRepository communitiyRepository;
+    CommunityRepository communitiyRepository;
 
     @Test
     public void insertCommunity() {

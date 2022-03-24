@@ -18,8 +18,8 @@ public interface CommentRepository extends JpaRepository<CommunityComment, Long>
     @Query("select c from CommunityComment c where c.communityName.no = :no order by if(isnull(parentNo), cno, parentNo)")
     Page<CommunityComment> list2(Pageable pageable, Long no);
 
-    @Query("select c from CommunityComment c order by if(isnull(parentNo), cno, parentNo)")
-    Page<CommunityComment> list(Pageable pageable);
+    @Query("select c from CommunityComment c where c.communityName.no = :no order by if(isnull(parentNo), cno, parentNo)")
+    Page<CommunityComment> list(Pageable pageable, Long no);
 
     @Modifying
     @Transactional
@@ -28,4 +28,9 @@ public interface CommentRepository extends JpaRepository<CommunityComment, Long>
 
     @Query("select cno from CommunityComment c where c.cno= :id and c.parentNo is null")
     Long searchComment(Long id);
+
+    @Modifying
+    @Transactional
+    @Query("delete from CommunityComment c where c.communityName.no = :no")
+    void deleteAllCommunutyComment(Long no);
 }
