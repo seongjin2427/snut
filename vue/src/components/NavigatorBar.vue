@@ -7,7 +7,7 @@
       <li><router-link to="/mcol/main">My collection</router-link></li>
       <li>Community</li>
       <li>My Page</li>
-      <li><router-link to="/fb">Feedback</router-link></li>
+      <li><router-link to="/ab">ABOUT</router-link></li>
     </ul>
   </div>
 </template>
@@ -22,12 +22,12 @@ export default {
   methods: {
     openNavBar() {
       var a = document.querySelector('.navigator');
-      a.classList.toggle('openNavBar');
+      a.classList.add('openNavBar');
       
     },
     closeNavBar() {
       var a = document.querySelector('.navigator');
-      a.classList.toggle('openNavBar');
+      a.classList.remove('openNavBar');
     },
 
   }

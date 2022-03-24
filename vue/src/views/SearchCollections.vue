@@ -144,11 +144,14 @@ input:focus {
   width: 1700px;
   display: flex;
   flex-wrap: wrap;
-  flex-basis: 6;
+  flex-basis: 6px;
   margin-top: 20px;
+  font-family: 'Noto-sans KR','Apple SD Gothic Neo', sans-serif ;
 }
 .common-collection {
   margin-right: 20px;
   margin-bottom: 22px;
+
+
 }
 </style>

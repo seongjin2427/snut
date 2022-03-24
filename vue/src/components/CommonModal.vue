@@ -17,7 +17,7 @@
           </div>
           <div class="iconBox" v-if="!editMode">
             <img src="../assets/sample/Like-Line.png" alt="heart">
-            <img src="../assets/sample/Pin-Line.png" alt="pin">
+            <img src="../assets/sample/Pin-Line.png" alt="pinn">
             <img src="../assets/sample/Save-Line.png" alt="share">
           </div>
           <div class="iconBox iconBoxCenter" v-if="editMode">
@@ -165,7 +165,7 @@ export default {
 }
 .mainHashTag {
   display: flex;
-  justify-content: right;
+  -webkit-justify-content: flex-end;
   width: 80%;
   text-align: right;
 }
