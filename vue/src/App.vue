@@ -10,6 +10,7 @@ export default {
 
 <style>
 /* @import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@300;400;500;700;800&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@300;400;500;700;800&display=swap');
 
 @font-face {
   font-family: 'AlegreyaSans';
@@ -28,11 +29,10 @@ export default {
 * {
   margin: 0;
   padding: 0;
-  font-family: 'AlegreyaSans', 'NotoSansKR', sans-serif;
+  font-family: 'AlegreyaSans', 'NotoSansKR', 'Apple SD Gothic Neo', sans-serif;
 }
 
 html, body {
-  max-width: 1920px;
   width: 100vw;
   height: 100vh;
 }
