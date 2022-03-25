@@ -1,35 +1,25 @@
 package com.curation.snut.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import lombok.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import javax.persistence.*;
+
 
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@ToString
-
+@ToString(exclude = "snutMember")
 public class Collection extends BaseEntity {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ColNo;
-    
-    private String ColTitle;
-    private boolean open;
-    //public 이나 prviate 쓸려고 했는데 못쓰는거라 open이라고 씀
+    @GeneratedValue
+    private Long colId;
+
+    private String title;
+    private Boolean open;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    private Folder folder;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Member member;
+    private SnutMember snutMember;
 }

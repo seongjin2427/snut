@@ -12,11 +12,23 @@ export default {
 /* @import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@300;400;500;700;800&display=swap'); */
 @import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@300;400;500;700;800&display=swap');
 
+<<<<<<< HEAD
 @font-face {
   font-family: 'AlegreyaSans';
   src: url('@/assets/font/AlegreyaSans-Regular.ttf') format('opentype'),
   url('@/assets/font/AlegreyaSans-Regular.ttf') format('truetype');;
   unicode-range: U+0041-005A, U+0061-007A;
+=======
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  background-color: rgb(232, 236, 230);
+  width: 100%;
+  height: 100%;
+>>>>>>> 1173a597230a090a057c18d0ed0fb81d4651891c
 }
 
 @font-face {
