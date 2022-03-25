@@ -1,336 +1,69 @@
 <template>
   <div class="main-with-login">
-    
-    <!-- header 구간 -->
-    <div class="main-header">
-      <img class="main-logo-text" src="@/assets/logo_text.png" alt="logo_text">
-      <common-input-box placeholderContent="SEARCH" @mainDoSearch="mainDoSearch" />
-
-      <!-- 미 로그인 시 Login 버튼 활성화 -->
-      <common-button v-if="!loginBool" class="commonBtn" buttonName="Log in" />
-
-      <!-- 로그인 시 Log out 버튼 활성화 -->
-      <common-button v-if="loginBool" class="commonBtn" buttonName="Log out" />
-
-      <common-button class="registerBtn" buttonName="Register" />
-      <hamburger-button @click="occurNavBarEvent"/>
-
-      <!-- 미 로그인/로그인 전환 테스트용 버튼 -->
-      <br>
-      <button @click="testBtn">test</button><br>
-      <button @click="getUserInfo">getUserInfo</button><br>
-      <!-- <input type="text" v-model="userId"><br> -->
-      <button @click="getAllUserInfo">gitAllUserInfo</button>
+    <div class="main-with-login-body">
+      <header>
+        <img class="main-logo-text" src="@/assets/logo_text.png" alt="text_logo">
+        <input-box class="main-input" placeholder="SEARCH" width="30" height="38" />
+        <div class="button-area">
+          <common-button buttonName="Log in" width="80" height="35" marginTop="5" marginRight="20" />
+          <common-button buttonName="Register" width="80" height="35" marginTop="5" marginRight="42" />
+          <img src="@/assets/btn_hamburger.png" alt="nav_btn">
+        </div>
+      </header>
     </div>
-
-    <!-- 메인 로고 -->
-    <div class="main-logo">
-      <pick-your-snut />
-    </div>
-
-    <!-- 인기 컬렉션 구간 -->
-    <div class="col-container1">
-      <div class="text-area1">
-        <span class="hot-col1 text-area-text">인기컬렉션</span>
-        <span class="more-col1 text-area-text"><a href="#">더보기</a></span>
-      </div>
-      <div class="col-area1">
-          <common-collection class="recom-col" :info="num1" v-for="(num1, idx) in number1" :key="idx"/>
-      </div>
-    </div>
-
-    <!-- 개인 추천 컬렉션 구간 -->
-    <div class="col-container2" v-if="loginBool">
-      <div class="text-area2">
-        <span class="hot-col2 text-area-text">개인 추천 컬렉션</span>
-      </div>
-      <div class="col-area2">
-          <common-collection class="personal-col" :info="num2" v-for="(num2, idx) in number2" :key="idx"/>
-      </div>
-    </div>
-    
-    <!-- 로그인 안됐을 때, 회원가입 유도 버튼 -->
-    <div class="sign-recommend" v-if="!loginBool">
-      <p class="sign-recommend-area">{{ signText }}</p>
-    </div>
-
-    <!-- 네브 바 구역 -->
-    <navigator-bar ref="navbar" />
-
-    <!-- 푸터 구간 -->
-    <main-footer class="main-footer" />
-
   </div>
 </template>
 
 <script>
-import CommonButton from "@/components/CommonButton.vue";
-import CommonInputBox from "@/components/CommonInputBox.vue";
-import PickYourSnut from "@/components/PickYourSnut.vue";
-import CommonCollection from '@/components/CommonCollection.vue';
-import MainFooter from '@/components/MainFooter.vue';
-import HamburgerButton from '@/components/HamburgerButton.vue';
-import NavigatorBar from '../components/NavigatorBar.vue';
-
-import sampleData from '@/assets/sampleData.json';
-
-// import axios from 'axios';
+import CommonButton from '../components/CommonButton.vue'
+import InputBox from '../components/InputBox.vue'
 
 
 export default {
-  name: "MainWithLogin",
-  components: {
-    CommonButton, 
-    CommonInputBox, 
-    PickYourSnut, 
-    CommonCollection, 
-    MainFooter, 
-    HamburgerButton,
-    NavigatorBar
-  },
-  data() {
-    return {
-      loginBool: true,
-      signText: 'If you want to see more, just sign in!',
-      number1: {},
-      number2: {},
-    }
-  },
-  methods: {
-    testBtn() {
-      console.log(this.loginBool);
-      this.loginBool = !this.loginBool;
-    },
-    occurNavBarEvent() {
-      this.$refs.navbar.openNavBar();
-    },
-    getUserInfo() {
-      // axios.get("http://localhost:8080/get/" + this.userId).then((res) => {
-      //   var data = res.data;
-      //   console.log(data);
-      // });
-    },
-    getAllUserInfo() {
-      // axios.get("http://localhost:8080/get/all").then((res) => {
-      //   console.log(res.data);
-      // })
-    },
-    mainDoSearch(searchWord) {
-      // this.$router.push(`/col/${searchWord}`);
-      console.log(searchWord);
-      this.$router.push(`/col`);
-    }
-  },
-  mounted() {
-    for(var i = 0; i < 5; i++) {
-      var random = Math.floor(Math.random() * 9) + 1;
-      sampleData.data[i] = {};
-      sampleData.data[i].id = i;
-      sampleData.data[i].email = "user" + i + "@naver.com"; 
-      sampleData.data[i].nickName = "nickName" + i; 
-      sampleData.data[i].colNum = "colId" + i;
-      sampleData.data[i].title = "Title..." + i;
-      sampleData.data[i].content = "Content..." + i;
-      sampleData.data[i].open = true;
-      sampleData.data[i].redDate = "2022-01-01";
-      sampleData.data[i].modDate = "2022-01-02";
-      sampleData.data[i].imgUrl = sampleData.imgUrl[random];
-    }
-    this.number1 = sampleData.data;
-
-    sampleData.data = {};
-    for(let i = 5; i < 10; i++) {
-      let random = Math.floor(Math.random() * 9) + 1;
-      console.log(i);
-      sampleData.data[i] = {};
-      sampleData.data[i].id = i;
-      sampleData.data[i].email = "user" + i + "@naver.com"; 
-      sampleData.data[i].nickName = "nickName" + i; 
-      sampleData.data[i].colNum = "colId" + i;
-      sampleData.data[i].title = "Title..." + i;
-      sampleData.data[i].content = "Content..." + i;
-      sampleData.data[i].open = true;
-      sampleData.data[i].redDate = "2022-01-01";
-      sampleData.data[i].modDate = "2022-01-02";
-      sampleData.data[i].imgUrl = sampleData.imgUrl[random];
-    }
-    this.number2 = sampleData.data;
-    console.log("this.number2 : ")
-    console.log(this.number2)
-    
-  }
+  components: { InputBox, CommonButton },
+  name: "MainWithLogin"
 }
 </script>
 
 <style scoped>
+.main-with-login-body {
+  max-width: 1200px;
+  min-width: 1200px;
+  width: 100vw;
+  height: 100vh;
+  /* background: lightcoral; */
+  margin: 0 auto;
+}
+header {
+  width: 100%;
+  height: 200px;
+  /* background: lightblue; */
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+}
 .main-logo-text {
-    height: 59px;
-    margin-left: 117px;
-    margin-top: 49px;
-    width: 169px;
-}
-input:focus {
-  outline: none;
-}
-.commonBtn {
-  left: 1430px;
-  top: 70px;
+  width: 113px;
+  height: 39px;
+  margin-top: 60px;
   position: absolute;
-  cursor: pointer;
+  left: 0;
+  top: 0;
 }
-.registerBtn {
-  left: 1588px;
-  top: 70px;
-  position: absolute;
-  cursor: pointer;
+.main-input {
+  margin-top: 67px;
+  margin-right: 5%;
 }
-.hamburgerBtn {
-  position: absolute;
-  left: 1768px;
-  top: 66px;
-  height: 50px;
-  width: 40px;
-  cursor: pointer;
-}
-.main-logo {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 230px;
-  left: 700px;
-  height: 700px;
-  margin: 0 auto;
-  text-align: center;
-}
-.col-container1 {
-  position: absolute;
-  top: 920px;
-  width: 1920px;
-}
-.text-area1 {
-  display: flex;
-  width: 90%;
-  margin: 0 auto;
-}
-.text-area-text {
-  font-family: 'noto-sans';
-  font-weight: 600;
-  font-size: 30px;
-  margin-bottom: 40px;
-}
-.hot-col1 {
-  display: inline-block;
-  width: 70%;
-  margin-left: 3rem;
-}
-.more-col1{
-  display: inline-block;
+.button-area {
   width: 30%;
-  text-align: right;
-  margin-right: 60px;
-}
-.more-col1 a {
-  text-decoration: none;
-  outline: none;
-  color: rgba(102, 102, 102, 1);
-}
-.col-area1 {
+  /* background: red; */
   display: flex;
-  margin: 0 auto;
-  justify-content: space-around;
+  justify-content: flex-end;
+  align-items: flex-start;
+  margin-top: 63px;
 }
-.recom-col {
-  top: 90px;
-  mix-blend-mode: normal;
-  position: absolute;
-}
-.recom-col:nth-child(1) {
-    left: 136px;
-}
-.recom-col:nth-child(2) {
-    left: 484px;
-}
-.recom-col:nth-child(3) {
-    left: 832px;
-}
-.recom-col:nth-child(4) {
-    left: 1180px;
-}
-.recom-col:nth-child(5) {
-    left: 1528px;
-}
-.col-container2 {
-  position: absolute;
-  top: 1325px;
-  width: 1920px;
-}
-.text-area2 {
-  display: flex;
-  width: 90%;
-  margin: 0 auto;
-}
-.hot-col2 {
-  display: inline-block;
-  width: 70%;
-  margin-left: 3rem;
-}
-.more-col2{
-  display: inline-block;
-  width: 30%;
-  text-align: right;
-  margin-right: 40px;
-}
-.more-col2 a {
-  text-decoration: none;
-  outline: none;
-  color: rgba(102, 102, 102, 1);
-}
-.col-area2 {
-  display: flex;
-  margin: 0 auto;
-  justify-content: space-around;
-}
-.personal-col {
-  top: 90px;
-  mix-blend-mode: normal;
-  position: absolute;
-}
-.personal-col:nth-child(1) {
-    left: 136px;
-}
-.personal-col:nth-child(2) {
-    left: 484px;
-}
-.personal-col:nth-child(3) {
-    left: 832px;
-}
-.personal-col:nth-child(4) {
-    left: 1180px;
-}
-.personal-col:nth-child(5) {
-    left: 1528px;
-}
-.sign-recommend {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 1142px;
-  height: 250px;
-  position: absolute;
-  top: 1376px;
-  left: 397px;
-  background-color: #AED8ED;
-  border-radius: 12px;
+.button-area img {
+  margin-right: 20px;
   cursor: pointer;
-}
-.sign-recommend-area {
-  font-family: 'alegreya';
-  font-size: 30px;
-  font-weight: 800;
-}
-.main-footer {
-  top: 1600px;
 }
 </style>
