@@ -1,76 +1,49 @@
 <template>
-<<<<<<< HEAD
-  <div class="collection">
-    <img :src="src" alt="sample_img">
-=======
-  <div class="common-collection" @mouseover="inCollection()" @mouseleave="outCollection()">
-    <img :class="colSelect" :src="info.imgUrl" alt="col_image" />
+  <div class="collection" @mouseover="inCuration()" @mouseleave="outCuration()">
+    <img :class="cuSelect" :src="info[id].src" alt="sample_img">
     <div class="text1" v-if="testBoolean">
-        <p>{{ info.title }}</p>
-        <p>{{ info.modDate }}</p>
+      <p>{{ info[id].title }}</p>
+      <p>{{ info[id].modDate }}</p>
     </div>
->>>>>>> 1173a597230a090a057c18d0ed0fb81d4651891c
   </div>
 </template>
 
 <script>
-<<<<<<< HEAD
 export default {
   name: "CommonCollection",
-  props: []
+  props: ['info', 'id'],
+  data() {
+    return {
+      cuSelect: 'cu-img' + this.id,
+      testBoolean: false
+    }
+  },
+  methods: {
+    inCuration() {
+      this.testBoolean = true;
+      document.querySelector('.'+this.cuSelect).classList.add('lowerBrightness');
+    },
+    outCuration() {
+      this.testBoolean = false;
+      document.querySelector('.'+this.cuSelect).classList.remove('lowerBrightness');
+    }
+  }
 }
 </script>
 
 <style scoped>
+.collection {
+  position: relative;
+}
 img {
   width: 180px;
   height: 180px;
   object-fit: cover;
   /* margin-right: 0px; */
 }
-=======
-export default{
-  name: 'CommonCollection',
-  props: ['info'],
-  data() {
-    return {
-      colSelect: 'col-img' + this.info.id,
-      colModal: {
-        id: 'col-modal' + this.info.id
-      },
-      testBoolean: false
-    }
-  },
-  methods: {
-    inCollection() {
-      this.testBoolean = true;
-      document.querySelector('.'+this.colSelect).classList.add('lowerBrightness');
-    },
-    outCollection() {
-      this.testBoolean = false;
-      document.querySelector('.'+this.colSelect).classList.remove('lowerBrightness');
-    }
-  }
-};
-</script>
-
-<style scoped>
-.common-collection {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 250px;
-  height: 250px;
-  position: relative
-}
-.common-collection img{
-  width: 250px;
-  height: 250px;
-  transition: all .3s;
-}
 .text1 {
-  width: 250px;
-  height: 250px;
+  width: 180px;
+  height: 180px;
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -89,5 +62,4 @@ export default{
   transition: all .3s;
   filter: brightness(60%);
   }
->>>>>>> 1173a597230a090a057c18d0ed0fb81d4651891c
 </style>

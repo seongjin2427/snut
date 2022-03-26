@@ -9,35 +9,75 @@ export default {
 </script>
 
 <style>
-/* @import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@300;400;500;700;800&display=swap'); */
-@import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@300;400;500;700;800&display=swap');
 
-<<<<<<< HEAD
+/* Allegreya Sans */
+@font-face {
+  font-family: 'AlegreyaSans';
+  src: url('@/assets/font/AlegreyaSans-Light.ttf') format('opentype'),
+  url('@/assets/font/AlegreyaSans-Light.ttf') format('truetype');;
+  font-weight: 300;
+  unicode-range: U+0041-005A, U+0061-007A;
+}
+
 @font-face {
   font-family: 'AlegreyaSans';
   src: url('@/assets/font/AlegreyaSans-Regular.ttf') format('opentype'),
   url('@/assets/font/AlegreyaSans-Regular.ttf') format('truetype');;
+  font-weight: 400;
   unicode-range: U+0041-005A, U+0061-007A;
-=======
-* {
-  margin: 0;
-  padding: 0;
 }
 
-html, body {
-  background-color: rgb(232, 236, 230);
-  width: 100%;
-  height: 100%;
->>>>>>> 1173a597230a090a057c18d0ed0fb81d4651891c
+@font-face {
+  font-family: 'AlegreyaSans';
+  src: url('@/assets/font/AlegreyaSans-Medium.ttf') format('opentype'),
+  url('@/assets/font/AlegreyaSans-Medium.ttf') format('truetype');;
+  font-weight: 500;
+  unicode-range: U+0041-005A, U+0061-007A;
+}
+
+@font-face {
+  font-family: 'AlegreyaSans';
+  src: url('@/assets/font/AlegreyaSans-Bold.ttf') format('opentype'),
+  url('@/assets/font/AlegreyaSans-Bold.ttf') format('truetype');;
+  font-weight: 700;
+  unicode-range: U+0041-005A, U+0061-007A;
+}
+
+@font-face {
+  font-family: 'AlegreyaSans';
+  src: url('@/assets/font/AlegreyaSans-ExtraBold.ttf') format('opentype'),
+  url('@/assets/font/AlegreyaSans-ExtraBold.ttf') format('truetype');;
+  font-weight: 800;
+  unicode-range: U+0041-005A, U+0061-007A;
+}
+
+/* Noto Sans KR 구간 */
+@font-face {
+  font-family: 'NotoSansKR';
+  src: url('@/assets/font/NotoSansKR-Regular.otf') format('opentype'),
+  url('@/assets/font/NotoSansKR-Regular.otf') format('truetype');
+  font-weight: 400;
+  unicode-range: U+AC00-D7A3;
 }
 
 @font-face {
   font-family: 'NotoSansKR';
-  src: url('@/assets/font/NotoSansKR-Regular.otf') format('opentype'),
-  url('@/assets/font/NotoSansKR-Regular.otf') format('truetype');;
+  src: url('@/assets/font/NotoSansKR-Medium.otf') format('opentype'),
+  url('@/assets/font/NotoSansKR-Medium.otf') format('truetype');
+  font-weight: 500;
   unicode-range: U+AC00-D7A3;
 }
 
+@font-face {
+  font-family: 'NotoSansKR';
+  src: url('@/assets/font/NotoSansKR-Bold.otf') format('opentype'),
+  url('@/assets/font/NotoSansKR-Bold.otf') format('truetype');
+  font-weight: 700;
+  unicode-range: U+AC00-D7A3;
+}
+
+
+/* CSS 구간 */
 * {
   margin: 0;
   padding: 0;

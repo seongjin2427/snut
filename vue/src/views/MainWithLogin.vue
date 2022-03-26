@@ -2,12 +2,19 @@
   <div class="main-with-login">
     <div class="main-with-login-body">
       <header>
-        <img class="main-logo-text" src="@/assets/logo_text.png" alt="text_logo">
-        <input-box class="main-input" placeholder="SEARCH" width="30" height="38" />
+        <div class="logo-area header-area">
+          <img class="main-logo-text" src="@/assets/logo_text.png" alt="text_logo">
+        </div>
+        <div class="input-area">
+          <input-box class="main-input" placeholder="SEARCH" width="100" height="38" />
+        </div>
         <div class="button-area">
-          <common-button buttonName="Log in" width="80" height="35" marginTop="5" marginRight="20" />
+          <input type="button" value="test" @click="sample">
+
+          <common-button buttonName="Log out" width="80" height="35" marginTop="5" marginRight="20" v-if="loginBool" />
+          <common-button buttonName="Log in" width="80" height="35" marginTop="5" marginRight="20" v-if="!loginBool" />
           <common-button buttonName="Register" width="80" height="35" marginTop="5" marginRight="42" />
-          <img src="@/assets/btn_hamburger.png" alt="nav_btn">
+          <img src="@/assets/btn_hamburger.png" alt="nav_btn" @click="openNavBar">
         </div>
       </header>
       <main>
@@ -19,40 +26,90 @@
           </div>
         </div>
 
-        <div class="hot-col">
-          <p class="hot-col-title">
+        <div class="main-col">
+          <p class="main-col-title">
             인기컬렉션
           </p>
-          <div class="hot-col-area">
-            <common-collection v-for="(info, idx) in colInfo.data" :colInfo="colInfo" :src="info.src" :key="idx" />
+          <div class="main-col-area">
+            <common-collection 
+                v-for="(col, idx) in hotCol" 
+                :info="sampleData.data" 
+                :id="col"
+                :key="idx" />
           </div>
         </div>
+        <div class="main-col">
+          <p class="main-col-title" >
+            개인 추천 컬렉션
+          </p>
+          <div class="main-col-area" v-if="loginBool">
+            <common-collection 
+                v-for="col in recCol" 
+                :info="sampleData.data" 
+                :id="col"
+                :key="col" />
+          </div>
+          <div class="main-col-area" v-if="!loginBool">
+            <div class="loginSign">
+              {{ loginSignText }}
+            </div>
+          </div>
+        </div>
+
+        <navigator-bar ref="navBar" />
       </main>
+      
+      <footer>
+        <main-footer/>
+      </footer>
+
     </div>
   </div>
 </template>
 
 <script>
-import CommonButton from '../components/CommonButton.vue'
-import CommonCollection from '../components/CommonCollection.vue'
-import InputBox from '../components/InputBox.vue'
+import CommonButton from '@/components/CommonButton.vue';
+import CommonCollection from '@/components/CommonCollection.vue';
+import InputBox from '@/components/InputBox.vue';
+import MainFooter from '@/components/MainFooter.vue'
+import NavigatorBar from '../components/NavigatorBar.vue';
+import SampleData from '@/assets/sampleData.json';
 
 
 export default {
-  components: { InputBox, CommonButton, CommonCollection },
+  components: { InputBox, CommonButton, CommonCollection, MainFooter, NavigatorBar },
   name: "MainWithLogin",
   data() {
     return {
-      colInfo: []
+      loginBool: false,
+      sampleData: SampleData,
+      loginSignText: 'If You Want To See More, Just Sign In!',
+      hotCol: [1, 2, 3, 4, 5],
+      recCol: [6, 7, 8, 9, 10]
     }
   },
   methods: {
-
+    openNavBar() {
+      console.log('a');
+      this.$refs.navBar.openNavBar()
+    },
+    sample() {
+      this.loginBool == true ? this.loginBool = false : this.loginBool =true;
+    }
   },
-  mounted() {
-      for(let i = 0; i < 5; i++) {
-        console.log('a'); 
-      }
+  created() {
+    for(var i = 0; i < 20; i++) {
+      var random = Math.floor(Math.random()*10);
+      this.sampleData.data[i] = {};
+      this.sampleData.data[i].id = i;
+      this.sampleData.data[i].author = 'Author....' + i;
+      this.sampleData.data[i].title = 'Title....' + i;
+      this.sampleData.data[i].folder = 'FolerNo...' + i;
+      this.sampleData.data[i].folder = 'FolerNo...' + i;
+      this.sampleData.data[i].src = this.sampleData.imgUrl[random];
+      this.sampleData.data[i].regDate = '2022-03-01';
+      this.sampleData.data[i].modDate = '2022-03-02';
+    }
   }
 }
 </script>
@@ -76,13 +133,20 @@ header {
   display: flex;
   justify-content: flex-end;
 }
+.header-area {
+  width: 30%;
+}
 .main-logo-text {
   width: 113px;
   height: 39px;
   margin-top: 60px;
-  position: absolute;
+  /* position: absolute; */
   left: 0;
   top: 0;
+}
+.input-area {
+  width: 40%;
+  text-align: center;
 }
 .main-input {
   margin-top: 67px;
@@ -105,7 +169,7 @@ header {
 .main-with-login-main {
   max-width: 1200px;
   height: 700px;
-  background: blue;
+  /* background: blue; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -117,8 +181,8 @@ header {
   object-fit: cover;
 }
 .pick-your-snut *{
-  margin-top: 15px;
-  font-family: 'Alegreya Sans', 'sans-serif';
+  margin-top: 30px;
+  font-family: 'AlegreyaSans', 'sans-serif';
   font-size: 40px;
   letter-spacing: 2.5px;
   font-weight: 800;
@@ -133,20 +197,33 @@ header {
   color: #FBE017;
 }
 
-/* 인기컬렉션 구간 */
-.hot-col {
+/* 컬렉션 구간 */
+.main-col {
   width: calc(100%-200px);
   max-width: 1200px;
   height: 420px;
-  background: green;
+  /* background: green; */
   padding: 0 100px;
 }
-.hot-col-title {
-  margin-bottom: 120px;
+.main-col-title {
+  margin-bottom: 100px;
   font-size: 30px;
   font-weight: bold;
 }
-.hot-col-area {
+.main-col-area {
   width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.loginSign {
+  width: 980px;
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #AED8EA;
+  border-radius: 12px;
+  font-size: 30px;
+  font-weight: 800;
 }
 </style>
