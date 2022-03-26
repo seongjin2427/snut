@@ -82,7 +82,7 @@ export default {
     previous() {
       if(this.imgSlideData.curPos > 0) {
       this.$refs.next.removeAttribute("disabled");
-      this.imgSlideData.position -= this.imgSlideData.IMAGE_WIDTH;
+      this.imgSlideData.position += this.imgSlideData.IMAGE_WIDTH;
       this.$refs.imgContainer.style.transform = `translateX(${this.imgSlideData.position}px`;
       this.imgSlideData.curPos -= 1;
       }
@@ -93,7 +93,7 @@ export default {
     next() {
       if(this.imgSlideData.curPos < this.sampleImg.length - 1 ) {
       this.$refs.previous.removeAttribute("disabled");
-      this.imgSlideData.position += this.imgSlideData.IMAGE_WIDTH;
+      this.imgSlideData.position -= this.imgSlideData.IMAGE_WIDTH;
       this.$refs.imgContainer.style.transform = `translateX(${this.imgSlideData.position}px`;
       this.imgSlideData.curPos += 1;
       }
@@ -183,7 +183,7 @@ export default {
   width: 400px;
   height: 400px;
   display: flex;
-  flex-direction: row-reverse;
+  /* flex-direction: row-reverse; */
   position: relative;
   transition: all 0.5s;
   z-index: 1;
