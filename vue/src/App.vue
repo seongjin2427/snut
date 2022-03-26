@@ -9,42 +9,82 @@ export default {
 </script>
 
 <style>
-/* @import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@300;400;500;700;800&display=swap'); */
 
-<<<<<<< HEAD
-* {
-  margin: 0;
-  padding: 0;
+/* Allegreya Sans */
+@font-face {
+  font-family: 'AlegreyaSans';
+  src: url('@/assets/font/AlegreyaSans-Light.ttf') format('opentype'),
+  url('@/assets/font/AlegreyaSans-Light.ttf') format('truetype');;
+  font-weight: 300;
+  unicode-range: U+0041-005A, U+0061-007A;
 }
 
-html, body {
-  background-color: rgb(232, 236, 230);
-  width: 100%;
-  height: 100%;
-=======
 @font-face {
   font-family: 'AlegreyaSans';
   src: url('@/assets/font/AlegreyaSans-Regular.ttf') format('opentype'),
   url('@/assets/font/AlegreyaSans-Regular.ttf') format('truetype');;
+  font-weight: 400;
   unicode-range: U+0041-005A, U+0061-007A;
->>>>>>> 606a00f2824b4cd1c232c0a7c090db49b15fb899
+}
+
+@font-face {
+  font-family: 'AlegreyaSans';
+  src: url('@/assets/font/AlegreyaSans-Medium.ttf') format('opentype'),
+  url('@/assets/font/AlegreyaSans-Medium.ttf') format('truetype');;
+  font-weight: 500;
+  unicode-range: U+0041-005A, U+0061-007A;
+}
+
+@font-face {
+  font-family: 'AlegreyaSans';
+  src: url('@/assets/font/AlegreyaSans-Bold.ttf') format('opentype'),
+  url('@/assets/font/AlegreyaSans-Bold.ttf') format('truetype');;
+  font-weight: 700;
+  unicode-range: U+0041-005A, U+0061-007A;
+}
+
+@font-face {
+  font-family: 'AlegreyaSans';
+  src: url('@/assets/font/AlegreyaSans-ExtraBold.ttf') format('opentype'),
+  url('@/assets/font/AlegreyaSans-ExtraBold.ttf') format('truetype');;
+  font-weight: 800;
+  unicode-range: U+0041-005A, U+0061-007A;
+}
+
+/* Noto Sans KR 구간 */
+@font-face {
+  font-family: 'NotoSansKR';
+  src: url('@/assets/font/NotoSansKR-Regular.otf') format('opentype'),
+  url('@/assets/font/NotoSansKR-Regular.otf') format('truetype');
+  font-weight: 400;
+  unicode-range: U+AC00-D7A3;
 }
 
 @font-face {
   font-family: 'NotoSansKR';
-  src: url('@/assets/font/NotoSansKR-Regular.otf') format('opentype'),
-  url('@/assets/font/NotoSansKR-Regular.otf') format('truetype');;
+  src: url('@/assets/font/NotoSansKR-Medium.otf') format('opentype'),
+  url('@/assets/font/NotoSansKR-Medium.otf') format('truetype');
+  font-weight: 500;
   unicode-range: U+AC00-D7A3;
 }
 
+@font-face {
+  font-family: 'NotoSansKR';
+  src: url('@/assets/font/NotoSansKR-Bold.otf') format('opentype'),
+  url('@/assets/font/NotoSansKR-Bold.otf') format('truetype');
+  font-weight: 700;
+  unicode-range: U+AC00-D7A3;
+}
+
+
+/* CSS 구간 */
 * {
   margin: 0;
   padding: 0;
-  font-family: 'AlegreyaSans', 'NotoSansKR', sans-serif;
+  font-family: 'AlegreyaSans', 'NotoSansKR', 'Apple SD Gothic Neo', sans-serif;
 }
 
 html, body {
-  max-width: 1920px;
   width: 100vw;
   height: 100vh;
 }

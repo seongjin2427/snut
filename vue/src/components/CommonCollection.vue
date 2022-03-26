@@ -1,56 +1,49 @@
 <template>
-  <div class="common-collection" @mouseover="inCollection()" @mouseleave="outCollection()">
-    <img :class="colSelect" :src="info.imgUrl" alt="col_image" />
+  <div class="collection" @mouseover="inCuration()" @mouseleave="outCuration()">
+    <img :class="cuSelect" :src="info[id].src" alt="sample_img">
     <div class="text1" v-if="testBoolean">
-        <p>{{ info.title }}</p>
-        <p>{{ info.modDate }}</p>
+      <p>{{ info[id].title }}</p>
+      <p>{{ info[id].modDate }}</p>
     </div>
   </div>
 </template>
 
 <script>
-export default{
-  name: 'CommonCollection',
-  props: ['info'],
+export default {
+  name: "CommonCollection",
+  props: ['info', 'id'],
   data() {
     return {
-      colSelect: 'col-img' + this.info.id,
-      colModal: {
-        id: 'col-modal' + this.info.id
-      },
+      cuSelect: 'cu-img' + this.id,
       testBoolean: false
     }
   },
   methods: {
-    inCollection() {
+    inCuration() {
       this.testBoolean = true;
-      document.querySelector('.'+this.colSelect).classList.add('lowerBrightness');
+      document.querySelector('.'+this.cuSelect).classList.add('lowerBrightness');
     },
-    outCollection() {
+    outCuration() {
       this.testBoolean = false;
-      document.querySelector('.'+this.colSelect).classList.remove('lowerBrightness');
+      document.querySelector('.'+this.cuSelect).classList.remove('lowerBrightness');
     }
   }
-};
+}
 </script>
 
 <style scoped>
-.common-collection {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 250px;
-  height: 250px;
-  position: relative
+.collection {
+  position: relative;
 }
-.common-collection img{
-  width: 250px;
-  height: 250px;
-  transition: all .3s;
+img {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  /* margin-right: 0px; */
 }
 .text1 {
-  width: 250px;
-  height: 250px;
+  width: 180px;
+  height: 180px;
   position: absolute;
   display: flex;
   flex-direction: column;

@@ -27,7 +27,6 @@ export default {
   border-radius: 20px;
   font-weight: bold;
   font-size: 14px;
-  /* letter-spacing: -1px; */
   cursor: pointer;
 }
 </style>

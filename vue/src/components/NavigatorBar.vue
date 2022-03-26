@@ -1,24 +1,21 @@
 <template>
   <div class="navigator closeNavBar">
     <div class="hamburgerBtn-area">
-      <hamburger-btn @click="closeNavBar" />
+      <img class="hamburgerBtn" src="@/assets/btn_hamburger.png" alt="nav_btn" @click="closeNavBar">
     </div>
     <ul>
-      <li><router-link to="/mcol/main">My collection</router-link></li>
+      <li>My collection</li>
+      <!-- <li><router-link to="/mcol/main">My collection</router-link></li> -->
       <li>Community</li>
       <li>My Page</li>
-      <li> Feedback</li>
+      <li>Feedback</li>
     </ul>
   </div>
 </template>
 
 <script>
-import HamburgerBtn from '@/components/HamburgerButton.vue'
 export default {
   name: 'NavigatorBar',
-  components: {
-    HamburgerBtn
-  },
   methods: {
     openNavBar() {
       var a = document.querySelector('.navigator');
@@ -45,6 +42,7 @@ export default {
   transition: all .2s;
   right: -400px;
   z-index: 9999;
+  border-left: 1px black solid;
 }
 .openNavBar {
   right: 0px;
@@ -56,6 +54,7 @@ export default {
   position: absolute;
   top: 66px;
   right: 124px;
+  cursor: pointer;
 }
 ul {
   margin-top: 300px;
