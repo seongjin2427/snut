@@ -1,13 +1,19 @@
 <template>
   <div class="footer">
-    <div class="footerMenu" v-for="(title, idx) in footerTitle" :key="idx">
-      <p><a :href="title.src">{{ title.name }}</a></p>
+
+    <div class="footer-line"></div>
+
+    <div class="footer-body">
+        <div class="footerMenu" v-for="(title, idx) in footerTitle" :key="idx">
+          <p><a :href="title.src">{{ title.name }}</a></p>
+        </div>
+        <div class="footer-logo">
+          <img src="@/assets/small_logo.png" alt="footer_img">
+          {{ writeCmt }}
+        </div>
+      </div>
+
     </div>
-    <div class="footer-logo">
-      <img src="@/assets/small_logo.png" alt="footer_img">
-      {{ writeCmt }}
-    </div>
-  </div>
 </template>
 
 <script>
@@ -38,7 +44,12 @@ export default {
 <style scoped>
 .footer {
   /* background: lightgreen; */
-  height: 340px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 150px;
+}
+.footer-body {
+  height: 300px;
   position: relative;
   display: flex;
   justify-content: center;
@@ -46,16 +57,23 @@ export default {
   justify-content: center;
   align-items: center;
 }
+.footer-line {
+  width: 100vw;
+  position: absolute;
+  left: 0;
+  height: 1px;
+  background: black;
+}
 .footerMenu {
   width: 300px;
-  height: 100%;
+  height: calc(100%-30px);
   /* background: lightgray; */
   display: flex;
   justify-content: center;
   align-items: center;
   color: #292F6D;
   font-size: 25px;
-  margin-bottom: 30px;
+  padding-bottom: 30px;
 }
 .footerMenu:nth-child(2) {
   margin-right: 200px;
@@ -66,9 +84,10 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items:flex-start;
 }
 .footer-logo img {
+  margin-left: 20px;
   margin-bottom: 30px;
 }
 a {

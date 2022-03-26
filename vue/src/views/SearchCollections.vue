@@ -1,154 +1,162 @@
 <template>
-  <div class="collections">
-    <div class="main-header">
-      <button @click="testClick()">테스트ㅎㅎ</button>
-      <img class="main-logo-text" src="@/assets/logo_text.png" alt="logo_text">
-      <common-input-box placeholderContent="SEARCH" />
-      <common-button class="sort-btn" buttonName="정렬"/>
-      <hamburger-button @click="occurNavBarEvent"/>
-    </div>
-    <div class="col-container">
-      <div class="col-area">
-        <common-curation :info="info" v-for="(info, idx) in testContent" :key="idx" @click="sendInfo(info.id)" />
-      </div>
-    </div>
+  <div class="main-with-login">
+    <div class="main-with-login-body">
+      <header>
+        <div class="logo-area header-area">
+          <img class="main-logo-text" src="@/assets/logo_text.png" alt="text_logo">
+        </div>
+        <div class="input-area">
+          <input-box class="main-input" placeholder="SEARCH" width="100" height="38" />
+        </div>
+        <div class="button-area">
+          <common-button buttonName="정렬" width="80" height="35" marginTop="5" marginRight="20" />
+          <img src="@/assets/btn_hamburger.png" alt="nav_btn" @click="openNavBar">
+        </div>
+      </header>
+      <main>
 
-    <!-- 푸터 구간 -->
-    <main-footer />
-    <!-- 네브 바 구역 -->
-    <navigator-bar ref="navbar" />
-    <!-- 모달창 구역 -->
-    <common-modal 
-        @returnModal="returnShow" 
-        :curShow="curInfo" 
-        :curationInfo="testCuration" 
-        :involedPic="testCuration.involvePicBoolean" />
+        <div class="main-col">
+          <div class="main-col-area">
+            <common-collection 
+                class="main-searched-col"
+                @click="openModal(sampleData.data[col])"
+                v-for="(col, idx) in searchedCu" 
+                :info="sampleData.data" 
+                :id="col"
+                :key="idx" />
+          </div>
+        </div>
 
+        <navigator-bar ref="navBar" />
+      </main>
+      
+      <footer>
+        <main-footer/>
+        <common-modal ref="modal" />
+      </footer>
+
+    </div>
   </div>
 </template>
 
 <script>
-import CommonInputBox from '@/components/CommonInputBox.vue';
-import HamburgerButton from '@/components/HamburgerButton.vue';
-import NavigatorBar from '@/components/NavigatorBar.vue';
-import CommonCuration from '@/components/CommonCuration.vue';
-import MainFooter from '@/components/MainFooter.vue';
 import CommonButton from '@/components/CommonButton.vue';
-import CommonModal from '@/components/CommonModal.vue';
-
-import sampleData from '@/assets/sampleData.json';
+import CommonCollection from '@/components/CommonCollection.vue';
+import InputBox from '@/components/InputBox.vue';
+import MainFooter from '@/components/MainFooter.vue'
+import NavigatorBar from '../components/NavigatorBar.vue';
+import SampleData from '@/assets/sampleData.json';
+import CommonModal from '../components/CommonModal.vue';
 
 
 export default {
-  name: 'SearchCurations',
-  components: {
-    CommonInputBox, 
-    HamburgerButton, 
-    NavigatorBar, 
-    CommonCuration, 
-    MainFooter,
-    CommonButton,
-    CommonModal
-  },
+  components: { InputBox, CommonButton, CommonCollection, MainFooter, NavigatorBar, CommonModal },
+  name: "MainWithLogin",
   data() {
     return {
-      number3: [],
-      curInfo: false,
-      testContent: {},
-      testCuration: {}
+      loginBool: false,
+      sampleData: SampleData,
+      loginSignText: 'If You Want To See More, Just Sign In!',
+      searchedCu: []
     }
   },
   methods: {
-    occurNavBarEvent() {
-      this.$refs.navbar.openNavBar();
+    openNavBar() {
+      console.log('a');
+      this.$refs.navBar.openNavBar()
     },
-    sendInfo(id) {
-      this.curInfo = true;
-      this.testCuration = this.testContent[id];
-      this.$refs.navbar.closeNavBar();
-
-    },
-    returnShow() {
-      this.curInfo = false;
-    },
-    testClick() {
-      console.log(this.testContent);
+    openModal(cuData) {
+      this.$refs.modal.openModal(cuData);
     }
   },
   created() {
-    for(let i = 0; i < 50; i++) {
-      sampleData.data[i] = {};
-      sampleData.data[i].id = i;
-      sampleData.data[i].email = "user" + i + "@naver.com"; 
-      sampleData.data[i].nickName = "nickName" + i; 
-      sampleData.data[i].colNum = "colId" + i;
-      sampleData.data[i].title = "Title..." + i;
-      sampleData.data[i].content = "Content..." + i;
-
-      sampleData.data[i].open = true;
-
-      if(i < 25) {
-        sampleData.data[i].involvePicBoolean = true;
-      } else {
-        sampleData.data[i].involvePicBoolean = false;
-        }
-
-
-      sampleData.data[i].redDate = "2022-01-01";
-      sampleData.data[i].modDate = "2022-01-02";
-      
-      sampleData.data[i].hashtag = [];
-      sampleData.data[i].imgUrl = [];
-      for(let j = 0; j < 3; j++) {
-        let random = Math.floor(Math.random() * 9) + 1;
-        sampleData.data[i].hashtag[j] = `Hash${i}${j}`;
-        sampleData.data[i].imgUrl[j] = sampleData.imgUrl[random];
-      }
+    const INPUT_NUMBER = 21;
+    for(var j = 0; j < INPUT_NUMBER; j++) {
+      this.searchedCu[j] = j;
     }
-    this.testContent = sampleData.data;
-    // console.log(sampleData.data[0].imgUrl)
+
+    for(var i = 0; i < INPUT_NUMBER; i++) {
+      var random = Math.floor(Math.random()*10);
+      this.sampleData.data[i] = {};
+      this.sampleData.data[i].id = i;
+      this.sampleData.data[i].author = 'Author....' + i;
+      this.sampleData.data[i].nickName = 'NickName....' + i;
+      this.sampleData.data[i].title = 'Title....' + i;
+      this.sampleData.data[i].content = 'Content...' + i;
+      this.sampleData.data[i].folder = 'FolerNo...' + i;
+      this.sampleData.data[i].src = this.sampleData.imgUrl[random];
+      this.sampleData.data[i].regDate = '2022-03-01';
+      this.sampleData.data[i].modDate = '2022-03-02';
+    }
   }
 }
 </script>
 
 <style scoped>
+.main-with-login-body {
+  max-width: 1200px;
+  min-width: 1200px;
+  width: 100vw;
+  height: 100vh;
+  /* background: lightcoral; */
+  margin: 0 auto;
+}
+
+/* header 구간 */
+header {
+  width: 100%;
+  height: 200px;
+  /* background: lightblue; */
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+}
+.header-area {
+  width: 30%;
+}
 .main-logo-text {
-    height: 59px;
-    margin-left: 117px;
-    margin-top: 49px;
-    width: 169px;
+  width: 113px;
+  height: 39px;
+  margin-top: 60px;
+  /* position: absolute; */
+  left: 0;
+  top: 0;
 }
-input:focus {
-  outline: none;
+.input-area {
+  width: 40%;
+  text-align: center;
 }
-.sort-btn {
-  position: absolute;
-  left: 1318px;
-  top: 70px;
+.main-input {
+  margin-top: 67px;
+  margin-right: 5%;
 }
-.hamburgerBtn {
-  position: absolute;
-  left: 1768px;
-  top: 66px;
-  height: 50px;
-  width: 40px;
+.button-area {
+  width: 30%;
+  /* background: red; */
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  margin-top: 63px;
+}
+.button-area img {
+  margin-right: 20px;
   cursor: pointer;
 }
-.col-container {
-  margin-top: 180px;
-  margin-left: 160px;
-  overflow: hidden;
-  position: relative;
+
+/* 컬렉션 구간 */
+.main-col {
+  width: calc(100%-200px);
+  max-width: 1200px;
+  /* background: green; */
+  padding: 0 100px;
 }
-.col-area {
-  width: 1700px;
+.main-col-area {
+  width: 100%;
   display: flex;
+  justify-content: space-between;
   flex-wrap: wrap;
-  flex-basis: 6;
-  margin-top: 20px;
 }
-.common-collection {
-  margin-right: 20px;
-  margin-bottom: 22px;
+.main-searched-col {
+  margin-top: 20px;
 }
 </style>

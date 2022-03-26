@@ -6,7 +6,7 @@
           <img class="main-logo-text" src="@/assets/logo_text.png" alt="text_logo">
         </div>
         <div class="input-area">
-          <input-box class="main-input" placeholder="SEARCH" width="100" height="38" />
+          <input-box class="main-input" @keyup.enter="doSearch" placeholder="SEARCH" width="100" height="38"/>
         </div>
         <div class="button-area">
           <input type="button" value="test" @click="sample">
@@ -90,11 +90,13 @@ export default {
   },
   methods: {
     openNavBar() {
-      console.log('a');
       this.$refs.navBar.openNavBar()
     },
     sample() {
       this.loginBool == true ? this.loginBool = false : this.loginBool =true;
+    },
+    doSearch() {
+      this.$router.push('/col');
     }
   },
   created() {
@@ -103,8 +105,9 @@ export default {
       this.sampleData.data[i] = {};
       this.sampleData.data[i].id = i;
       this.sampleData.data[i].author = 'Author....' + i;
+      this.sampleData.data[i].nickName = 'NickName....' + i;
       this.sampleData.data[i].title = 'Title....' + i;
-      this.sampleData.data[i].folder = 'FolerNo...' + i;
+      this.sampleData.data[i].content = 'Content...' + i;
       this.sampleData.data[i].folder = 'FolerNo...' + i;
       this.sampleData.data[i].src = this.sampleData.imgUrl[random];
       this.sampleData.data[i].regDate = '2022-03-01';
