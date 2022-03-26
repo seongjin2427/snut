@@ -2,9 +2,11 @@
   <div class="about">
   <header>
     <div class="aboutp">
+      <div class="snutlogo-text">
       <router-link to="/">
         <img class="homebu" src="@/assets/logo_text.png" alt="logo_text">
       </router-link>
+      </div>
     <div class="text-about">ABOUT</div>
     </div>
   </header>
@@ -64,12 +66,19 @@ header{
   justify-content: center;
 
 }
+.snutlogo-text{
+
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
 .homebu{
   width: 113px;
   height: 39px;
   position: absolute;
   left: 5px;
 }
+
 .text-about{
   display: flex;
   position: relative;
@@ -140,4 +149,5 @@ justify-content: center;
   padding-top: 45px;
   padding-bottom: 50px;
 }
+
 </style>
