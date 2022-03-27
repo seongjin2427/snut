@@ -27,9 +27,14 @@
         </div>
 
         <div class="main-col">
-          <p class="main-col-title">
-            인기컬렉션
-          </p>
+          <div class="main-col-text">
+            <p>
+              인기컬렉션
+            </p>
+            <p>
+              더보기
+            </p>
+          </div>
           <div class="main-col-area">
             <common-collection 
                 v-for="(col, idx) in hotCol" 
@@ -130,7 +135,7 @@ export default {
 /* header 구간 */
 header {
   width: 100%;
-  height: 200px;
+  height: 150px;
   /* background: lightblue; */
   position: relative;
   display: flex;
@@ -208,15 +213,21 @@ header {
   /* background: green; */
   padding: 0 100px;
 }
-.main-col-title {
+.main-col-text {
   margin-bottom: 100px;
   font-size: 30px;
   font-weight: bold;
+  display: flex;
+  justify-content: space-between;
 }
 .main-col-area {
   width: 100%;
   display: flex;
   justify-content: space-between;
+}
+.main-col-text p:nth-child(2) {
+  color: #666666;
+  cursor: pointer;
 }
 .loginSign {
   width: 980px;

@@ -69,8 +69,6 @@ header{
 .snutlogo-text{
   width: 113px;
   height: 39px;
-}
-.homebu{
   position: absolute;
   left: 5px;
 }

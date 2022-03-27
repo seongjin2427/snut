@@ -90,9 +90,11 @@ export default {
                                         + i;
       this.sampleData.data[i].folder = 'FolerNo...' + i;
       this.sampleData.data[i].src = this.sampleData.imgUrl[random];
+      this.sampleData.data[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
       this.sampleData.data[i].regDate = '2022-03-01';
       this.sampleData.data[i].modDate = '2022-03-02';
     }
+    console.log(this.sampleData.data[0].hashTag)
   }
 }
 </script>
@@ -139,7 +141,7 @@ header {
   width: 30%;
   /* background: red; */
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: flex-start;
   margin-top: 63px;
 }

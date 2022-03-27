@@ -85,7 +85,7 @@ export default {
 html, body {
   width: 100vw;
   height: 100vh;
-  background-color: rgb(232, 236, 230);
+  background-color: #E8ECE6;
 }
 
 </style>

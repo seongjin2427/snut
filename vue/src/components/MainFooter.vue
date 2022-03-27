@@ -45,7 +45,7 @@ export default {
 .footer {
   /* background: lightgreen; */
   display: flex;
-  width: 100vw;
+  width: 100%;
   flex-direction: column;
   margin-top: 150px;
 }
@@ -53,7 +53,6 @@ export default {
   height: 300px;
   position: relative;
   display: flex;
-  justify-content: center;
   padding: 0 100px;
   justify-content: center;
   align-items: center;
