@@ -163,5 +163,6 @@ header {
 }
 .main-searched-col {
   margin-top: 20px;
+  font-family: 'Noto-sans KR','Apple SD Gothic Neo', sans-serif ;
 }
 </style>

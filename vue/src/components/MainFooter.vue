@@ -13,7 +13,7 @@
         </div>
       </div>
 
-    </div>
+    </div>                      
 </template>
 
 <script>
@@ -45,6 +45,7 @@ export default {
 .footer {
   /* background: lightgreen; */
   display: flex;
+  width: 100vw;
   flex-direction: column;
   margin-top: 150px;
 }
