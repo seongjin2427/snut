@@ -9,7 +9,6 @@ export default {
 </script>
 
 <style>
-
 /* Allegreya Sans */
 @font-face {
   font-family: 'AlegreyaSans';
