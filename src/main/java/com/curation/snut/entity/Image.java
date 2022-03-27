@@ -1,7 +1,9 @@
 package com.curation.snut.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+//image보다 좋아요나 컬렉션 우선으로.
 @Entity
 @Builder
 @AllArgsConstructor
@@ -20,6 +23,7 @@ public class Image{
     private Long ino;
 
     private String image;
-    @OnetoMany(fetch = FetchType.LAZY)
-    private Curation cno;
+
+    // @ManyToOne(fetch = FetchType.LAZY)
+    // private Curation curation;
 }

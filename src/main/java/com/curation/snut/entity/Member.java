@@ -1,8 +1,6 @@
 package com.curation.snut.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import lombok.AllArgsConstructor;
@@ -17,9 +15,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @ToString
-public class Member {
+public class Member extends BaseEntity{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String email;
     
     private String name;

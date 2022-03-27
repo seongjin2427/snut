@@ -1,9 +1,11 @@
 package com.curation.snut.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,16 +22,13 @@ import lombok.ToString;
 public class Curation extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cno;
+    private Long curationNo;
 
-    private String CurationTitle;
-    private String CurationText;
+    private String curationTitle;
+    private String curationText;
     private boolean open;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member member;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Collection collection;
+    private Member writer;
 
 }
