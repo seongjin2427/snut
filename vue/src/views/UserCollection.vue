@@ -1,16 +1,21 @@
 <template>
-  <div class="main-with-login">
-    <div class="main-with-login-body">
+  <div class="my-note">
+    <div class="my-note-body">
       <header>
         <div class="logo-area header-area">
-          <img class="main-logo-text" src="@/assets/logo_text.png" alt="text_logo">
+          <!-- <img class="main-logo-text" src="@/assets/logo_text.png" alt="text_logo"> -->
         </div>
-        <div class="input-area">
-          <input-box class="main-input" placeholder="SEARCH" width="100" height="38" />
+        <div class="my-note-title">
+          <common-button 
+              width="300" 
+              height="40"
+              :buttonName="$route.params.nickName"
+              background="white" 
+              border="none"
+              fontSize="20" />
         </div>
         <div class="button-area">
-          <common-button buttonName="정렬" width="80" height="35" marginTop="5" marginRight="20" />
-          <img src="@/assets/btn_hamburger.png" alt="nav_btn" @click="openNavBar">
+          <!-- <img src="@/assets/btn_hamburger.png" alt="nav_btn" @click="openNavBar"> -->
         </div>
       </header>
       <main>
@@ -20,7 +25,7 @@
             <common-collection 
                 class="main-searched-col"
                 @click="openModal(sampleData.dataSet[col])"
-                v-for="(col, idx) in searchedCu" 
+                v-for="(col, idx) in userCollection" 
                 :info="sampleData.dataSet" 
                 :id="col"
                 :key="idx" />
@@ -42,7 +47,6 @@
 <script>
 import CommonButton from '@/components/CommonButton.vue';
 import CommonCollection from '@/components/CommonCollection.vue';
-import InputBox from '@/components/InputBox.vue';
 import MainFooter from '@/components/MainFooter.vue'
 import NavigatorBar from '../components/NavigatorBar.vue';
 import SampleData from '@/assets/sampleData.json';
@@ -50,19 +54,18 @@ import CommonModal from '../components/CommonModal.vue';
 
 
 export default {
-  components: { InputBox, CommonButton, CommonCollection, MainFooter, NavigatorBar, CommonModal },
-  name: "SearchCollections",
+  components: { CommonButton, CommonCollection, MainFooter, NavigatorBar, CommonModal },
+  name: "UserCollection",
   data() {
     return {
       loginBool: false,
-      sampleData: SampleData,
-      loginSignText: 'If You Want To See More, Just Sign In!',
-      searchedCu: []
+      sampleData: SampleData, 
+      userCollection: []
     }
   },
   methods: {
     openNavBar() {
-      console.log('a');
+      // console.log('a');
       this.$refs.navBar.openNavBar()
     },
     openModal(cuData) {
@@ -70,9 +73,9 @@ export default {
     }
   },
   created() {
-    const INPUT_NUMBER = 21;
+    const INPUT_NUMBER = 19;
     for(var j = 0; j < INPUT_NUMBER; j++) {
-      this.searchedCu[j] = j;
+      this.userCollection[j] = j;
     }
 
     for(var i = 0; i < INPUT_NUMBER; i++) {
@@ -94,13 +97,17 @@ export default {
       this.sampleData.dataSet[i].regDate = '2022-03-01';
       this.sampleData.dataSet[i].modDate = '2022-03-02';
     }
-    console.log(this.sampleData.dataSet[0].hashTag)
+    // console.log(this.sampleData.data[0].hashTag)
+    console.log(this.$route.params);
+    console.log("name : " + this.$route.params.nickName)
+    console.log("id : " + this.$route.params.id)
+
   }
 }
 </script>
 
 <style scoped>
-.main-with-login-body {
+.my-note-body {
   max-width: 1200px;
   min-width: 1200px;
   width: 100vw;
@@ -129,9 +136,11 @@ header {
   left: 0;
   top: 0;
 }
-.input-area {
+.my-note-title {
   width: 40%;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  margin-top: 60px;
 }
 .main-input {
   margin-top: 67px;
@@ -141,7 +150,7 @@ header {
   width: 30%;
   /* background: red; */
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: flex-start;
   margin-top: 63px;
 }
@@ -152,19 +161,19 @@ header {
 
 /* 컬렉션 구간 */
 .main-col {
-  width: calc(100%-200px);
+  width: 100%;
   max-width: 1200px;
   /* background: green; */
-  padding: 0 100px;
 }
 .main-col-area {
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   flex-wrap: wrap;
 }
 .main-searched-col {
-  margin-top: 20px;
   font-family: 'Noto-sans KR','Apple SD Gothic Neo', sans-serif ;
+  margin-top: 20px;
+  margin-right: 20px;
 }
 </style>

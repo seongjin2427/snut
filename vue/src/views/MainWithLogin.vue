@@ -37,8 +37,9 @@
           </div>
           <div class="main-col-area">
             <common-collection 
+                @click="moveToPage(sampleData.dataSet[col])"
                 v-for="(col, idx) in hotCol" 
-                :info="sampleData.data" 
+                :info="sampleData.dataSet" 
                 :id="col"
                 :key="idx" />
           </div>
@@ -49,8 +50,9 @@
           </p>
           <div class="main-col-area" v-if="loginBool">
             <common-collection 
+                @click="moveToPage(sampleData.dataSet[col])"
                 v-for="col in recCol" 
-                :info="sampleData.data" 
+                :info="sampleData.dataSet" 
                 :id="col"
                 :key="col" />
           </div>
@@ -65,7 +67,7 @@
       </main>
       
       <footer>
-        <main-footer/>
+        <main-footer />
       </footer>
 
     </div>
@@ -102,21 +104,31 @@ export default {
     },
     doSearch() {
       this.$router.push('/col');
+    },
+    moveToPage(dataSet) {
+      console.log(dataSet);
+      this.$router.push({
+        path: `/ucol/${dataSet.id}/${dataSet.nickName}`,
+        params: {
+          id: dataSet.id,
+          nickName: dataSet.nickName
+        }
+      });
     }
   },
   created() {
     for(var i = 0; i < 20; i++) {
       var random = Math.floor(Math.random()*10);
-      this.sampleData.data[i] = {};
-      this.sampleData.data[i].id = i;
-      this.sampleData.data[i].author = 'Author....' + i;
-      this.sampleData.data[i].nickName = 'NickName....' + i;
-      this.sampleData.data[i].title = 'Title....' + i;
-      this.sampleData.data[i].content = 'Content...' + i;
-      this.sampleData.data[i].folder = 'FolerNo...' + i;
-      this.sampleData.data[i].src = this.sampleData.imgUrl[random];
-      this.sampleData.data[i].regDate = '2022-03-01';
-      this.sampleData.data[i].modDate = '2022-03-02';
+      this.sampleData.dataSet[i] = {};
+      this.sampleData.dataSet[i].id = i;
+      this.sampleData.dataSet[i].author = 'Author....' + i;
+      this.sampleData.dataSet[i].nickName = 'NickName....' + i;
+      this.sampleData.dataSet[i].title = 'Title....' + i;
+      this.sampleData.dataSet[i].content = 'Content...' + i;
+      this.sampleData.dataSet[i].folder = 'FolerNo...' + i;
+      this.sampleData.dataSet[i].src = this.sampleData.imgUrl[random];
+      this.sampleData.dataSet[i].regDate = '2022-03-01';
+      this.sampleData.dataSet[i].modDate = '2022-03-02';
     }
   }
 }

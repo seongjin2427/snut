@@ -19,6 +19,7 @@
           <div class="mcol-button-area">
             <common-button
                 v-for="(btn, idx) in buttonData"
+                @click="moveToPage(btn.src)"
                 width="250"
                 height="50"
                 marginRight="40"
@@ -37,7 +38,7 @@
             <div class="main-col-area">
               <common-collection
                   v-for="(col, idx) in hotCol"
-                  :info="sampleData.data"
+                  :info="sampleData.dataSet"
                   :id="col"
                   :key="idx" />
             </div>
@@ -75,7 +76,7 @@ import SampleData from '@/assets/sampleData.json';
 
 export default {
   components: { CommonButton, CommonCollection, MainFooter, NavigatorBar },
-  name: "MainWithLogin",
+  name: "MyCollection",
   data() {
     return {
       loginBool: false,
@@ -84,11 +85,11 @@ export default {
       buttonData: [
         {
           name: '나만의 기록', 
-          src: '',
+          src: '/mcol/note',
         },
         {
           name: '내 컬렉션 보기', 
-          src: '',
+          src: '/mcol/folder',
         },
         {
           name: 'Collection 만들기', 
@@ -118,21 +119,25 @@ export default {
   methods: {
     openNavBar() {
       this.$refs.navBar.openNavBar()
+    },
+    moveToPage(src) {
+      console.log(src);
+      this.$router.push(src);
     }
   },
   created() {
     for(var i = 0; i < 20; i++) {
       var random = Math.floor(Math.random()*10);
-      this.sampleData.data[i] = {};
-      this.sampleData.data[i].id = i;
-      this.sampleData.data[i].author = 'Author....' + i;
-      this.sampleData.data[i].nickName = 'NickName....' + i;
-      this.sampleData.data[i].title = 'Title....' + i;
-      this.sampleData.data[i].content = 'Content...' + i;
-      this.sampleData.data[i].folder = 'FolerNo...' + i;
-      this.sampleData.data[i].src = this.sampleData.imgUrl[random];
-      this.sampleData.data[i].regDate = '2022-03-01';
-      this.sampleData.data[i].modDate = '2022-03-02';
+      this.sampleData.dataSet[i] = {};
+      this.sampleData.dataSet[i].id = i;
+      this.sampleData.dataSet[i].author = 'Author....' + i;
+      this.sampleData.dataSet[i].nickName = 'NickName....' + i;
+      this.sampleData.dataSet[i].title = 'Title....' + i;
+      this.sampleData.dataSet[i].content = 'Content...' + i;
+      this.sampleData.dataSet[i].folder = 'FolerNo...' + i;
+      this.sampleData.dataSet[i].src = this.sampleData.imgUrl[random];
+      this.sampleData.dataSet[i].regDate = '2022-03-01';
+      this.sampleData.dataSet[i].modDate = '2022-03-02';
     }
   }
 }

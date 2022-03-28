@@ -15,7 +15,17 @@
 <script>
 export default {
   name: "CommonButton",
-  props: ['buttonName', 'width', 'height', 'margin-top', 'margin-right', 'background', 'fontSize', 'borderRadius', 'border'],
+  props: [
+          'buttonName',
+          'width',
+          'height',
+          'margin-top',
+          'margin-right',
+          'background',
+          'fontSize',
+          'borderRadius',
+          'border'
+        ]
 }
 </script>
 

@@ -4,7 +4,7 @@
     height: height+'px', 
     marginTop: marginTop+'px' , 
     marginRight: marginRight+'px' }">
-    {{ tagName }}
+    {{ '#' + tagName }}
   </div>
 </template>
 
