@@ -4,15 +4,15 @@
     <div class="footer-line"></div>
 
     <div class="footer-body">
-        <div class="footerMenu" v-for="(title, idx) in footerTitle" :key="idx">
-          <p><a :href="title.src">{{ title.name }}</a></p>
-        </div>
-        <div class="footer-logo">
-          <img src="@/assets/small_logo.png" alt="footer_img">
-          {{ writeCmt }}
-        </div>
+      <div class="footerMenu" v-for="(title, idx) in footerTitle" :key="idx">
+        <p><a :href="title.src">{{ title.name }}</a></p>
       </div>
-
+      <div class="footer-logo">
+        <img src="@/assets/small_logo.png" alt="footer_img">
+        {{ writeCmt }}
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -53,6 +53,7 @@ export default {
   position: relative;
   display: flex;
   padding: 0 100px;
+  justify-content: center;
   align-items: center;
 }
 .footer-line {
@@ -64,7 +65,7 @@ export default {
 }
 .footerMenu {
   width: 300px;
-  height: calc(100% -30px);
+  height: calc(100%-30px);
   /* background: lightgray; */
   display: flex;
   justify-content: center;

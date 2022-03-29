@@ -2,11 +2,12 @@
   <div class="collection" @mouseover="inCuration()" @mouseleave="outCuration()" v-if="info.id">
     <img :class="cuSelect" :src="info.src" alt="sample_img">
     <div class="text1" v-if="testBoolean">
-      <p>{{ info.title }}</p>
+      <p>{{ '#'+info.hashTag[0] }}</p>
+      <p>{{ '#'+info.hashTag[1] }}</p>
+      <p>{{ '#'+info.hashTag[2] }}</p>
       <p>{{ info.modDate }}</p>
       <p>{{ info.cuCo }}</p>
     </div>
-    <div :class="dragClass"></div>
   </div>
 </template>
 
@@ -17,7 +18,6 @@ export default {
   data() {
     return {
       cuSelect: 'cu-img' + this.id,
-      dragClass: 'dragHover' + this.id,
       testBoolean: false
     }
   },
@@ -30,9 +30,6 @@ export default {
       this.testBoolean = false;
       document.querySelector('.'+this.cuSelect).classList.remove('lowerBrightness');
     }
-  },
-  created() {
-    console.log(this.info);
   }
 }
 </script>

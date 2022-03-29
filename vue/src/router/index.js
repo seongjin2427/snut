@@ -3,6 +3,7 @@ import MainWithLogin from "@/views/MainWithLogin.vue";
 import UserCollection from "@/views/UserCollection.vue";
 import SearchCollections from '@/views/SearchCollections.vue';
 import MyCollection from '@/views/MyCollection.vue';
+import MakeNote from '@/views/MakeNote.vue'
 import StoreCollections from '@/views/StoreCollections.vue';
 import StoreColCurations from '@/views/StoreColCurations.vue';
 import About from "@/views/About.vue";
@@ -31,6 +32,11 @@ const routes = [
     path: "/mcol/main",
     component: MyCollection,
     name: "MyCollection"
+  },
+  { 
+    path: '/mcol/note/makenote',
+    component: MakeNote,
+    name: "MakeNote"
   },
   { 
     path: '/mcol/note',

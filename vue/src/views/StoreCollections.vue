@@ -1,6 +1,6 @@
 <template>
-  <div class="my-note">
-    <div class="my-note-body">
+  <div class="store-collections">
+    <div class="store-collections-body">
 
       <header>
         <div class="header-area">
@@ -11,7 +11,7 @@
               :style="{background: btn.color}">
           </div>
         </div>
-        <div class="show-col-header-center">
+        <div class="store-col-header-center">
           <common-button 
               width="300" 
               height="40" 
@@ -75,7 +75,7 @@ import CommonModal from '../components/CommonModal.vue';
 
 export default {
   components: { CommonButton, CommonCollection, MainFooter, NavigatorBar, CommonModal },
-  name: "StoreCollection",
+  name: "StoreCollections",
   data() {
     return {
       loginBool: false,
@@ -191,7 +191,7 @@ export default {
 </script>
 
 <style scoped>
-.my-note-body {
+.store-collections-body {
   max-width: 1200px;
   min-width: 1200px;
   width: 100vw;
@@ -221,7 +221,7 @@ header {
   cursor: pointer;
   margin-right: 50px;
 }
-.show-col-header-center {
+.store-col-header-center {
   width: 40%;
   display: flex;
   justify-content: center;

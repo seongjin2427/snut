@@ -1,11 +1,11 @@
 <template>
-  <div class="my-note">
-    <div class="my-note-body">
+  <div class="user-collections">
+    <div class="user-collections-body">
       <header>
         <div class="logo-area header-area">
           <!-- <img class="main-logo-text" src="@/assets/logo_text.png" alt="text_logo"> -->
         </div>
-        <div class="my-note-title">
+        <div class="user-collections-title">
           <common-button 
               width="300" 
               height="40"
@@ -107,7 +107,7 @@ export default {
 </script>
 
 <style scoped>
-.my-note-body {
+.user-collections-body {
   max-width: 1200px;
   min-width: 1200px;
   width: 100vw;
@@ -136,7 +136,7 @@ header {
   left: 0;
   top: 0;
 }
-.my-note-title {
+.user-collections-title {
   width: 40%;
   display: flex;
   justify-content: center;

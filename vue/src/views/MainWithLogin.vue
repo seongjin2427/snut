@@ -89,7 +89,7 @@ export default {
   data() {
     return {
       loginBool: false,
-      sampleData: SampleData,
+      sampleData: {dataSet:[]},
       sampleData2: {dataSet:[]},
       loginSignText: 'If You Want To See More, Just Sign In!',
     }
@@ -123,7 +123,7 @@ export default {
         store.dataSet[i].title = 'Title....' + i;
         store.dataSet[i].content = 'Content...' + i;
         store.dataSet[i].folder = 'FolerNo...' + i;
-        store.dataSet[i].src = this.sampleData.imgUrl[random];
+        store.dataSet[i].src = SampleData.imgUrl[random];
         store.dataSet[i].regDate = '2022-03-01';
         store.dataSet[i].modDate = '2022-03-02';
         console.log("start", i)
@@ -134,7 +134,6 @@ export default {
   created() {
     this.createDummies(this.sampleData, 1);
     this.createDummies(this.sampleData2, 6);
-    console.log(this.sampleData2);
   }
 }
 </script>
@@ -148,7 +147,6 @@ export default {
   /* background: lightcoral; */
   margin: 0 auto;
 }
-
 /* header 구간 */
 header {
   width: 100%;
@@ -189,7 +187,6 @@ header {
   margin-right: 20px;
   cursor: pointer;
 }
-
 /* main 구간 */
 .main-with-login-main {
   max-width: 1200px;
@@ -221,7 +218,6 @@ header {
 .pick-your-snut span:nth-child(3) {
   color: #FBE017;
 }
-
 /* 컬렉션 구간 */
 .main-col {
   width: calc(100%-200px);
@@ -232,10 +228,11 @@ header {
 }
 .main-col-title {
   margin-bottom: 100px;
+  display: flex;
+  justify-content: space-between;
   font-size: 30px;
   font-weight: bold;
 }
-
 .main-col-area {
   width: 100%;
   display: flex;

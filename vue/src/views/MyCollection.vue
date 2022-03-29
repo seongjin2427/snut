@@ -80,8 +80,7 @@ export default {
   data() {
     return {
       loginBool: false,
-      sampleData: SampleData,
-      hotCol: [1, 2, 3, 4, 5, 6],
+      sampleData: {dataSet:[]},
       buttonData: [
         {
           name: '나만의 기록', 
@@ -123,22 +122,27 @@ export default {
     moveToPage(src) {
       console.log(src);
       this.$router.push(src);
+    },
+    createDummies(store, start) {
+      for(var i = 0; i < 5; i++) {
+        var random = Math.floor(Math.random()*10);
+        store.dataSet[i] = {};
+        store.dataSet[i].id = start;
+        store.dataSet[i].author = 'Author....' + i;
+        store.dataSet[i].nickName = 'NickName....' + i;
+        store.dataSet[i].title = 'Title....' + i;
+        store.dataSet[i].content = 'Content...' + i;
+        store.dataSet[i].folder = 'FolerNo...' + i;
+        store.dataSet[i].src = SampleData.imgUrl[random];
+        store.dataSet[i].regDate = '2022-03-01';
+        store.dataSet[i].modDate = '2022-03-02';
+        console.log("start", i)
+        start++;
+      }
     }
   },
   created() {
-    for(var i = 0; i < 6; i++) {
-      var random = Math.floor(Math.random()*10);
-      this.sampleData.dataSet[i] = {};
-      this.sampleData.dataSet[i].id = i;
-      this.sampleData.dataSet[i].author = 'Author....' + i;
-      this.sampleData.dataSet[i].nickName = 'NickName....' + i;
-      this.sampleData.dataSet[i].title = 'Title....' + i;
-      this.sampleData.dataSet[i].content = 'Content...' + i;
-      this.sampleData.dataSet[i].folder = 'FolerNo...' + i;
-      this.sampleData.dataSet[i].src = this.sampleData.imgUrl[random];
-      this.sampleData.dataSet[i].regDate = '2022-03-01';
-      this.sampleData.dataSet[i].modDate = '2022-03-02';
-    }
+    this.createDummies(this.sampleData, 1);
   }
 }
 </script>

@@ -7,9 +7,10 @@
         </div>
         <div class="my-note-title">
           <common-button 
+              @click="moveToPage()"
               width="300" 
               height="40" 
-              buttonName="오늘의 기록" 
+              buttonName="오늘의 기록"
               background="white" 
               border="none"
               fontSize="20" />
@@ -60,25 +61,21 @@ export default {
     return {
       loginBool: false,
       sampleData: SampleData,
-      searchedCu: []
     }
   },
   methods: {
     openNavBar() {
-      console.log('a');
       this.$refs.navBar.openNavBar()
     },
     openModal(cuData) {
       this.$refs.modal.openModal(cuData);
+    },
+    moveToPage() {
+      this.$router.push({path: '/mcol/note/makenote'})
     }
   },
   created() {
-    const INPUT_NUMBER = 19;
-    for(var j = 0; j < INPUT_NUMBER; j++) {
-      this.searchedCu[j] = j;
-    }
-
-    for(var i = 0; i < INPUT_NUMBER; i++) {
+    for(var i = 0; i < 19; i++) {
       var random = Math.floor(Math.random()*10);
       this.sampleData.dataSet[i] = {};
       this.sampleData.dataSet[i].id = i;
@@ -97,7 +94,6 @@ export default {
       this.sampleData.dataSet[i].regDate = '2022-03-01';
       this.sampleData.dataSet[i].modDate = '2022-03-02';
     }
-    console.log(this.sampleData.dataSet[0].hashTag)
   }
 }
 </script>

@@ -1,12 +1,12 @@
 <template>
-  <div class="main-with-login">
-    <div class="main-with-login-body">
+  <div class="search-collections">
+    <div class="search-collections-body">
       <header>
         <div class="logo-area header-area">
           <img class="main-logo-text" src="@/assets/logo_text.png" alt="text_logo">
         </div>
         <div class="input-area">
-          <input-box class="main-input" placeholder="SEARCH" width="100" height="38" />
+          <input-box class="search-input" placeholder="SEARCH" width="100" height="38" />
         </div>
         <div class="button-area">
           <common-button buttonName="정렬" width="80" height="35" marginTop="5" marginRight="20" />
@@ -100,7 +100,7 @@ export default {
 </script>
 
 <style scoped>
-.main-with-login-body {
+.search-collections-body {
   max-width: 1200px;
   min-width: 1200px;
   width: 100vw;
@@ -133,7 +133,7 @@ header {
   width: 40%;
   text-align: center;
 }
-.main-input {
+.search-input {
   margin-top: 67px;
   margin-right: 5%;
 }
