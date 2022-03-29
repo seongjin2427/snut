@@ -232,8 +232,6 @@ header {
 }
 .main-col-title {
   margin-bottom: 100px;
-  display: flex;
-  justify-content: space-between;
   font-size: 30px;
   font-weight: bold;
 }

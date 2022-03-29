@@ -16,8 +16,9 @@ input {
   max-width: 376px;
   min-width: 300px;
   padding-left: 10px;
-  background: rgba(0, 0, 0, 0.0);
-  border: 1px solid #00000099;
+  background-color: #E8ECE6;
+  border-color: #4F4F4F;
+  border-style: solid;
 }
 input:focus {
   outline: none;

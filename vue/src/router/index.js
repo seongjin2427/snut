@@ -8,6 +8,8 @@ import StoreColCurations from '@/views/StoreColCurations.vue';
 import About from "@/views/About.vue";
 import Faq from "@/views/Faq.vue";
 import MyNote from "@/views/MyNote.vue";
+import Myprofile from "@/views/Myprofile";
+import Feedback from "@/views/Feedback";
 
 const routes = [
   {
@@ -54,6 +56,14 @@ const routes = [
     path:"/faq",
     component: Faq,
     name: "Faq"
+  },
+  {
+    path:"/pf",
+    component: Myprofile
+  },
+  {
+    path:"/fb",
+    component: Feedback
   }
 ];
 

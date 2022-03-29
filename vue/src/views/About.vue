@@ -77,7 +77,7 @@ header{
   display: flex;
   position: relative;
   text-align: center;
-  font-family: 'Alegreya Sans', sans-serif;
+  font-family: 'AlegreyaSans', sans-serif;
   font-style: normal;
   font-weight: 800;
   font-size: 40px;
@@ -93,7 +93,7 @@ justify-content: center;
 }
 .maker{
   padding-top: 200px;
-  font-family: 'Noto Sans','Apple SD Gothic Neo', sans-serif;
+  font-family: 'NotoSans','Apple SD Gothic Neo', sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 30px;
@@ -102,7 +102,7 @@ justify-content: center;
 }
 .whysnut{
  padding-top: 500px;
-  font-family: 'Noto Sans','Apple SD Gothic Neo', sans-serif;
+  font-family: 'NotoSans','Apple SD Gothic Neo', sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 30px;
@@ -110,7 +110,7 @@ justify-content: center;
 }
 .snut-textarea{
   padding-top: 80px;
-  font-family: 'Noto Sans','Apple SD Gothic Neo', sans-serif;
+  font-family: 'NotoSans','Apple SD Gothic Neo', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -133,7 +133,7 @@ justify-content: center;
  padding-bottom: 80px;
 }
 .snut-textarea2{
-  font-family: 'Noto Sans','Apple SD Gothic Neo', sans-serif;
+  font-family: 'NotoSans','Apple SD Gothic Neo', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
