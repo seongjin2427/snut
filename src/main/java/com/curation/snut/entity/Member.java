@@ -17,11 +17,10 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @ToString
-public class Member {
+public class Member extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String email;
-    
+
     private String name;
     private String pw;
     private String mobile;
