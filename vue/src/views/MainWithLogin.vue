@@ -27,14 +27,20 @@
         </div>
 
         <div class="main-col">
-          <p class="main-col-title">
-            인기컬렉션
-          </p>
+          <div class="main-col-title">
+            <p>
+              인기컬렉션
+            </p>
+            <p>
+              더보기
+            </p>
+          </div>
           <div class="main-col-area">
             <common-collection 
-                v-for="(col, idx) in hotCol" 
-                :info="sampleData.data" 
-                :id="col"
+                @click="moveToPage(col)"
+                v-for="(col, idx) in sampleData.dataSet" 
+                :info="col" 
+                :id="col.id"
                 :key="idx" />
           </div>
         </div>
@@ -44,10 +50,11 @@
           </p>
           <div class="main-col-area" v-if="loginBool">
             <common-collection 
-                v-for="col in recCol" 
-                :info="sampleData.data" 
-                :id="col"
-                :key="col" />
+                @click="moveToPage(col)"
+                v-for="(col, idx) in sampleData2.dataSet" 
+                :info="col" 
+                :id="col.id"
+                :key="idx" />
           </div>
           <div class="main-col-area" v-if="!loginBool">
             <div class="loginSign">
@@ -60,7 +67,7 @@
       </main>
       
       <footer>
-        <main-footer/>
+        <main-footer />
       </footer>
 
     </div>
@@ -82,10 +89,9 @@ export default {
   data() {
     return {
       loginBool: false,
-      sampleData: SampleData,
+      sampleData: {dataSet:[]},
+      sampleData2: {dataSet:[]},
       loginSignText: 'If You Want To See More, Just Sign In!',
-      hotCol: [1, 2, 3, 4, 5],
-      recCol: [6, 7, 8, 9, 10]
     }
   },
   methods: {
@@ -97,22 +103,37 @@ export default {
     },
     doSearch() {
       this.$router.push('/col');
+    },
+    moveToPage(dataSet) {
+      this.$router.push({
+        path: `/ucol/${dataSet.id}/${dataSet.nickName}`,
+        params: {
+          id: dataSet.id,
+          nickName: dataSet.nickName
+        }
+      });
+    },
+    createDummies(store, start) {
+      for(var i = 0; i < 5; i++) {
+        var random = Math.floor(Math.random()*10);
+        store.dataSet[i] = {};
+        store.dataSet[i].id = start;
+        store.dataSet[i].author = 'Author....' + i;
+        store.dataSet[i].nickName = 'NickName....' + i;
+        store.dataSet[i].title = 'Title....' + i;
+        store.dataSet[i].content = 'Content...' + i;
+        store.dataSet[i].folder = 'FolerNo...' + i;
+        store.dataSet[i].src = SampleData.imgUrl[random];
+        store.dataSet[i].regDate = '2022-03-01';
+        store.dataSet[i].modDate = '2022-03-02';
+        console.log("start", i)
+        start++;
+      }
     }
   },
   created() {
-    for(var i = 0; i < 20; i++) {
-      var random = Math.floor(Math.random()*10);
-      this.sampleData.data[i] = {};
-      this.sampleData.data[i].id = i;
-      this.sampleData.data[i].author = 'Author....' + i;
-      this.sampleData.data[i].nickName = 'NickName....' + i;
-      this.sampleData.data[i].title = 'Title....' + i;
-      this.sampleData.data[i].content = 'Content...' + i;
-      this.sampleData.data[i].folder = 'FolerNo...' + i;
-      this.sampleData.data[i].src = this.sampleData.imgUrl[random];
-      this.sampleData.data[i].regDate = '2022-03-01';
-      this.sampleData.data[i].modDate = '2022-03-02';
-    }
+    this.createDummies(this.sampleData, 1);
+    this.createDummies(this.sampleData2, 6);
   }
 }
 </script>
@@ -126,11 +147,10 @@ export default {
   /* background: lightcoral; */
   margin: 0 auto;
 }
-
 /* header 구간 */
 header {
   width: 100%;
-  height: 200px;
+  height: 150px;
   /* background: lightblue; */
   position: relative;
   display: flex;
@@ -167,7 +187,6 @@ header {
   margin-right: 20px;
   cursor: pointer;
 }
-
 /* main 구간 */
 .main-with-login-main {
   max-width: 1200px;
@@ -199,7 +218,6 @@ header {
 .pick-your-snut span:nth-child(3) {
   color: #FBE017;
 }
-
 /* 컬렉션 구간 */
 .main-col {
   width: calc(100%-200px);
@@ -210,6 +228,8 @@ header {
 }
 .main-col-title {
   margin-bottom: 100px;
+  display: flex;
+  justify-content: space-between;
   font-size: 30px;
   font-weight: bold;
 }
@@ -217,6 +237,10 @@ header {
   width: 100%;
   display: flex;
   justify-content: space-between;
+}
+.main-col-title p:nth-child(2) {
+  color: #666666;
+  cursor: pointer;
 }
 .loginSign {
   width: 980px;

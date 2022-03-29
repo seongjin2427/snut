@@ -3,11 +3,11 @@
   <header>
     <div class="aboutp">
       <div class="snutlogo-text">
-      <router-link to="/">
-        <img class="homebu" src="@/assets/logo_text.png" alt="logo_text">
-      </router-link>
+        <router-link to="/">
+          <img class="homebu" src="@/assets/logo_text.png" alt="logo_text">
+        </router-link>
       </div>
-    <div class="text-about">ABOUT</div>
+      <div class="text-about">ABOUT</div>
     </div>
   </header>
   <div class="snutinfo">
@@ -67,21 +67,17 @@ header{
 
 }
 .snutlogo-text{
-width: 113px;
+  width: 113px;
   height: 39px;
   position: absolute;
   left: 5px;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
 }
-
 
 .text-about{
   display: flex;
   position: relative;
   text-align: center;
-  font-family: 'Alegreya Sans', sans-serif;
+  font-family: 'AlegreyaSans', sans-serif;
   font-style: normal;
   font-weight: 800;
   font-size: 40px;
@@ -97,7 +93,7 @@ justify-content: center;
 }
 .maker{
   padding-top: 200px;
-  font-family: 'Noto Sans','Apple SD Gothic Neo', sans-serif;
+  font-family: 'NotoSans','Apple SD Gothic Neo', sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 30px;
@@ -106,7 +102,7 @@ justify-content: center;
 }
 .whysnut{
  padding-top: 500px;
-  font-family: 'Noto Sans','Apple SD Gothic Neo', sans-serif;
+  font-family: 'NotoSans','Apple SD Gothic Neo', sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 30px;
@@ -114,7 +110,7 @@ justify-content: center;
 }
 .snut-textarea{
   padding-top: 80px;
-  font-family: 'Noto Sans','Apple SD Gothic Neo', sans-serif;
+  font-family: 'NotoSans','Apple SD Gothic Neo', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -137,7 +133,7 @@ justify-content: center;
  padding-bottom: 80px;
 }
 .snut-textarea2{
-  font-family: 'Noto Sans','Apple SD Gothic Neo', sans-serif;
+  font-family: 'NotoSans','Apple SD Gothic Neo', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;

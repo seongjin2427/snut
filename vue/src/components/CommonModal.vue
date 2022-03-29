@@ -8,7 +8,13 @@
         <!-- modal-header 구간 -->
         <div class="modal-header">
           <div class="modal-hashTag">
-
+            <common-tag 
+                v-for="(tag, idx) in cuData.hashTag" 
+                width="150" 
+                height="40"
+                marginRight="15"
+                :tagName="tag" 
+                :key="idx" />
           </div>
           <div class="modal-iconSet">
             <img src="@/assets/modal/Like-Line.png" alt="like_img">
@@ -55,8 +61,13 @@
 </template>
 
 <script>
+import CommonTag from '@/components/CommonTag.vue'
+
 export default {
   name: 'CommonModal',
+  components: {
+    CommonTag
+  },
   data() {
     return {
       showBool: false,
@@ -82,7 +93,7 @@ export default {
     previous() {
       if(this.imgSlideData.curPos > 0) {
       this.$refs.next.removeAttribute("disabled");
-      this.imgSlideData.position -= this.imgSlideData.IMAGE_WIDTH;
+      this.imgSlideData.position += this.imgSlideData.IMAGE_WIDTH;
       this.$refs.imgContainer.style.transform = `translateX(${this.imgSlideData.position}px`;
       this.imgSlideData.curPos -= 1;
       }
@@ -93,7 +104,7 @@ export default {
     next() {
       if(this.imgSlideData.curPos < this.sampleImg.length - 1 ) {
       this.$refs.previous.removeAttribute("disabled");
-      this.imgSlideData.position += this.imgSlideData.IMAGE_WIDTH;
+      this.imgSlideData.position -= this.imgSlideData.IMAGE_WIDTH;
       this.$refs.imgContainer.style.transform = `translateX(${this.imgSlideData.position}px`;
       this.imgSlideData.curPos += 1;
       }
@@ -148,18 +159,22 @@ export default {
 .modal-header {
   width: 100%;
   height: 100px;
-  background: gray;
+  /* background: gray; */
   display: flex;
 }
 .modal-hashTag {
   width: 590px;
   height: 100%;
-  background: lightyellow;
+  margin-top: 5px;
+  margin-right: 20px;
+  display: flex;
+  justify-content: flex-end;
+  /* background: lightyellow; */
 }
 .modal-iconSet {
   width: 260px;
   height: 100%;
-  background: lightcoral;
+  /* background: lightcoral; */
 
 }
 
@@ -183,7 +198,7 @@ export default {
   width: 400px;
   height: 400px;
   display: flex;
-  flex-direction: row-reverse;
+  /* flex-direction: row-reverse; */
   position: relative;
   transition: all 0.5s;
   z-index: 1;

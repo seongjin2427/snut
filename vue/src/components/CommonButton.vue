@@ -3,7 +3,11 @@
     width: width+'px', 
     height: height+'px', 
     marginTop: marginTop+'px' , 
-    marginRight: marginRight+'px' }">
+    marginRight: marginRight+'px',
+    background: background,
+    fontSize: fontSize+'px',
+    borderRadius: borderRadius+'px',
+    border: border }">
     {{ buttonName }}
   </div>
 </template>
@@ -11,7 +15,17 @@
 <script>
 export default {
   name: "CommonButton",
-  props: ['buttonName', 'width', 'height', 'margin-top', 'margin-right'],
+  props: [
+          'buttonName',
+          'width',
+          'height',
+          'margin-top',
+          'margin-right',
+          'background',
+          'fontSize',
+          'borderRadius',
+          'border'
+        ]
 }
 </script>
 

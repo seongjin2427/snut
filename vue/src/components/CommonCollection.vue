@@ -1,9 +1,12 @@
 <template>
-  <div class="collection" @mouseover="inCuration()" @mouseleave="outCuration()">
-    <img :class="cuSelect" :src="info[id].src" alt="sample_img">
+  <div class="collection" @mouseover="inCuration()" @mouseleave="outCuration()" v-if="info.id">
+    <img :class="cuSelect" :src="info.src" alt="sample_img">
     <div class="text1" v-if="testBoolean">
-      <p>{{ info[id].title }}</p>
-      <p>{{ info[id].modDate }}</p>
+      <p>{{ '#'+info.hashTag[0] }}</p>
+      <p>{{ '#'+info.hashTag[1] }}</p>
+      <p>{{ '#'+info.hashTag[2] }}</p>
+      <p>{{ info.modDate }}</p>
+      <p>{{ info.cuCo }}</p>
     </div>
   </div>
 </template>
@@ -54,7 +57,6 @@ img {
   opacity: 100%;
 }
 .text1 p {
-  font-family: 'Noto-sans KR','Apple SD Gothic Neo', sans-serif ;
   color: white;
   font-weight: bold;
   position: relative;
@@ -62,5 +64,5 @@ img {
 .lowerBrightness {
   transition: all .3s;
   filter: brightness(60%);
-  }
+}
 </style>

@@ -9,8 +9,6 @@ export default {
 </script>
 
 <style>
-
-/* Allegreya Sans */
 @font-face {
   font-family: 'AlegreyaSans';
   src: url('@/assets/font/AlegreyaSans-Light.ttf') format('opentype'),
@@ -89,6 +87,5 @@ html, body {
   height: 100vh;
   background-color: #E8ECE6;
 }
-
 
 </style>

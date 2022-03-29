@@ -1,29 +1,54 @@
 <template>
-  <div class="search-collections">
-    <div class="search-collections-body">
+  <div class="store-collections">
+    <div class="store-collections-body">
+
       <header>
-        <div class="logo-area header-area">
-          <img class="main-logo-text" src="@/assets/logo_text.png" alt="text_logo">
+        <div class="header-area">
+          <div class="toggleBtn" 
+              @click="changeTitle(btn)"
+              v-for="(btn, idx) in storeCollectionsData" 
+              :key="idx" 
+              :style="{background: btn.color}">
+          </div>
         </div>
-        <div class="input-area">
-          <input-box class="search-input" placeholder="SEARCH" width="100" height="38" />
+        <div class="store-col-header-center">
+          <common-button 
+              width="300" 
+              height="40" 
+              :buttonName="toggleBtnTitle" 
+              background="white" 
+              border="none"
+              fontSize="20" />
+          <div class="addBtn"><p>+</p></div>
         </div>
         <div class="button-area">
-          <common-button buttonName="정렬" width="80" height="35" marginTop="5" marginRight="20" />
-          <img src="@/assets/btn_hamburger.png" alt="nav_btn" @click="openNavBar">
+          <common-button 
+              width="150" 
+              height="40" 
+              buttonName="저장" 
+              background="white" 
+              border="none"
+              fontSize="20" />
         </div>
       </header>
+
       <main>
 
         <div class="main-col">
           <div class="main-col-area">
-            <common-collection 
-                class="main-searched-col"
+            <common-collection
+                ref="showCol"
+                class="main-show-col"
+                @dragstart="startDrag($event, col.id)"
+                @drop="onDrop($event, col.id)"
+                @dragenter.prevent
+                @dragover.prevent
                 @click="openModal(col)"
-                v-for="(col, idx) in sampleData.dataSet" 
-                :info="col" 
+                v-for="(col, idx) in sampleData.dataSet"
+                :info="col"
                 :id="col.id"
-                :key="idx" />
+                :key="idx"
+                draggable="true" />
           </div>
         </div>
 
@@ -42,7 +67,6 @@
 <script>
 import CommonButton from '@/components/CommonButton.vue';
 import CommonCollection from '@/components/CommonCollection.vue';
-import InputBox from '@/components/InputBox.vue';
 import MainFooter from '@/components/MainFooter.vue'
 import NavigatorBar from '../components/NavigatorBar.vue';
 import SampleData from '@/assets/sampleData.json';
@@ -50,29 +74,85 @@ import CommonModal from '../components/CommonModal.vue';
 
 
 export default {
-  components: { InputBox, CommonButton, CommonCollection, MainFooter, NavigatorBar, CommonModal },
-  name: "SearchCollections",
+  components: { CommonButton, CommonCollection, MainFooter, NavigatorBar, CommonModal },
+  name: "StoreCollections",
   data() {
     return {
       loginBool: false,
-      sampleData: SampleData,
-      loginSignText: 'If You Want To See More, Just Sign In!',
-      searchedCu: []
+      sampleData: SampleData, 
+      userCollection: [],
+      toggleBtnTitle: '전부',
+      storeCollectionsData: [
+        {
+          id: 1,
+          name: '전부',
+          color: '#EECAC6'
+        },
+        {
+          id: 2,
+          name: '큐레이션',
+          color: '#F3D675'
+        },
+        {
+          id: 3,
+          name: '컬렉션',
+          color: '#AED8EA'
+        },
+        {
+          id: 4,
+          name: '폴더별',
+          color: '#F6F6F6'
+        },
+      ]
     }
   },
   methods: {
     openNavBar() {
-      console.log('a');
       this.$refs.navBar.openNavBar()
     },
     openModal(cuData) {
-      this.$refs.modal.openModal(cuData);
-    }
-  },
-  created() {
-    const INPUT_NUMBER = 21;
+      if (cuData.cuCo == 'Curation') {
+        this.$refs.modal.openModal(cuData);
+      } else if (cuData.cuCo == "Collection") {
+        this.$router.push({
+          path: `/mcol/store/${cuData.id}/${cuData.nickName}`,
+          params: {
+            id: cuData.id,
+            nickName: cuData.nickName
+          }
+        });
+      }
+    },
+    startDrag(event, item) {
+      event.dataTransfer.dropEffect = "move";
+      event.dataTransfer.effectAllowed = "move";
+      event.dataTransfer.setData("itemId", item);
+    },
+    onDrop(event, start) {
+      let itemId = Number(event.dataTransfer.getData("itemId"));
+      let end = this.userCollection.find((item) => item == itemId);
+
+      let comp = this.sampleData.dataSet[end];
+      this.sampleData.dataSet[end] = this.sampleData.dataSet[start];
+      this.sampleData.dataSet[start] = comp;
+    },
+    changeTitle(btnData) {
+      this.toggleBtnTitle = btnData.name;
+      this.makeDummies();
+      if(btnData.id == 2) {
+        let curations = this.sampleData.dataSet.filter(i => i.cuCo == 'Curation');
+        this.sampleData.dataSet = [];
+        this.sampleData.dataSet = curations;
+      } else if (btnData.id == 3) {
+        let collections = this.sampleData.dataSet.filter(i => i.cuCo == 'Collection');
+        this.sampleData.dataSet = [];
+        this.sampleData.dataSet = collections;
+      }
+    },
+    makeDummies() {
+      const INPUT_NUMBER = 20;
     for(var j = 0; j < INPUT_NUMBER; j++) {
-      this.searchedCu[j] = j;
+      this.userCollection[j] = j;
     }
 
     for(var i = 0; i < INPUT_NUMBER; i++) {
@@ -93,14 +173,25 @@ export default {
       this.sampleData.dataSet[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
       this.sampleData.dataSet[i].regDate = '2022-03-01';
       this.sampleData.dataSet[i].modDate = '2022-03-02';
+
+      console.log(Math.floor(INPUT_NUMBER/2));
+      if(i <= Math.floor(INPUT_NUMBER / 2)) {
+        this.sampleData.dataSet[i].cuCo = 'Curation';
+      } else {
+        this.sampleData.dataSet[i].cuCo = 'Collection';
+      }
     }
-    console.log(this.sampleData.dataSet[0].hashTag)
+
+    }
+  },
+  created() {
+    this.makeDummies();
   }
 }
 </script>
 
 <style scoped>
-.search-collections-body {
+.store-collections-body {
   max-width: 1200px;
   min-width: 1200px;
   width: 100vw;
@@ -119,31 +210,46 @@ header {
   justify-content: flex-end;
 }
 .header-area {
+  display: flex;
   width: 30%;
+  margin-top: 70px;
 }
-.main-logo-text {
-  width: 113px;
-  height: 39px;
-  margin-top: 60px;
-  /* position: absolute; */
-  left: 0;
-  top: 0;
+.toggleBtn {
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  cursor: pointer;
+  margin-right: 50px;
 }
-.input-area {
+.store-col-header-center {
   width: 40%;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  margin-top: 60px;
+  margin-left: 50px;
 }
-.search-input {
-  margin-top: 67px;
-  margin-right: 5%;
+.addBtn {
+  width: 40px;
+  height: 40px;
+  position: relative;
+  background: white;
+  border-radius: 20px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+.addBtn p {
+  position: absolute;
+  top: -3px;
+  left: 10px;
+  font-size: 30px;
 }
 .button-area {
   width: 30%;
   /* background: red; */
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: flex-start;
-  margin-top: 63px;
+  margin-top: 60px;
 }
 .button-area img {
   margin-right: 20px;
@@ -152,18 +258,18 @@ header {
 
 /* 컬렉션 구간 */
 .main-col {
-  width: calc(100%-200px);
+  width: 100%;
   max-width: 1200px;
   /* background: green; */
-  padding: 0 100px;
 }
 .main-col-area {
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   flex-wrap: wrap;
 }
-.main-searched-col {
+.main-show-col {
   margin-top: 20px;
+  margin-right: 20px;
 }
 </style>
