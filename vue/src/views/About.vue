@@ -67,17 +67,15 @@ header{
 
 }
 .snutlogo-text{
-
+width: 113px;
+  height: 39px;
+  position: absolute;
+  left: 5px;
   align-items: center;
   justify-content: center;
   text-align: center;
 }
-.homebu{
-  width: 113px;
-  height: 39px;
-  position: absolute;
-  left: 5px;
-}
+
 
 .text-about{
   display: flex;

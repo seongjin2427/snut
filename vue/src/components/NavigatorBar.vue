@@ -4,11 +4,11 @@
       <img class="hamburgerBtn" src="@/assets/btn_hamburger.png" alt="nav_btn" @click="closeNavBar">
     </div>
     <ul>
-      <li>My collection</li>
+      <li>MY COLLECTION</li>
       <!-- <li><router-link to="/mcol/main">My collection</router-link></li> -->
-      <li>Community</li>
-      <li>My Page</li>
-      <li>Feedback</li>
+      <li>COMMUNITY</li>
+      <li>MY PAGE</li>
+      <li><router-link to="/ab">ABOUT</router-link></li>
     </ul>
   </div>
 </template>
@@ -64,7 +64,6 @@ li {
   display: block;
   margin: 85px auto;
   text-align: center;
-  font-family: 'alegreya';
   font-weight: 700;
   font-size: 30px;
 }

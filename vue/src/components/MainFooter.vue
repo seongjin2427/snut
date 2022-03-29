@@ -23,16 +23,16 @@ export default {
     return {
       footerTitle: [
         { name: 'ABOUT', 
-          src: ''
+          src: '/ab'
         },
         { name: 'FAQ', 
-          src: ''
+          src: '/faq'
         },
         { name: 'FEEDBACK', 
-          src: ''
+          src: '/fb'
         },
         { name: 'MY PROFILE', 
-          src: ''
+          src: '/pf'
         },
       ],
       writeCmt: '© snut. 2021 We love our users!'
@@ -54,7 +54,6 @@ export default {
   display: flex;
   justify-content: center;
   padding: 0 100px;
-  justify-content: center;
   align-items: center;
 }
 .footer-line {
@@ -66,7 +65,7 @@ export default {
 }
 .footerMenu {
   width: 300px;
-  height: calc(100%-30px);
+  height: calc(100% -30px);
   /* background: lightgray; */
   display: flex;
   justify-content: center;
