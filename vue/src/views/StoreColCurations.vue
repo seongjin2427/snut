@@ -8,8 +8,8 @@
         <div class="my-note-title">
           <common-button 
               width="300" 
-              height="40" 
-              buttonName="오늘의 기록" 
+              height="40"
+              :buttonName="$route.params.nickName"
               background="white" 
               border="none"
               fontSize="20" />
@@ -55,17 +55,17 @@ import CommonModal from '../components/CommonModal.vue';
 
 export default {
   components: { CommonButton, CommonCollection, MainFooter, NavigatorBar, CommonModal },
-  name: "MainWithLogin",
+  name: "StoreColCurations",
   data() {
     return {
       loginBool: false,
-      sampleData: SampleData,
-      searchedCu: []
+      sampleData: SampleData, 
+      userCollection: []
     }
   },
   methods: {
     openNavBar() {
-      console.log('a');
+      // console.log('a');
       this.$refs.navBar.openNavBar()
     },
     openModal(cuData) {
@@ -75,7 +75,7 @@ export default {
   created() {
     const INPUT_NUMBER = 19;
     for(var j = 0; j < INPUT_NUMBER; j++) {
-      this.searchedCu[j] = j;
+      this.userCollection[j] = j;
     }
 
     for(var i = 0; i < INPUT_NUMBER; i++) {
@@ -97,7 +97,11 @@ export default {
       this.sampleData.dataSet[i].regDate = '2022-03-01';
       this.sampleData.dataSet[i].modDate = '2022-03-02';
     }
-    console.log(this.sampleData.dataSet[0].hashTag)
+    // console.log(this.sampleData.data[0].hashTag)
+    console.log(this.$route.params);
+    console.log("name : " + this.$route.params.nickName)
+    console.log("id : " + this.$route.params.id)
+
   }
 }
 </script>

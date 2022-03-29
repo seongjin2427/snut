@@ -27,7 +27,7 @@
         </div>
 
         <div class="main-col">
-          <div class="main-col-text">
+          <div class="main-col-title">
             <p>
               인기컬렉션
             </p>
@@ -37,10 +37,10 @@
           </div>
           <div class="main-col-area">
             <common-collection 
-                @click="moveToPage(sampleData.dataSet[col])"
-                v-for="(col, idx) in hotCol" 
-                :info="sampleData.dataSet" 
-                :id="col"
+                @click="moveToPage(col)"
+                v-for="(col, idx) in sampleData.dataSet" 
+                :info="col" 
+                :id="col.id"
                 :key="idx" />
           </div>
         </div>
@@ -50,11 +50,11 @@
           </p>
           <div class="main-col-area" v-if="loginBool">
             <common-collection 
-                @click="moveToPage(sampleData.dataSet[col])"
-                v-for="col in recCol" 
-                :info="sampleData.dataSet" 
-                :id="col"
-                :key="col" />
+                @click="moveToPage(col)"
+                v-for="(col, idx) in sampleData2.dataSet" 
+                :info="col" 
+                :id="col.id"
+                :key="idx" />
           </div>
           <div class="main-col-area" v-if="!loginBool">
             <div class="loginSign">
@@ -90,9 +90,8 @@ export default {
     return {
       loginBool: false,
       sampleData: SampleData,
+      sampleData2: {dataSet:[]},
       loginSignText: 'If You Want To See More, Just Sign In!',
-      hotCol: [1, 2, 3, 4, 5],
-      recCol: [6, 7, 8, 9, 10]
     }
   },
   methods: {
@@ -106,7 +105,6 @@ export default {
       this.$router.push('/col');
     },
     moveToPage(dataSet) {
-      console.log(dataSet);
       this.$router.push({
         path: `/ucol/${dataSet.id}/${dataSet.nickName}`,
         params: {
@@ -114,22 +112,29 @@ export default {
           nickName: dataSet.nickName
         }
       });
+    },
+    createDummies(store, start) {
+      for(var i = 0; i < 5; i++) {
+        var random = Math.floor(Math.random()*10);
+        store.dataSet[i] = {};
+        store.dataSet[i].id = start;
+        store.dataSet[i].author = 'Author....' + i;
+        store.dataSet[i].nickName = 'NickName....' + i;
+        store.dataSet[i].title = 'Title....' + i;
+        store.dataSet[i].content = 'Content...' + i;
+        store.dataSet[i].folder = 'FolerNo...' + i;
+        store.dataSet[i].src = this.sampleData.imgUrl[random];
+        store.dataSet[i].regDate = '2022-03-01';
+        store.dataSet[i].modDate = '2022-03-02';
+        console.log("start", i)
+        start++;
+      }
     }
   },
   created() {
-    for(var i = 0; i < 20; i++) {
-      var random = Math.floor(Math.random()*10);
-      this.sampleData.dataSet[i] = {};
-      this.sampleData.dataSet[i].id = i;
-      this.sampleData.dataSet[i].author = 'Author....' + i;
-      this.sampleData.dataSet[i].nickName = 'NickName....' + i;
-      this.sampleData.dataSet[i].title = 'Title....' + i;
-      this.sampleData.dataSet[i].content = 'Content...' + i;
-      this.sampleData.dataSet[i].folder = 'FolerNo...' + i;
-      this.sampleData.dataSet[i].src = this.sampleData.imgUrl[random];
-      this.sampleData.dataSet[i].regDate = '2022-03-01';
-      this.sampleData.dataSet[i].modDate = '2022-03-02';
-    }
+    this.createDummies(this.sampleData, 1);
+    this.createDummies(this.sampleData2, 6);
+    console.log(this.sampleData2);
   }
 }
 </script>
@@ -225,19 +230,20 @@ header {
   /* background: green; */
   padding: 0 100px;
 }
-.main-col-text {
+.main-col-title {
   margin-bottom: 100px;
-  font-size: 30px;
-  font-weight: bold;
   display: flex;
   justify-content: space-between;
+  font-size: 30px;
+  font-weight: bold;
 }
+
 .main-col-area {
   width: 100%;
   display: flex;
   justify-content: space-between;
 }
-.main-col-text p:nth-child(2) {
+.main-col-title p:nth-child(2) {
   color: #666666;
   cursor: pointer;
 }

@@ -37,9 +37,9 @@
             </p>
             <div class="main-col-area">
               <common-collection
-                  v-for="(col, idx) in hotCol"
-                  :info="sampleData.dataSet"
-                  :id="col"
+                  v-for="(col, idx) in sampleData.dataSet"
+                  :info="col"
+                  :id="col.id"
                   :key="idx" />
             </div>
           </div>
@@ -89,7 +89,7 @@ export default {
         },
         {
           name: '내 컬렉션 보기', 
-          src: '/mcol/folder',
+          src: '/mcol/store',
         },
         {
           name: 'Collection 만들기', 
@@ -126,7 +126,7 @@ export default {
     }
   },
   created() {
-    for(var i = 0; i < 20; i++) {
+    for(var i = 0; i < 6; i++) {
       var random = Math.floor(Math.random()*10);
       this.sampleData.dataSet[i] = {};
       this.sampleData.dataSet[i].id = i;

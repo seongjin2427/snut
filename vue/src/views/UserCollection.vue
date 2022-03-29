@@ -24,10 +24,10 @@
           <div class="main-col-area">
             <common-collection 
                 class="main-searched-col"
-                @click="openModal(sampleData.dataSet[col])"
-                v-for="(col, idx) in userCollection" 
-                :info="sampleData.dataSet" 
-                :id="col"
+                @click="openModal(col)"
+                v-for="(col, idx) in sampleData.dataSet" 
+                :info="col" 
+                :id="col.id"
                 :key="idx" />
           </div>
         </div>

@@ -1,10 +1,10 @@
 <template>
-  <div class="collection" @mouseover="inCuration()" @mouseleave="outCuration()" v-if="info[id]">
-    <img :class="cuSelect" :src="info[id].src" alt="sample_img">
+  <div class="collection" @mouseover="inCuration()" @mouseleave="outCuration()" v-if="info.id">
+    <img :class="cuSelect" :src="info.src" alt="sample_img">
     <div class="text1" v-if="testBoolean">
-      <p>{{ info[id].title }}</p>
-      <p>{{ info[id].modDate }}</p>
-      <p>{{ info[id].cuCo }}</p>
+      <p>{{ info.title }}</p>
+      <p>{{ info.modDate }}</p>
+      <p>{{ info.cuCo }}</p>
     </div>
     <div :class="dragClass"></div>
   </div>
@@ -30,6 +30,9 @@ export default {
       this.testBoolean = false;
       document.querySelector('.'+this.cuSelect).classList.remove('lowerBrightness');
     }
+  },
+  created() {
+    console.log(this.info);
   }
 }
 </script>

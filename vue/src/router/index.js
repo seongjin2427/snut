@@ -3,7 +3,8 @@ import MainWithLogin from "@/views/MainWithLogin.vue";
 import UserCollection from "@/views/UserCollection.vue";
 import SearchCollections from '@/views/SearchCollections.vue';
 import MyCollection from '@/views/MyCollection.vue';
-import ShowMyCollections from '@/views/ShowMyCollections.vue';
+import StoreCollections from '@/views/StoreCollections.vue';
+import StoreColCurations from '@/views/StoreColCurations.vue';
 import About from "@/views/About.vue";
 import Faq from "@/views/Faq.vue";
 import MyNote from "@/views/MyNote.vue";
@@ -35,9 +36,14 @@ const routes = [
     name: "MyNote"
   },
   { 
-    path: '/mcol/folder',
-    component: ShowMyCollections,
-    name: "ShowMyCollections"
+    path: '/mcol/store',
+    component: StoreCollections,
+    name: "StoreCollections"
+  },
+  { 
+    path: '/mcol/store/:colId/:nickName',
+    component: StoreColCurations,
+    name: "StoreColCurations"
   },
   {
     path:"/ab",

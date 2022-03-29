@@ -6,7 +6,7 @@
         <div class="header-area">
           <div class="toggleBtn" 
               @click="changeTitle(btn)"
-              v-for="(btn, idx) in showCollectionData" 
+              v-for="(btn, idx) in storeCollectionsData" 
               :key="idx" 
               :style="{background: btn.color}">
           </div>
@@ -39,14 +39,14 @@
             <common-collection
                 ref="showCol"
                 class="main-show-col"
-                @dragstart="startDrag($event, col)"
-                @drop="onDrop($event, col)"
+                @dragstart="startDrag($event, col.id)"
+                @drop="onDrop($event, col.id)"
                 @dragenter.prevent
                 @dragover.prevent
-                @click="openModal(sampleData.dataSet[col])"
-                v-for="(col, idx) in userCollection"
-                :info="sampleData.dataSet"
-                :id="col"
+                @click="openModal(col)"
+                v-for="(col, idx) in sampleData.dataSet"
+                :info="col"
+                :id="col.id"
                 :key="idx"
                 draggable="true" />
           </div>
@@ -75,14 +75,14 @@ import CommonModal from '../components/CommonModal.vue';
 
 export default {
   components: { CommonButton, CommonCollection, MainFooter, NavigatorBar, CommonModal },
-  name: "UserCollection",
+  name: "StoreCollection",
   data() {
     return {
       loginBool: false,
       sampleData: SampleData, 
       userCollection: [],
       toggleBtnTitle: '전부',
-      showCollectionData: [
+      storeCollectionsData: [
         {
           id: 1,
           name: '전부',
@@ -111,26 +111,30 @@ export default {
       this.$refs.navBar.openNavBar()
     },
     openModal(cuData) {
-      this.$refs.modal.openModal(cuData);
+      if (cuData.cuCo == 'Curation') {
+        this.$refs.modal.openModal(cuData);
+      } else if (cuData.cuCo == "Collection") {
+        this.$router.push({
+          path: `/mcol/store/${cuData.id}/${cuData.nickName}`,
+          params: {
+            id: cuData.id,
+            nickName: cuData.nickName
+          }
+        });
+      }
     },
     startDrag(event, item) {
       event.dataTransfer.dropEffect = "move";
       event.dataTransfer.effectAllowed = "move";
       event.dataTransfer.setData("itemId", item);
-      // console.log("startDrag", event, item);
     },
     onDrop(event, start) {
-      
       let itemId = Number(event.dataTransfer.getData("itemId"));
       let end = this.userCollection.find((item) => item == itemId);
 
       let comp = this.sampleData.dataSet[end];
       this.sampleData.dataSet[end] = this.sampleData.dataSet[start];
       this.sampleData.dataSet[start] = comp;
-
-      // console.log("drop", event);
-      // console.log("Start", end);
-      // console.log("End", start)
     },
     changeTitle(btnData) {
       this.toggleBtnTitle = btnData.name;
