@@ -25,29 +25,38 @@
 
             <div class="write-with-picture-header">
               <div class="circle-btn" 
+                  @click="withPicEvent(idx)"
                   v-for="(btn, idx) in circleBtnSet" 
                   :style="{ background: btn.color }"
                   :key="idx"></div>
             </div>
 
             <div class="write-area">
-              <div class="piture-div">
-
+              
+              <div class="write-area-with-pic" v-if="withPic">
+                <div class="piture-div">
+                </div>
+                <div class="write-div">
+                  
+                </div>
               </div>
-              <div class="write-div">
-                <TipTap />
+              <div class="write-area-with-nonpic" v-if="!withPic">
+                <div class="write-div nonpic">
+                  <TipTap width="2000" height="5000" />
+                </div>
               </div>
             </div>
 
             <div class="hash-tag-div">
               <input class="hash-tag" type="text"
                   style="width: 130px;"
-                  @keydown="inputAutoWidth($event, idx)"
+                  @input="inputAutoWidth($event, idx)"
                   v-model="tag.content" 
                   v-for="(tag, idx) in hashTagSet" 
                   :key="idx">
             </div>
           </div>
+
         </div>
 
       </main>
@@ -71,17 +80,14 @@ export default {
   name: "MakeNote",
   data() {
     return {
-      loginBool: false,
       circleBtnSet: [
         {
           id: 1, 
-          color: '#EECAC6',
-          src: ''
+          color: '#EECAC6'
         },
         {
           id: 2, 
-          color: '#F3D675',
-          src: ''
+          color: '#F3D675'
         }
       ],
       btnSet: [{
@@ -122,13 +128,21 @@ export default {
           id: 3,
           content: ''
         },
-      ]
+      ],
+      withPic: true
     }
   },
   methods: {
     inputAutoWidth(e, idx) {
-      console.log(idx);
+      console.log(e, idx);
       e.target.style.width = 100 + (16 * e.target.value.length)+'px';
+      console.log(e.target.value.trim() == '')
+      if(e.target.value.trim() == '') {
+        e.target.style.width = 130+'px';
+      }
+    },
+    withPicEvent(id) {
+      id == 1 ? this.withPic = false : this.withPic = true;
     }
   }
 }
@@ -202,6 +216,8 @@ header {
 .write-area {
   width: 100%;
   height: 500px;
+}
+.write-area-with-pic {
   display: flex;
   justify-content: space-between;
 }
@@ -213,9 +229,16 @@ header {
 .write-div {
   width: 460px;
   height: 420px;
-  background: lightpink;
   border-radius: 12px;
   padding: 40px 20px;
+}
+.nonpic {
+  width: 1060px;
+  height: 460px;
+  /* background: lightcoral; */
+  border-radius: 12px;
+  padding: 20px 20px;
+
 }
 .hash-tag-div {
   width: 100%;
