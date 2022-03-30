@@ -11,6 +11,7 @@ import Faq from "@/views/Faq.vue";
 import MyNote from "@/views/MyNote.vue";
 import Myprofile from "@/views/Myprofile";
 import Feedback from "@/views/Feedback";
+import MyCommunity from "@/views/MyCommunity";
 
 const routes = [
   {
@@ -70,6 +71,10 @@ const routes = [
   {
     path:"/fb",
     component: Feedback
+  },
+  {
+    path:"/mc",
+    component: MyCommunity
   }
 ];
 

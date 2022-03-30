@@ -7,7 +7,10 @@
     background: background,
     fontSize: fontSize+'px',
     borderRadius: borderRadius+'px',
-    border: border }">
+    border: border,
+    color: color,
+    margin: margin+'px'
+  }">
     {{ buttonName }}
   </div>
 </template>
@@ -24,7 +27,9 @@ export default {
           'background',
           'fontSize',
           'borderRadius',
-          'border'
+          'border',
+          'color',
+      'margin'
         ]
 }
 </script>
