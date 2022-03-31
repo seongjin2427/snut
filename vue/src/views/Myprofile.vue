@@ -1,18 +1,88 @@
 <template>
-<div class="myprofile-page">
-  <!--  header-->
-  <header>
-    <div class="myprofile-p">
-      <div class="snutlogo-text">
-        <router-link to="/">
-          <img class="homebu" src="@/assets/logo_text.png" alt="logo_text">
-        </router-link>
+  <div class="myprofile-page">
+    <!--  header-->
+    <header>
+      <div class="myprofile-p">
+        <div class="snutlogo-text">
+          <router-link to="/">
+            <img class="homebu" src="@/assets/logo_text.png" alt="logo_text">
+          </router-link>
+        </div>
+        <div class="text-myprofile">MY PROFILE</div>
       </div>
-      <div class="text-myprofile">MY PROFILE</div>
-    </div>
-  </header>
+    </header>
+    <!--  profile form -->
+    <div class="profile-wrapper">
+      <div class="profile-form">
+        <!--form inside-->
+        <!--profile-->
+        <div class="profile flex">
+          <p>프로필 변경</p>
+          <div class="pic-bu">
+            <img class="icon" src="@/assets/icon/profile.png" alt="pf">
+            <button class="pf-bu">프로필 변경</button>
+          </div>
+        </div>
+        <!--  password -->
+        <div class="repw flex">
+          <p>비밀번호</p>
+          <div class="span">
+            <div class="repw2">Re-Password</div>
+            <div class="flex">
+              <img class="icon" src="@/assets/icon/Key-Line.png" alt="pw">
+              <input placeholder="Re-Password">
+            </div>
+          </div>
+          <div class="span">
+            <div class="repw3">Confirm-Password</div>
+            <div class="flex">
+              <img class="icon" src="@/assets/icon/Key-Line.png" alt="pw">
+              <input placeholder="Confirm-Password">
+            </div>
+          </div>
+        </div>
+        <!--email-->
+        <div class="mail flex">
+          <p>이메일</p>
+          <div class="span">
+            <div class="mail2">Email</div>
+            <div class="flex">
+              <img class="icon" src="@/assets/icon/Mail-Closed-Line.png" alt="email">
+              <input placeholder="Email">
+            </div>
+          </div>
+        </div>
+        <!--Mobile-->
+        <div class="mobile flex">
+          <p>핸드폰 번호</p>
+          <div class="span">
+            <div class="mobile2">Mobile</div>
+                <div class="flex">
+            <img class="icon" src="@/assets/icon/Call-Line.png" alt="mobile">
+            <input placeholder="Mobile">
+                </div>
+          </div>
+        </div>
+        <!--Nickname-->
+        <div class="nick flex">
+          <p>큐레이터명</p>
+          <div class="span">
+            <div class="nick2">Nickname</div>
+            <div class="flex">
+              <img class="icon" src="@/assets/icon/Flag-Triangular-Line.png" alt="nick">
+              <input placeholder="Nickname">
+            </div>
+          </div>
+        </div>
 
-</div>
+
+      </div>
+    </div>
+    <!--send button-->
+    <div class="send-button-wrapper">
+      <button class="send-button" type="submit">변경 완료</button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -22,9 +92,10 @@ export default {
 </script>
 
 <style scoped>
-.myprofile-page{
+.myprofile-page {
   width: 100%;
 }
+
 header {
   height: 160px;
   width: 100%;
@@ -34,6 +105,7 @@ header {
   justify-content: center;
 
 }
+
 .myprofile-p {
   width: 90%;
   max-width: 1200px;
@@ -45,7 +117,8 @@ header {
   justify-content: center;
 
 }
-.snutlogo-text{
+
+.snutlogo-text {
   width: 113px;
   height: 39px;
   position: absolute;
@@ -54,6 +127,7 @@ header {
   justify-content: center;
   text-align: center;
 }
+
 .text-myprofile {
   display: flex;
   position: relative;
@@ -63,6 +137,110 @@ header {
   font-size: 40px;
   letter-spacing: 0.1em;
   color: #F6F6F6;
+}
+.profile-wrapper{
+  display: flex;
+  align-items: center;
+  width: 1000px;
+  height: 620px;
+  margin: 120px auto 40px auto;
+}
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  width: 1000px;
+  height: 620px;
+  background: #F7F7F7;
+  border: 1px solid #707070;
+  border-radius: 12px;
+  box-sizing: border-box;
+  justify-content: center;
+}
+
+input:focus {
+  outline: none;
+}
+
+input {
+  color: #868686;
+  flex: none;
+  order: 0;
+  flex-grow: 1;
+  height: 38px;
+  border: none;
+  font-size: 16px;
+  background: #F7F7F7;
+  margin-bottom: 3px;
 
 }
+
+.span {
+  display: block;
+  border-bottom: 1px solid #000000;
+  margin-left: 50px;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.flex > p {
+  width: 200px;
+  margin-left: 50px;
+}
+.profile{
+  margin-bottom: 30px;
+}
+.repw{
+  margin-bottom: 30px;
+}
+.mail{
+  margin-bottom: 30px;
+}
+.mobile{
+  margin-bottom: 30px;
+}
+.nick{
+  margin-bottom: 30px;
+}
+.pic-bu{
+  display: flex;
+  margin-left: 40px;
+  align-items: center;
+
+}
+.pf-bu{
+  width: 100px;
+  height: 30px;
+  background: #FFFFFF;
+  border-radius: 50px;
+  box-shadow: none;
+  outline: none;
+  border: none;
+}
+.icon{
+  margin-right: 10px;
+}
+.send-button-wrapper{
+  width:100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.send-button{
+  display: flex;
+  position: relative;
+  width: 385px;
+  height: 62px;
+  background: #DC8552;
+  justify-content: center;
+  border: none;
+  align-items: center;
+  margin-bottom: 120px;
+  font-size: 16px;
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
 </style>
