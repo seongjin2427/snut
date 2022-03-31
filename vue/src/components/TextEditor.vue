@@ -1,6 +1,9 @@
-<template :style="{width: width+'px', height: height+'px'}" >
+<template>
   <div v-if="editor">
-    <div class="text-editor-btn-area">
+    
+      <button @click="sample()">테스트</button>
+
+    <div class="text-editor-btn-area" v-if="toolBar">
       <button @click="editor.chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }">
         <img src="https://img.icons8.com/fluency-systems-regular/344/bold.png" alt="bold">
       </button>
@@ -10,7 +13,9 @@
       <button @click="editor.chain().focus().toggleStrike().run()" :class="{ 'is-active': editor.isActive('strike') }">
         <img src="https://img.icons8.com/material-rounded/344/strikethrough.png" alt="strike">
       </button>
-      &nbsp;
+
+      <img src="https://img.icons8.com/material-rounded/344/vertical-line.png" alt="vertical_bar">
+
       <button @click="editor.chain().focus().toggleHeading({ level: 1 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }">
         <img src="https://img.icons8.com/material-rounded/344/header-1.png" alt="h1">
       </button>
@@ -20,14 +25,18 @@
       <button @click="editor.chain().focus().toggleHeading({ level: 3 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 3 }) }">
         <img src="https://img.icons8.com/material-rounded/344/header-3.png" alt="h3">
       </button>
-      &nbsp;
+
+      <img src="https://img.icons8.com/material-rounded/344/vertical-line.png" alt="vertical_bar">
+
       <button @click="editor.chain().focus().toggleBulletList().run()" :class="{ 'is-active': editor.isActive('bulletList') }">
         <img src="https://img.icons8.com/material-rounded/344/list.png" alt="bullet-list">
       </button>
       <button @click="editor.chain().focus().toggleOrderedList().run()" :class="{ 'is-active': editor.isActive('orderedList') }">
         <img src="https://img.icons8.com/material-rounded/344/numbered-list.png" alt="ordered-list">
       </button>
-      &nbsp;
+
+      <img src="https://img.icons8.com/material-rounded/344/vertical-line.png" alt="vertical_bar">
+
       <button @click="editor.chain().focus().setTextAlign('left').run()" :class="{ 'is-active': editor.isActive({ textAlign: 'left' }) }">
         <img src="https://img.icons8.com/material-rounded/344/align-left.png" alt="left">
       </button>
@@ -40,7 +49,8 @@
       <button @click="editor.chain().focus().setTextAlign('justify').run()" :class="{ 'is-active': editor.isActive({ textAlign: 'justify' }) }">
         <img src="https://img.icons8.com/material-rounded/344/align-justify.png" alt="justify">
       </button>
-      &nbsp;
+      
+      <img src="https://img.icons8.com/material-rounded/344/vertical-line.png" alt="vertical_bar">
 
       <button @click="editor.chain().focus().toggleCodeBlock().run()" :class="{ 'is-active': editor.isActive('codeBlock') }">
         <img src="https://img.icons8.com/material-outlined/344/code.png" alt="code-block">
@@ -59,12 +69,14 @@
         <img src="https://img.icons8.com/material-rounded/344/image.png" alt="image">
       </button>
 
+      <img src="https://img.icons8.com/material-rounded/344/vertical-line.png" alt="vertical_bar">
+
       <input
       class="text-editor-color-peeker"
       type="color"
       @input="editor.chain().focus().setColor($event.target.value).run()"
-      :value="editor.getAttributes('textStyle').color"
-    >
+      :value="editor.getAttributes('textStyle').color">
+
     </div>
   </div>
   <editor-content :editor="editor" />
@@ -76,6 +88,7 @@ import Image from '@tiptap/extension-image'
 import StarterKit from '@tiptap/starter-kit'
 import TextStyle from '@tiptap/extension-text-style'
 import { Color } from '@tiptap/extension-color'
+import TextAlign from '@tiptap/extension-text-align'
 
 export default {
   components: {
@@ -85,10 +98,11 @@ export default {
   data() {
     return {
       editor: null,
+      content2: 'aa',
+      toolBar: true
+      
     }
   },
-
-  props: ['width', 'height'],
 
   methods: {
     addImage() {
@@ -98,6 +112,12 @@ export default {
         this.editor.chain().focus().setImage({ src: url }).run()
       }
     },
+    sample() {
+      // this.editor.isEditable == true ? this.editor.setEditable(false) : this.editor.setEditable(true);
+      // console.log(this.editor.getHTML());
+      // this.content2 = this.editor.getHTML()
+      
+    }
   },
 
   mounted() {
@@ -107,37 +127,11 @@ export default {
         Image,
         Color,
         TextStyle,
+        TextAlign.configure({
+          types: ['heading', 'paragraph'],
+        }),
       ],
-      content: `
-        <h2>
-          Hi there,
-        </h2>
-        <p>
-          this is a <em>basic</em> example of <strong>tiptap</strong>. Sure, there are all kind of basic text styles you’d probably expect from a text editor. But wait until you see the lists:
-        </p>
-        <ul>
-          <li>
-            That’s a bullet list with one …
-          </li>
-          <li>
-            … or two list items.
-          </li>
-        </ul>
-        <p>
-          Isn’t that great? And all of that is editable. But wait, there’s more. Let’s try a code block:
-        </p>
-        <pre><code class="language-css">body {
-  display: none;
-}</code></pre>
-        <p>
-          I know, I know, this is impressive. It’s only the tip of the iceberg though. Give it a try and click a little bit around. Don’t forget to check the other examples too.
-        </p>
-        <blockquote>
-          Wow, that’s amazing. Good work, boy! 👏
-          <br />
-          — Mom
-        </blockquote>
-      `,
+      content: this.content2
     })
   },
 
@@ -155,14 +149,9 @@ export default {
   border-bottom: 1px solid black;
   padding-bottom: 10px;
 }
-.text-editor-color-peeker {
-  width: 50px;
-  height: 34px;
-  background: white;
-  border: none;
-  border-radius: 5px;
-  margin: 0 2px;
-  padding: 3px;
+.text-editor-btn-area > img {
+  width: 30px;
+  height: 40px; 
 }
 .text-editor-btn-area button {
   background: white;
@@ -178,6 +167,16 @@ button img {
   width: 24px;
   height: 24px;
   object-fit: cover;
+}
+
+.text-editor-color-peeker {
+  width: 50px;
+  height: 40px;
+  background: white;
+  border: 1px border solid;
+  border-radius: 5px;
+  margin: 0 2px;
+  padding: 3px;
 }
 
 // 에디터 관련 구간 

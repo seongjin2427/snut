@@ -7,6 +7,8 @@
         </div>
         <div class="make-note-header">
           <common-button 
+              ref="makeNoteBtn"
+              @click="btnMethod($event, btn, idx)"
               v-for="(btn, idx) in btnSet"
               width="150" 
               height="40" 
@@ -34,15 +36,18 @@
             <div class="write-area">
               
               <div class="write-area-with-pic" v-if="withPic">
-                <div class="piture-div">
+                <div class="piture-div" @click="openModal()">
+                  <!-- <img src="https://www.gcf.or.kr/design/default/images/subpage/sub1417_space1_slide1.jpg" alt=""> -->
                 </div>
                 <div class="write-div">
-                  
+                  <input type="text" placeholder="Title:" v-model="contentsWithPic.title">
+                  <textarea name="" id="" cols="30" rows="10" maxlength="500" placeholder="Contents"
+                  v-model="contentsWithPic.contents"/>
                 </div>
               </div>
               <div class="write-area-with-nonpic" v-if="!withPic">
                 <div class="write-div nonpic">
-                  <TipTap width="2000" height="5000" />
+                  <TipTap />
                 </div>
               </div>
             </div>
@@ -63,6 +68,7 @@
       
       <footer>
         <main-footer/>
+        <drag-and-drop-modal ref="dndModal" />
       </footer>
 
     </div>
@@ -73,10 +79,10 @@
 import CommonButton from '@/components/CommonButton.vue';
 import MainFooter from '@/components/MainFooter.vue'
 import TipTap from '@/components/TextEditor.vue'
-
+import DragAndDropModal from '@/components/DragAndDropModal.vue'
 
 export default {
-  components: { CommonButton, MainFooter, TipTap },
+  components: { CommonButton, MainFooter, TipTap, DragAndDropModal },
   name: "MakeNote",
   data() {
     return {
@@ -129,10 +135,18 @@ export default {
           content: ''
         },
       ],
-      withPic: true
+      openBool: true,
+      withPic: true,
+      contentsWithPic: {
+        title: '',
+        contents: ''
+      }
     }
   },
   methods: {
+    openModal() {
+      this.$refs.dndModal.openModal();
+    },
     inputAutoWidth(e, idx) {
       console.log(e, idx);
       e.target.style.width = 100 + (16 * e.target.value.length)+'px';
@@ -143,6 +157,32 @@ export default {
     },
     withPicEvent(id) {
       id == 1 ? this.withPic = false : this.withPic = true;
+    },
+    btnMethod(e, btn) {
+      console.log("btn", btn);
+      if(btn.id == 1) {
+        console.log("저장을 눌렀다!")
+        } else if (btn.id == 2 ) {
+          this.contentsWithPic.title = '';
+          this.contentsWithPic.contents = '';
+          console.log("글쓰기 취소를 눌렀다!")
+      } else if (btn.id == 3) {
+        console.log(this.contentsWithPic)
+        console.log("임시저장을 눌렀다!")
+      } else { 
+        this.openBoolToggle(e, btn.id);
+      }
+    },
+    openBoolToggle(e, idx) {
+      if (idx == 4) {
+        this.openBool = true;
+        e.target.style.background = 'lightgrey';
+        e.target.nextSibling.style.background = 'white';
+      } else if (idx == 5) {
+        this.openBool = false;
+        e.target.style.background = 'lightgrey';
+        e.target.previousSibling.style.background = 'white';
+      }
     }
   }
 }
@@ -191,7 +231,7 @@ header {
   max-width: 1200px;
   height: 800px;
   padding: 0 50px;
-  background: white;
+  background: #F6F6F6;
   border: 1px solid black;
   border-radius: 12px;
 }
@@ -227,11 +267,37 @@ header {
   background: blue;
 }
 .write-div {
-  width: 460px;
-  height: 420px;
+  width: 420px;
+  height: 400px;
   border-radius: 12px;
-  padding: 40px 20px;
+  padding: 50px 40px;
+  background: #FFFFFF;
+  display: flex;
+  flex-direction: column;
 }
+.write-div * {
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight:normal;
+}
+.write-div *:focus {
+  outline: none;
+}
+.write-div *::placeholder {
+  color: #666666;
+}
+.write-div input{
+  padding-bottom: 5px;
+  border-bottom: 1px solid #C4C4C4;
+}
+.write-div textarea {
+  margin-top: 50px;
+  margin-bottom: 20px;
+  height: 380px;
+  resize: none;
+}
+
 .nonpic {
   width: 1060px;
   height: 460px;
