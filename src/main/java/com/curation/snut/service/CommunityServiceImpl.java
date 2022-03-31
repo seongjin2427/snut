@@ -11,7 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class CommunityServiceImpl implements CommunityService {
     @Autowired
     private CommunityRepository communityRepository;
@@ -34,6 +37,24 @@ public class CommunityServiceImpl implements CommunityService {
     @Override
     public void delete(Long id) {
         communityRepository.deleteById(id);
+    }
+
+    @Override
+    public List<CommunityDTO> searchTitle(String searchTitle) {
+        List<Community> communityList = communityRepository.findByTitleContaining(searchTitle);
+        List<CommunityDTO> communityDTOList = communityList.stream()
+                .map(community -> entityToDTO(community)).collect(Collectors.toList());
+        return communityDTOList;
+    }
+
+    @Override
+    public List<CommunityDTO> communityListWithCnt() {
+        List<Object[]> result = communityRepository.countList();
+        // for (Object[] objects : result) {
+        // System.out.println(objects[0]);
+
+        // }
+        return null;
     }
 
 }

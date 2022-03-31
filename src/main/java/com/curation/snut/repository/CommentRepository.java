@@ -33,4 +33,8 @@ public interface CommentRepository extends JpaRepository<CommunityComment, Long>
     @Transactional
     @Query("delete from CommunityComment c where c.communityName.no = :no")
     void deleteAllCommunutyComment(Long no);
+
+    @Query("select COUNT(c) from CommunityComment c where c.communityName.no = :no")
+    Long commentCnt(Long no);
+
 }

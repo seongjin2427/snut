@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.curation.snut.dto.CommentDTO;
-import com.curation.snut.entity.Community;
 import com.curation.snut.entity.CommunityComment;
 import com.curation.snut.repository.CommentRepository;
 
@@ -66,4 +65,8 @@ public class CommentServiceImpl implements CommentService {
 
     }
 
+    @Override
+    public Long commnetCnt(Long no) {
+        return commentRepository.commentCnt(no);
+    }
 }

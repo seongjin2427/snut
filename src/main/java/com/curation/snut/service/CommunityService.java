@@ -12,6 +12,10 @@ public interface CommunityService {
 
     public List<CommunityDTO> CommunityList();
 
+    public List<CommunityDTO> communityListWithCnt();
+
+    public List<CommunityDTO> searchTitle(String searchTitle);
+
     void write(CommunityDTO communityDTO);
 
     default Community dtoToEntity(CommunityDTO dto) {

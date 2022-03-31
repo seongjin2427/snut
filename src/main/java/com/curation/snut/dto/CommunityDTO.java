@@ -20,6 +20,8 @@ public class CommunityDTO {
     private String title;
     private String thumbnail;
     private Member creater;
+
+    private int replyCount;
     private LocalDateTime regDate;
     private LocalDateTime modDate;
 }

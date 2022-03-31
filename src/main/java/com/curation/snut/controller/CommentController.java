@@ -63,6 +63,9 @@ public class CommentController {
         model.addAttribute("nowPage", nowPage);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
+
+        model.addAttribute("cnt", commentService.commnetCnt(no));
+
         return "comment.html";
     }
 

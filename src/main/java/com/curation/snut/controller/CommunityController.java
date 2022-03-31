@@ -24,9 +24,14 @@ public class CommunityController {
     private final CommentService commentService;
 
     @GetMapping("/communityList")
-    public String CList(Model model) {
-        List<CommunityDTO> CommunityList = communityService.CommunityList();
-        model.addAttribute("cList", CommunityList);
+    public String CList(Model model, String searchTitle) {
+        if (searchTitle != null) {
+            List<CommunityDTO> searchCommunityList = communityService.searchTitle(searchTitle);
+            model.addAttribute("cList", searchCommunityList);
+        } else {
+            // List<CommunityDTO> communityList = communityService.CommunityList();
+            // model.addAttribute("cList", communityList);
+        }
         return "communityList.html";
     }
 
