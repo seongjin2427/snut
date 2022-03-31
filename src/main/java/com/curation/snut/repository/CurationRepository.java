@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.curation.snut.dto.CurationDTO;
 import com.curation.snut.entity.Curation;
 
 import org.springframework.data.domain.Page;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface CurationRepository extends JpaRepository<Curation, Long> {
 
@@ -25,5 +27,7 @@ public interface CurationRepository extends JpaRepository<Curation, Long> {
     @Transactional
     @Query("select curationNo from Curation c where c.curationNo= :id and c.curationNo is null")
     Long searchCuration(Long id);
+
+    Object getCurationByCurationNo(@Param("curationNo") Long curationNo);
 
 }

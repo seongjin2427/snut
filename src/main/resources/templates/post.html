@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,6 +7,24 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <table>
+        <tbody>
+        <tr th:each="cuList: ${cuList}">
+            <td>
+             작성자  <a th:text="${cuList.email}"></a>
+            </td>
+            <td>
+               제목 <a th:text="${cuList.curationTitle}"></a>
+            </td>
+            <td>
+               내용<a th:text="${cuList.curationText}"></a>
+            </td>
+        </tr>   
+        <!-- <td>
+            <a th:href="@{/post/modify(id=${cuList.curationNo})}">수정(미구현)</a>
+        </td> -->
+    </table>
+</tbody>
+
 </body>
 </html>

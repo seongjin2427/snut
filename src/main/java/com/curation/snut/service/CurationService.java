@@ -13,9 +13,15 @@ import org.springframework.stereotype.Service;
 public interface CurationService {
     public List<CurationDTO> CuList();
 
+    CurationDTO getCuration(Long curationNo);
+
     void write(CurationDTO curationDTO);
 
+    void modify(CurationDTO curationDTO);
+
     void delete(Long id);
+
+    void read(CurationDTO curationDTO);
 
     default Curation dtoToEntity(CurationDTO dto) {
         Member member = Member.builder()
@@ -34,7 +40,6 @@ public interface CurationService {
     }
 
     default CurationDTO entityToDTO(Curation curation) {
-
         CurationDTO curationDTO = CurationDTO.builder()
                 .curationNo(curation.getCurationNo())
                 .curationText(curation.getCurationText())

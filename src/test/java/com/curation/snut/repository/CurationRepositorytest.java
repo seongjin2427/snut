@@ -1,9 +1,12 @@
 package com.curation.snut.repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.curation.snut.dto.CurationDTO;
 import com.curation.snut.entity.Curation;
 import com.curation.snut.entity.Member;
+import com.curation.snut.service.CurationService;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,9 @@ public class CurationRepositorytest {
 
     @Autowired
     CurationRepository curationRepository;
+
+    @Autowired
+    CurationService curationService;
 
     @Test
     public void insertCuration() {
@@ -36,26 +42,4 @@ public class CurationRepositorytest {
         curationRepository.save(curation);
     }
 
-    @Test
-    public void sampleTest() {
-
-        // IntStream.rangeClosed(1, 100).forEach(i -> {
-
-        // Curation curation = Curation.builder()
-        // .curationNo((long) i)
-        // .curationText("text" + i)
-        // .curationTitle("title..." + i)
-        // .open(true)
-        // .writer(Member.builder().email("email" + i).build())
-        // .build();
-
-        // log.info(curation);
-        // });
-
-        curationRepository.findAll();
-
-        List<Curation> cuList = curationRepository.findAll();
-        log.info("cuList............" + cuList);
-
-    }
 }

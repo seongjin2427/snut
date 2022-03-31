@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko"  xmlns:th="http://www.thymeleaf.org"></html>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,15 +9,23 @@
 <body>
     <table>
         <tbody>
+            <tr>
+                <td>
+                 글번호   
+                </td>
+                <td>
+                    제목
+                </td>
+            </tr>
             <tr th:each="cuList: ${cuList}">
                 <!-- <td>
                     image
                 </td> -->
                 <td>
-                    <a th:text="${cuList.curationTitle}"></a>
+                    <a th:text="${cuList.curationNo}"></a>
                 </td>
                 <td>
-                    <a th:href="@{/list/modify(id=${cuList.curationNo})}">수정(미구현)</a>
+                    <a th:text="${cuList.curationTitle}" href='post?curationNo=${curationDTO.curationNo}'></a>
                 </td>
                 <td>
                     <a th:href="@{/list/delete(id=${cuList.curationNo})}">삭제</a>
