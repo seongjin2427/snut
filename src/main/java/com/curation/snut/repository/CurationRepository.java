@@ -1,10 +1,7 @@
 package com.curation.snut.repository;
 
-import java.util.List;
-
 import javax.transaction.Transactional;
 
-import com.curation.snut.dto.CurationDTO;
 import com.curation.snut.entity.Curation;
 
 import org.springframework.data.domain.Page;

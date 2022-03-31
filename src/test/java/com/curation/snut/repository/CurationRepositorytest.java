@@ -2,6 +2,7 @@ package com.curation.snut.repository;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import com.curation.snut.dto.CurationDTO;
 import com.curation.snut.entity.Curation;
@@ -42,4 +43,31 @@ public class CurationRepositorytest {
         curationRepository.save(curation);
     }
 
+    @Test
+    public void sampleTest() {
+
+        IntStream.rangeClosed(1, 100).forEach(i -> {
+
+            Curation curation = Curation.builder()
+                    .curationNo((long) i)
+                    .curationText("text" + i)
+                    .curationTitle("title..." + i)
+                    .open(true)
+                    .writer(Member.builder().email("email" + i).build())
+                    .build();
+
+            log.info(curation);
+        });
+
+        curationRepository.findAll();
+
+        List<Curation> cuList = curationRepository.findAll();
+        log.info("cuList............" + cuList.getClass());
+        log.info("cuList............" + cuList);
+
+        List<CurationDTO> curationDTOList = cuList.stream()
+                .map(curation -> curationService.entityToDTO(curation)).collect(Collectors.toList());
+        log.info("cuList............" + curationDTOList);
+
+    }
 }

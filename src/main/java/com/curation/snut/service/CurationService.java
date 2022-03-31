@@ -21,8 +21,6 @@ public interface CurationService {
 
     void delete(Long id);
 
-    void read(CurationDTO curationDTO);
-
     default Curation dtoToEntity(CurationDTO dto) {
         Member member = Member.builder()
                 .email(dto.getEmail())

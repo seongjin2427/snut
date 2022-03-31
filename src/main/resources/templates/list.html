@@ -11,10 +11,10 @@
         <tbody>
             <tr>
                 <td>
-                 글번호   
+                 no 
                 </td>
                 <td>
-                    제목
+                title
                 </td>
             </tr>
             <tr th:each="cuList: ${cuList}">
@@ -25,7 +25,10 @@
                     <a th:text="${cuList.curationNo}"></a>
                 </td>
                 <td>
-                    <a th:text="${cuList.curationTitle}" href='post?curationNo=${curationDTO.curationNo}'></a>
+                    <a th:text="${cuList.email}"></a>
+                </td>
+                <td>
+                    <a th:text="${cuList.curationTitle}" th:href="@{/read(curationNo=${cuList.curationNo})}" ></a>
                 </td>
                 <td>
                     <a th:href="@{/list/delete(id=${cuList.curationNo})}">삭제</a>
@@ -39,7 +42,7 @@
             <input type="text" name="email" placeholder="writerEmail">
             <input type="text" name="curationTitle" placeholder="curationTitle">
             <input type="text" name="curationText" placeholder="curationText">
-            <button type="submit">작성</button>
+            <button type="submit">write</button>
         </form>
     </div>
 </body>

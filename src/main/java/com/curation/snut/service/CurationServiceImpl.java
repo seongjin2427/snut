@@ -4,14 +4,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import com.curation.snut.dto.CurationDTO;
 import com.curation.snut.entity.Curation;
 import com.curation.snut.repository.CurationRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -44,6 +43,7 @@ public class CurationServiceImpl implements CurationService {
         if (result.isPresent()) {
             Curation curation = result.get();
             curation.changeCurationTitle(dto.getCurationTitle());
+            curation.changeCurationText(dto.getCurationText());
             curationRepository.save(curation);
         }
     }
@@ -56,14 +56,18 @@ public class CurationServiceImpl implements CurationService {
 
     @Override
     public CurationDTO getCuration(Long curationNo) {
-        // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        return null;// null이면 안됨. 마저완성할것
-        // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        Curation curation = curationRepository.findById(curationNo).orElseThrow();
+
+        CurationDTO curationDTO = entityToDTO(curation);
+        // CurationDTO.setNickName(nickname);
+
+        return curationDTO;
+
     }
 
-    @Override
-    public void read(CurationDTO curationDTO) {
-
-    }
+    // @Override
+    // public void read(CurationDTO curationDTO) {
+    // return;
+    // }
 
 }

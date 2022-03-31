@@ -1,12 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
-</html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+    <h1>Modify Page</h1>
+    <form id="frm" th:action="@{/modify}" th:method="post">
+      <div >
+        <label>curationNo</label>
+        <input type="text" class="form-control" name="curationNo" th:value="${cuList.curationNo}" readonly />
+    </div>
+    <div>
+      <label>email</label>
+      <input type="text" class="form-control" name="email" th:value="${cuList.email}" readonly />
+    </div>
+      <div >
+        <label>Title</label>
+        <input type="text" class="form-control" name="curationTitle" th:value="${cuList.curationTitle}" />
+      </div>
+      <div>
+        <label>text</label>
+        <input type="text" class="form-control" name="curationText" th:value="${cuList.curationText}"  /><br>
+    </div>
+       <input type="submit" value="수정" th:href="@{/read(curationNo=${cuList.curationNo})}">
+      
+
+    </form>
