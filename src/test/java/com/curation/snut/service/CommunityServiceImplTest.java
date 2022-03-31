@@ -2,9 +2,10 @@ package com.curation.snut.service;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import com.curation.snut.dto.CommunityDTO;
+import com.curation.snut.entity.Community;
 import com.curation.snut.repository.CommunityRepository;
 
 import org.junit.jupiter.api.Test;
@@ -18,14 +19,11 @@ public class CommunityServiceImplTest {
     @Autowired
     CommunityRepository communityRepository;
 
+    @Autowired
+    CommunityService communityService;
+
     @Test
     @Transactional
     void testCommunityListWithCnt() {
-        List<Object[]> result = communityRepository.countList();
-
-        for (Object[] objects : result) {
-            System.out.println(Arrays.toString(objects));
-        }
-
     }
 }

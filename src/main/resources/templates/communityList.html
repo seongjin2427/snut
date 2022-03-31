@@ -19,7 +19,7 @@
                 <td>
                     <a th:text="${cList.title}" th:href="@{/comment(no=${cList.no})}"></a>
                 </td>
-                <td th:text="${cList.no}"></td>
+                <td th:text="${cList.replyCount}"></td>
                 <td>
                     <a th:href="@{/communityList/delete(id=${cList.no})}">삭제</a>
                 </td>

@@ -45,4 +45,18 @@ public interface CommunityService {
 
         return communityDTO;
     }
+
+    default CommunityDTO entityToDTO(Community community, Long replyCount) {
+        CommunityDTO communityDTO = CommunityDTO.builder()
+                .no(community.getNo())
+                .title(community.getTitle())
+                .thumbnail(community.getThumbnail())
+                .creater(community.getCreater())
+                .replyCount(replyCount.intValue())
+                .regDate(community.getRegDate())
+                .modDate(community.getModDate())
+                .build();
+
+        return communityDTO;
+    }
 }

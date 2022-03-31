@@ -29,8 +29,8 @@ public class CommunityController {
             List<CommunityDTO> searchCommunityList = communityService.searchTitle(searchTitle);
             model.addAttribute("cList", searchCommunityList);
         } else {
-            // List<CommunityDTO> communityList = communityService.CommunityList();
-            // model.addAttribute("cList", communityList);
+            List<CommunityDTO> list = communityService.communityListWithCnt();
+            model.addAttribute("cList", list);
         }
         return "communityList.html";
     }

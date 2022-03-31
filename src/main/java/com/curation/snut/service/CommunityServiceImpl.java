@@ -1,6 +1,7 @@
 package com.curation.snut.service;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.curation.snut.dto.CommunityDTO;
@@ -41,20 +42,21 @@ public class CommunityServiceImpl implements CommunityService {
 
     @Override
     public List<CommunityDTO> searchTitle(String searchTitle) {
-        List<Community> communityList = communityRepository.findByTitleContaining(searchTitle);
+        List<Object[]> communityList = communityRepository.findByTitleContaining(searchTitle);
         List<CommunityDTO> communityDTOList = communityList.stream()
-                .map(community -> entityToDTO(community)).collect(Collectors.toList());
+                .map(entity -> entityToDTO((Community) entity[0], (Long) entity[1])).collect(Collectors.toList());
         return communityDTOList;
     }
 
     @Override
     public List<CommunityDTO> communityListWithCnt() {
-        List<Object[]> result = communityRepository.countList();
-        // for (Object[] objects : result) {
-        // System.out.println(objects[0]);
+        List<Object[]> communityData = communityRepository.countList();
 
-        // }
-        return null;
+        List<CommunityDTO> result = communityData.stream()
+                .map(entity -> entityToDTO((Community) entity[0], (Long) entity[1]))
+                .collect(Collectors.toList());
+
+        return result;
     }
 
 }
