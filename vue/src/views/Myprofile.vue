@@ -13,6 +13,7 @@
     </header>
     <!--  profile form -->
     <div class="profile-wrapper">
+      <div class="profile-form-wrapper">
       <div class="profile-form">
         <!--form inside-->
         <!--profile-->
@@ -57,10 +58,10 @@
           <p>핸드폰 번호</p>
           <div class="span">
             <div class="mobile2">Mobile</div>
-                <div class="flex">
-            <img class="icon" src="@/assets/icon/Call-Line.png" alt="mobile">
-            <input placeholder="Mobile">
-                </div>
+            <div class="flex">
+              <img class="icon" src="@/assets/icon/Call-Line.png" alt="mobile">
+              <input placeholder="Mobile">
+            </div>
           </div>
         </div>
         <!--Nickname-->
@@ -74,20 +75,56 @@
             </div>
           </div>
         </div>
-
+        <!--탈퇴 버튼-->
+      </div>
 
       </div>
+      <div class="btn-area"/>
+        <CommonButton buttonName="탈퇴" width="150" height="40" @click="quit()"/>
+      </div>
+      <small-modal ref="modal" :modalBtnData="modalBtnData" smallModal="정말 스넛 이용을 그만하실건가요?">
+
+      </small-modal>
     </div>
     <!--send button-->
     <div class="send-button-wrapper">
       <button class="send-button" type="submit">변경 완료</button>
     </div>
-  </div>
+
 </template>
 
 <script>
+import CommonButton from "@/components/CommonButton.vue";
+import SmallModal from "@/components/SmallModal";
+
 export default {
-  name: "Myprofile-page"
+  name: "Myprofile-page",
+  components:{ CommonButton, SmallModal },
+  props:['quitData'],
+  data(){
+    return{
+      modalBtnData: [
+        {
+          name: '네',
+          background: 'white',
+          color:'black'
+        },{
+          name: '아니오',
+          background: 'white',
+          color:'black'
+        }
+
+        ]
+    }
+  },
+
+  methods:{
+    quit(){
+      console.log();
+      this.$refs.modal.openModal();
+    }
+  }
+
 }
 </script>
 
@@ -138,22 +175,27 @@ header {
   letter-spacing: 0.1em;
   color: #F6F6F6;
 }
-.profile-wrapper{
+
+.profile-wrapper {
   display: flex;
+  flex-direction: column;
   align-items: center;
   width: 1000px;
-  height: 620px;
+  height: 700px;
+  background: #F7F7F7;
+  border: 1px solid #707070;
+  border-radius: 12px;
+  box-sizing: border-box;
   margin: 120px auto 40px auto;
+}
+.profile-form-wrapper{
+
 }
 .profile-form {
   display: flex;
   flex-direction: column;
   width: 1000px;
   height: 620px;
-  background: #F7F7F7;
-  border: 1px solid #707070;
-  border-radius: 12px;
-  box-sizing: border-box;
   justify-content: center;
 }
 
@@ -189,28 +231,35 @@ input {
   width: 200px;
   margin-left: 50px;
 }
-.profile{
+
+.profile {
   margin-bottom: 30px;
 }
-.repw{
+
+.repw {
   margin-bottom: 30px;
 }
-.mail{
+
+.mail {
   margin-bottom: 30px;
 }
-.mobile{
+
+.mobile {
   margin-bottom: 30px;
 }
-.nick{
+
+.nick {
   margin-bottom: 30px;
 }
-.pic-bu{
+
+.pic-bu {
   display: flex;
   margin-left: 40px;
   align-items: center;
 
 }
-.pf-bu{
+
+.pf-bu {
   width: 100px;
   height: 30px;
   background: #FFFFFF;
@@ -219,16 +268,19 @@ input {
   outline: none;
   border: none;
 }
-.icon{
+
+.icon {
   margin-right: 10px;
 }
-.send-button-wrapper{
-  width:100%;
+
+.send-button-wrapper {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.send-button{
+
+.send-button {
   display: flex;
   position: relative;
   width: 385px;

@@ -5,7 +5,7 @@
     </div>
     <ul>
       <li><router-link to="/mcol/main">MY COLLECTION</router-link></li>
-      <li>COMMUNITY</li>
+      <li><router-link to="/com">COMMUNITY</router-link></li>
       <li><router-link to="/mc">MY PAGE</router-link></li>
       <li><router-link to="/ab">ABOUT</router-link></li>
     </ul>
