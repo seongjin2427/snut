@@ -10,9 +10,9 @@
         </div>
         <div class="button-area">
           <input type="button" value="test" @click="sample">
-
-          <common-button buttonName="Log out" width="80" height="35" marginTop="5" marginRight="20" v-if="loginBool" />
-          <common-button buttonName="Log in" width="80" height="35" marginTop="5" marginRight="20" v-if="!loginBool" />
+          <common-button buttonName="Log out" width="80" height="35" marginTop="5" marginRight="20" v-if="loginBool"/>
+          <common-button buttonName="Log in" width="80" height="35" marginTop="5" marginRight="20" v-if="!loginBool"
+                         @click="gotoLogin"/>
           <common-button buttonName="Register" width="80" height="35" marginTop="5" marginRight="42" />
           <img src="@/assets/btn_hamburger.png" alt="nav_btn" @click="openNavBar">
         </div>
@@ -113,6 +113,9 @@ export default {
         }
       });
     },
+    gotoLogin(){
+      this.$router.push('/logi')
+    },
     createDummies(store, start) {
       for(var i = 0; i < 5; i++) {
         var random = Math.floor(Math.random()*10);
@@ -134,7 +137,8 @@ export default {
   created() {
     this.createDummies(this.sampleData, 1);
     this.createDummies(this.sampleData2, 6);
-  }
+  },
+
 }
 </script>
 
@@ -220,7 +224,7 @@ header {
 }
 /* 컬렉션 구간 */
 .main-col {
-  width: calc(100%-200px);
+  width: 1000px;
   max-width: 1200px;
   height: 420px;
   /* background: green; */

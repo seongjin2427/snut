@@ -12,6 +12,9 @@ import MyNote from "@/views/MyNote.vue";
 import Myprofile from "@/views/Myprofile";
 import Feedback from "@/views/Feedback";
 import MyCommunity from "@/views/MyCommunity";
+import Community from "@/views/Community";
+import CommunityInside from "@/views/CommunityInside.vue";
+import Login from "@/views/Login.vue";
 
 const routes = [
   {
@@ -66,16 +69,35 @@ const routes = [
   },
   {
     path:"/pf",
-    component: Myprofile
+    component: Myprofile,
+    name: Myprofile
   },
   {
     path:"/fb",
-    component: Feedback
+    component: Feedback,
+    name: Feedback
   },
   {
     path:"/mc",
-    component: MyCommunity
+    component: MyCommunity,
+    name: MyCommunity
+  },
+  {
+    path:"/com",
+    component: Community,
+    name: Community
+  },
+  {
+    path:"/com/in",
+    component: CommunityInside,
+    name: CommunityInside
+  },
+  {
+    path: "/logi",
+    component: Login,
+    name:Login
   }
+
 ];
 
 const router = createRouter({

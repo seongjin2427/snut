@@ -9,7 +9,10 @@
     borderRadius: borderRadius+'px',
     border: border,
     color: color,
-    margin: margin+'px'
+    margin: margin+'px',
+    fontWeight: fontWeight,
+    boxShadow: boxShadow
+
   }">
     {{ buttonName }}
   </div>
@@ -29,7 +32,10 @@ export default {
           'borderRadius',
           'border',
           'color',
-      'margin'
+          'margin',
+        'fontWeight',
+      'boxShadow'
+
         ]
 }
 </script>
@@ -37,7 +43,7 @@ export default {
 <style scoped>
 .button {  
   font-family: AlegreyaSans, sans-serif;
-  min-width: 80px;
+  /*min-width: 80px;*/
   min-height: 35px;
   display: flex;
   justify-content: center;

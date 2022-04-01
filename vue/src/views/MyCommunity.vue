@@ -103,7 +103,7 @@ export default {
         this.$refs.modal.openModal();
       }
     }
-  },
+  }
 
 }
 </script>
