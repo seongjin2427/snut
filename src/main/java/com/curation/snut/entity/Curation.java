@@ -1,11 +1,13 @@
 package com.curation.snut.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,6 +34,9 @@ public class Curation extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Member writer;
+
+    // @OneToMany(cascade = CascadeType.ALL, mappedBy = "curation")
+    // private List<HashtagVariable> hashtag;
 
     public void changeCurationTitle(String curationTitle) {
         this.curationTitle = curationTitle;

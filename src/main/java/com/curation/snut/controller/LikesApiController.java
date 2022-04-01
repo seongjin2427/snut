@@ -2,9 +2,8 @@
 
 // package com.curation.snut.controller;
 
-// import com.curation.snut.service.CuLikeService;
+// import com.curation.snut.service.CulikesService;
 
-// import org.springframework.http.HttpStatus;
 // import org.springframework.http.ResponseEntity;
 // import org.springframework.web.bind.annotation.PathVariable;
 // import org.springframework.web.bind.annotation.PostMapping;
@@ -16,17 +15,17 @@
 // @Slf4j
 // @RequiredArgsConstructor
 // @RestController
-// public class LikeApiController {
-// private final CuLikeService cuLikeService;
+// public class LikesApiController {
+// private final CulikesService cuLikesService;
 
-// @PostMapping("/cuLike/{curationNo}")
-// public ResponseEntity<String>addCuLike{
+// @PostMapping("/cuLikes/{curationNo}")
+// public ResponseEntity<String>addCuLikes{
 // @AuthenticationPrincipal MemberAdapter MemberAdapter,
 // @PathVariable Long curationNo){
-// bollean result =false;
+// boolean result =false;
 
 // if(MemberAdapter != null){
-// result = CuLikeService.addCuLike(MemberAdapter.getMember(),curationNo)''
+// result = CulikesService.addCuLikes(MemberAdapter.getMember(),curationNo)''
 // }
 // return result ?
 // new ResponseEntity<>(HttpStatus.OK)

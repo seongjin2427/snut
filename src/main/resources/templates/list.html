@@ -35,15 +35,42 @@
                 </td>
             </tr>
         </tbody>
+        
     </table>
-
-    <div>
-        <form action="/list" method="post">
-            <input type="text" name="email" placeholder="writerEmail">
-            <input type="text" name="curationTitle" placeholder="curationTitle">
-            <input type="text" name="curationText" placeholder="curationText">
-            <button type="submit">write</button>
-        </form>
+    <form name="search=form" autocomplete="off">
+        <select name="type">
+            <option>제목+내용+작성자</option>
+        </select>
+        <input type="text" name="keyword" value="">
+        <input type="button" onclick="getSearchList()" class="btn btn-outline-primary mr-2" value="검색">
+        <a href="/write"><button class=""btn btn-ouline-primary mr-3>글쓰기</button></a>
+    </form>
+    
     </div>
 </body>
+<script>
+    function getSearchList(){
+	$.ajax({
+		type: 'GET',
+		url : "/getSearchList",
+		data : $("form[name=search-form]").serialize(),
+		success : function(result){
+			//테이블 초기화
+			$('#boardtable > tbody').empty();
+			if(result.length>=1){
+				result.forEach(function(item){
+					str='<tr>'
+					str += "<td>"+item.idx+"</td>";
+					str+="<td>"+item.writer+"</td>";
+					str+="<td><a href = '/board/detail?idx=" + item.idx + "'>" + item.title + "</a></td>";
+					str+="<td>"+item.date+"</td>";
+					str+="<td>"+item.hit+"</td>";
+					str+="</tr>"
+					$('#boardtable').append(str);
+        		})				 
+			}
+		}
+	})
+}
+</script>
 </html>

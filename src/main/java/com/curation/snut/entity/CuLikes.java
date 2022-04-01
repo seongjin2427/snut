@@ -20,7 +20,7 @@
 // @Table(name = "likes")
 // @Entity
 
-// public class CuLike {
+// public class CuLikes {
 
 // @Id
 // @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +32,7 @@
 // @ManyToOne(fetch = FetchType.LAZY)
 // private Member member;
 
-// public CuLike(Curation curation, Member member) {
+// public CuLikes(Curation curation, Member member) {
 // this.curation = curation;
 // this.member = member;
 // }

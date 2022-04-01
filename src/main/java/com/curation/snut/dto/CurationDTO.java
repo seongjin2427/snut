@@ -22,5 +22,8 @@ public class CurationDTO {
     private LocalDateTime regDate;
     private LocalDateTime modDate;
     private boolean open;
+    // 검색용
+    private String type;
+    private String keyword;
 
 }

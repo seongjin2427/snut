@@ -36,6 +36,9 @@
             <td>
                 <a th:text="${cuList.curationText}"></a>
             </td>
+            <!-- <td>
+                해시태그자리 링크걸고 검색되게
+            </td> -->
             <tr>
                 <tr>
                     <td>
@@ -45,7 +48,7 @@
                         <a th:href="@{/read/delete(id=${cuList.curationNo})}">삭제</a>
                     </td>
                     <td>
-                        <a href="/list">list</a>
+                        <a href="/list">목록</a>
                     </td>
                 </tr> 
             </tr>

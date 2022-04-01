@@ -26,5 +26,4 @@ public interface CurationRepository extends JpaRepository<Curation, Long> {
     Long searchCuration(Long id);
 
     Object getCurationByCurationNo(@Param("curationNo") Long curationNo);
-
 }

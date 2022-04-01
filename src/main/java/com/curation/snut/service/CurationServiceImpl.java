@@ -65,9 +65,4 @@ public class CurationServiceImpl implements CurationService {
 
     }
 
-    // @Override
-    // public void read(CurationDTO curationDTO) {
-    // return;
-    // }
-
 }

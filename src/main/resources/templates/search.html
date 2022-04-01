@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>search</title>
+</head>
+
+<body>
+    <form th:action="@{/search}" method="get" id="searchForm">
+        <div class="input-group">
+
+            <div class="input-group-prepend">
+                <select class="form-control custom-select" name="type">
+                    <option th:selected="${pageRequestDTO.type == null}">-------</option>
+                    <option value="tcw" th:selected="${pageRequestDTO.type == 'tcw'}">제목 + 내용 + 작성자</option>
+                </select>
+                <input id="srch" name="keyword" th:value="${pageRequestDTO.keyword}" class="form-control">
+                <input type="button" onclick="getSearchList()" class="" btn btn-ouline-primary mr-2 value="검색"></input>
+                <a href="/write"><button class="btn btn-outline-primary mr-3">글쓰기</button></a>
+            </div>
+    </form>
+</body>
+<script th:inline="javascript">
+    /*[+
+    var msg=[[${msg}]];
+    +]*/
+    if (msg) {
+        console.log(msg);
+        var bnum = msg.split(' ')[0];
+        var noti = msg.split(' ')[1];
+    }
+    var searchForm = document.querySelector("#searchForm");
+    document.querySelector(".searchBtn").onclick = function () {
+        searchForm.submit();
+    }
+    document.querySelector(".clearBtn").onclick = function () {
+        var sel = document.querySelector("#searchForm select");
+        var srch = document.querySelector("#srch");
+        sel.options[0].selected = true;
+        srch.value = "";
+        searchForm.submit();
+    }
+
+</script>
+
+</html>

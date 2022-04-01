@@ -1,9 +1,9 @@
 package com.curation.snut.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,8 +18,9 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @ToString
-public class Image{
+public class Image extends BaseEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ino;
 
     private String image;

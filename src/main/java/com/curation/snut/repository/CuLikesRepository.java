@@ -2,7 +2,7 @@
 
 // import java.util.Optional;
 
-// import com.curation.snut.entity.CuLike;
+// import com.curation.snut.entity.CuLikes;
 // import com.curation.snut.entity.Curation;
 // import com.curation.snut.entity.Member;
 
@@ -10,7 +10,7 @@
 // import org.springframework.transaction.annotation.Transactional;
 
 // @Transactional(readOnly = true)
-// public interface CuLikeRepository extends JpaRepository<CuLike,Long>{
-// Optional<CuLike> findByMemberAndCuration(Member member,Curation curation);
+// public interface CuLikesRepository extends JpaRepository<CuLikes,Long>{
+// Optional<CuLikes> findByMemberAndCuration(Member member,Curation curation);
 
 // }

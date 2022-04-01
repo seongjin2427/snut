@@ -70,4 +70,5 @@ public class CurationRepositorytest {
         log.info("cuList............" + curationDTOList);
 
     }
+
 }
