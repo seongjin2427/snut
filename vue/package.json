@@ -21,8 +21,9 @@
     "axios": "^0.26.1",
     "core-js": "^3.8.3",
     "vue": "^3.2.13",
+    "vue-color-input": "^1.0.6",
+    "vue-native-color-picker": "^1.2.0",
     "vue-router": "^4.0.13",
-    "vue3-colorpicker": "^2.0.4",
     "vuex": "^4.0.2"
   },
   "devDependencies": {

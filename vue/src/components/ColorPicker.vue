@@ -1,24 +1,32 @@
 <template>
-  <div>
-    <color-picker 
-        v-model:pureColor="pureColor"
-        v-model:gradientColor="gradientColor"
-        shape="circle" />
-  </div>
+  <color-input v-model="colors" @change="getColors" />
 </template>
+
 <script>
-  import { ref } from "vue";
-  import { ColorInputWithoutInstance } from "tinycolor2";
-  import { ColorPicker } from "vue3-colorpicker";
-  import "vue3-colorpicker/style.css";
+import ColorInput from 'vue-color-input'
 
-  export default ({
-    components: { ColorPicker },
-    setup() {
-      const pureColor = ref<ColorInputWithoutInstance>("red");
-      const gradientColor = ref("linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 100%)");
-
-      return { pureColor, gradientColor }
+export default {
+  components: {
+    ColorInput
+  },
+  data() {
+    return {
+      colors: "rgb(240, 230, 190)"
     }
-  });
+  },
+  methods: {
+    getColors() {
+      this.$emit('getColors', this.colors);
+    }
+  }
+}
 </script>
+
+<style>
+.color-input.user .box {
+    /* make clickable box a 100x100 circle */
+    width: 20px;
+    height: 20px;
+    border-radius: 50px;
+}
+</style>

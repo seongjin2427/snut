@@ -1,85 +1,77 @@
 <template>
-  <div v-if="editor">
+  <div class="editor-body">
     
-      <button @click="sample()">테스트</button>
-
-    <div class="text-editor-btn-area" v-if="toolBar">
-      <button @click="editor.chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }">
-        <img src="https://img.icons8.com/fluency-systems-regular/344/bold.png" alt="bold">
-      </button>
-      <button @click="editor.chain().focus().toggleItalic().run()" :class="{ 'is-active': editor.isActive('italic') }">
-        <img src="https://img.icons8.com/material-rounded/344/italic.png" alt="italic">
-      </button>
-      <button @click="editor.chain().focus().toggleStrike().run()" :class="{ 'is-active': editor.isActive('strike') }">
-        <img src="https://img.icons8.com/material-rounded/344/strikethrough.png" alt="strike">
-      </button>
-
-      <img src="https://img.icons8.com/material-rounded/344/vertical-line.png" alt="vertical_bar">
-
-      <button @click="editor.chain().focus().toggleHeading({ level: 1 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }">
-        <img src="https://img.icons8.com/material-rounded/344/header-1.png" alt="h1">
-      </button>
-      <button @click="editor.chain().focus().toggleHeading({ level: 2 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }">
-        <img src="https://img.icons8.com/material-rounded/344/header-2.png" alt="h2">
-      </button>
-      <button @click="editor.chain().focus().toggleHeading({ level: 3 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 3 }) }">
-        <img src="https://img.icons8.com/material-rounded/344/header-3.png" alt="h3">
-      </button>
-
-      <img src="https://img.icons8.com/material-rounded/344/vertical-line.png" alt="vertical_bar">
-
-      <button @click="editor.chain().focus().toggleBulletList().run()" :class="{ 'is-active': editor.isActive('bulletList') }">
-        <img src="https://img.icons8.com/material-rounded/344/list.png" alt="bullet-list">
-      </button>
-      <button @click="editor.chain().focus().toggleOrderedList().run()" :class="{ 'is-active': editor.isActive('orderedList') }">
-        <img src="https://img.icons8.com/material-rounded/344/numbered-list.png" alt="ordered-list">
-      </button>
-
-      <img src="https://img.icons8.com/material-rounded/344/vertical-line.png" alt="vertical_bar">
-
-      <button @click="editor.chain().focus().setTextAlign('left').run()" :class="{ 'is-active': editor.isActive({ textAlign: 'left' }) }">
-        <img src="https://img.icons8.com/material-rounded/344/align-left.png" alt="left">
-      </button>
-      <button @click="editor.chain().focus().setTextAlign('center').run()" :class="{ 'is-active': editor.isActive({ textAlign: 'center' }) }">
-        <img src="https://img.icons8.com/material-rounded/344/align-center.png" alt="center">
-      </button>
-      <button @click="editor.chain().focus().setTextAlign('right').run()" :class="{ 'is-active': editor.isActive({ textAlign: 'right' }) }">
-        <img src="https://img.icons8.com/material-rounded/344/align-right.png" alt="right">
-      </button>
-      <button @click="editor.chain().focus().setTextAlign('justify').run()" :class="{ 'is-active': editor.isActive({ textAlign: 'justify' }) }">
-        <img src="https://img.icons8.com/material-rounded/344/align-justify.png" alt="justify">
-      </button>
-      
-      <img src="https://img.icons8.com/material-rounded/344/vertical-line.png" alt="vertical_bar">
-
-      <button @click="editor.chain().focus().toggleCodeBlock().run()" :class="{ 'is-active': editor.isActive('codeBlock') }">
-        <img src="https://img.icons8.com/material-outlined/344/code.png" alt="code-block">
-      </button>
-      <button @click="editor.chain().focus().toggleCode().run()" :class="{ 'is-active': editor.isActive('code') }">
-        <img src="https://img.icons8.com/material-rounded/344/source-code.png" alt="source">
-      </button>
-      <button @click="editor.chain().focus().toggleBlockquote().run()" :class="{ 'is-active': editor.isActive('blockquote') }">
-        <img src="https://img.icons8.com/material-rounded/344/quote-left.png" alt="block-quote">
-      </button>
-      <button @click="editor.chain().focus().setHorizontalRule().run()">
-        <img src="https://img.icons8.com/material-rounded/344/horizontal-line.png" alt="horizontal-rule">
-      </button>
-      
-      <button @click="addImage">
-        <img src="https://img.icons8.com/material-rounded/344/image.png" alt="image">
-      </button>
-
-      <img src="https://img.icons8.com/material-rounded/344/vertical-line.png" alt="vertical_bar">
-
-      <input
-      class="text-editor-color-peeker"
-      type="color"
-      @input="editor.chain().focus().setColor($event.target.value).run()"
-      :value="editor.getAttributes('textStyle').color">
-
+    <div v-if="editor">
+    
+      <div class="text-editor-btn-area" v-if="toolBar">
+        <button @click="editor.chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }">
+          <img src="https://img.icons8.com/fluency-systems-regular/344/bold.png" alt="bold">
+        </button>
+        <button @click="editor.chain().focus().toggleItalic().run()" :class="{ 'is-active': editor.isActive('italic') }">
+          <img src="https://img.icons8.com/material-rounded/344/italic.png" alt="italic">
+        </button>
+        <button @click="editor.chain().focus().toggleStrike().run()" :class="{ 'is-active': editor.isActive('strike') }">
+          <img src="https://img.icons8.com/material-rounded/344/strikethrough.png" alt="strike">
+        </button>
+        <img src="https://img.icons8.com/material-rounded/344/vertical-line.png" alt="vertical_bar">
+        <button @click="editor.chain().focus().toggleHeading({ level: 1 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }">
+          <img src="https://img.icons8.com/material-rounded/344/header-1.png" alt="h1">
+        </button>
+        <button @click="editor.chain().focus().toggleHeading({ level: 2 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }">
+          <img src="https://img.icons8.com/material-rounded/344/header-2.png" alt="h2">
+        </button>
+        <button @click="editor.chain().focus().toggleHeading({ level: 3 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 3 }) }">
+          <img src="https://img.icons8.com/material-rounded/344/header-3.png" alt="h3">
+        </button>
+        <img src="https://img.icons8.com/material-rounded/344/vertical-line.png" alt="vertical_bar">
+        <button @click="editor.chain().focus().toggleBulletList().run()" :class="{ 'is-active': editor.isActive('bulletList') }">
+          <img src="https://img.icons8.com/material-rounded/344/list.png" alt="bullet-list">
+        </button>
+        <button @click="editor.chain().focus().toggleOrderedList().run()" :class="{ 'is-active': editor.isActive('orderedList') }">
+          <img src="https://img.icons8.com/material-rounded/344/numbered-list.png" alt="ordered-list">
+        </button>
+        <img src="https://img.icons8.com/material-rounded/344/vertical-line.png" alt="vertical_bar">
+        <button @click="editor.chain().focus().setTextAlign('left').run()" :class="{ 'is-active': editor.isActive({ textAlign: 'left' }) }">
+          <img src="https://img.icons8.com/material-rounded/344/align-left.png" alt="left">
+        </button>
+        <button @click="editor.chain().focus().setTextAlign('center').run()" :class="{ 'is-active': editor.isActive({ textAlign: 'center' }) }">
+          <img src="https://img.icons8.com/material-rounded/344/align-center.png" alt="center">
+        </button>
+        <button @click="editor.chain().focus().setTextAlign('right').run()" :class="{ 'is-active': editor.isActive({ textAlign: 'right' }) }">
+          <img src="https://img.icons8.com/material-rounded/344/align-right.png" alt="right">
+        </button>
+        <button @click="editor.chain().focus().setTextAlign('justify').run()" :class="{ 'is-active': editor.isActive({ textAlign: 'justify' }) }">
+          <img src="https://img.icons8.com/material-rounded/344/align-justify.png" alt="justify">
+        </button>
+    
+        <img src="https://img.icons8.com/material-rounded/344/vertical-line.png" alt="vertical_bar">
+        <button @click="editor.chain().focus().toggleCodeBlock().run()" :class="{ 'is-active': editor.isActive('codeBlock') }">
+          <img src="https://img.icons8.com/material-outlined/344/code.png" alt="code-block">
+        </button>
+        <button @click="editor.chain().focus().toggleCode().run()" :class="{ 'is-active': editor.isActive('code') }">
+          <img src="https://img.icons8.com/material-rounded/344/source-code.png" alt="source">
+        </button>
+        <button @click="editor.chain().focus().toggleBlockquote().run()" :class="{ 'is-active': editor.isActive('blockquote') }">
+          <img src="https://img.icons8.com/material-rounded/344/quote-left.png" alt="block-quote">
+        </button>
+        <button @click="editor.chain().focus().setHorizontalRule().run()">
+          <img src="https://img.icons8.com/material-rounded/344/horizontal-line.png" alt="horizontal-rule">
+        </button>
+    
+        <button @click="addImage">
+          <img src="https://img.icons8.com/material-rounded/344/image.png" alt="image">
+        </button>
+        <img src="https://img.icons8.com/material-rounded/344/vertical-line.png" alt="vertical_bar">
+        <input
+        class="text-editor-color-peeker"
+        type="color"
+        @input="editor.chain().focus().setColor($event.target.value).run()"
+        :value="editor.getAttributes('textStyle').color">
+      </div>
     </div>
+    <editor-content ref="textEditor" :editor="editor" class="edit-content"/>
+    
   </div>
-  <editor-content :editor="editor" class="edit-content"/>
 </template>
 
 <script>
@@ -98,7 +90,7 @@ export default {
   data() {
     return {
       editor: null,
-      content2: 'aa',
+      contents: '',
       toolBar: true
       
     }
@@ -112,11 +104,9 @@ export default {
         this.editor.chain().focus().setImage({ src: url }).run()
       }
     },
-    sample() {
-      // this.editor.isEditable == true ? this.editor.setEditable(false) : this.editor.setEditable(true);
-      // console.log(this.editor.getHTML());
-      // this.content2 = this.editor.getHTML()
-      
+    sendContents() {
+      var contents = this.editor.getHTML();
+      this.$emit('sendContents', contents);
     }
   },
 
@@ -131,7 +121,7 @@ export default {
           types: ['heading', 'paragraph'],
         }),
       ],
-      content: this.content2
+      content: this.contents
     })
   },
 
@@ -173,8 +163,7 @@ button img {
   width: 50px;
   height: 40px;
   background: white;
-  border: 1px border solid;
-  border-radius: 5px;
+  border: none;
   margin: 0 2px;
   padding: 3px;
 }

@@ -8,12 +8,16 @@
         <div class="make-note-header">
           <common-button 
               ref="makeNoteBtn"
-              @click="btnMethod($event, btn, idx)"
+              @click="seperateBtnEvent($event, btn, idx)"
               v-for="(btn, idx) in btnSet"
               width="150" 
               height="40" 
-              :buttonName="btn.name" 
-              background="white" 
+              :buttonName="btn.name"
+              background="white"
+              :style="
+                      btn.id == 4 && openBool == true ? { background:'lightgrey' } : 
+                      btn.id == 5 && openBool == false ? {background: 'lightgrey'} : ''
+                      "
               border="none"
               fontSize="16"
               marginRight="20"
@@ -63,8 +67,13 @@
               <div class="write-area-with-nonpic">
 
                 <div class="emoji-view">
-                  <img class="emoji-face" src="" alt="face">
-                  <img class="emoji-expression" :src="require(`@/assets/face-emoji/emoji${contentsWithNonPic.peekedEmoji}.png`)" alt="expression">
+                  <emoji-face 
+                      class="emoji-face" 
+                      :color="contentsWithNonPic.pickedColor" />
+                  <img 
+                      class="emoji-expression" 
+                      :src="require(`@/assets/face-emoji/emoji${contentsWithNonPic.pickedEmoji}.png`)" 
+                      alt="expression">
                 </div>
                 <div class="emoji-color-container">
                   <div class="picker-box">
@@ -72,18 +81,21 @@
                     <div class="picker emoji-picker">
                       <img 
                           :src="require(`@/assets/face-emoji/emoji${imgNo}.png`)" 
+                          @click="contentsWithNonPic.pickedEmoji = idx"
                           v-for="(imgNo, idx) in imgNumberSet" :key="idx"
                           alt="emoji_img">
                     </div>
                   </div>
                   <div class="picker-box">
-                    <p @click="sample()" >
-                      color 
-                      <color-picker />
+                    <p>
+                      color &nbsp;
+                      <color-picker @getColors="getColors"/>
                     </p>
                       
-                    <div class="picker">
-                      
+                    <div class="picker color-picker">
+                      <div class="picked-color" :style="{ background: contentsWithNonPic.pickedColor }"></div>
+                        &nbsp; &nbsp; 
+                      <p> {{ contentsWithNonPic.pickedColor }}</p>
                     </div>
                   </div>
                 </div>
@@ -91,20 +103,23 @@
               </div>
 
               <div class="write-area-nonpic-title">
-                <input type="text" placeholder="Title">
+                <input type="text" placeholder="Title" v-model="contentsWithNonPic.title">
               </div>
 
               <div class="write-div nonpic">
-                <TipTap />
+                <TipTap ref="textEditor" @sendContents="receivedEditorContents"/>
               </div>
 
             </div>
 
 
             <div class="hash-tag-div">
-              <input class="hash-tag" type="text"
+              <input 
+                  ref="hashTag"
+                  class="hash-tag"
+                  type="text"
                   style="width: 130px;"
-                  @input="inputAutoWidth($event, idx)"
+                  @input="inputAutoWidth($event)"
                   v-model="tag.content" 
                   v-for="(tag, idx) in hashTagSet" 
                   :key="idx">
@@ -131,6 +146,7 @@ import MainFooter from '@/components/MainFooter.vue'
 import TipTap from '@/components/TextEditor.vue'
 import DragAndDropModal from '@/components/DragAndDropModal.vue'
 import ColorPicker from '@/components/ColorPicker.vue'
+import EmojiFace from '../components/EmojiFace.vue';
 
 export default {
   components: { 
@@ -138,7 +154,8 @@ export default {
     MainFooter, 
     TipTap, 
     DragAndDropModal,
-    ColorPicker
+    ColorPicker,
+    EmojiFace
     },
   name: "MakeNote",
   data() {
@@ -193,18 +210,22 @@ export default {
         },
       ],
       openBool: true,
-      withPic: false,
+      withPic: true,
       imgNumberSet: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
       contentsWithPic: {
         title: '',
         contents: '',
-        imgs: {}
+        imgs: {},
+        hashTag: [],
+        openBoolean: true
       },
       contentsWithNonPic: {
         title: '',
         contents: '',
-        peekedEmoji: 0,
-        peekedColor: ''
+        pickedEmoji: 0,
+        pickedColor: 'rgb(240, 230, 190)',
+        hashTag: ['', '', ''],
+        openBoolean: true
       },
       inputImg: true
     }
@@ -213,10 +234,8 @@ export default {
     openModal() {
       this.$refs.dndModal.openModal();
     },
-    inputAutoWidth(e, idx) {
-      console.log(e, idx);
+    inputAutoWidth(e) {
       e.target.style.width = 100 + (16 * e.target.value.length)+'px';
-      console.log(e.target.value.trim() == '')
       if(e.target.value.trim() == '') {
         e.target.style.width = 130+'px';
       }
@@ -224,22 +243,19 @@ export default {
     withPicEvent(id) {
       id == 1 ? this.withPic = false : this.withPic = true;
     },
-    btnMethod(e, btn) {
+    seperateBtnEvent(e, btn) {
       console.log("btn", btn);
       if(btn.id == 1) {
-        if(this.withPic == true 
-            && !this.contentsWithPic.title
-            && !this.contentsWithPic.contents
-            && !this.contentsWithPic.imgs
-        ) {
-          console.log("저장을 눌렀다!")
-          console.log(this.contentsWithPic)
-        } else {
-          console.log("이미지가 없어요")
-        }
+        this.onSave();
+
         } else if (btn.id == 2 ) {
           this.contentsWithPic.title = '';
           this.contentsWithPic.contents = '';
+
+          this.contentsWithNonPic.title = '';
+          this.contentsWithNonPic.contents = '';
+          console.log(this.$refs.textEditor.contents = '')
+
           console.log("글쓰기 취소를 눌렀다!")
 
       } else if (btn.id == 3) {
@@ -250,25 +266,64 @@ export default {
         this.openBoolToggle(e, btn.id);
       }
     },
+    onSave() {
+        console.log('저장을 눌렀다!')
+        if (this.withPic == true 
+            && this.contentsWithPic.title
+            && this.contentsWithPic.contents
+            && this.contentsWithPic.imgs.length
+            ) {
+              this.$refs.hashTag.map((tag, id) => { 
+                this.contentsWithPic.hashTag[id] = tag.value;
+              });
+
+              console.log(this.hashTagSet);
+              console.log('Save with Image')
+              console.log(this.contentsWithPic)
+
+        } else if (this.withPic == false 
+            ) {
+              this.$refs.textEditor.sendContents();
+              if (this.contentsWithNonPic.title
+                  && this.contentsWithNonPic.contents != '<p></p>') {
+                    
+                    console.log('Save with No Image')
+                    this.$refs.hashTag.map((tag, id) => { 
+                      this.contentsWithNonPic.hashTag[id] = tag.value;
+                    });
+                    console.log(this.contentsWithNonPic)
+                  }
+
+            } else {
+              console.log('제목 또는 내용에 빈공간이 있습니다.')
+            }
+        
+    },
+    receivedEditorContents(contents) {
+      this.contentsWithNonPic.contents = contents;
+    },
     openBoolToggle(e, idx) {
       if (idx == 4) {
         this.openBool = true;
-        e.target.style.background = 'lightgrey';
-        e.target.nextSibling.style.background = 'white';
+        this.contentsWithPic.openBoolean = this.openBool;
+        this.contentsWithNonPic.openBoolean = this.openBool;
+
       } else if (idx == 5) {
         this.openBool = false;
-        e.target.style.background = 'lightgrey';
-        e.target.previousSibling.style.background = 'white';
+        this.contentsWithPic.openBoolean = this.openBool;
+        this.contentsWithNonPic.openBoolean = this.openBool;
       }
     },
     receiveNoteImg(imgs) {
       if(imgs.length != 0) {
-        for(let i = 0; i < imgs.length; i++) {
-          this.contentsWithPic.imgs = imgs;
-        }
+        this.contentsWithPic.imgs = imgs;
+
         console.log(imgs);
         this.inputImg = false;
       }
+    },
+    getColors(color) {
+      this.contentsWithNonPic.pickedColor = color;
     }
   }
 }
@@ -354,8 +409,6 @@ header {
   width: 460px;
   height: 460px;
   padding: 20px;
-  display: flex;
-  flex-wrap: wrap;
   overflow: scroll;
   background: #eee;
 }
@@ -365,9 +418,6 @@ header {
   text-align: center;
   font-size: 30px;
   padding-top: 50px;
-}
-.pictrue-div > p:active {
-  background: #ddd;
 }
 .pictrue-div-img{
   width: 33%;
@@ -416,12 +466,16 @@ header {
   display: flex;  
 }
 .emoji-view {
-  width: 260px;
+  width: 300px;
   height: 100%;
   position: relative;  
 }
 .emoji-face {
-
+  width: 200px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-45%, -50%);
 }
 .emoji-expression {
   width: 80px;
@@ -447,6 +501,10 @@ header {
 .picker-box {
   width: 260px;
 }
+.picker-box > p {
+  display: flex;
+  align-items: center;
+}
 .picker {
   width: calc(100%-40px);
   height: 160px;
@@ -454,17 +512,35 @@ header {
   border: 1px solid black;
   overflow: scroll;
 }
-.picker img {
-  width: 40px;
-  margin: 15px;
-  object-fit: contain;
-}
 .emoji-picker {
   display: flex;
   flex-wrap: wrap;
 }
+.emoji-picker img {
+  width: 40px;
+  padding: 15px;
+  object-fit: contain;
+}
+.emoji-picker img:hover {
+  cursor: pointer;
+  border: 1px solid black;
+  padding: 15px;
+}
+/* .emoji-face {
+
+} */
 .color-picker {
-  
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+.picked-color {
+  width: 30px;
+  height: 30px;
+}
+.color-picker p {
+  font-size: 16px;
 }
 .write-area-nonpic-title {
   width: 100%;

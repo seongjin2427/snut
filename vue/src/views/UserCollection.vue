@@ -9,7 +9,7 @@
           <common-button 
               width="300" 
               height="40"
-              :buttonName="$route.params.nickName"
+              :buttonName="$route.params.nickName+'\'s 컬렉션'"
               background="white" 
               border="none"
               fontSize="20" />
@@ -27,7 +27,8 @@
                 @click="openModal(col)"
                 v-for="(col, idx) in sampleData.dataSet" 
                 :info="col" 
-                :id="col.id"
+                :id="idx"
+                :delColBoolean="false"
                 :key="idx" />
           </div>
         </div>
@@ -58,7 +59,7 @@ export default {
   name: "UserCollection",
   data() {
     return {
-      loginBool: false,
+      loginBool: true,
       sampleData: SampleData, 
       userCollection: []
     }
