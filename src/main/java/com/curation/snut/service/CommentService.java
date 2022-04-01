@@ -1,7 +1,5 @@
 package com.curation.snut.service;
 
-import java.util.List;
-
 import com.curation.snut.dto.CommentDTO;
 import com.curation.snut.entity.Community;
 import com.curation.snut.entity.CommunityComment;

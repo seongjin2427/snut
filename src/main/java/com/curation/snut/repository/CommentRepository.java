@@ -1,8 +1,5 @@
 package com.curation.snut.repository;
 
-import java.util.List;
-
-import com.curation.snut.entity.Community;
 import com.curation.snut.entity.CommunityComment;
 
 import org.springframework.data.domain.Page;

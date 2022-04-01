@@ -1,5 +1,6 @@
 package com.curation.snut.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -19,10 +20,12 @@ public class Member extends BaseEntity {
     @Id
     private String email;
 
-    private String name;    
+    private String name;
     private String pw;
     private String mobile;
     private String birth;
     private String gender;
+
+    @Column(unique = true)
     private String nickname;
 }
