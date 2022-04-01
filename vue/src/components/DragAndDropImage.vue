@@ -17,7 +17,9 @@
     <div class="file-upload-list">
       <div class="file-upload-list__item" v-for="(file, index) in fileList" :key="index">
         <div class="file-upload-list__item__data">
-          <img class="file-upload-list__item__data-thumbnail" :src="file.src">
+          <div class="file-upload-list__item__data-image">
+            <img class="file-upload-list__item__data-image-thumbnail" :src="file.src">
+          </div>
           <div class="file-upload-list__item__data-name">
             {{ file.name }}
           </div>
@@ -35,7 +37,8 @@ export default {
   name: 'DragAndDropImage',
   data() {
     return {
-      fileList: []
+      fileList: [],
+      isDragged: false
     }
   },
   methods: {
@@ -74,9 +77,8 @@ export default {
       },
       // FileReader를 통해 파일을 읽어 thumbnail 영역의 src 값으로 셋팅
       async readFiles (files) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
           const reader = new FileReader()
-          console.log(reject)
           reader.onload = async (e) => {
             resolve(e.target.result) 
           }
@@ -85,14 +87,19 @@ export default {
       },
       handleRemove (index) {
         this.fileList.splice(index, 1)
+      },
+      sendImg() {
+        if(this.fileList) {
+          this.$emit('receiveImg', this.fileList);
+        }
       }
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .container {
-  min-height: 300px;
+  min-height: 200px;
   width: 500px;
   margin: 0 auto;
 }
@@ -105,12 +112,13 @@ export default {
   border: transparent;
   border-radius: 20px;
   cursor: pointer;
+
   &.dragged {
     border: 1px dashed powderblue;
     opacity: .6;
   }
   &-container {
-    height: 300px;
+    height: 200px;
     padding: 20px;
     margin: 0 auto;
     box-shadow: 0 0.625rem 1.25rem #0000001a;
@@ -130,17 +138,27 @@ export default {
       &__data {
         display: flex;
         align-items: center;
-        &-thumbnail {
-          margin-right: 10px;
-          border-radius: 20px;
-          width: 120px;
-          height: 120px;
+          // flex-wrap: wrap;
+        width: 90%;
+        &-image {
+          &-thumbnail {
+            margin-right: 10px;
+            border-radius: 20px;
+            width: 120px;
+            height: 120px;
+          }
+        }
+        &-name {
+          width: 65%;
+          word-break: break-all;
+          padding: 10px;
         }
       }
       &__btn-remove {
         cursor: pointer;
         border: 1px solid powderblue;
         display: flex;
+        width: 10%;
         justify-content: center;
         align-items: center;
         padding: 5px;

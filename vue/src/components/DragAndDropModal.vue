@@ -2,10 +2,11 @@
   <div class="common-modal" v-if="showBool">
     <div class="modal-bg" @click="closeModal()"></div>
     <div class="modal-area">
-      <img class="x-button" src="@/assets/modal/Close-Line.png" alt="x_img" @click="closeModal()">
+      <img class="x-button" src="@/assets/modal/Close-Line.png" alt="x_img" @click="closeModal(imgs)">
       <div class="modal-container">
-        <drag-and-drop-image />
+        <drag-and-drop-image ref="pickImg" @receiveImg="receiveImg" />
       </div>
+      <input @click="confirm()" class="confirmBtn" type="button" value="확인">
     </div>
   </div>
 </template>
@@ -17,7 +18,7 @@ export default {
   name: 'DragAndDropModal',
   data() {
     return {
-      showBool: false,
+      showBool: false
     }
   },
   methods: {
@@ -26,6 +27,13 @@ export default {
     },
     closeModal() {
       this.showBool = false;
+    },
+    confirm() {
+      this.$refs.pickImg.sendImg();
+      this.closeModal();
+    },
+    receiveImg(imgs) {
+      this.$emit('receiveNoteImg', imgs);
     }
   }
 }
@@ -62,12 +70,27 @@ export default {
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .modal-container {
   width: 850px;
   height: 500px;
-  margin: 60px 75px 90px 75px;
+  margin: 60px 75px 20px 75px;
   overflow: scroll;
+}
+.confirmBtn {
+  width: 100px;
+  height: 50px;
+  background: white;
+  padding: 5px;
+  border: 1px solid powderblue;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.confirmBtn:active {
+  background: #eee;
 }
 
 /* 기타 구간 */

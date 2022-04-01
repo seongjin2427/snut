@@ -60,7 +60,7 @@ export default {
   data() {
     return {
       loginBool: false,
-      sampleData: SampleData,
+      sampleData: {dataSet:[]},
     }
   },
   methods: {
@@ -72,28 +72,28 @@ export default {
     },
     moveToPage() {
       this.$router.push({path: '/mcol/note/makenote'})
+    },
+    createDummies(store, start) {
+      for(var i = 0; i < 20; i++) {
+        var random = Math.floor(Math.random()*10);
+        store.dataSet[i] = {};
+        store.dataSet[i].id = start;
+        store.dataSet[i].author = 'Author....' + i;
+        store.dataSet[i].nickName = 'NickName....' + i;
+        store.dataSet[i].title = 'Title....' + i;
+        store.dataSet[i].content = 'Content...' + i;
+        store.dataSet[i].folder = 'FolerNo...' + i;
+        store.dataSet[i].src = SampleData.imgUrl[random];
+        store.dataSet[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
+        store.dataSet[i].regDate = '2022-03-01';
+        store.dataSet[i].modDate = '2022-03-02';
+        console.log("start", i)
+        start++;
+      }
     }
   },
   created() {
-    for(var i = 0; i < 19; i++) {
-      var random = Math.floor(Math.random()*10);
-      this.sampleData.dataSet[i] = {};
-      this.sampleData.dataSet[i].id = i;
-      this.sampleData.dataSet[i].author = 'Author....' + i;
-      this.sampleData.dataSet[i].nickName = 'NickName....' + i;
-      this.sampleData.dataSet[i].title = 'Title....' + i;
-      this.sampleData.dataSet[i].content = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sit amet nisi malesuada ligula accumsan rutrum. In felis velit, ultrices vitae dignissim eu, sollicitudin at mi. Fusce in porttitor libero. Duis gravida ullamcorper eros, eu feugiat dolor ornare sed. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut et libero rhoncus, venenatis quam nec, tempus tellus. Curabitur elementum posuere dignissim. Maecenas eget molestie libero. Fusce sollicitudin metus enim. Integer fringilla posuere dolor sed dignissim. Sed non viverra quam. Pellentesque eros diam, maximus id ex quis, posuere cursus urna. Curabitur sit amet lectus neque. Sed feugiat magna sed risus pharetra, vitae eleifend lectus gravida.
-                                        Nam cursus augue ut ante dictum tempor. Duis volutpat dapibus eros id vehicula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus quis dictum odio. Vestibulum et ligula eget nisi commodo aliquam. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Ut ut tincidunt risus. Duis vel velit ante. Morbi sit amet metus convallis elit aliquam viverra.
-                                        Mauris congue, libero ac vehicula molestie, risus tellus porttitor ex, quis lobortis lorem odio vitae nibh. Morbi sollicitudin metus at eros mattis, quis finibus quam efficitur. Aliquam erat volutpat. Aliquam ut vestibulum odio. Fusce lorem felis, porttitor quis ultrices eu, commodo eget massa. Vivamus vitae nisl bibendum, vulputate justo sit amet, pellentesque est. Aliquam rhoncus vitae tellus vel lacinia. Curabitur consectetur tempor felis condimentum varius. Integer at lorem in eros sollicitudin fringilla. Nam orci nulla, blandit eget mollis at, ultricies vitae urna.
-                                        Aenean id elit a nisi sollicitudin tincidunt. Vivamus sapien enim, mollis sit amet leo nec, porta accumsan nunc. Praesent lorem felis, fermentum sit amet congue sit amet, ornare a ligula. Pellentesque eu malesuada magna. Nunc libero enim, ultrices sit amet rhoncus sollicitudin, sollicitudin pellentesque tortor. Nam sed mattis urna. Maecenas vitae commodo erat. Nullam consequat mauris sodales, accumsan urna ornare, vestibulum nunc. Nullam congue congue ipsum. Aenean imperdiet aliquam urna eget mattis.
-                                        Proin sed molestie neque. Donec eu odio a nulla porta mattis. Phasellus vulputate eget ligula non pulvinar. Fusce semper ex purus, quis euismod lorem dictum eget. Aenean lacus felis, sagittis at pretium ultricies, ultrices id dui. Etiam ac tincidunt leo. In hac habitasse platea dictumst.`
-                                        + i;
-      this.sampleData.dataSet[i].folder = 'FolerNo...' + i;
-      this.sampleData.dataSet[i].src = this.sampleData.imgUrl[random];
-      this.sampleData.dataSet[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
-      this.sampleData.dataSet[i].regDate = '2022-03-01';
-      this.sampleData.dataSet[i].modDate = '2022-03-02';
-    }
+    this.createDummies(this.sampleData, 1);
   }
 }
 </script>

@@ -22,24 +22,24 @@
       </header>
       <main>
 
-        <!-- 글 쓰기 구간 -->
-        <div class="write-container">
-            <div class="toggleBtn">
-              <div class="circle-btn"
+        <div class="write-container" v-if="withPic">
+          <div class="write-with-picture">
+
+            <div class="write-with-picture-header">
+              <div class="circle-btn" 
                   @click="withPicEvent(idx)"
-                  v-for="(btn, idx) in circleBtnSet"
+                  v-for="(btn, idx) in circleBtnSet" 
                   :style="{ background: btn.color }"
                   :key="idx"></div>
             </div>
-          <div class="write-with-picture">
 
-            <div class="write-area" v-if="withPic">
+            <div class="write-area">
               
               <div class="write-area-with-pic">
+
                 <div class="pictrue-div" @click="openModal()" v-if="inputImg">
                   <p>Click to upload images.</p>
                 </div>
-
                 <div class="pictrue-div" v-if="!inputImg">
                   <img 
                       class="pictrue-div-img"
@@ -55,51 +55,7 @@
                   v-model="contentsWithPic.contents"/>
                 </div>
               </div>
-
             </div>
-
-            <div class="write-area write-area-nonpic" v-if="!withPic">
-              
-              <div class="write-area-with-nonpic">
-
-                <div class="emoji-view">
-                  <img class="emoji-face" src="" alt="face">
-                  <img class="emoji-expression" :src="require(`@/assets/face-emoji/emoji${contentsWithNonPic.peekedEmoji}.png`)" alt="expression">
-                </div>
-                <div class="emoji-color-container">
-                  <div class="picker-box">
-                    <p>emoji</p>
-                    <div class="picker emoji-picker">
-                      <img 
-                          :src="require(`@/assets/face-emoji/emoji${imgNo}.png`)" 
-                          v-for="(imgNo, idx) in imgNumberSet" :key="idx"
-                          alt="emoji_img">
-                    </div>
-                  </div>
-                  <div class="picker-box">
-                    <p @click="sample()" >
-                      color 
-                      <color-picker />
-                    </p>
-                      
-                    <div class="picker">
-                      
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-
-              <div class="write-area-nonpic-title">
-                <input type="text" placeholder="Title">
-              </div>
-
-              <div class="write-div nonpic">
-                <TipTap />
-              </div>
-
-            </div>
-
 
             <div class="hash-tag-div">
               <input class="hash-tag" type="text"
@@ -109,8 +65,64 @@
                   v-for="(tag, idx) in hashTagSet" 
                   :key="idx">
             </div>
-            
           </div>
+
+        </div>
+
+        <!------------------------- No Picture 구간 ----------------------->
+        <div class="write-container non-pic-container" v-if="!withPic">
+
+            <div class="non-pic-wrapper">
+
+              <div class="write-with-nonpicture-header">
+                <div class="circle-btn"
+                    @click="withPicEvent(idx)"
+                    v-for="(btn, idx) in circleBtnSet"
+                    :style="{ background: btn.color }"
+                    :key="idx"></div>
+              </div>
+
+              <div class="write-area">
+              
+                <div class="write-area-with-nonpic" >
+
+                  <div class="write-area-header">
+                    
+                    <div class="emoji-view">
+                      <img src="" alt="emoji">
+                    </div>
+                    <div class="peeker-container">
+                      <div class="emoji-peeker-box">
+                        <p>emoji</p>
+                        <div class="emoji-peeker">
+
+                        </div>
+                      </div>
+                      <div class="color-peeker-box">
+                        <p>color</p>
+                        <div class="color-peeker">
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="write-div nonpic">
+                    <TipTap />
+                  </div>
+                </div>
+              </div>
+
+              <div class="hash-tag-div">
+                <input class="hash-tag" type="text"
+                    style="width: 130px;"
+                    @input="inputAutoWidth($event, idx)"
+                    v-model="tag.content"
+                    v-for="(tag, idx) in hashTagSet"
+                    :key="idx">
+              </div>
+
+            </div>
 
         </div>
 
@@ -120,7 +132,7 @@
         <main-footer/>
         <drag-and-drop-modal ref="dndModal" @receiveNoteImg="receiveNoteImg" />
       </footer>
-      
+
     </div>
   </div>
 </template>
@@ -130,16 +142,9 @@ import CommonButton from '@/components/CommonButton.vue';
 import MainFooter from '@/components/MainFooter.vue'
 import TipTap from '@/components/TextEditor.vue'
 import DragAndDropModal from '@/components/DragAndDropModal.vue'
-import ColorPicker from '@/components/ColorPicker.vue'
 
 export default {
-  components: { 
-    CommonButton, 
-    MainFooter, 
-    TipTap, 
-    DragAndDropModal,
-    ColorPicker
-    },
+  components: { CommonButton, MainFooter, TipTap, DragAndDropModal },
   name: "MakeNote",
   data() {
     return {
@@ -193,8 +198,7 @@ export default {
         },
       ],
       openBool: true,
-      withPic: false,
-      imgNumberSet: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+      withPic: true,
       contentsWithPic: {
         title: '',
         contents: '',
@@ -203,8 +207,8 @@ export default {
       contentsWithNonPic: {
         title: '',
         contents: '',
-        peekedEmoji: 0,
-        peekedColor: ''
+        emoji: 0,
+        color: ''
       },
       inputImg: true
     }
@@ -314,18 +318,20 @@ header {
 /* main 구간 */
 .write-container {
   max-width: 1200px;
-  /* height: 800px; */
+  height: 800px;
   padding: 0 50px;
   background: #F6F6F6;
   border: 1px solid black;
   border-radius: 12px;
 }
-.write-with-picture {
-  width: 100%;
+.non-pic-container {
+  height: 1200px;
 }
-.toggleBtn {
-  display: flex;
+.write-with-picture-header {
+  width: 100%;
   height: 120px;
+  /* background: red; */
+  display: flex;
 }
 .circle-btn {
   width: 30px;
@@ -337,16 +343,11 @@ header {
 }
 .write-area {
   width: 100%;
-  /* height: 800px; */
+  height: 800px;
 }
 .write-area-with-pic {
   display: flex;
   justify-content: space-between;
-}
-.write-area-nonpic {
-  width: 900px;
-  height: 970px;
-  padding: 0 100px;
 }
 
 /* 사진 구간 */
@@ -408,96 +409,68 @@ header {
   resize: none;
 }
 
-
 /* No Picture 구간 */
-.write-area-with-nonpic {
+.non-pic-wrapper {
   width: 100%;
-  height: 280px;
-  display: flex;  
+  height: 100%;
+  background: lightblue;
+}
+.write-with-nonpicture-header {
+  width: 100%;
+  height: 100px;
+  background: red;
+  display: flex;
+}
+.write-area-with-nonpic {
+
+}
+.write-area-header {
+  width: 100%;
+  height: 350px;
+  background: green;
+  display: flex;
 }
 .emoji-view {
-  width: 260px;
-  height: 100%;
-  position: relative;  
+  width: 30%;
+  height: 250px;
+  background: blue;
 }
-.emoji-face {
-
-}
-.emoji-expression {
-  width: 80px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-.emoji-color-container {
-  width: 660px;
+.peeker-container {
+  width: 70%;
+  height: 200px;
   display: flex;
-  justify-content: space-between;
+  padding: 25px;
   background: white;
-  padding: 15px 25px 5px 25px;
   border: 1px solid black;
   border-radius: 12px;
 }
-.emoji-color-container  p{
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 5px;
+.emoji-peeker-box {
+  width: 250px;
+  height: 100%;
+  background: lightcoral;
 }
-.picker-box {
-  width: 260px;
-}
-.picker {
-  width: calc(100%-40px);
-  height: 160px;
-  padding:  20px;
-  border: 1px solid black;
-  overflow: scroll;
-}
-.picker img {
-  width: 40px;
-  margin: 15px;
-  object-fit: contain;
-}
-.emoji-picker {
-  display: flex;
-  flex-wrap: wrap;
-}
-.color-picker {
-  
-}
-.write-area-nonpic-title {
+.emoji-peeker-box p {
   width: 100%;
-  height: 130px;
-  display: flex;
-  align-items: center;
+  height: 20%;
 }
-.write-area-nonpic-title input {
-  width: 100%;
-  height: 50px;
-  background: none;
-  border: none;
-  border-bottom: 2px solid #C4C4C4;
-  font-size: 30px;
-  font-weight: bold;
+.emoji-peeker {
+  width: 250px;
+  height: 80%;
+  background: yellow;
 }
-.write-area-nonpic-title input:focus {
-  outline: none;
-}
-
 
 .nonpic {
-  width: 860px;
-  height: 500px;
+  width: 800px;
+  height: 460px;
   /* background: lightcoral; */
   border-radius: 12px;
   padding: 20px 20px;
 }
 .hash-tag-div {
   width: 100%;
-  text-align: center;
+  background: mintcream;
+  text-align: right;
   margin-top: 30px;
-  margin-bottom: 100px;
 }
 .hash-tag {
   width: 150px;

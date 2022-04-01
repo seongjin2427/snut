@@ -79,7 +79,7 @@
 
     </div>
   </div>
-  <editor-content :editor="editor" />
+  <editor-content :editor="editor" class="edit-content"/>
 </template>
 
 <script>
@@ -182,8 +182,7 @@ button img {
 // 에디터 관련 구간 
 .ProseMirror{
 
-  padding: 20px 30px;
-  width: 1000px;
+  padding: 20px;
   height: 370px;
   overflow: scroll;
 
@@ -242,6 +241,9 @@ button img {
     margin: 2rem 0;
   }
 
+}
+.edit-content *:focus {
+  outline: none;
 }
 
 </style>
