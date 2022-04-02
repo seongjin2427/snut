@@ -44,7 +44,7 @@
                 @drop="onDrop($event, idx)"
                 @dragenter.prevent
                 @dragover.prevent
-                @click="openModal(col)"
+                @click="openModal(col, true)"
                 v-for="(col, idx) in sampleData.dataSet"
                 :info="col"
                 :id="idx"
@@ -114,15 +114,17 @@ export default {
     openNavBar() {
       this.$refs.navBar.openNavBar()
     },
-    openModal(cuData) {
-      if (cuData.cuCo == 'Curation') {
-        this.$refs.modal.openModal(cuData);
-      } else if (cuData.cuCo == "Collection") {
-        console.log("StoreCollections id", cuData.id);
-        this.$router.push({
-          path: `/mcol/store/${cuData.id}/${cuData.nickName}`
-        });
-      }
+    openModal(cuData, moveToPageBool) {
+      this.$refs.modal.openModal(cuData, moveToPageBool);
+      
+      // if (cuData.cuCo == 'Curation') {
+      //   this.$refs.modal.openModal(cuData, moveToPageBool);
+      // } else if (cuData.cuCo == "Collection") {
+      //   console.log("StoreCollections id", cuData.id);
+      //   this.$router.push({
+      //     path: `/mcol/store/${cuData.id}/${cuData.nickName}`
+      //   });
+      // }
     },
     startDrag(event, item) {
       event.dataTransfer.dropEffect = "move";
@@ -182,7 +184,7 @@ export default {
                                           Proin sed molestie neque. Donec eu odio a nulla porta mattis. Phasellus vulputate eget ligula non pulvinar. Fusce semper ex purus, quis euismod lorem dictum eget. Aenean lacus felis, sagittis at pretium ultricies, ultrices id dui. Etiam ac tincidunt leo. In hac habitasse platea dictumst.`
                                           + i;
         this.sampleData.dataSet[i].folder = 'FolerNo...' + i;
-        this.sampleData.dataSet[i].src = SampleData.imgUrl[random];
+        this.sampleData.dataSet[i].src = [SampleData.imgUrl[random], SampleData.imgUrl[random]];
         this.sampleData.dataSet[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
         this.sampleData.dataSet[i].regDate = '2022-03-01';
         this.sampleData.dataSet[i].modDate = '2022-03-02';

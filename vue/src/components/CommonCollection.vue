@@ -1,6 +1,12 @@
 <template>
   <div class="collection" @mouseover="inCuration()" @mouseleave="outCuration()">
-    <img :class="cuSelect" :src="info.src" alt="sample_img">
+
+    <div class="img-area">
+      <img :class="cuSelect" :src="info.src[0]" alt="sample_img">
+      <img :class="cuSelect" :src="info.src[1]" alt="sample_img" v-if="info.src[1]">
+    </div>
+    <div class="replace" v-if="!info.src[1]"></div>
+
     <div class="text1" v-if="hoverBool && (!storeBool || !loginBool)">
       <p>{{ '#'+info.hashTag[0] }}</p>
       <p>{{ '#'+info.hashTag[1] }}</p>
@@ -27,7 +33,7 @@ export default {
       hoverBool: false,
 
       // 내꺼가 아닌 다른 사람의 컬렉션을 보기
-      storeBool: false
+      storeBool: false,
     }
   },
   methods: {
@@ -56,11 +62,41 @@ export default {
 .collection {
   position: relative;
 }
-img {
+.img-area {
+  position: relative;
+}
+.collection img:nth-child(1) {
+  position: relative;
   width: 180px;
   height: 180px;
   object-fit: cover;
   /* margin-right: 0px; */
+  z-index: 1;
+}
+.collection img:nth-child(2) {
+  width: 180px;
+  height: 180px;
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  object-fit: cover;
+  filter: brightness(70%);
+  /* -webkit-filter: blur(1px); */
+  /* margin-right: 0px; */
+  z-index: 0;
+}
+.replace {
+  width: 180px;
+  height: 180px;
+  position: absolute;
+  background: grey;
+  left: 5px;
+  top: 5px;
+  object-fit: cover;
+  filter: brightness(80%);
+  -webkit-filter: blur(2px);
+  /* margin-right: 0px; */
+  z-index: 0;
 }
 .text1 {
   width: 180px;
@@ -73,6 +109,7 @@ img {
   top: 0;
   left: 0;
   opacity: 100%;
+  z-index: 3;
 }
 .text1 p {
   color: white;

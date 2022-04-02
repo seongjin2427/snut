@@ -23,7 +23,12 @@ const routes = [
     name: "MainWithLogin"
   },
   {
-    path: "/col",
+    path: "/col/",
+    component: SearchCollections,
+    name: "SearchCollections"
+  },
+  {
+    path: "/col/:word",
     component: SearchCollections,
     name: "SearchCollections"
   },

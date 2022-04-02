@@ -3,16 +3,21 @@
     <div class="main-with-login-body">
       <header>
         <div class="logo-area header-area">
-          <img class="main-logo-text" src="@/assets/logo_text.png" alt="text_logo">
+          <img class="main-logo-text" src="@/assets/logo_text.png" @click="$router.push('/')" alt="text_logo">
         </div>
         <div class="input-area">
-          <input-box class="main-input" @keyup.enter="doSearch" placeholder="SEARCH" width="100" height="38"/>
+          <input-box 
+              class="main-input" 
+              @doSearch="doSearch"
+              placeholder="SEARCH"
+              width="100"
+              height="38"/>
         </div>
         <div class="button-area">
           <input type="button" value="test" @click="sample">
           <common-button buttonName="Log out" width="80" height="35" marginTop="5" marginRight="20" v-if="loginBool"/>
           <common-button buttonName="Log in" width="80" height="35" marginTop="5" marginRight="20" v-if="!loginBool"
-                         @click="gotoLogin"/>
+                          @click="gotoLogin"/>
           <common-button buttonName="Register" width="80" height="35" marginTop="5" marginRight="42" />
           <img src="@/assets/btn_hamburger.png" alt="nav_btn" @click="openNavBar">
         </div>
@@ -37,7 +42,7 @@
           </div>
           <div class="main-col-area">
             <common-collection 
-                @click="moveToPage(col)"
+                @click="openModal(col, true)"
                 v-for="(col, idx) in sampleData.dataSet" 
                 :info="col" 
                 :id="col.id"
@@ -50,7 +55,7 @@
           </p>
           <div class="main-col-area" v-if="loginBool">
             <common-collection 
-                @click="moveToPage(col)"
+                @click="openModal(col, true)"
                 v-for="(col, idx) in sampleData2.dataSet" 
                 :info="col" 
                 :id="col.id"
@@ -68,6 +73,7 @@
       
       <footer>
         <main-footer />
+        <common-modal ref="modal" />
       </footer>
 
     </div>
@@ -79,12 +85,13 @@ import CommonButton from '@/components/CommonButton.vue';
 import CommonCollection from '@/components/CommonCollection.vue';
 import InputBox from '@/components/InputBox.vue';
 import MainFooter from '@/components/MainFooter.vue'
-import NavigatorBar from '../components/NavigatorBar.vue';
+import NavigatorBar from '@/components/NavigatorBar.vue';
+import CommonModal from '@/components/CommonModal.vue';
 import SampleData from '@/assets/sampleData.json';
 
 
 export default {
-  components: { InputBox, CommonButton, CommonCollection, MainFooter, NavigatorBar },
+  components: { InputBox, CommonButton, CommonCollection, MainFooter, NavigatorBar, CommonModal },
   name: "MainWithLogin",
   data() {
     return {
@@ -98,20 +105,17 @@ export default {
     openNavBar() {
       this.$refs.navBar.openNavBar()
     },
+    openModal(colData, moveToPageBool) {
+      this.$refs.modal.openModal(colData, moveToPageBool);
+    },
     sample() {
       this.loginBool == true ? this.loginBool = false : this.loginBool =true;
     },
-    doSearch() {
-      this.$router.push('/col');
-    },
-    moveToPage(dataSet) {
-      this.$router.push({
-        path: `/ucol/${dataSet.id}/${dataSet.nickName}`,
-        params: {
-          id: dataSet.id,
-          nickName: dataSet.nickName
-        }
-      });
+    doSearch(searchWord) {
+      console.log(searchWord);
+        this.$router.push({
+          path: `/col/${searchWord}`
+        });
     },
     gotoLogin(){
       this.$router.push('/logi')
@@ -126,11 +130,11 @@ export default {
         store.dataSet[i].title = 'Title....' + i;
         store.dataSet[i].content = 'Content...' + i;
         store.dataSet[i].folder = 'FolerNo...' + i;
-        store.dataSet[i].src = SampleData.imgUrl[random];
+        store.dataSet[i].src = [SampleData.imgUrl[random], SampleData.imgUrl[random]];
         store.dataSet[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
         store.dataSet[i].regDate = '2022-03-01';
         store.dataSet[i].modDate = '2022-03-02';
-        console.log("start", i)
+
         start++;
       }
     }
@@ -171,6 +175,7 @@ header {
   /* position: absolute; */
   left: 0;
   top: 0;
+  cursor: pointer;
 }
 .input-area {
   width: 40%;

@@ -25,7 +25,7 @@
           <div class="main-col-area">
             <common-collection 
                 class="main-searched-col"
-                @click="openModal(col)"
+                @click="openModal(col, true)"
                 v-for="(col, idx) in sampleData.dataSet" 
                 :info="col" 
                 :id="col.id"
@@ -67,33 +67,32 @@ export default {
     openNavBar() {
       this.$refs.navBar.openNavBar()
     },
-    openModal(cuData) {
-      this.$refs.modal.openModal(cuData);
+    openModal(cuData, moveToPageBool) {
+      this.$refs.modal.openModal(cuData, moveToPageBool);
     },
     moveToPage() {
       this.$router.push({path: '/mcol/note/makenote'})
     },
-    createDummies(store, start) {
+    createDummies(store) {
       for(var i = 0; i < 20; i++) {
         var random = Math.floor(Math.random()*10);
         store.dataSet[i] = {};
-        store.dataSet[i].id = start;
+        store.dataSet[i].id = i;
         store.dataSet[i].author = 'Author....' + i;
         store.dataSet[i].nickName = 'NickName....' + i;
         store.dataSet[i].title = 'Title....' + i;
         store.dataSet[i].content = 'Content...' + i;
         store.dataSet[i].folder = 'FolerNo...' + i;
-        store.dataSet[i].src = SampleData.imgUrl[random];
+        store.dataSet[i].src = [SampleData.imgUrl[random], SampleData.imgUrl[random]];
         store.dataSet[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
         store.dataSet[i].regDate = '2022-03-01';
         store.dataSet[i].modDate = '2022-03-02';
-        console.log("start", i)
-        start++;
+
       }
     }
   },
   created() {
-    this.createDummies(this.sampleData, 1);
+    this.createDummies(this.sampleData);
   }
 }
 </script>
@@ -153,19 +152,18 @@ header {
 
 /* 컬렉션 구간 */
 .main-col {
-  width: 100%;
+  width: calc(100%-200px);
   max-width: 1200px;
   /* background: green; */
+  padding: 0 100px;
 }
 .main-col-area {
   width: 100%;
   display: flex;
-  /* justify-content: space-between; */
+  justify-content: space-between;
   flex-wrap: wrap;
 }
 .main-searched-col {
-  font-family: 'Noto-sans KR','Apple SD Gothic Neo', sans-serif ;
   margin-top: 20px;
-  margin-right: 20px;
 }
 </style>

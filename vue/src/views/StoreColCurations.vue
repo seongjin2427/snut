@@ -29,7 +29,7 @@
 
         <div class="main-col">
           <div class="main-col-area">
-            <common-collection 
+            <common-curation 
                 class="main-searched-col"
                 @click="openModal(col)"
                 v-for="(col, idx) in sampleData.dataSet" 
@@ -56,15 +56,15 @@
 
 <script>
 import CommonButton from '@/components/CommonButton.vue';
-import CommonCollection from '@/components/CommonCollection.vue';
 import MainFooter from '@/components/MainFooter.vue'
 import NavigatorBar from '../components/NavigatorBar.vue';
 import SampleData from '@/assets/sampleData.json';
 import CommonModal from '../components/CommonModal.vue';
+import CommonCuration from '@/components/CommonCuration.vue';
 
 
 export default {
-  components: { CommonButton, CommonCollection, MainFooter, NavigatorBar, CommonModal },
+  components: { CommonButton, CommonCuration, MainFooter, NavigatorBar, CommonModal },
   name: "StoreColCurations",
   data() {
     return {

@@ -9,7 +9,7 @@
         <div class="modal-header">
           <div class="modal-hashTag">
             <common-tag 
-                v-for="(tag, idx) in cuData.hashTag" 
+                v-for="(tag, idx) in colCuData.hashTag" 
                 width="150" 
                 height="40"
                 marginRight="15"
@@ -27,30 +27,33 @@
         <div class="modal-body">
 
           <!-- modal 사진 구간 -->
-          <div class="modal-pic" v-if="(sampleImg.length > 0)">
-            <div class="img-container" ref="imgContainer">
+          <div class="modal-pic" 
+              v-if="(sampleImg.length > 0)"
+              @click="moveToPageBoolean && moveToPage(colCuData)">
+            <div class="img-container" 
+                style="{cursor: pointer}" ref="imgContainer">
               <img
                 v-for="(name, idx) in sampleImg"
                 :src="require(`@/assets/sample/img_${name}.jpg`)"
                 alt="cu_img"
                 :key="idx" />
             </div>
-            <input class="previous" type="button" value="<" @click="previous()" ref="previous" disabled />
-            <input class="next" type="button" value=">" @click="next()" ref="next" />
+            <input class="previous" type="button" value="<" @click.stop="previous()" ref="previous" disabled />
+            <input class="next" type="button" value=">" @click.stop="next()" ref="next" />
           </div>
 
           <!-- modal 사진+글 구간 -->
           <div class="modal-content-pic" v-if="sampleImg.length > 0">
-            <p><b>{{ cuData.title }}</b></p>
-            <p><b>{{ cuData.nickName }}</b></p>
-            <p>{{ cuData.content }}</p>
+            <p><b>{{ colCuData.title }}</b></p>
+            <p><b>{{ colCuData.nickName }}</b></p>
+            <p>{{ colCuData.content }}</p>
           </div>
 
           <!-- modal only 글 구간 -->
           <div class="modal-content-nonPic" v-if="!(sampleImg.length > 0)">
-            <p><b>{{ cuData.title }}</b></p>
-            <p><b>{{ cuData.nickName }}</b></p>
-            <p>{{ cuData.content }}</p>
+            <p><b>{{ colCuData.title }}</b></p>
+            <p><b>{{ colCuData.nickName }}</b></p>
+            <p>{{ colCuData.content }}</p>
           </div>
 
         </div>
@@ -71,7 +74,8 @@ export default {
   data() {
     return {
       showBool: false,
-      cuData: {},
+      colCuData: {},
+      moveToPageBoolean: false,
       sampleImg: [1, 2, 3 ,4],
       imgSlideData: {
         curPos: 0,
@@ -81,14 +85,26 @@ export default {
     }
   },
   methods: {
-    openModal(cuData) {
+    openModal(colCuData, moveToPageBool) {
+      console.log("moveToPageBool", moveToPageBool)
+      console.log("moveToPageBoolean", this.moveToPageBoolean)
+      this.moveToPageBoolean = moveToPageBool;
       this.showBool = true;
-      this.cuData = cuData;
+      this.colCuData = colCuData;
     },
     closeModal() {
       this.imgSlideData.curPos = 0;
       this.imgSlideData.position = 0;
       this.showBool = false;
+    },
+    moveToPage(dataSet) {
+      this.$router.push({
+        path: `/ucol/${dataSet.id}/${dataSet.nickName}`,
+        params: {
+          id: dataSet.id,
+          nickName: dataSet.nickName
+        }
+      });
     },
     previous() {
       if(this.imgSlideData.curPos > 0) {
@@ -124,6 +140,7 @@ export default {
   display: block;
   width: 100%;
   height: 100%;
+  z-index: 4;
 }
 .modal-bg {
   background: rgba(0, 0, 0, 0.3);
