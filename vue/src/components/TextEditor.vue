@@ -10,6 +10,9 @@
         <button @click="editor.chain().focus().toggleItalic().run()" :class="{ 'is-active': editor.isActive('italic') }">
           <img src="https://img.icons8.com/material-rounded/344/italic.png" alt="italic">
         </button>
+        <button @click="editor.chain().focus().toggleUnderline().run()" :class="{ 'is-active': editor.isActive('underline') }">
+          <img src="https://img.icons8.com/material-rounded/344/underline.png" alt="underline">
+        </button>
         <button @click="editor.chain().focus().toggleStrike().run()" :class="{ 'is-active': editor.isActive('strike') }">
           <img src="https://img.icons8.com/material-rounded/344/strikethrough.png" alt="strike">
         </button>
@@ -75,24 +78,25 @@
 </template>
 
 <script>
-import { Editor, EditorContent } from '@tiptap/vue-3'
-import Image from '@tiptap/extension-image'
-import StarterKit from '@tiptap/starter-kit'
-import TextStyle from '@tiptap/extension-text-style'
-import { Color } from '@tiptap/extension-color'
-import TextAlign from '@tiptap/extension-text-align'
+import { Editor, EditorContent } from '@tiptap/vue-3';
+import Image from '@tiptap/extension-image';
+import StarterKit from '@tiptap/starter-kit';
+import TextStyle from '@tiptap/extension-text-style';
+import { Color } from '@tiptap/extension-color';
+import TextAlign from '@tiptap/extension-text-align';
+import Underline from '@tiptap/extension-underline';
 
 export default {
   components: {
     EditorContent,
   },
-
+  props: ['isEditable'],
   data() {
     return {
       editor: null,
-      contents: '',
-      toolBar: true
-      
+      contents: '<p>내용을 입력해 주세요</p>',
+      toolBar: this.isEditable,
+      editable: this.isEditable
     }
   },
 
@@ -107,7 +111,8 @@ export default {
     sendContents() {
       var contents = this.editor.getHTML();
       this.$emit('sendContents', contents);
-    }
+    },
+    
   },
 
   mounted() {
@@ -117,11 +122,13 @@ export default {
         Image,
         Color,
         TextStyle,
+        Underline,
         TextAlign.configure({
           types: ['heading', 'paragraph'],
         }),
       ],
-      content: this.contents
+      content: this.contents,
+      editable: this.editable
     })
   },
 

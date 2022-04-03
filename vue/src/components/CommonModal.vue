@@ -86,8 +86,6 @@ export default {
   },
   methods: {
     openModal(colCuData, moveToPageBool) {
-      console.log("moveToPageBool", moveToPageBool)
-      console.log("moveToPageBoolean", this.moveToPageBoolean)
       this.moveToPageBoolean = moveToPageBool;
       this.showBool = true;
       this.colCuData = colCuData;
@@ -99,11 +97,7 @@ export default {
     },
     moveToPage(dataSet) {
       this.$router.push({
-        path: `/ucol/${dataSet.id}/${dataSet.nickName}`,
-        params: {
-          id: dataSet.id,
-          nickName: dataSet.nickName
-        }
+        path: `/mcol/store/${dataSet.id}/${dataSet.nickName}`
       });
     },
     previous() {

@@ -1,20 +1,29 @@
 import { createRouter, createWebHistory  } from 'vue-router';
+
 import MainWithLogin from "@/views/MainWithLogin.vue";
+
 import UserCollection from "@/views/UserCollection.vue";
 import SearchCollections from '@/views/SearchCollections.vue';
+
 import MyCollection from '@/views/MyCollection.vue';
+import MyNote from "@/views/MyNote.vue";
 import MakeNote from '@/views/MakeNote.vue'
 import StoreCollections from '@/views/StoreCollections.vue';
 import StoreColCurations from '@/views/StoreColCurations.vue';
+import MakeCollection from '@/views/MakeCollection.vue';
+
 import About from "@/views/About.vue";
 import Faq from "@/views/Faq.vue";
-import MyNote from "@/views/MyNote.vue";
 import Myprofile from "@/views/Myprofile";
 import Feedback from "@/views/Feedback";
+
 import MyCommunity from "@/views/MyCommunity";
 import Community from "@/views/Community";
 import CommunityInside from "@/views/CommunityInside.vue";
+import MakeCommunity from "@/views/MakeCommunity.vue";
+
 import Login from "@/views/Login.vue";
+
 
 const routes = [
   {
@@ -62,6 +71,11 @@ const routes = [
     component: StoreColCurations,
     name: "StoreColCurations"
   },
+  { 
+    path: '/mcol/mc',
+    component: MakeCollection,
+    name: "MakeCollection"
+  },
   {
     path:"/ab",
     component: About,
@@ -75,32 +89,37 @@ const routes = [
   {
     path:"/pf",
     component: Myprofile,
-    name: Myprofile
+    name: "Myprofile"
   },
   {
     path:"/fb",
     component: Feedback,
-    name: Feedback
+    name: "Feedback"
   },
   {
     path:"/mc",
     component: MyCommunity,
-    name: MyCommunity
+    name: "MyCommunity"
   },
   {
     path:"/com",
     component: Community,
-    name: Community
+    name: "Community"
   },
   {
     path:"/com/in",
     component: CommunityInside,
-    name: CommunityInside
+    name: "CommunityInside"
+  },
+  {
+    path:"/com/mcom",
+    component: MakeCommunity,
+    name: "MakeCommunity"
   },
   {
     path: "/logi",
     component: Login,
-    name:Login
+    name: "Login"
   }
 
 ];

@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import {computed} from "vue";
+import { computed } from "vue";
 
 export default {
   name: "Pagenationnum-list",
@@ -54,9 +54,9 @@ export default {
       type: Number,
       default: 5,
     },
-scale:{
+    scale:{
       type:String
-},
+    },
   },
   setup(props, context) {
     // 총 페이지가 5개 이하면 이전/다음 버튼을 보여주지 않음

@@ -1,21 +1,19 @@
 <template>
-<div>
-  <div class="commu-block">
-      <div class="commu-num">
+  <div class="commu-block" @click="moveToPage()">
+      <p class="commu-num">
         {{list.id}}
-      </div>
+      </p>
       <div class="commu-thum">
         <img :src="list.img" alt="thumsnail">
       </div>
       <div class="commu-text-area">
-        <div class="commu-title">{{list.title}}</div>
-        <div class="commu-text">{{list.text}}</div>
+        <p class="commu-title">{{list.title}}</p>
+        <p class="commu-text">{{list.text}}</p>
     </div>
-    <div class="commu-comment">
+    <p class="commu-comment">
       댓글갯수({{list.comment}})
-    </div>
+    </p>
   </div>
-</div>
 </template>
 
 <script>
@@ -23,9 +21,12 @@ export default {
   name: "CommunityList",
   props:[
       "list"
-  ]
-
-
+  ],
+  methods: {
+    moveToPage() {
+      this.$router.push('/com/in');
+    }
+  }
 }
 </script>
 
@@ -37,7 +38,10 @@ export default {
   height: 135px;
   background: white;
   border-bottom: 2px solid #D9D9D9;
-
+  cursor: pointer;
+}
+.commu-block:hover{
+  background: lightgrey;
 }
 .commu-num{
   width: 50px;

@@ -1,24 +1,34 @@
 <template>
-  <div class="collection" @mouseover="inCuration()" @mouseleave="outCuration()">
-    <img :class="cuSelect" :src="info.src" alt="sample_img">
-    <div class="text1" v-if="hoverBool && (!storeBool || !loginBool)">
-      <p>{{ '#'+info.hashTag[0] }}</p>
-      <p>{{ '#'+info.hashTag[1] }}</p>
-      <p>{{ '#'+info.hashTag[2] }}</p>
-      <p>{{ info.modDate }}</p>
-      <p>{{ info.cuCo }}</p>
-    </div>
-    <div class="text1" v-if="storeBool && delColBoolean && loginBool"> 
-      <button @click.stop="deleteCol()">삭제</button>
-      <button @click.stop="shareCol()">공유</button>
-    </div>
+  <div class="collection" @mouseover="!selectMode && inCuration()" @mouseleave="outCuration()">
+
+      <img :class="cuSelect" :src="info.src[0]" alt="sample_img">
+      <div class="check-icon" v-if="selected">
+        <check-icon width="100" height="100" background="white" />
+      </div>
+      <div class="text1" v-if="hoverBool && (!storeBool || !delColBoolean || !loginBool || selectMode)">
+        <p>{{ '#'+info.hashTag[0] }}</p>
+        <p>{{ '#'+info.hashTag[1] }}</p>
+        <p>{{ '#'+info.hashTag[2] }}</p>
+        <p>{{ info.modDate }}</p>
+        <p>{{ info.cuCo }}</p>
+      </div>
+      <div class="text1" v-if="storeBool && delColBoolean && loginBool && !selectMode">
+        <button @click.stop="deleteCol()">삭제</button>
+        <button @click.stop="shareCol()">공유</button>
+      </div>
+
   </div>
 </template>
 
 <script>
+import checkIcon from '@/assets/icon/checkIcon.vue';
+
 export default {
   name: "CommonCuration",
-  props: ['info', 'id', 'delColBoolean', 'loginBool'],
+  components: {
+    checkIcon
+  },
+  props: ['info', 'id', 'delColBoolean', 'loginBool', 'selectMode'],
   data() {
     return {
       cuSelect: 'cu-img' + this.id,
@@ -27,7 +37,10 @@ export default {
       hoverBool: false,
 
       // 내꺼가 아닌 다른 사람의 컬렉션을 보기
-      storeBool: false
+      storeBool: false,
+
+      // 클릭했을 때 체크버튼 만들기
+      selected: false
     }
   },
   methods: {
@@ -47,6 +60,9 @@ export default {
     },
     shareCol() {
       console.log("공유 버튼을 눌렀다!");
+    },
+    selectedMethod() {
+      this.selected == true ? this.selected = false : this.selected = true;
     }
   }
 }
@@ -61,6 +77,17 @@ img {
   height: 180px;
   object-fit: cover;
   /* margin-right: 0px; */
+}
+.check-icon {
+  display: flex;
+  width: 180px;
+  height: 180px;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, .8);
 }
 .text1 {
   width: 180px;

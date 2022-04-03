@@ -3,7 +3,7 @@
     <div class="main-with-login-body">
       <header>
         <div class="logo-area header-area">
-          <img class="main-logo-text" src="@/assets/logo_text.png" alt="text_logo">
+          <img class="main-logo-text" src="@/assets/logo_text.png" @click="$router.push('/')" alt="text_logo">
         </div>
         <div class="button-area">
           <img src="@/assets/btn_hamburger.png" alt="nav_btn" @click="openNavBar">
@@ -95,11 +95,11 @@ export default {
         },
         {
           name: 'Collection 만들기', 
-          src: '',
+          src: '/mcol/mc',
         },
         {
           name: 'Community 만들기', 
-          src: '',
+          src: '/com/mcom',
         }
       ],
       analysis: [
@@ -183,6 +183,7 @@ header {
   /* position: absolute; */
   left: 0;
   top: 0;
+  cursor: pointer;
 }
 .button-area {
   width: 30%;

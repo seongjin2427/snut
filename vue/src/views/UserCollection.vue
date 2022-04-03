@@ -55,7 +55,7 @@ import CommonModal from '../components/CommonModal.vue';
 
 
 export default {
-  components: { CommonButton, CommonCuration, MainFooter, NavigatorBar, CommonModal },
+  components: { CommonButton, CommonCuration, MainFooter, NavigatorBar, CommonModal},
   name: "UserCollection",
   data() {
     return {
@@ -93,7 +93,7 @@ export default {
                                         Proin sed molestie neque. Donec eu odio a nulla porta mattis. Phasellus vulputate eget ligula non pulvinar. Fusce semper ex purus, quis euismod lorem dictum eget. Aenean lacus felis, sagittis at pretium ultricies, ultrices id dui. Etiam ac tincidunt leo. In hac habitasse platea dictumst.`
                                         + i;
       this.sampleData.dataSet[i].folder = 'FolerNo...' + i;
-      this.sampleData.dataSet[i].src = this.sampleData.imgUrl[random];
+      this.sampleData.dataSet[i].src = [SampleData.imgUrl[random]];
       this.sampleData.dataSet[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
       this.sampleData.dataSet[i].regDate = '2022-03-01';
       this.sampleData.dataSet[i].modDate = '2022-03-02';

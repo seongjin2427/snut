@@ -1,64 +1,70 @@
 <template>
-  <!--  form-->
-  <div class="comment-view">
-    <ul class="list-comment">
+  <div class="comInsideComment">
+    <!--  form-->
+    <div class="comment-view">
+      <ul class="list-comment">
+        <!--list-->
+        <li>
+          <div class="comment-section">
+            <div class="comment-info">
+              <div class="comment-post">
 
-      <!--list-->
-      <li>
-        <div class="comment-section">
-          <div class="comment-info">
-            <div class="comment-post">
-              <div class="profile-info">
-                <div class="nickName" >{{ communityDataSet.nickName }}</div>
-                <span class="time">{{ communityDataSet.getTime }}</span>
-              </div>
-              <div class="box-post">
-                <p class="desc-info">
-                  <span class="origin-comment" tabindex="0"> 이건 댓글입니다.</span>
-                </p>
-              </div>
-              <div class="comment-more">
-                <div class="reply">reply</div>
-                <button class="action" @click="modify">
-                  <img src="@/assets/icon/com-button.png" alt="com-button">
-                </button>
+                <div class="profile-info">
+                  <div class="nickName" >{{ communityDataSet.nickName }}</div>
+                  <span class="time">{{ communityDataSet.getTime }}</span>
+                </div>
+
+                <div class="box-post">
+                  <p class="desc-info">
+                    <span class="origin-comment" tabindex="0"> 이건 댓글입니다.</span>
+                  </p>
+                </div>
+
+                <div class="comment-more">
+                  <div class="reply">reply</div>
+                  <button class="action" @click="modify">
+                    <img src="@/assets/icon/com-button.png" alt="com-button">
+                  </button>
+                </div>
+
               </div>
             </div>
           </div>
-        </div>
+        </li>
+        <!-- 하나의 댓글 끝 -->
+      </ul>
+    </div>
+    <div class="comment-paging">
+      <pagenationnum scale="scale(0.5, 0.5)" ></pagenationnum>
+    </div>
 
-      </li>
-      <!-- 하나의 댓글 끝 -->
-    </ul>
-  </div>
-  <div class="comment-paging">
-    <pagenationnum scale="scale(0.5, 0.5)" ></pagenationnum>
-  </div>
-  <!-- 댓글 페이징 처리-->
-  <div class="comment-text-write">
-    <div class="inner-text-write">
-      <div class="box-text-area">
-        <textarea maxlength="800" placeholder="Enter your comments">
-        </textarea>
-      </div>
-      <div class="wrap-menu">
-        <div class="area">
-<span class="num-text-area">
-  <span class="num-text">글자 수</span>
-  <span class="num-count-empty">0</span>
-  /
-  <span class="num-text">총 글자 개수</span>
-  600
-  </span>
-          <div class="btn-post">
-            <common-button class="post-btn" buttonName="post" width="40" height="20" border-radius="12" font-size="14"
-                           background="#FBBC05"
-                           color="white" border="none"></common-button>
+    <!-- 댓글 페이징 처리-->
+    <div class="comment-text-write">
+      <div class="inner-text-write">
+        <div class="box-text-area">
+          <textarea maxlength="800" placeholder="Enter your comments">
+          </textarea>
+        </div>
+        <div class="wrap-menu">
+          <div class="area">
+            <span class="num-text-area">
+            <span class="num-text">글자 수</span>
+            <span class="num-count-empty">0</span>
+              /
+            <span class="num-text">총 글자 개수</span>
+              600
+            </span>
+            <div class="btn-post">
+              <common-button class="post-btn" buttonName="post" width="40" height="20" border-radius="12" font-size="14"
+                              background="#FBBC05"
+                              color="white" border="none"></common-button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -75,7 +81,6 @@ export default {
       communityDataSet:{
         getTime: "time",
         nickName: "nickName"
-
       }
     }
   }

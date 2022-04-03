@@ -14,8 +14,16 @@
   }">
     {{ smallModal }}
     <div class="modal-btn-area">
-<common-button v-for="(btn, idx) in modalBtnData" :button-name="btn.name" :key="idx" width="145" height="45" border-radius="6" :background="btn.background"
-:color="btn.color" margin="10" @click="closemodal($event,btn)"/>
+      <common-button v-for="(btn, idx) in modalBtnData" 
+          :button-name="btn.name" 
+          :key="idx" 
+          width="145" 
+          height="45" 
+          :color="btn.color" 
+          margin="10" @click="closemodal($event,btn)"
+          :background="btn.background"
+          border-radius="6" 
+          />
     </div>
   </div>
 
@@ -33,7 +41,7 @@ export default {
     }
   },
   props:[
-      'modalBtnData',
+    'modalBtnData',
     'smallModal',
     'width',
     'height',
@@ -50,7 +58,8 @@ export default {
       this.modalBoolean = true;
     },
     closemodal(e, btn){
-      if(btn.name == "취소" || btn.name =="아니오"){
+      if(btn.name == "취소" || btn.name =="아니오" || btn.name == "닫기"){
+        if(btn.name == "닫기") this.$emit('backToPage');
         this.modalBoolean = false;
       }
     }
