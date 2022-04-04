@@ -48,7 +48,8 @@
           <div class="span">
             <div class="mail2">Email</div>
             <div class="flex">
-              <img class="icon" src="@/assets/icon/Mail-Closed-Line.png" alt="email">
+              <img class="icon" src="@/assets/icon/Mail-Closed-Line.png" width="18" height="18"
+                      viewBox="0 0 18 16" alt="email"/>
               <input placeholder="Email">
             </div>
           </div>
@@ -96,6 +97,7 @@
 <script>
 import CommonButton from "@/components/CommonButton.vue";
 import SmallModal from "@/components/SmallModal";
+
 
 export default {
   name: "Myprofile-page",
@@ -190,12 +192,13 @@ header {
 }
 .profile-form-wrapper{
 
+
 }
 .profile-form {
   display: flex;
-  flex-direction: column;
   width: 1000px;
   height: 620px;
+  flex-direction: column;
   justify-content: center;
 }
 

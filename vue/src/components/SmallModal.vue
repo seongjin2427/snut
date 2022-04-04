@@ -50,7 +50,7 @@ export default {
       this.modalBoolean = true;
     },
     closemodal(e, btn){
-      if(btn.name == "취소" || btn.name =="아니오"){
+      if(btn.name == "취소" || btn.name =="아니오" || btn.name == "확인"){
         this.modalBoolean = false;
       }
     }

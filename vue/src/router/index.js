@@ -15,6 +15,8 @@ import MyCommunity from "@/views/MyCommunity";
 import Community from "@/views/Community";
 import CommunityInside from "@/views/CommunityInside.vue";
 import Login from "@/views/Login.vue";
+import Forgotpw from "@/views/Forgotpw.vue";
+import Changepw from "@/views/Changepw.vue";
 
 const routes = [
   {
@@ -70,32 +72,42 @@ const routes = [
   {
     path:"/pf",
     component: Myprofile,
-    name: Myprofile
+    name: "Myprofile"
   },
   {
     path:"/fb",
     component: Feedback,
-    name: Feedback
+    name: "Feedback"
   },
   {
     path:"/mc",
     component: MyCommunity,
-    name: MyCommunity
+    name: "MyCommunity"
   },
   {
     path:"/com",
     component: Community,
-    name: Community
+    name: "Community"
   },
   {
     path:"/com/in",
     component: CommunityInside,
-    name: CommunityInside
+    name: "CommunityInside"
   },
   {
     path: "/logi",
     component: Login,
-    name:Login
+    name:"Login"
+  },
+  {
+    path:"/fgpw",
+    component: Forgotpw,
+    name: "Forgotpw"
+  },
+  {
+    path:"/chpw",
+    component: Changepw,
+    name: "Changepw"
   }
 
 ];
