@@ -149,7 +149,7 @@ export default {
   name: "MakeNote",
   data() {
     return {
-      modifyBool: true,
+      modifyBool: false,
       imgNumberSet: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
       communityDataSet: {
         title: '',
@@ -373,7 +373,7 @@ header {
 .textEditor-area {
   width: 920px;
   height: 500px;
-  /* background: lightcoral; */
+  background: white;
   border-radius: 12px;
   padding: 20px 20px 0 20px;
 }

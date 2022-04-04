@@ -1,34 +1,34 @@
 <template>
-  <div class="collection" @mouseover="!selectMode && inCuration()" @mouseleave="outCuration()">
+  <div class="collection" @mouseover="inCuration()" @mouseleave="outCuration()">
 
+    <div class="img-area">
       <img :class="cuSelect" :src="info.src[0]" alt="sample_img">
-      <div class="check-icon" v-if="selected">
-        <!-- <check-icon width="100" height="100" background="white" /> -->
-      </div>
-      <div class="text1" v-if="hoverBool && (!storeBool || !delColBoolean || !loginBool || selectMode)">
-        <p>{{ '#'+info.hashTag[0] }}</p>
-        <p>{{ '#'+info.hashTag[1] }}</p>
-        <p>{{ '#'+info.hashTag[2] }}</p>
-        <p>{{ info.modDate }}</p>
-        <p>{{ info.cuCo }}</p>
-      </div>
-      <div class="text1" v-if="storeBool && delColBoolean && loginBool && !selectMode">
-        <button @click.stop="deleteCol()">삭제</button>
-        <button @click.stop="shareCol()">공유</button>
-      </div>
+      <img :class="cuSelect" :src="info.src[1]" alt="sample_img" v-if="info.src[1]">
+      <div class="replace" v-if="!info.src[1]"></div>
+      <folder-icon width="180" height="180" v-if="false"/>
+    </div>
 
+    <div class="text1" v-if="hoverBool && (!storeBool || !delColBoolean || !loginBool)">
+      <p>{{ '#'+info.hashTag[0] }}</p>
+      <p>{{ '#'+info.hashTag[1] }}</p>
+      <p>{{ '#'+info.hashTag[2] }}</p>
+      <p>{{ info.modDate }}</p>
+      <p>{{ info.cuCo }}</p>
+    </div>
+    <div class="text1" v-if="storeBool && delColBoolean && loginBool"> 
+      <button @click.stop="deleteCol()">삭제</button>
+      <button @click.stop="shareCol()">공유</button>
+    </div>
   </div>
 </template>
 
 <script>
-// import checkIcon from '@/assets/icon/checkIcon.vue';
+import FolderIcon from '@/assets/icon/FolderIcon.vue';
 
 export default {
-  name: "CommonCuration",
-  components: {
-    // checkIcon
-  },
-  props: ['info', 'id', 'delColBoolean', 'loginBool', 'selectMode'],
+  name: "CommonCollection",
+  components: { FolderIcon },
+  props: ['info', 'id', 'delColBoolean', 'loginBool'],
   data() {
     return {
       cuSelect: 'cu-img' + this.id,
@@ -38,9 +38,6 @@ export default {
 
       // 내꺼가 아닌 다른 사람의 컬렉션을 보기
       storeBool: false,
-
-      // 클릭했을 때 체크버튼 만들기
-      selected: false
     }
   },
   methods: {
@@ -60,9 +57,6 @@ export default {
     },
     shareCol() {
       console.log("공유 버튼을 눌렀다!");
-    },
-    selectedMethod() {
-      this.selected == true ? this.selected = false : this.selected = true;
     }
   }
 }
@@ -72,22 +66,41 @@ export default {
 .collection {
   position: relative;
 }
-img {
+.img-area {
+  position: relative;
+}
+.collection img:nth-child(1) {
+  position: relative;
   width: 180px;
   height: 180px;
   object-fit: cover;
   /* margin-right: 0px; */
+  z-index: 1;
 }
-.check-icon {
-  display: flex;
+.collection img:nth-child(2) {
   width: 180px;
   height: 180px;
-  align-items: center;
-  justify-content: center;
   position: absolute;
-  top: 0;
-  left: 0;
-  background: rgba(0, 0, 0, .7);
+  left: 5px;
+  top: 5px;
+  object-fit: cover;
+  filter: brightness(70%);
+  /* -webkit-filter: blur(1px); */
+  /* margin-right: 0px; */
+  z-index: 0;
+}
+.replace {
+  width: 180px;
+  height: 180px;
+  position: absolute;
+  background: grey;
+  left: 5px;
+  top: 5px;
+  object-fit: cover;
+  filter: brightness(80%);
+  -webkit-filter: blur(2px);
+  /* margin-right: 0px; */
+  z-index: 0;
 }
 .text1 {
   width: 180px;
@@ -100,6 +113,7 @@ img {
   top: 0;
   left: 0;
   opacity: 100%;
+  z-index: 3;
 }
 .text1 p {
   color: white;

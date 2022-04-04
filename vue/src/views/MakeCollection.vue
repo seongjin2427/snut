@@ -161,7 +161,7 @@ export default {
 
         this.resetSelectMode();
       } else {
-        this.resetSelectMode();
+        window.history.back();
       }
     },
     resetSelectMode() {
@@ -251,21 +251,6 @@ header {
   justify-content: center;
   margin-top: 60px;
   margin-left: 50px;
-}
-.addBtn {
-  width: 40px;
-  height: 40px;
-  position: relative;
-  background: white;
-  border-radius: 20px;
-  margin-left: 10px;
-  cursor: pointer;
-}
-.addBtn p {
-  position: absolute;
-  top: -3px;
-  left: 10px;
-  font-size: 30px;
 }
 .button-area {
   width: 30%;

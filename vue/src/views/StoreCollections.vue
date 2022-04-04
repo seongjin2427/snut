@@ -19,9 +19,20 @@
               background="white" 
               border="none"
               fontSize="20" />
-          <div class="addBtn"><p>+</p></div>
+          <div class="addBtn" @click="addFolder()">
+            <p>+</p>
+          </div>
         </div>
         <div class="button-area">
+          <common-button 
+              width="150" 
+              height="40" 
+              buttonName="선택하기" 
+              background="white" 
+              border="none"
+              fontSize="20"
+              marginRight="20"
+              @click="saveCol" />
           <common-button 
               width="150" 
               height="40" 
@@ -40,17 +51,18 @@
             <common-collection
                 ref="showCol"
                 class="main-show-col"
-                @dragstart="startDrag($event, idx)"
-                @drop="onDrop($event, idx)"
+                @dragstart="startDrag($event, idx, col)"
+                @drop="onDrop($event, idx, col)"
                 @dragenter.prevent
                 @dragover.prevent
                 @click="openModal(col, true)"
-                v-for="(col, idx) in sampleData.dataSet"
+                v-for="(col, idx) in sampleData.Collection"
                 :info="col"
                 :id="idx"
                 :delColBoolean="true"
                 :loginBool="loginBool"
                 @deleteCol="deleteCol"
+                @sendFolderData="receivedFolderData" 
                 :key="idx"
                 draggable="true" />
           </div>
@@ -74,16 +86,22 @@ import CommonCollection from '@/components/CommonCollection.vue';
 import MainFooter from '@/components/MainFooter.vue'
 import NavigatorBar from '../components/NavigatorBar.vue';
 import SampleData from '@/assets/sampleData.json';
-import CommonModal from '../components/CommonModal.vue';
+import CommonModal from '@/components/CommonModal.vue';
 
 
 export default {
-  components: { CommonButton, CommonCollection, MainFooter, NavigatorBar, CommonModal },
+  components: { CommonButton, CommonCollection, MainFooter, NavigatorBar, CommonModal},
   name: "StoreCollections",
   data() {
     return {
       loginBool: true,
-      sampleData: {dataSet:[]}, 
+      sampleData: { Collection: [],
+                    Curation: [],
+                    Folder: {
+                      Curation:[],
+                      Collection: []
+                      } 
+                  }, 
       userCollection: [],
       toggleBtnTitle: '전부',
       storeCollectionsData: [
@@ -115,87 +133,177 @@ export default {
       this.$refs.navBar.openNavBar()
     },
     openModal(cuData, moveToPageBool) {
-      this.$refs.modal.openModal(cuData, moveToPageBool);
-      
-      // if (cuData.cuCo == 'Curation') {
-      //   this.$refs.modal.openModal(cuData, moveToPageBool);
-      // } else if (cuData.cuCo == "Collection") {
-      //   console.log("StoreCollections id", cuData.id);
-      //   this.$router.push({
-      //     path: `/mcol/store/${cuData.id}/${cuData.nickName}`
-      //   });
-      // }
+      if(cuData.cuCo != 'Folder') {
+        this.$refs.modal.openModal(cuData, moveToPageBool);
+      }
     },
-    startDrag(event, item) {
+    startDrag(event, idx, dragStartItem) {
       event.dataTransfer.dropEffect = "move";
       event.dataTransfer.effectAllowed = "move";
-      event.dataTransfer.setData("itemId", item);
+
+      event.dataTransfer.setData("itemId", idx);
+      event.dataTransfer.setData("dragStartItem", JSON.stringify(dragStartItem));
     },
-    onDrop(event, start) {
+    onDrop(event, start, dragEndItem) {
       let itemId = Number(event.dataTransfer.getData("itemId"));
       let end = this.userCollection.find((item) => item == itemId);
 
-      let comp = this.sampleData.dataSet[end];
-      this.sampleData.dataSet[end] = this.sampleData.dataSet[start];
-      this.sampleData.dataSet[start] = comp;
+      // 드래그 시 위치 바꾸기
+      let comp = this.sampleData.Collection[end];
+      this.sampleData.Collection[end] = this.sampleData.Collection[start];
+      this.sampleData.Collection[start] = comp;
+
+      // 폴더에 담기 위한 dragStart 데이터 가져오기
+      let dragStartItem = JSON.parse(event.dataTransfer.getData("dragStartItem"));
+
+      // dragStart한 아이템을 해당 목적에 맞게 폴더에 담고, 기존 아이템 지우기
+      if(dragEndItem.cuCo == 'Folder') {
+        if(dragStartItem.cuCo == 'Collection') {
+          this.sampleData.Folder.Collection.push(dragStartItem);
+        } else if(dragStartItem.cuCo == 'Curation') {
+          this.sampleData.Folder.Curation.push(dragStartItem);
+        }
+      }
+
+      if(itemId != start && dragEndItem.cuCo == 'Folder') {
+        this.deleteCol(start);
+      }
+
+      console.log(this.sampleData.Folder);
     },
     changeTitle(btnData) {
       this.toggleBtnTitle = btnData.name;
       this.makeDummies();
+
       if(btnData.id == 2) {
-        let curations = this.sampleData.dataSet.filter(i => i.cuCo == 'Curation');
-        this.sampleData.dataSet = [];
-        this.sampleData.dataSet = curations;
+        let curations = this.sampleData.Collection.filter(i => i.cuCo == 'Curation');
+        this.sampleData.Collection = [];
+        this.sampleData.Collection = curations;
       } else if (btnData.id == 3) {
-        let collections = this.sampleData.dataSet.filter(i => i.cuCo == 'Collection');
-        this.sampleData.dataSet = [];
-        this.sampleData.dataSet = collections;
+        let collections = this.sampleData.Collection.filter(i => i.cuCo == 'Collection');
+        this.sampleData.Collection = [];
+        this.sampleData.Collection = collections;
       }
     },
 
 
     deleteCol(id) {
       // console.log("StoreCollections.info", info);
-      this.sampleData.dataSet.splice(id, 1);
+      this.sampleData.Collection.splice(id, 1);
     },
-
-
     saveCol() {
-      console.log(this.sampleData);
+      if(!(this.sampleData.Collection.find((data) => data.title == ''))) {
+        console.log(this.sampleData);
+      }
     },
-    makeDummies() {
-      const INPUT_NUMBER = 20;
+    addFolder() {
+        let sampleFolder = {};
+        let random = Math.floor(Math.random()*20);
+        let i = random;
 
-      for(var j = 0; j < INPUT_NUMBER; j++) {
+        sampleFolder.id = i;
+        sampleFolder.author = 'Author....' + i;
+        sampleFolder.nickName = 'NickName....' + i;
+        sampleFolder.title = '';
+        sampleFolder.regDate = '2022-03-01';
+        sampleFolder.modDate = '2022-03-11';
+        sampleFolder.folderNameIsDisabled = false;
+
+        sampleFolder.cuCo = 'Folder';
+
+      this.sampleData.Collection.unshift(sampleFolder);
+      console.log(this.sampleData.Collection);
+    },
+    receivedFolderData(folderName, id) {
+      this.sampleData.Collection.find((data) => data.id == id).title = folderName;
+    },
+
+
+    makeDummies() {
+      const INPUT_NUMBER = 11;
+
+      // 큐레이션 구간
+      let sampleCuration = [];
+      for(let i = 0; i < INPUT_NUMBER; i++) {
+        let random = Math.floor(Math.random()*10);
+        let date = Math.floor(Math.random()*8)+1;
+        sampleCuration[i] = {};
+        sampleCuration[i].id = i;
+        sampleCuration[i].author = 'Author....' + i;
+        sampleCuration[i].nickName = 'NickName....' + i;
+        sampleCuration[i].title = 'Title....' + i;
+        sampleCuration[i].content = `Lorem ipsum` + i;
+        sampleCuration[i].folder = 'FolderNo...' + i;
+        sampleCuration[i].src = [SampleData.imgUrl[random], SampleData.imgUrl[random]];
+        sampleCuration[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
+        sampleCuration[i].regDate = '2022-03-0'+date;
+        sampleCuration[i].modDate = '2022-03-0'+date;
+        sampleCuration[i].cuCo = 'Curation';
+      }
+
+
+
+      // Curation
+      let Collection = [];
+      for(let i = 0; i < INPUT_NUMBER; i++) {
+        let random = Math.floor(Math.random()*9);
+        let date = Math.floor(Math.random()*8)+1;
+        Collection[i] = {};
+        Collection[i].id = i;
+        Collection[i].author = 'Author....' + i;
+        Collection[i].nickName = 'NickName....' + i;
+        Collection[i].title = 'Title....' + i;
+        Collection[i].content = `Lorem ipsum` + i;
+        Collection[i].folder = 'FolderNo...' + i;
+        Collection[i].src = [sampleCuration[random].src[0], sampleCuration[random].src[0]];
+        Collection[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
+        Collection[i].regDate = '2022-03-0'+date;
+        Collection[i].modDate = '2022-03-0'+date;
+        Collection[i].cuCo = 'Collection';
+      }
+
+      // 큐레이션 구간
+      let Curation = [];
+      for(let i = 0; i < INPUT_NUMBER; i++) {
+        let random = Math.floor(Math.random()*10);
+        let date = Math.floor(Math.random()*8)+1;
+        Curation[i] = {};
+        Curation[i].id = i;
+        Curation[i].author = 'Author....' + i;
+        Curation[i].nickName = 'NickName....' + i;
+        Curation[i].title = 'Title....' + i;
+        Curation[i].content = `Lorem ipsum` + i;
+        Curation[i].folder = 'FolderNo...' + i;
+        Curation[i].src = [SampleData.imgUrl[random], SampleData.imgUrl[random]];
+        Curation[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
+        Curation[i].regDate = '2022-03-0'+date;
+        Curation[i].modDate = '2022-03-0'+date;
+        Curation[i].cuCo = 'Curation';
+      }
+
+      // console.log(this.sampleData);
+      
+      let a = Array.from(Collection);
+      let b = Array.from(Curation);
+      let c = Array.from(this.sampleData.Folder);
+      
+      let arr = [];
+      let d = arr.concat(a, b, c);
+
+      d.sort((a, b) => {
+        if(a.modDate > b.modDate) return -1;
+        if(a.modDate === b.modDate) return 0;
+        if(a.modDate < b.modDate) return 1;
+      });
+
+      // console.log(d);
+
+      this.sampleData.Collection = d;
+
+      
+      for(var j = 0; j < this.sampleData.Collection.length; j++) {
         this.userCollection[j] = j;
       }
-
-      for(var i = 0; i < INPUT_NUMBER; i++) {
-        var random = Math.floor(Math.random()*10);
-        this.sampleData.dataSet[i] = {};
-        this.sampleData.dataSet[i].id = i;
-        this.sampleData.dataSet[i].author = 'Author....' + i;
-        this.sampleData.dataSet[i].nickName = 'NickName....' + i;
-        this.sampleData.dataSet[i].title = 'Title....' + i;
-        this.sampleData.dataSet[i].content = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sit amet nisi malesuada ligula accumsan rutrum. In felis velit, ultrices vitae dignissim eu, sollicitudin at mi. Fusce in porttitor libero. Duis gravida ullamcorper eros, eu feugiat dolor ornare sed. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut et libero rhoncus, venenatis quam nec, tempus tellus. Curabitur elementum posuere dignissim. Maecenas eget molestie libero. Fusce sollicitudin metus enim. Integer fringilla posuere dolor sed dignissim. Sed non viverra quam. Pellentesque eros diam, maximus id ex quis, posuere cursus urna. Curabitur sit amet lectus neque. Sed feugiat magna sed risus pharetra, vitae eleifend lectus gravida.
-                                          Nam cursus augue ut ante dictum tempor. Duis volutpat dapibus eros id vehicula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus quis dictum odio. Vestibulum et ligula eget nisi commodo aliquam. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Ut ut tincidunt risus. Duis vel velit ante. Morbi sit amet metus convallis elit aliquam viverra.
-                                          Mauris congue, libero ac vehicula molestie, risus tellus porttitor ex, quis lobortis lorem odio vitae nibh. Morbi sollicitudin metus at eros mattis, quis finibus quam efficitur. Aliquam erat volutpat. Aliquam ut vestibulum odio. Fusce lorem felis, porttitor quis ultrices eu, commodo eget massa. Vivamus vitae nisl bibendum, vulputate justo sit amet, pellentesque est. Aliquam rhoncus vitae tellus vel lacinia. Curabitur consectetur tempor felis condimentum varius. Integer at lorem in eros sollicitudin fringilla. Nam orci nulla, blandit eget mollis at, ultricies vitae urna.
-                                          Aenean id elit a nisi sollicitudin tincidunt. Vivamus sapien enim, mollis sit amet leo nec, porta accumsan nunc. Praesent lorem felis, fermentum sit amet congue sit amet, ornare a ligula. Pellentesque eu malesuada magna. Nunc libero enim, ultrices sit amet rhoncus sollicitudin, sollicitudin pellentesque tortor. Nam sed mattis urna. Maecenas vitae commodo erat. Nullam consequat mauris sodales, accumsan urna ornare, vestibulum nunc. Nullam congue congue ipsum. Aenean imperdiet aliquam urna eget mattis.
-                                          Proin sed molestie neque. Donec eu odio a nulla porta mattis. Phasellus vulputate eget ligula non pulvinar. Fusce semper ex purus, quis euismod lorem dictum eget. Aenean lacus felis, sagittis at pretium ultricies, ultrices id dui. Etiam ac tincidunt leo. In hac habitasse platea dictumst.`
-                                          + i;
-        this.sampleData.dataSet[i].folder = 'FolderNo...' + i;
-        this.sampleData.dataSet[i].src = [SampleData.imgUrl[random], SampleData.imgUrl[random]];
-        this.sampleData.dataSet[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
-        this.sampleData.dataSet[i].regDate = '2022-03-01';
-        this.sampleData.dataSet[i].modDate = '2022-03-02';
-
-        if(i <= Math.floor(INPUT_NUMBER / 2)) {
-          this.sampleData.dataSet[i].cuCo = 'Curation';
-        } else {
-          this.sampleData.dataSet[i].cuCo = 'Collection';
-        }
-      }
-
     }
   },
   mounted() {
@@ -253,8 +361,9 @@ header {
 }
 .addBtn p {
   position: absolute;
-  top: -3px;
-  left: 10px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   font-size: 30px;
 }
 .button-area {
