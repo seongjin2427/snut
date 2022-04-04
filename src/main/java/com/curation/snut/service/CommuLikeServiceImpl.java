@@ -18,5 +18,5 @@ public class CommuLikeServiceImpl implements CommuLikeService {
         CommunityLike communityLike = dtoToEntity(commuLikeDTO);
         commuLikeRepository.save(communityLike);
     }
-
+    
 }
