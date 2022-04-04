@@ -3,7 +3,7 @@
 <div class="alarm-block">
 <!--  text list -->
 <div class="comment-list">
-<div class="com-icon"><img :src="require(`@/assets/icon/${alarmData.icon}.png`)" alt="bell"></div>
+<div class="com-icon"><img :src="require(`@/assets/icon/${alarmData.icon}.png`)" alt="bell" width="24" height="24"></div>
   <div class="com-list">{{ alarmData.alarmTitle }}</div>
 </div>
 </div>

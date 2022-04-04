@@ -20,7 +20,7 @@
               <div class="comment-more">
                 <div class="reply">reply</div>
                 <button class="action" @click="modify">
-                  <img src="@/assets/icon/com-button.png" alt="com-button">
+                  <img src="@/assets/icon/com-button.png" alt="com-button" class="actbu">
                 </button>
               </div>
             </div>
@@ -182,6 +182,11 @@ button {
 
   color: #959595;
   font-size: 11px;
+}
+.actbu{
+  width: 6px;
+  height: 24px;
+  scale: 0.7;
 }
 
 </style>

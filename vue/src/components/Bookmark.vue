@@ -1,6 +1,6 @@
 <template>
   <div class="bookmark-block">
-    <div class="icon"><img :src="require(`@/assets/icon/${bookmarkData.icon}.png`)" alt="circle"></div>
+    <div class="icon"><img :src="require(`@/assets/icon/${bookmarkData.icon}.png`)" width="20" height="20" alt="circle"></div>
     <div class="bookmark">{{ bookmarkData.bookmarkTitle}}</div>
   </div>
 </template>

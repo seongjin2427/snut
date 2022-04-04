@@ -13,7 +13,7 @@
           <common-button buttonName="Log out" width="80" height="35" marginTop="5" marginRight="20" v-if="loginBool"/>
           <common-button buttonName="Log in" width="80" height="35" marginTop="5" marginRight="20" v-if="!loginBool"
                          @click="gotoLogin"/>
-          <common-button buttonName="Register" width="80" height="35" marginTop="5" marginRight="42" />
+          <common-button buttonName="Register" width="80" height="35" marginTop="5" marginRight="42" @click="gotoJoin"/>
           <img src="@/assets/btn_hamburger.png" alt="nav_btn" @click="openNavBar">
         </div>
       </header>
@@ -115,6 +115,9 @@ export default {
     },
     gotoLogin(){
       this.$router.push('/logi')
+    },
+    gotoJoin(){
+      this.$router.push('/regi')
     },
     createDummies(store, start) {
       for(var i = 0; i < 5; i++) {

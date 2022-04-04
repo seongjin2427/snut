@@ -21,7 +21,6 @@
     <div class="form-input">
       <!--  password -->
       <div class="pw flex">
-
         <div class="span">
           <div class="pw2">New Password</div>
           <div class="flex">
