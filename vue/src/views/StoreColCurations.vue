@@ -35,7 +35,7 @@
                 v-for="(col, idx) in sampleData.dataSet" 
                 :info="col" 
                 :id="idx"
-                :delColBoolean="true"
+                :delColBoolean="false"
                 :loginBool="loginBool"
                 @deleteCol="deleteCol"
                 :key="idx" />

@@ -10,7 +10,7 @@
         <p>{{ '#'+info.hashTag[1] }}</p>
         <p>{{ '#'+info.hashTag[2] }}</p>
         <p>{{ info.modDate }}</p>
-        <p>{{ info.cuCo }}</p>
+        <!-- <p>{{ info.cuCo }}</p> -->
       </div>
       <div class="text1" v-if="storeBool && delColBoolean && loginBool && !selectMode">
         <button @click.stop="deleteCol()">삭제</button>
@@ -63,7 +63,7 @@ export default {
     },
     selectedMethod() {
       this.selected == true ? this.selected = false : this.selected = true;
-    }
+    },
   }
 }
 </script>

@@ -96,9 +96,11 @@ export default {
       this.showBool = false;
     },
     moveToPage(dataSet) {
-      this.$router.push({
-        path: `/mcol/store/${dataSet.id}/${dataSet.nickName}`
-      });
+      if(dataSet.cuCo == 'Collection') {
+        this.$router.push({
+          path: `/mcol/store/${dataSet.id}/${dataSet.nickName}`
+        });
+      }
     },
     previous() {
       if(this.imgSlideData.curPos > 0) {

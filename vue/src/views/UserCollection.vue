@@ -28,7 +28,7 @@
                 v-for="(col, idx) in sampleData.dataSet" 
                 :info="col" 
                 :id="idx"
-                :delColBoolean="false"
+                :delColBoolean="true"
                 :key="idx" />
           </div>
         </div>

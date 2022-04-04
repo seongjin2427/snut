@@ -254,19 +254,22 @@ export default {
 
       } else if (btn.id == 3) {
         console.log(this.contentsWithPic)
+        console.log(this.contentsWithNonPic)
         console.log("임시저장을 눌렀다!")
 
       } else { 
         this.openBoolToggle(e, btn.id);
       }
     },
+    inspectNull() {
+      if(this.contentsWithPic.title
+          && this.contentsWithPic.contents
+          && this.contentsWithPic.imgs.length) return true;
+      else false;
+    },
     onSave() {
         console.log('저장을 눌렀다!')
-        if (this.withPic == true 
-            && this.contentsWithPic.title
-            && this.contentsWithPic.contents
-            && this.contentsWithPic.imgs.length
-            ) {
+        if (this.withPic == true && this.inspectNull()) {
               this.$refs.hashTag.map((tag, id) => { 
                 this.contentsWithPic.hashTag[id] = tag.value;
               });

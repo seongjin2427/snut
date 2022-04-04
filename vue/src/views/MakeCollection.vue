@@ -138,10 +138,10 @@ export default {
       }
     },
     selectCurations(id, colId) {
-      this.$refs.showCol[id].selectedMethod(id);
+      this.$refs.showCol[id].selectedMethod();
 
       let arr = Array.from(this.selectedCurationsData);
-      let findIndex = arr.findIndex(v => v === colId)
+      let findIndex = arr.findIndex(v => v === colId);
 
       if(findIndex == -1) arr.push(colId);
       else arr.splice(findIndex, 1);

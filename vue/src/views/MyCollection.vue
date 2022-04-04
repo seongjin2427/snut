@@ -40,7 +40,7 @@
                 @click="openModal(col, true)"
                 v-for="(col, idx) in sampleData.dataSet" 
                 :info="col" 
-                :id="col.id"
+                :id="idx"
                 :key="idx" />
             </div>
           </div>
@@ -139,8 +139,9 @@ export default {
         store.dataSet[i].title = 'Title....' + i;
         store.dataSet[i].content = 'Content...' + i;
         store.dataSet[i].folder = 'FolerNo...' + i;
-        store.dataSet[i].src = [SampleData.imgUrl[random], SampleData.imgUrl[random+1]];
+        store.dataSet[i].src = [SampleData.imgUrl[random], SampleData.imgUrl[random+1], SampleData.imgUrl[random+2]];
         store.dataSet[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
+        store.dataSet[i].cuCo = 'Collection';
         store.dataSet[i].regDate = '2022-03-01';
         store.dataSet[i].modDate = '2022-03-02';
 

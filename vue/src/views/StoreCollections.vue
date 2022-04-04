@@ -28,11 +28,20 @@
               width="150" 
               height="40" 
               buttonName="선택하기" 
-              background="white" 
+              :background="selectMode == true ? 'lightgrey' : 'white'" 
               border="none"
               fontSize="20"
               marginRight="20"
-              @click="saveCol" />
+              @click="selectCol()" />
+          <common-button 
+              width="150" 
+              height="40" 
+              buttonName="삭제하기" 
+              background="white" 
+              border="none"
+              fontSize="20"
+              @click="deleteCol(listToDelete)"
+              v-if="selectMode" />
           <common-button 
               width="150" 
               height="40" 
@@ -40,12 +49,12 @@
               background="white" 
               border="none"
               fontSize="20"
-              @click="saveCol" />
+              @click="saveCol" 
+              v-if="!selectMode" />
         </div>
       </header>
 
       <main>
-
         <div class="main-col">
           <div class="main-col-area">
             <common-collection
@@ -55,12 +64,13 @@
                 @drop="onDrop($event, idx, col)"
                 @dragenter.prevent
                 @dragover.prevent
-                @click="openModal(col, true)"
+                @click="!selectMode && openModal(col, true), selectMode && selectToDeleteCol(idx, col.id)"
                 v-for="(col, idx) in sampleData.Collection"
                 :info="col"
                 :id="idx"
                 :delColBoolean="true"
                 :loginBool="loginBool"
+                :selectMode="selectMode"
                 @deleteCol="deleteCol"
                 @sendFolderData="receivedFolderData" 
                 :key="idx"
@@ -95,13 +105,16 @@ export default {
   data() {
     return {
       loginBool: true,
-      sampleData: { Collection: [],
-                    Curation: [],
-                    Folder: {
-                      Curation:[],
-                      Collection: []
-                      } 
-                  }, 
+      selectMode: false,
+      listToDelete: [],
+      sampleData: { 
+        Collection: [],
+        Curation: [],
+        Folder: {
+          Curation:[],
+          Collection: []
+        },
+      }, 
       userCollection: [],
       toggleBtnTitle: '전부',
       storeCollectionsData: [
@@ -166,7 +179,7 @@ export default {
       }
 
       if(itemId != start && dragEndItem.cuCo == 'Folder') {
-        this.deleteCol(start);
+        this.deleteCol([start]);
       }
 
       console.log(this.sampleData.Folder);
@@ -184,17 +197,51 @@ export default {
         this.sampleData.Collection = [];
         this.sampleData.Collection = collections;
       }
+      this.clearSelectCol();
     },
 
 
     deleteCol(id) {
       // console.log("StoreCollections.info", info);
-      this.sampleData.Collection.splice(id, 1);
+      console.log("del", id)
+      for(let i = 0; i < id.length; i++) {
+        this.sampleData.Collection.splice(id[i], 1);
+      }
+      console.log("지워질 애들!!", id);
+      console.log("지워지는 리스트", this.listToDelete);
+      this.clearSelectCol();
     },
+    clearSelectCol() {
+      for (let i = 0; i < this.$refs.showCol.length; i++) {
+        this.$refs.showCol[i].selected = false;
+      }
+      this.listToDelete = [];
+      this.selectMode = false;
+    }, 
     saveCol() {
       if(!(this.sampleData.Collection.find((data) => data.title == ''))) {
         console.log(this.sampleData);
       }
+    },
+    selectCol() {
+      if(this.selectMode == true) {
+        this.clearSelectCol();
+      }
+      this.selectMode == true ? this.selectMode = false : this.selectMode = true;
+    },
+    selectToDeleteCol(id, colId) {
+      this.$refs.showCol[id].selectedMethod();
+
+      let arr = Array.from(this.listToDelete);
+      let findIndex = arr.findIndex(v => v == colId);
+      
+      if(findIndex == -1) arr.push(colId);
+      else arr.splice(findIndex, 1);
+
+      this.listToDelete = arr;
+
+      console.log("arr", arr);
+      console.log("list", this.listToDelete);
     },
     addFolder() {
         let sampleFolder = {};
@@ -308,7 +355,7 @@ export default {
   },
   mounted() {
     this.makeDummies();
-  }
+  },
 }
 </script>
 

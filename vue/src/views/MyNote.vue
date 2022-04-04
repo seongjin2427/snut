@@ -26,9 +26,10 @@
             <common-collection 
                 class="main-searched-col"
                 @click="openModal(col, true)"
-                v-for="(col, idx) in sampleData.dataSet" 
+                v-for="(col, idx) in sampleData.Collection" 
                 :info="col" 
-                :id="col.id"
+                :id="idx"
+                :delColBoolean="true"
                 :key="idx" />
           </div>
         </div>
@@ -60,7 +61,14 @@ export default {
   data() {
     return {
       loginBool: false,
-      sampleData: {dataSet:[]},
+      sampleData: { 
+        Collection: [],
+        Curation: [],
+        Folder: {
+          Curation:[],
+          Collection: []
+        },
+      }, 
     }
   },
   methods: {
@@ -73,27 +81,92 @@ export default {
     moveToPage() {
       this.$router.push({path: '/mcol/note/makenote'})
     },
-    createDummies(store) {
-      for(var i = 0; i < 20; i++) {
-        var random = Math.floor(Math.random()*10);
-        store.dataSet[i] = {};
-        store.dataSet[i].id = i;
-        store.dataSet[i].author = 'Author....' + i;
-        store.dataSet[i].nickName = 'NickName....' + i;
-        store.dataSet[i].title = 'Title....' + i;
-        store.dataSet[i].content = 'Content...' + i;
-        store.dataSet[i].folder = 'FolerNo...' + i;
-        store.dataSet[i].src = [SampleData.imgUrl[random], SampleData.imgUrl[random]];
-        store.dataSet[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
-        store.dataSet[i].regDate = '2022-03-01';
-        store.dataSet[i].modDate = '2022-03-02';
+    makeDummies() {
+      const INPUT_NUMBER = 11;
 
+      // 큐레이션 구간
+      let sampleCuration = [];
+      for(let i = 0; i < INPUT_NUMBER; i++) {
+        let random = Math.floor(Math.random()*10);
+        let date = Math.floor(Math.random()*8)+1;
+        sampleCuration[i] = {};
+        sampleCuration[i].id = i;
+        sampleCuration[i].author = 'Author....' + i;
+        sampleCuration[i].nickName = 'NickName....' + i;
+        sampleCuration[i].title = 'Title....' + i;
+        sampleCuration[i].content = `Lorem ipsum` + i;
+        sampleCuration[i].folder = 'FolderNo...' + i;
+        sampleCuration[i].src = [SampleData.imgUrl[random], SampleData.imgUrl[random]];
+        sampleCuration[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
+        sampleCuration[i].regDate = '2022-03-0'+date;
+        sampleCuration[i].modDate = '2022-03-0'+date;
+        sampleCuration[i].cuCo = 'Curation';
       }
+
+
+
+      // Curation
+      let Collection = [];
+      for(let i = 0; i < INPUT_NUMBER; i++) {
+        let random = Math.floor(Math.random()*9);
+        let date = Math.floor(Math.random()*8)+1;
+        Collection[i] = {};
+        Collection[i].id = i;
+        Collection[i].author = 'Author....' + i;
+        Collection[i].nickName = 'NickName....' + i;
+        Collection[i].title = 'Title....' + i;
+        Collection[i].content = `Lorem ipsum` + i;
+        Collection[i].folder = 'FolderNo...' + i;
+        Collection[i].src = [sampleCuration[random].src[0], sampleCuration[random].src[0]];
+        Collection[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
+        Collection[i].regDate = '2022-03-0'+date;
+        Collection[i].modDate = '2022-03-0'+date;
+        Collection[i].cuCo = 'Collection';
+      }
+
+      // 큐레이션 구간
+      let Curation = [];
+      for(let i = 0; i < INPUT_NUMBER; i++) {
+        let random = Math.floor(Math.random()*10);
+        let date = Math.floor(Math.random()*8)+1;
+        Curation[i] = {};
+        Curation[i].id = i;
+        Curation[i].author = 'Author....' + i;
+        Curation[i].nickName = 'NickName....' + i;
+        Curation[i].title = 'Title....' + i;
+        Curation[i].content = `Lorem ipsum` + i;
+        Curation[i].folder = 'FolderNo...' + i;
+        Curation[i].src = [SampleData.imgUrl[random], SampleData.imgUrl[random]];
+        Curation[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
+        Curation[i].regDate = '2022-03-0'+date;
+        Curation[i].modDate = '2022-03-0'+date;
+        Curation[i].cuCo = 'Curation';
+      }
+
+      // console.log(this.sampleData);
+      
+      let a = Array.from(Collection);
+      let b = Array.from(Curation);
+      let c = Array.from(this.sampleData.Folder);
+      
+      let arr = [];
+      let d = arr.concat(a, b, c);
+
+      d.sort((a, b) => {
+        if(a.modDate > b.modDate) return -1;
+        if(a.modDate === b.modDate) return 0;
+        if(a.modDate < b.modDate) return 1;
+      });
+
+      // console.log(d);
+
+      this.sampleData.Collection = d;
+
     }
   },
-  created() {
-    this.createDummies(this.sampleData);
-  }
+  mounted() {
+    this.makeDummies();
+  },
 }
 </script>
 
@@ -152,18 +225,17 @@ header {
 
 /* 컬렉션 구간 */
 .main-col {
-  width: calc(100%-200px);
+  width: 100%;
   max-width: 1200px;
   /* background: green; */
-  padding: 0 100px;
 }
 .main-col-area {
   width: 100%;
   display: flex;
-  justify-content: space-between;
   flex-wrap: wrap;
 }
 .main-searched-col {
   margin-top: 20px;
+  margin-right: 20px;
 }
 </style>
