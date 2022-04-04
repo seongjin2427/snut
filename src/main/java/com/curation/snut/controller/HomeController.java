@@ -21,4 +21,5 @@ public class HomeController {
         log.info("access denied : " + auth);
         model.addAttribute("msg", "Access Denied");
     }
+
 }

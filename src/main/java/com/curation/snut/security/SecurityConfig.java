@@ -73,24 +73,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     log.info(">>>" + http.headers().getClass().getName());
+    // @@@@@@@@@@@@@@@@@@@
     // http.authorizeRequests()
     // .antMatchers("/notes").permitAll()
-    // .antMatchers("/sample/all").permitAll()
-    // .antMatchers("/sample/member").hasRole("MEMBER")
-    // .antMatchers("/sample/admin").hasRole("ADMIN");
+    // .antMatchers("/all").permitAll()
+    // .antMatchers("/member").hasRole("MEMBER")
+    // .antMatchers("/admin").hasRole("ADMIN");
+    // @@@@@@@@@@@@@@@@
     http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());
 
     // 1. Security login form 사용
-    // http.formLogin();
+    http.formLogin();
 
     // 2. 사용자 정의에 의한 loginProcessingUrl 사용
-    // http.formLogin().loginPage("/member/login")
-    // .loginProcessingUrl("/member/login");
+    http.formLogin().loginPage("/login")
+        .loginProcessingUrl("/login");
 
     // 3.UserDetailsService 로그인 handler :: security의 '/login'
-    http.formLogin().loginPage("/member/login")
+    http.formLogin().loginPage("/login")
         .loginProcessingUrl("/login")
-        .failureUrl("/member/login?error")
+        .failureUrl("/login?error")
         .successHandler(loginSuccessHandler());
 
     // 4.OAuth2UserDetailsService 로그인 handler :: social의 login
@@ -113,7 +115,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   // {
   // auth.inMemoryAuthentication().withUser("user1")
   // .password("$2a$10$4RspqheGBO/ncbQwa6Qt/OlfiDKYA25OiqYsUIGRgorMouBvjkeh6")
-  // .roles("USER");
+  // .roles("GUEST");
   // }
 
 }

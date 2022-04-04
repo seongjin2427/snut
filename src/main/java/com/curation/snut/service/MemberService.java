@@ -22,13 +22,13 @@ public interface MemberService {
         .fromSocial(memberDTO.isFromSocial())
         // .roleSet(cMemberDTO.getAuthorities().stream().map(gran->{
         // System.out.println("gran>>"+gran);
-        // return AuthorityRole.USER;
+        // return AuthorityRole.GUEST;
         // }).collect(Collectors.toSet()))
         .roleSet(memberDTO.getRoleSet().stream().map(
             new Function<String, AuthorityRole>() {
               @Override
               public AuthorityRole apply(String t) {
-                if (t.equals("ROLE_USER"))
+                if (t.equals("ROLE_GUEST"))
                   return AuthorityRole.GUEST;
                 else if (t.equals("ROLE_MEMBER"))
                   return AuthorityRole.MEMBER;

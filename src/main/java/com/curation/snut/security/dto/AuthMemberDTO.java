@@ -22,19 +22,19 @@ public class AuthMemberDTO extends User implements OAuth2User {
   private String pw;
   private String nickname;
   private String gender;
-  private String birth;
   private String mobile;
+  private String birth;
   private boolean fromSocial;
   private Map<String, Object> attr;// Social에서 오는 OAuth정보
 
   // DB로부터 사용자를 초기화하는 생성자1
   public AuthMemberDTO(
-      Long mno,
-      String username, String password,
-      String name, String email, String mobile,
+      String email, String name, String pw,
+      String nickname, String gender,
+      String birth, String mobile,
       boolean fromSocial,
       Collection<? extends GrantedAuthority> authorities) {
-    super(username, password, authorities);
+    super(name, pw, authorities);
     this.email = email;
     this.name = name;
     this.pw = pw;
@@ -42,7 +42,6 @@ public class AuthMemberDTO extends User implements OAuth2User {
     this.gender = gender;
     this.mobile = mobile;
     this.birth = birth;
-    this.email = username;
     this.fromSocial = fromSocial;
     log.info("ClubAuthMemberDTO 생성자 실행");
   }
@@ -52,8 +51,7 @@ public class AuthMemberDTO extends User implements OAuth2User {
       String email,
       String name, String pw,
       String nickname, String gender,
-      String mobile,
-      String birth,
+      String mobile, String birth,
       boolean fromSocial,
       Collection<? extends GrantedAuthority> authorities,
       Map<String, Object> attr) {

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.curation.snut.security.dto.AuthMemberDTO;
 import com.curation.snut.security.util.JWTUtil;
 
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -38,9 +39,9 @@ public class ApiLoginFilter
     String email = request.getParameter("email");
     String pw = request.getParameter("pw");
     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(email, pw);
-    // if(email == null){
-    // throw new BadCredentialsException("email cannot be null");
-    // }
+    if (email == null) {
+      throw new BadCredentialsException("email cannot be null");
+    }
     return getAuthenticationManager().authenticate(authToken);
   }
 
@@ -50,9 +51,9 @@ public class ApiLoginFilter
       HttpServletResponse response,
       FilterChain chain, Authentication authResult)
       throws IOException, ServletException {
-    // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-    // response.setContentType("text/html;charset=utf-8");
-    // response.getWriter().print("<script>alert('Login success!');</script>");
+    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    response.setContentType("text/html;charset=utf-8");
+    response.getWriter().print("<script>alert('Login success!');</script>");
     log.info("ApiLoginFilter successfulAuthentication:" + authResult);
     log.info("Principal:" + authResult.getPrincipal());
     String email = ((AuthMemberDTO) authResult.getPrincipal())

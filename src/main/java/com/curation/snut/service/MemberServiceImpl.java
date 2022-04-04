@@ -23,7 +23,7 @@ public class MemberServiceImpl implements MemberService {
     memberDTO.setPw(passwordEncoder.encode(memberDTO.getPw()));
     Member member = dtoToEntity(memberDTO);
     repository.save(member);
-    log.info("cMember>>" + member);
+    log.info("member>>" + member);
   }
 
 }

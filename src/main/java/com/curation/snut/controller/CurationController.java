@@ -1,17 +1,19 @@
 package com.curation.snut.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.curation.snut.dto.CurationDTO;
+import com.curation.snut.dto.MemberDTO;
+import com.curation.snut.security.dto.AuthMemberDTO;
 import com.curation.snut.service.CurationService;
-import com.curation.snut.service.CurationServiceImpl;
+import com.curation.snut.service.MemberService;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class CurationController {
     private final CurationService curationService;
+    private final MemberService memberService;
 
     @GetMapping("/list")
     public String CuList(Model model) {
@@ -32,8 +35,13 @@ public class CurationController {
         return "list.html";
     };
 
-    @GetMapping("/write")
-    public void write() {
+    public String CuList(Model model, String searchCurationTitle) {
+        if (searchCurationTitle != null) {
+            List<CurationDTO> searchCurationList = curationService.searchCurationTitle(searchCurationTitle);
+            model.addAttribute("cuList", searchCurationList);
+        }
+        return "list.html";
+
     }
 
     @PostMapping("/write")
@@ -78,5 +86,21 @@ public class CurationController {
     // ra.addAttribute("hashtag", hashtag);
     // return "redirect:/read/search";
     // }
+    @GetMapping("/memberModify")
+    public void modify(@AuthenticationPrincipal AuthMemberDTO authMemberDTO, Model model) {
+        model.addAttribute("auth", authMemberDTO);
+        List<String> roleNames = new ArrayList<>();
+        authMemberDTO.getAuthorities().forEach(authority -> {
+            roleNames.add(authority.getAuthority());
+        });
+        model.addAttribute("roleNames", roleNames);
+    }
 
+    @PostMapping("/memberModify")
+    public String modifyForm(MemberDTO memberDTO, Model model) {
+        String result = "redirect:/detail";
+        log.info("memberDTO:" + memberDTO);
+        memberService.updateMemberDTO(memberDTO);
+        return result;
+    }
 }

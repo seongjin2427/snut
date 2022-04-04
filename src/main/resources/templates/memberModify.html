@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!-- default header name is X-CSRF-TOKEN -->
+    <!-- <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" /> -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  
+  <body>
+    <h1>Member Modify Page</h1>
+    <hr>
+    <div class="container" th:fragment="content">
+      <form class="form-signin" method="post" th:action="@{/memberModify}">
+        <p>
+          <label for="email" class="sr-only">Email</label>
+          <input type="text" id="email" name="email" class="form-control" th:value="${auth.email}" readonly>
+          <input type="hidden" name="email" th:value="${auth.email}">
+          <input type="hidden" name="name" th:value="${auth.name}">
+          <input type="hidden" name="fromSocial" th:value="${auth.fromSocial}">
+        </p>
+        <p>
+          <label for="name" class="sr-only">Name</label>
+          <input type="text" id="name" name="name" class="form-control" autofocus required>
+        </p>
+        <p>
+          <label for="mobile" class="sr-only">Mobile</label>
+          <input type="text" id="mobile" name="mobile" class="form-control" autofocus required>
+        </p>
+        <p th:each="role : ${roleNames}">
+          <input type="hidden" name="roleSet" th:value="${role}">
+        </p>
+        <p>
+          <label for="pw" class="sr-only">Pw</label><br>
+          <input type="password" id="pw" name="pw" class="form-control" placeholder="Pw" required><br>
+          <input type="password" id="repw" name="repw" class="form-control" placeholder="rePw" required>
+        </p>
+        <button id="submitBtn" class="btn btn-lg btn-primary btn-block" type="button">Update</button>
+        <button class="btn btn-lg btn-info btn-block" type="reset">Reset</button>
+        <p><span id="notice"></span></p>
+  
+      </form>
+    </div>
+    <script>
+      /*$(document).ready(function(){
+  
+      });
+      $(function () {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        $(document).ajaxSend(function(e, xhr, options) {
+          xhr.setRequestHeader(header, token);
+        });
+      });
+      */
+      window.onload = function () {
+        // var token = document.querySelector("meta[name='_csrf']")
+        //   .getAttribute("content");
+        // var header = document.querySelector(
+        //   "meta[name='_csrf_header']").getAttribute("content");
+        // console.log(token + "\n" + header);
+        var submitBtn = document.querySelector("#submitBtn");
+        var pass = document.querySelector("#pw");
+        var repass = document.querySelector("#repw");
+        var name = document.querySelector("#name");
+        var mobile = document.querySelector("#mobile");
+        var notice = document.querySelector("#notice");
+        submitBtn.onclick = function (event) {
+          event.preventDefault();
+          if (name.value == "") {
+            notice.innerHTML = "이름을 확인하여 주세요.";
+            name.focus();
+            return;
+          }
+          if (pass.value == "") {
+            notice.innerHTML = "비밀번호를 확인하여 주세요.";
+            pass.focus();
+            return;
+          }
+          if (repass.value == "") {
+            notice.innerHTML = "비밀번호 재입력을 확인하여 주세요.";
+            repass.focus();
+            return;
+          }
+          if (pass.value != repass.value) {
+            notice.innerHTML = "비밀번호가 일치하지 않습니다.";
+            pass.value = ""; repass.value = "";
+            pass.focus();
+            return;
+          }
+  
+          document.querySelector(".form-signin").submit();
+        }
+      }
+  
+    </script>
+  </body>
+  
+  </html>
+

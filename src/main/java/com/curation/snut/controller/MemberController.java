@@ -33,26 +33,26 @@ public class MemberController {
 
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/detail")
-  public void all(Model model, @AuthenticationPrincipal AuthMemberDTO cAuthMemberDTO) {
+  public void all(Model model, @AuthenticationPrincipal AuthMemberDTO authMemberDTO) {
     log.info("detail........");
-    model.addAttribute("auth", cAuthMemberDTO);
+    model.addAttribute("auth", authMemberDTO);
   }
 
-  @GetMapping("modify")
-  public void modify(@AuthenticationPrincipal AuthMemberDTO cAuthMemberDTO, Model model) {
-    model.addAttribute("auth", cAuthMemberDTO);
+  @GetMapping("/memberModify")
+  public void modify(@AuthenticationPrincipal AuthMemberDTO authMemberDTO, Model model) {
+    model.addAttribute("auth", authMemberDTO);
     List<String> roleNames = new ArrayList<>();
-    cAuthMemberDTO.getAuthorities().forEach(authority -> {
+    authMemberDTO.getAuthorities().forEach(authority -> {
       roleNames.add(authority.getAuthority());
     });
     model.addAttribute("roleNames", roleNames);
   }
 
-  @PostMapping("modify")
-  public String modifyForm(MemberDTO cMemberDTO, Model model) {
-    String result = "redirect:/member/detail";
-    log.info("MemberDTO:" + cMemberDTO);
-    memberService.updateMemberDTO(cMemberDTO);
+  @PostMapping("/memberModify")
+  public String modifyForm(MemberDTO memberDTO, Model model) {
+    String result = "redirect:/detail";
+    log.info("memberDTO:" + memberDTO);
+    memberService.updateMemberDTO(memberDTO);
     return result;
   }
 }

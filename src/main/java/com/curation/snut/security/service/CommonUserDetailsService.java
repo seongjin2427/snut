@@ -43,8 +43,7 @@ public class CommonUserDetailsService implements UserDetailsService {
         member.isFromSocial(),
         member.getRoleSet().stream().map(
             role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
-            .collect(Collectors.toSet()),
-        null);
+            .collect(Collectors.toSet()));
     authMemberDTO.setName(member.getName());
     authMemberDTO.setFromSocial(member.isFromSocial());
     return authMemberDTO;

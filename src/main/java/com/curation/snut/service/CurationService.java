@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 public interface CurationService {
     public List<CurationDTO> CuList();
 
+    public List<CurationDTO> searchCurationTitle(String searchCurationTitle);
+
     CurationDTO getCuration(Long curationNo);
 
     void write(CurationDTO curationDTO);

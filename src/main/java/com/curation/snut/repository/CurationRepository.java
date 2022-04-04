@@ -1,5 +1,7 @@
 package com.curation.snut.repository;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import com.curation.snut.entity.Curation;
@@ -21,9 +23,9 @@ public interface CurationRepository extends JpaRepository<Curation, Long> {
     @Query("delete from Curation c where c.curationNo = :id")
     void deleteCuration(Long id);
 
-    @Transactional
-    @Query("select curationNo from Curation c where c.curationNo= :id and c.curationNo is null")
-    Long searchCuration(Long id);
+    // 쿼리수정
+    @Query("select c, curationNo  from Curation c left outer join c.title like%:searchTitle%")
+    List<Object[]> findByCurationTitleContaining(String searchTitle);
 
     Object getCurationByCurationNo(@Param("curationNo") Long curationNo);
 }

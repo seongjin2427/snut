@@ -32,34 +32,34 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
       HttpServletResponse response, Authentication auth)
       throws IOException, ServletException {
     log.warn("Login Success");
-    AuthMemberDTO cAuthMemberDTO = (AuthMemberDTO) auth.getPrincipal();
-    boolean fromSocial = cAuthMemberDTO.isFromSocial();
-    log.info("cAuthMemberDTO:" + cAuthMemberDTO);
-    boolean passwordResult = passwordEncoder.matches("1", cAuthMemberDTO.getPassword());
-    log.info("DTO.getPassword:" + cAuthMemberDTO.getPassword());
+    AuthMemberDTO authMemberDTO = (AuthMemberDTO) auth.getPrincipal();
+    boolean fromSocial = authMemberDTO.isFromSocial();
+    log.info("authMemberDTO:" + authMemberDTO);
+    boolean pwResult = passwordEncoder.matches("1", authMemberDTO.getPw());
+    log.info("DTO.getPw:" + authMemberDTO.getPw());
 
-    if (fromSocial && passwordResult) {
-      redirect.sendRedirect(request, response, "/member/modify");
+    if (fromSocial && pwResult) {
+      redirect.sendRedirect(request, response, "/list");
       return;
     }
     List<String> roleNames = new ArrayList<>();
-    cAuthMemberDTO.getAuthorities().forEach(authority -> {
+    authMemberDTO.getAuthorities().forEach(authority -> {
       roleNames.add(authority.getAuthority());
     });
     log.warn("ROLE NAMES: " + roleNames);
-    // if(roleNames.contains("ROLE_ADMIN")){
-    // response.sendRedirect(request.getContextPath()+"/sample/admin");
-    // return;
-    // }
-    // if(roleNames.contains("ROLE_MEMBER")){
-    // response.sendRedirect(request.getContextPath()+"/sample/member");
-    // return;
-    // }
-    // if(roleNames.contains("ROLE_USER")){
-    // response.sendRedirect(request.getContextPath()+"/sample/all");
-    // return;
-    // }
-    response.sendRedirect(request.getContextPath() + "/member/detail");
+    if (roleNames.contains("ROLE_ADMIN")) {
+      response.sendRedirect(request.getContextPath() + "/@@@@@");
+      return;
+    }
+    if (roleNames.contains("ROLE_MEMBER")) {
+      response.sendRedirect(request.getContextPath() + "/@@@@@");
+      return;
+    }
+    if (roleNames.contains("ROLE_USER")) {
+      response.sendRedirect(request.getContextPath() + "/@@@@@");
+      return;
+    }
+    response.sendRedirect(request.getContextPath() + "/@@@@@");
   }
 
 }

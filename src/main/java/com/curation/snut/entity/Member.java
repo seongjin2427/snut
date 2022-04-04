@@ -32,6 +32,7 @@ public class Member extends BaseEntity {
     private String nickname;
     private boolean fromSocial;
     // private String AuthId;
+
     // jpa에서 연결되는 객체가 collection일 경우 사용
     @ElementCollection(fetch = FetchType.LAZY)
     @Builder.Default
