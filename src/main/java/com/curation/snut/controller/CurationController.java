@@ -31,7 +31,6 @@ public class CurationController {
         // System.out.println(CuList(model));
         List<CurationDTO> cuList = curationService.CuList();
         model.addAttribute("cuList", cuList);
-        log.info("cuList.,............." + cuList);
         return "list.html";
     };
 
@@ -44,23 +43,33 @@ public class CurationController {
 
     }
 
+    @GetMapping("/write")
+    public String write3(@AuthenticationPrincipal MemberDTO memberDTO, Model model) {
+        model.addAttribute("member", memberDTO);
+        log.info("email........" + memberDTO);
+        return "/write";
+
+    }
+
     @PostMapping("/write")
-    public String curationWrite2(CurationDTO curationDTO) {
-        // log.info("write....." + curationDTO);
+    public String curationWrite2(CurationDTO curationDTO, @AuthenticationPrincipal MemberDTO memberDTO,
+            RedirectAttributes ra) {
         curationService.write(curationDTO);
+        ra.addFlashAttribute("member", memberDTO);
+        log.info("email2........" + memberDTO);
         return "redirect:/list";
     }
 
     @GetMapping({ "/read", "/modify" })
-    public void read(Long curationNo, Model model) {
-        log.info("curationNo : " + curationNo);
+    public void read(Long curationNo, @AuthenticationPrincipal AuthMemberDTO authMemberDTO, Model model) {
         CurationDTO curationDTO = curationService.getCuration(curationNo);
+        log.info("email....." + authMemberDTO);
         model.addAttribute("cuList", curationDTO);
 
     }
 
     @PostMapping("/modify")
-    public String modify(CurationDTO curationDTO, RedirectAttributes ra) {
+    public String modify(CurationDTO curationDTO, @AuthenticationPrincipal MemberDTO memberDTO, RedirectAttributes ra) {
         // log.info("modify read..........mno: " + dto.getCurationNo());
         curationService.modify(curationDTO);
         ra.addAttribute("curationNo", curationDTO.getCurationNo());

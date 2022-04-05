@@ -1,5 +1,6 @@
 package com.curation.snut.entity;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,7 +21,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @ToString
-public class Member extends BaseEntity {
+public class Member extends BaseEntity implements Serializable {
     @Id
     private String email;
 

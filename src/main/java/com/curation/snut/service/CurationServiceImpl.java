@@ -67,10 +67,18 @@ public class CurationServiceImpl implements CurationService {
 
     @Override
     public List<CurationDTO> searchCurationTitle(String searchCurationTitle) {
-        List<Object[]> curationList = curationRepository.findByCurationTitleContaining(searchCurationTitle);
-        List<CurationDTO> curationDTOList = curationList.stream()
-                .map(entity -> entityToDTO((Curation) entity[0], (Long) entity[1])).collect(Collectors.toList());
-        return curationDTOList;
+        // TODO Auto-generated method stub
+        return null;
     }
-
 }
+// @Override
+// public List<CurationDTO> searchCurationTitle(String searchCurationTitle) {
+// List<Object[]> curationList =
+// curationRepository.findByCurationTitleContaining(searchCurationTitle);
+// List<CurationDTO> curationDTOList = curationList.stream()
+// .map(entity -> entityToDTO((Curation) entity[0], (Long)
+// entity[1])).collect(Collectors.toList());
+// return curationDTOList;
+// }
+
+// }

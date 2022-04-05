@@ -34,7 +34,6 @@ public class MemberController {
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/detail")
   public void all(Model model, @AuthenticationPrincipal AuthMemberDTO authMemberDTO) {
-    log.info("detail........");
     model.addAttribute("auth", authMemberDTO);
   }
 
@@ -51,7 +50,6 @@ public class MemberController {
   @PostMapping("/memberModify")
   public String modifyForm(MemberDTO memberDTO, Model model) {
     String result = "redirect:/detail";
-    log.info("memberDTO:" + memberDTO);
     memberService.updateMemberDTO(memberDTO);
     return result;
   }

@@ -24,7 +24,8 @@ public interface CurationRepository extends JpaRepository<Curation, Long> {
     void deleteCuration(Long id);
 
     // 쿼리수정
-    @Query("select c, curationNo  from Curation c left outer join c.title like%:searchTitle%")
+    // @Query("select c, curationNo from Curation c left outer join c.title
+    // like%:searchTitle%")
     List<Object[]> findByCurationTitleContaining(String searchTitle);
 
     Object getCurationByCurationNo(@Param("curationNo") Long curationNo);

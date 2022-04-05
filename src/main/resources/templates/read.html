@@ -42,7 +42,10 @@
             <tr>
                 <tr>
                     <td>
-                        <a th:href="@{/modify(curationNo=${cuList.curationNo})}">수정</a>
+                        <a th:href="@{/modify(curationNo=${cuList.curationNo})}"sec:authorize="isAudenticated()">
+                            <input type="hidden" name="email" id="email" th:value="${cuList.email}"/>
+                            <button th:if = "${cuList.email == cuList.email}">수정 </button>    
+                        </a>
                     </td>
                     <td>
                         <a th:href="@{/read/delete(id=${cuList.curationNo})}">삭제</a>
