@@ -1,0 +1,397 @@
+<template>
+  <div class="make-community">
+    <div class="make-community-body">
+      <header>
+        <div class="logo-area header-area">
+          <img class="main-logo-text" src="@/assets/logo_text.png" @click="$router.push('/')" alt="text_logo">
+        </div>
+        <div class="make-community-header" v-if="!modifyBool">
+          <common-button 
+              @click="registerCommunity()"
+              width="150" height="40" 
+              buttonName="생성하기"
+              background="white" border="none" fontSize="20" fontWeight="300"
+              />
+        </div>
+        <div class="make-community-header" v-if="modifyBool">
+          <common-button 
+              @click="cancelMake()"
+              width="150" height="40" 
+              buttonName="취소"
+              marginRight="30" background="white" border="none" fontSize="20" fontWeight="300"
+              />
+          <common-button 
+              @click="modifyCommunity()"
+              width="150" height="40" 
+              buttonName="저장"
+              background="white" border="none" fontSize="20" fontWeight="300"
+              />
+        </div>
+      </header>
+      <main>
+
+        <!-- 글 쓰기 구간 -->
+        <div class="write-container">
+            <div class="write-title">
+              
+            </div>
+          <div class="write-body">
+
+            <div class="write-wrapper">
+              
+              <div class="write-area">
+
+                <div class="emoji-view">
+                  <emoji-face 
+                      class="emoji-face" 
+                      :color="communityDataSet.pickedColor" />
+                  <img 
+                      class="emoji-expression" 
+                      :src="require(`@/assets/face-emoji/emoji${communityDataSet.pickedEmoji}.png`)" 
+                      alt="expression">
+                </div>
+                <div class="emoji-color-container">
+                  <div class="picker-box">
+                    <p>emoji</p>
+                    <div class="picker emoji-picker">
+                      <img 
+                          :src="require(`@/assets/face-emoji/emoji${imgNo}.png`)" 
+                          @click="communityDataSet.pickedEmoji = idx"
+                          v-for="(imgNo, idx) in imgNumberSet" :key="idx"
+                          alt="emoji_img">
+                    </div>
+                  </div>
+                  <div class="picker-box">
+                    <p>
+                      color &nbsp;
+                      <color-picker @getColors="getColors"/>
+                    </p>
+                      
+                    <div class="picker color-picker">
+                      <div class="picked-color" :style="{ background: communityDataSet.pickedColor }"></div>
+                        &nbsp; &nbsp; 
+                      <p> {{ communityDataSet.pickedColor }}</p>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="write-wrapper-title">
+                <input type="text" placeholder="제목을 입력하세요" v-model="communityDataSet.title">
+              </div>
+
+              <div class="textEditor-area">
+                <div class="textEditor-wrapper">
+                  <TipTap ref="textEditor" isEditable="'true'" @sendContents="receivedEditorContents"/>
+                </div>
+              </div>
+
+            </div>
+            <div class="btnSet" v-if="!modifyBool">
+              <div class="btn-area1">
+                <common-button 
+                    buttonName="취소"
+                    width="150" height="40"
+                    background="white" fontSize="20" fontWeight="300" marginRight="30"
+                    @click="cancelMake()"
+                    />
+                <common-button 
+                    buttonName="미리보기"
+                    width="150" height="40" background="white" fontSize="20" fontWeight="300"
+                    @click="moveToPreView()"
+                    />
+              </div>
+              <div class="btn-area2">
+                <common-button 
+                    buttonName="등록하기"
+                    width="150" height="40" border="none" background="#FBBC05"
+                    fontSize="20" fontWeight="300" color="white"
+                    @click="saveCommunity()"
+                    />
+                
+              </div>
+            </div>
+
+            
+          </div>
+
+        </div>
+
+      </main>
+      
+      <footer>
+        <main-footer/>
+        <small-modal ref="modal" :modalBtnData="modalBtnData" smallModal="수정되었습니다." @backToPage="cancelMake()"/>
+      </footer>
+      
+    </div>
+  </div>
+</template>
+
+<script>
+import CommonButton from '@/components/CommonButton.vue';
+import MainFooter from '@/components/MainFooter.vue'
+import TipTap from '@/components/TextEditor.vue'
+import ColorPicker from '@/components/ColorPicker.vue'
+import EmojiFace from '../components/EmojiFace.vue';
+import SmallModal from '../components/SmallModal.vue';
+
+export default {
+  components: { 
+    CommonButton, 
+    MainFooter, 
+    TipTap, 
+    ColorPicker,
+    EmojiFace,
+    SmallModal
+    },
+  name: "MakeNote",
+  data() {
+    return {
+      modifyBool: false,
+      imgNumberSet: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+      communityDataSet: {
+        title: '',
+        contents: '',
+        pickedEmoji: 0,
+        pickedColor: 'rgb(240, 230, 190)',
+      },
+      modalBtnData: [
+        {
+          id: 1,
+          name: '닫기',
+          background: 'black',
+          color: 'white'
+        }
+      ]
+    }
+  },
+  methods: {
+    cancelMake() {
+      window.history.back();
+    },
+    registerCommunity() {
+      console.log('생성하기 버튼을 눌렀다!');
+    },
+    saveCommunity() {
+      this.$refs.textEditor.sendContents();
+      console.log(this.communityDataSet);
+    },
+    modifyCommunity() {
+      console.log('저장 버튼을 눌렀다');
+      this.$refs.modal.openModal();
+    },
+    moveToPreview() {
+      console.log('미리보기 버튼을 눌렀다!');
+    },
+    receivedEditorContents(contents) {
+      this.communityDataSet.contents = contents;
+    },
+    getColors(color) {
+      this.communityDataSet.pickedColor = color;
+    }
+  }
+}
+</script>
+
+<style scoped>
+.make-community-body {
+  max-width: 1200px;
+  min-width: 1200px;
+  width: 100vw;
+  height: 100vh;
+  /* background: lightcoral; */
+  margin: 0 auto;
+}
+
+/* header 구간 */
+header {
+  width: 100%;
+  height: 200px;
+  /* background: lightblue; */
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+}
+.header-area {
+  width: 30%;
+}
+.logo-text {
+  width: 113px;
+  height: 39px;
+  margin-top: 60px;
+  /* position: absolute; */
+  left: 0;
+  top: 0;
+}
+.make-community-header {
+  width: 70%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 60px;
+}
+.main-logo-text {
+  width: 113px;
+  height: 39px;
+  margin-top: 60px;
+  /* position: absolute; */
+  left: 0;
+  top: 0;
+  cursor: pointer;
+}
+
+/* main 구간 */
+.write-container {
+  max-width: 1200px;
+  /* height: 800px; */
+  padding: 0 50px;
+  background: #F6F6F6;
+  border: 1px solid black;
+  border-radius: 12px;
+}
+.write-body {
+  width: 100%;
+}
+.write-title {
+  display: flex;
+  height: 100px;
+}
+.write-wrapper {
+  width: 960px;
+  height: 970px;
+  padding: 0 70px;
+}
+
+/* No Picture 구간 */
+.write-area {
+  width: calc(100%-40px);
+  height: 280px;
+  padding: 0 20px;
+  display: flex;  
+}
+.emoji-view {
+  width: 300px;
+  height: 100%;
+  margin-right: 50px;
+  position: relative;  
+}
+.emoji-face {
+  width: 200px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-45%, -50%);
+}
+.emoji-expression {
+  width: 80px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.emoji-color-container {
+  width: 660px;
+  display: flex;
+  justify-content: space-between;
+  background: white;
+  padding: 15px 25px 5px 25px;
+  border: 1px solid black;
+  border-radius: 12px;
+}
+.emoji-color-container  p{
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.picker-box {
+  width: 260px;
+}
+.picker-box > p {
+  display: flex;
+  align-items: center;
+}
+.picker {
+  width: calc(100%-40px);
+  height: 160px;
+  padding:  20px;
+  border: 1px solid black;
+  overflow: scroll;
+}
+.emoji-picker {
+  display: flex;
+  flex-wrap: wrap;
+}
+.emoji-picker img {
+  width: 40px;
+  padding: 15px;
+  object-fit: contain;
+}
+.emoji-picker img:hover {
+  cursor: pointer;
+  border: 1px solid black;
+  padding: 15px;
+}
+/* .emoji-face {
+
+} */
+.color-picker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+.picked-color {
+  width: 30px;
+  height: 30px;
+}
+.color-picker p {
+  font-size: 16px;
+}
+.write-wrapper-title {
+  width: calc(100%-40px);
+  height: 130px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+}
+.write-wrapper-title input {
+  width: 100%;
+  height: 50px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid #C4C4C4;
+  font-size: 30px;
+  font-weight: bold;
+}
+.write-wrapper-title input:focus {
+  outline: none;
+}
+.write-wrapper-title input::placeholder {
+  font-weight: 300
+}
+.textEditor-area {
+  width: 920px;
+  height: 500px;
+  background: white;
+  border-radius: 12px;
+  padding: 20px 20px 0 20px;
+}
+
+.btnSet {
+  width: calc(100%-120px);
+  height: 150px;
+  padding: 0 60px;
+  /* background: lightgreen; */
+  display: flex;
+}
+.btn-area1 {
+  width: 70%;
+  display: flex;
+}
+.btn-area2 {
+  width: 30%;
+  display: flex;
+  justify-content: flex-end;
+}
+</style>

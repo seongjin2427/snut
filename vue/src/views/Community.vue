@@ -1,40 +1,40 @@
 <template>
 <div class="community-page">
   <div class="community-wrapper">
-<!--header-->
-<header>
-  <div class="logo-area header-area">
-    <router-link to="/">
-    <img class="main-logo-text" src="@/assets/logo_text.png" alt="text_logo">
-    </router-link>
-  </div>
-  <div class="input-area">
-    <input-box class="main-input" @keyup.enter="doSearch" placeholder="Enter a keyword" width="100" height="38"/>
-  </div>
-  <div class="button-area">
-    <common-button buttonName="정렬" width="80" height="35" marginTop="5" marginRight="20" />
-    <img src="@/assets/btn_hamburger.png" alt="nav_btn" @click="openNavBar">
-  </div>
-</header>
-<!--body-->
-   <div class="community">
-      <div class="community-body">
-        <div class="button-area-recom">
-        <common-button class="recom-bu" v-for="(btn,idx) in comBtnData" :key="idx" :buttonName="btn.name" width="200" height="80"  marginTop="50" marginRight="20" border-radius="12"
-                       background="white" border="none" fontWeight="400" font-size="20" />
-        </div>
-        <div class="com-form">
-<div class="com-list-block">
-  <community-list v-for="(list,idx) in commuBlockData" :key="idx" :list="list" @click="moveToPage(list,src)">
 
-  </community-list>
-</div>
+<!--header-->
+  <header>
+    <div class="logo-area header-area">
+      <router-link to="/">
+        <img class="main-logo-text" src="@/assets/logo_text.png" alt="text_logo">
+      </router-link>
+    </div>
+    <div class="input-area">
+      <input-box class="main-input" @keyup.enter="doSearch" placeholder="Enter a keyword" width="100" height="38"/>
+    </div>
+    <div class="button-area">
+      <common-button buttonName="정렬" width="80" height="35" marginTop="5" marginRight="20" />
+      <img src="@/assets/btn_hamburger.png" alt="nav_btn" @click="openNavBar">
+    </div>
+  </header>
+
+<!--body-->
+  <div class="community">
+    <div class="community-body">
+      <div class="button-area-recom">
+        <common-button class="recom-bu" v-for="(btn,idx) in comBtnData" :key="idx" :buttonName="btn.name" width="200" height="80"  marginTop="50" marginRight="20" border-radius="12"
+                        background="white" border="none" fontWeight="400" font-size="20" />
+      </div>
+      <div class="com-form">
+        <div class="com-list-block">
+          <community-list v-for="(list,idx) in commuBlockData" :key="idx" :list="list" @click="moveToPage(list,src)" />
         </div>
       </div>
-      <navigator-bar ref="navBar" />
-   </div>
+    </div>
+    <navigator-bar ref="navBar" />
+  </div>
 
-<pagenationnum></pagenationnum>
+    <pagenationnum />
   </div>
 </div>
 </template>
@@ -52,24 +52,24 @@ export default {
   components:{InputBox, CommonButton,NavigatorBar, CommunityList, Pagenationnum},
   data(){
     return{
-comBtnData:[
-    {
-    name: '추천 커뮤니티',
-        src:''
-},
-  {
-    name: '추천 커뮤니티',
-    src:''
-  },
-  {
-    name: '추천 커뮤니티',
-    src:''
-  },
-  {
-    name: '추천 커뮤니티',
-    src:''
-  }
-],
+      comBtnData:[
+        {
+        name: '추천 커뮤니티',
+            src:''
+        },
+        {
+          name: '추천 커뮤니티',
+          src:''
+        },
+        {
+          name: '추천 커뮤니티',
+          src:''
+        },
+        {
+          name: '추천 커뮤니티',
+          src:''
+        }
+      ],
       commuBlockData:[
         {
           id: '01',

@@ -1,13 +1,31 @@
 <template>
   <div class="inputBox">
-    <input type="text" :placeholder="placeholder" :style="{ width: width+'vw', height: height+'px' }">
+    <input 
+        type="text" 
+        @keyup.enter="doSearch"
+        v-model="searchWord"
+        :placeholder="placeholder"
+        :style="{ width: width+'vw', height: height+'px' }">
   </div>
 </template>
 
 <script>
 export default {
   name: "inputBox",
-  props: ['width', 'height', 'placeholder']
+  props: ['width', 'height', 'placeholder'],
+  data() {
+    return {
+      searchWord: ''
+    }
+  },
+  methods: {
+    doSearch() {
+      if(this.searchWord != '') this.$emit('doSearch', this.searchWord);
+    },
+    clearWord() {
+      this.searchWord = '';
+    }
+  }
 }
 </script>
 

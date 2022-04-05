@@ -2,13 +2,17 @@
   <div class="editor-body">
     
     <div v-if="editor">
-    
+      <drag-and-drop-modal ref="dragModal" @receiveNoteImg="receiveNoteImg" />
+
       <div class="text-editor-btn-area" v-if="toolBar">
         <button @click="editor.chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }">
           <img src="https://img.icons8.com/fluency-systems-regular/344/bold.png" alt="bold">
         </button>
         <button @click="editor.chain().focus().toggleItalic().run()" :class="{ 'is-active': editor.isActive('italic') }">
           <img src="https://img.icons8.com/material-rounded/344/italic.png" alt="italic">
+        </button>
+        <button @click="editor.chain().focus().toggleUnderline().run()" :class="{ 'is-active': editor.isActive('underline') }">
+          <img src="https://img.icons8.com/material-rounded/344/underline.png" alt="underline">
         </button>
         <button @click="editor.chain().focus().toggleStrike().run()" :class="{ 'is-active': editor.isActive('strike') }">
           <img src="https://img.icons8.com/material-rounded/344/strikethrough.png" alt="strike">
@@ -70,44 +74,55 @@
       </div>
     </div>
     <editor-content ref="textEditor" :editor="editor" class="edit-content"/>
-    
+    <div class="sample"></div>
   </div>
 </template>
 
 <script>
-import { Editor, EditorContent } from '@tiptap/vue-3'
-import Image from '@tiptap/extension-image'
-import StarterKit from '@tiptap/starter-kit'
-import TextStyle from '@tiptap/extension-text-style'
-import { Color } from '@tiptap/extension-color'
-import TextAlign from '@tiptap/extension-text-align'
+import { Editor, EditorContent } from '@tiptap/vue-3';
+import Image from '@tiptap/extension-image';
+import StarterKit from '@tiptap/starter-kit';
+import TextStyle from '@tiptap/extension-text-style';
+import { Color } from '@tiptap/extension-color';
+import TextAlign from '@tiptap/extension-text-align';
+import Underline from '@tiptap/extension-underline';
+import DragAndDropModal from './DragAndDropModal.vue';
 
 export default {
   components: {
     EditorContent,
+    DragAndDropModal,
   },
-
+  props: ['isEditable'],
   data() {
     return {
       editor: null,
-      contents: '',
-      toolBar: true
-      
+      contents: '<p>내용을 입력해 주세요</p>',
+      toolBar: this.isEditable,
+      editable: this.isEditable,
+      imgList: []
     }
   },
 
   methods: {
     addImage() {
-      const url = window.prompt('URL')
+      this.$refs.dragModal.openModal();
+    },
+    receiveNoteImg(imgs) {
+      if(imgs.length != 0) {
+        console.log(imgs[0].src)
 
-      if (url) {
-        this.editor.chain().focus().setImage({ src: url }).run()
+        for(let i = 0; i < imgs.length; i++) {
+          this.editor.chain().focus().setImage({ src: imgs[i].src }).run();
+        }
+        console.log(this.editor.getHTML())
       }
     },
     sendContents() {
       var contents = this.editor.getHTML();
       this.$emit('sendContents', contents);
-    }
+    },
+    
   },
 
   mounted() {
@@ -117,11 +132,13 @@ export default {
         Image,
         Color,
         TextStyle,
+        Underline,
         TextAlign.configure({
           types: ['heading', 'paragraph'],
         }),
       ],
-      content: this.contents
+      content: this.contents,
+      editable: this.editable
     })
   },
 

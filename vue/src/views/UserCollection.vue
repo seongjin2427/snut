@@ -22,13 +22,13 @@
 
         <div class="main-col">
           <div class="main-col-area">
-            <common-collection 
+            <common-curation 
                 class="main-searched-col"
                 @click="openModal(col)"
                 v-for="(col, idx) in sampleData.dataSet" 
                 :info="col" 
                 :id="idx"
-                :delColBoolean="false"
+                :delColBoolean="true"
                 :key="idx" />
           </div>
         </div>
@@ -47,7 +47,7 @@
 
 <script>
 import CommonButton from '@/components/CommonButton.vue';
-import CommonCollection from '@/components/CommonCollection.vue';
+import CommonCuration from '@/components/CommonCuration.vue';
 import MainFooter from '@/components/MainFooter.vue'
 import NavigatorBar from '../components/NavigatorBar.vue';
 import SampleData from '@/assets/sampleData.json';
@@ -55,7 +55,7 @@ import CommonModal from '../components/CommonModal.vue';
 
 
 export default {
-  components: { CommonButton, CommonCollection, MainFooter, NavigatorBar, CommonModal },
+  components: { CommonButton, CommonCuration, MainFooter, NavigatorBar, CommonModal},
   name: "UserCollection",
   data() {
     return {
@@ -74,7 +74,7 @@ export default {
     }
   },
   created() {
-    const INPUT_NUMBER = 19;
+    const INPUT_NUMBER = 10;
     for(var j = 0; j < INPUT_NUMBER; j++) {
       this.userCollection[j] = j;
     }
@@ -93,7 +93,7 @@ export default {
                                         Proin sed molestie neque. Donec eu odio a nulla porta mattis. Phasellus vulputate eget ligula non pulvinar. Fusce semper ex purus, quis euismod lorem dictum eget. Aenean lacus felis, sagittis at pretium ultricies, ultrices id dui. Etiam ac tincidunt leo. In hac habitasse platea dictumst.`
                                         + i;
       this.sampleData.dataSet[i].folder = 'FolerNo...' + i;
-      this.sampleData.dataSet[i].src = this.sampleData.imgUrl[random];
+      this.sampleData.dataSet[i].src = [SampleData.imgUrl[random]];
       this.sampleData.dataSet[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
       this.sampleData.dataSet[i].regDate = '2022-03-01';
       this.sampleData.dataSet[i].modDate = '2022-03-02';

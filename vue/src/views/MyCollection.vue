@@ -3,7 +3,7 @@
     <div class="main-with-login-body">
       <header>
         <div class="logo-area header-area">
-          <img class="main-logo-text" src="@/assets/logo_text.png" alt="text_logo">
+          <img class="main-logo-text" src="@/assets/logo_text.png" @click="$router.push('/')" alt="text_logo">
         </div>
         <div class="button-area">
           <img src="@/assets/btn_hamburger.png" alt="nav_btn" @click="openNavBar">
@@ -37,10 +37,11 @@
             </p>
             <div class="main-col-area">
               <common-collection
-                  v-for="(col, idx) in sampleData.dataSet"
-                  :info="col"
-                  :id="col.id"
-                  :key="idx" />
+                @click="openModal(col, true)"
+                v-for="(col, idx) in sampleData.dataSet" 
+                :info="col" 
+                :id="idx"
+                :key="idx" />
             </div>
           </div>
           <div class="main-col main-col-analysis">
@@ -60,6 +61,7 @@
       
       <footer>
         <main-footer/>
+        <common-modal ref="modal" />
       </footer>
 
     </div>
@@ -72,10 +74,11 @@ import CommonCollection from '@/components/CommonCollection.vue';
 import MainFooter from '@/components/MainFooter.vue'
 import NavigatorBar from '../components/NavigatorBar.vue';
 import SampleData from '@/assets/sampleData.json';
+import CommonModal from '@/components/CommonModal.vue'
 
 
 export default {
-  components: { CommonButton, CommonCollection, MainFooter, NavigatorBar },
+  components: { CommonButton, CommonCollection, MainFooter, NavigatorBar, CommonModal },
   name: "MyCollection",
   data() {
     return {
@@ -92,11 +95,11 @@ export default {
         },
         {
           name: 'Collection 만들기', 
-          src: '',
+          src: '/mcol/mc',
         },
         {
           name: 'Community 만들기', 
-          src: '',
+          src: '/com/mcom',
         }
       ],
       analysis: [
@@ -119,6 +122,9 @@ export default {
     openNavBar() {
       this.$refs.navBar.openNavBar()
     },
+    openModal(colData, moveToPageBool) {
+      this.$refs.modal.openModal(colData, moveToPageBool);
+    },
     moveToPage(src) {
       console.log(src);
       this.$router.push(src);
@@ -133,11 +139,12 @@ export default {
         store.dataSet[i].title = 'Title....' + i;
         store.dataSet[i].content = 'Content...' + i;
         store.dataSet[i].folder = 'FolerNo...' + i;
-        store.dataSet[i].src = SampleData.imgUrl[random];
+        store.dataSet[i].src = [SampleData.imgUrl[random], SampleData.imgUrl[random+1], SampleData.imgUrl[random+2]];
         store.dataSet[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
+        store.dataSet[i].cuCo = 'Collection';
         store.dataSet[i].regDate = '2022-03-01';
         store.dataSet[i].modDate = '2022-03-02';
-        console.log("start", i)
+
         start++;
       }
     }
@@ -177,6 +184,7 @@ header {
   /* position: absolute; */
   left: 0;
   top: 0;
+  cursor: pointer;
 }
 .button-area {
   width: 30%;

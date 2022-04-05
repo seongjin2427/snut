@@ -1,9 +1,9 @@
 <template>
-  <div class="my-note">
-    <div class="my-note-body">
+  <div class="make-note">
+    <div class="make-note-body">
       <header>
         <div class="logo-area header-area">
-          <img class="logo-text" src="@/assets/logo_text.png" alt="text_logo">
+          <img class="main-logo-text" src="@/assets/logo_text.png" @click="$router.push('/')" alt="text_logo">
         </div>
         <div class="make-note-header">
           <common-button 
@@ -107,7 +107,7 @@
               </div>
 
               <div class="write-div nonpic">
-                <TipTap ref="textEditor" @sendContents="receivedEditorContents"/>
+                <TipTap ref="textEditor" isEditable="'true'" @sendContents="receivedEditorContents"/>
               </div>
 
             </div>
@@ -248,31 +248,28 @@ export default {
       if(btn.id == 1) {
         this.onSave();
 
-        } else if (btn.id == 2 ) {
-          this.contentsWithPic.title = '';
-          this.contentsWithPic.contents = '';
-
-          this.contentsWithNonPic.title = '';
-          this.contentsWithNonPic.contents = '';
-          console.log(this.$refs.textEditor.contents = '')
-
+        } else if (btn.id == 2) {
           console.log("글쓰기 취소를 눌렀다!")
+          window.history.back();
 
       } else if (btn.id == 3) {
         console.log(this.contentsWithPic)
+        console.log(this.contentsWithNonPic)
         console.log("임시저장을 눌렀다!")
 
       } else { 
         this.openBoolToggle(e, btn.id);
       }
     },
+    inspectNull() {
+      if(this.contentsWithPic.title
+          && this.contentsWithPic.contents
+          && this.contentsWithPic.imgs.length) return true;
+      else false;
+    },
     onSave() {
         console.log('저장을 눌렀다!')
-        if (this.withPic == true 
-            && this.contentsWithPic.title
-            && this.contentsWithPic.contents
-            && this.contentsWithPic.imgs.length
-            ) {
+        if (this.withPic == true && this.inspectNull()) {
               this.$refs.hashTag.map((tag, id) => { 
                 this.contentsWithPic.hashTag[id] = tag.value;
               });
@@ -330,7 +327,7 @@ export default {
 </script>
 
 <style scoped>
-.my-note-body {
+.make-note-body {
   max-width: 1200px;
   min-width: 1200px;
   width: 100vw;
@@ -364,6 +361,15 @@ header {
   display: flex;
   justify-content: center;
   margin-top: 60px;
+}
+.main-logo-text {
+  width: 113px;
+  height: 39px;
+  margin-top: 60px;
+  /* position: absolute; */
+  left: 0;
+  top: 0;
+  cursor: pointer;
 }
 
 /* main 구간 */
@@ -468,6 +474,7 @@ header {
 .emoji-view {
   width: 300px;
   height: 100%;
+  margin-right: 50px;
   position: relative;  
 }
 .emoji-face {

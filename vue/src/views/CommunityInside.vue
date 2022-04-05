@@ -1,25 +1,32 @@
 <template>
   <div class="com-inside-page">
     <div class="com-inside-wrapper">
+
       <div class="com-form-wrapper">
         <div class="com-btn-area">
           <common-button class="com-btn" :buttonName="btn.name" v-for="(btn,idx) in comInBtnData" :key="idx" width="150"
-                         height="40" border-radius="12" background="white" border="none"
-                         fontWeight="400" font-size="16" marginTop="50" marginRight="20"/>
+                        height="40" border-radius="12" background="white" border="none"
+                        fontWeight="400" font-size="16" marginTop="50" marginRight="20"/>
         </div>
+
         <div class="com-form-main-wrapper">
           <div class="com-form-main">
-            <div class="com-body">
 
+            <div class="com-body">
+              <TipTap :isEditable="false" />
             </div>
-        <div class="com-form-comment-wrapper">
-          <div class="com-form-comment">
-<comInsideComment></comInsideComment>
+
+            <div class="com-form-comment-wrapper">
+              <div class="com-form-comment">
+                <comInsideComment />
+              </div>
+            </div>
+
           </div>
         </div>
-          </div>
-        </div>
+
       </div>
+      
     </div>
   </div>
 </template>
@@ -27,10 +34,11 @@
 <script>
 import CommonButton from '@/components/CommonButton.vue';
 import ComInsideComment from '@/components/ComInsideComment.vue';
+import TipTap from '@/components/TextEditor.vue';
 
 export default {
   name: "CommunityInside-page",
-  components: {CommonButton, ComInsideComment},
+  components: { CommonButton, ComInsideComment, TipTap },
   data() {
     return {
       comInBtnData: [

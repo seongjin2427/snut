@@ -86,11 +86,12 @@
       <small-modal ref="modal" :modalBtnData="modalBtnData" smallModal="정말 스넛 이용을 그만하실건가요?">
 
       </small-modal>
+      <div class="send-button-wrapper">
+        <button class="send-button" type="submit">변경 완료</button>
+      </div>
+
     </div>
     <!--send button-->
-    <div class="send-button-wrapper">
-      <button class="send-button" type="submit">변경 완료</button>
-    </div>
 
 </template>
 
