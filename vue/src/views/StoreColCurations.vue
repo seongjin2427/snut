@@ -16,6 +16,7 @@
         </div>
         <div class="button-area">
           <common-button 
+              v-if="false"
               width="150" 
               height="40" 
               buttonName="저장" 

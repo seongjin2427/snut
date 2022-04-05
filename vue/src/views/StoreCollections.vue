@@ -19,7 +19,7 @@
               background="white" 
               border="none"
               fontSize="20" />
-          <div class="addBtn" @click="addFolder()">
+          <div class="addBtn" @click="!selectMode && addFolder()">
             <p>+</p>
           </div>
         </div>
@@ -40,7 +40,7 @@
               background="white" 
               border="none"
               fontSize="20"
-              @click="deleteCol(listToDelete)"
+              @click="deleteCol(this.toDeleteIdxList)"
               v-if="selectMode" />
           <common-button 
               width="150" 
@@ -64,7 +64,7 @@
                 @drop="onDrop($event, idx, col)"
                 @dragenter.prevent
                 @dragover.prevent
-                @click="!selectMode && openModal(col, true), selectMode && selectToDeleteCol(idx, col.id)"
+                @click="!selectMode && openModal(col, true), selectMode && selectMethods(idx, col)"
                 v-for="(col, idx) in sampleData.Collection"
                 :info="col"
                 :id="idx"
@@ -73,6 +73,7 @@
                 :selectMode="selectMode"
                 @deleteCol="deleteCol"
                 @sendFolderData="receivedFolderData" 
+                @convertDisabled="convertDisabled"
                 :key="idx"
                 draggable="true" />
           </div>
@@ -106,7 +107,22 @@ export default {
     return {
       loginBool: true,
       selectMode: false,
-      listToDelete: [],
+      indexList: {
+        Collection: [],
+        Curation: []
+      },
+      colIdList: {
+        Collection: [],
+        Curation: [],
+      },
+      listToSave: {
+        Collection: [],
+        Curation: []
+      },
+      deletedList: {
+        Collection: [],
+        Curation: []
+      },
       sampleData: { 
         Collection: [],
         Curation: [],
@@ -116,6 +132,7 @@ export default {
         },
       }, 
       userCollection: [],
+      toDeleteIdxList: [],
       toggleBtnTitle: '전부',
       storeCollectionsData: [
         {
@@ -142,6 +159,9 @@ export default {
     }
   },
   methods: {
+    convertDisabled(bool, idx) {
+      this.sampleData.Collection[idx].folderNameIsDisabled = bool;
+    },
     openNavBar() {
       this.$refs.navBar.openNavBar()
     },
@@ -154,36 +174,62 @@ export default {
       event.dataTransfer.dropEffect = "move";
       event.dataTransfer.effectAllowed = "move";
 
-      event.dataTransfer.setData("itemId", idx);
+      event.dataTransfer.setData("startIdx", JSON.stringify(idx));
       event.dataTransfer.setData("dragStartItem", JSON.stringify(dragStartItem));
     },
-    onDrop(event, start, dragEndItem) {
-      let itemId = Number(event.dataTransfer.getData("itemId"));
-      let end = this.userCollection.find((item) => item == itemId);
+    onDrop(event, endIdx, dragEndItem) {
+      let dragStartItem = JSON.parse(event.dataTransfer.getData("dragStartItem"));
+      let startIdx = JSON.parse(event.dataTransfer.getData("startIdx"));     
 
       // 드래그 시 위치 바꾸기
-      let comp = this.sampleData.Collection[end];
-      this.sampleData.Collection[end] = this.sampleData.Collection[start];
-      this.sampleData.Collection[start] = comp;
+      if(startIdx != endIdx) {
 
-      // 폴더에 담기 위한 dragStart 데이터 가져오기
-      let dragStartItem = JSON.parse(event.dataTransfer.getData("dragStartItem"));
-
-      // dragStart한 아이템을 해당 목적에 맞게 폴더에 담고, 기존 아이템 지우기
-      if(dragEndItem.cuCo == 'Folder') {
-        if(dragStartItem.cuCo == 'Collection') {
-          this.sampleData.Folder.Collection.push(dragStartItem);
-        } else if(dragStartItem.cuCo == 'Curation') {
-          this.sampleData.Folder.Curation.push(dragStartItem);
+        if (this.selectMode == false) {
+          const comp = this.sampleData.Collection[endIdx];
+          this.sampleData.Collection[endIdx] = this.sampleData.Collection[startIdx];
+          this.sampleData.Collection[startIdx] = comp;
         }
-      }
 
-      if(itemId != start && dragEndItem.cuCo == 'Folder') {
-        this.deleteCol([start]);
-      }
+        if (this.selectMode == true && dragEndItem.cuCo == 'Folder' && dragStartItem.cuCo != 'Folder') {
+          this.deleteCol(this.toDeleteIdxList);
+          this.intoFolder(this.colIdList, dragEndItem.id);
+        }
 
-      console.log(this.sampleData.Folder);
+      }
     },
+    deleteCol(arr) {
+      let b = [];
+      for(let i = arr.length - 1; i >= 0; i--) {
+        console.log('arr', arr[i]);
+        b.push(this.sampleData.Collection.splice(arr[i], 1));
+      }
+      // console.log(b);
+      b.map(v => {
+        console.log(v[0].id);
+        this.deletedList.Collection.push(v[0].id);
+      });
+
+      console.log(this.deletedList);
+
+      this.toDeleteIdxList = [];
+      for (let i = 0; i < this.$refs.showCol.length; i++) {
+        this.$refs.showCol[i].selected = false;
+      }
+      // this.selectMode = false;
+    },
+    intoFolder(arr, idx) {
+      let objCol = {};
+      objCol[idx] = arr.Collection;
+
+      let objCu = {};
+      objCu[idx] = arr.Curation;
+
+      this.sampleData.Folder.Collection = objCol;
+      this.sampleData.Folder.Curation = objCu;
+      // arr.Collection.map(v => this.sampleData.Folder.Collection.push(v));
+      // arr.Curation.map(v => this.sampleData.Folder.Curation.push(v));
+    },
+
     changeTitle(btnData) {
       this.toggleBtnTitle = btnData.name;
       this.makeDummies();
@@ -192,58 +238,105 @@ export default {
         let curations = this.sampleData.Collection.filter(i => i.cuCo == 'Curation');
         this.sampleData.Collection = [];
         this.sampleData.Collection = curations;
+
       } else if (btnData.id == 3) {
         let collections = this.sampleData.Collection.filter(i => i.cuCo == 'Collection');
         this.sampleData.Collection = [];
         this.sampleData.Collection = collections;
+
+      } else if (btnData.id == 4) {
+        let collections = this.sampleData.Collection.filter(i => i.cuCo == 'Folder');
+        this.sampleData.Collection = [];
+        this.sampleData.Collection = collections;
       }
-      this.clearSelectCol();
+
+      this.clearCol();
     },
+    saveCol() {
+      console.log('this.deletedList', this.deletedList)
+      console.log(this.deletedList.Collection[0] != null);
+        if(this.colIdList.Collection[0] == null
+            && this.colIdList.Curation[0] == null
+            && this.deletedList.Collection[0] == null
+            && this.deletedList.Curation[0] == null
+            && this.sampleData.Folder.Collection[0] == null
+            && this.sampleData.Folder.Curation[0] == null
+            ) {
+          console.log('변경사항이 없습니다');
+        } else {
+          this.sampleData.Curation = this.sampleData.Collection.filter(v => v.cuCo == 'Curation');
+          this.sampleData.Collection = this.sampleData.Collection.filter(v => v.cuCo == 'Collection');
+          console.log(this.sampleData);
+        }
 
 
-    deleteCol(id) {
-      // console.log("StoreCollections.info", info);
-      console.log("del", id)
-      for(let i = 0; i < id.length; i++) {
-        this.sampleData.Collection.splice(id[i], 1);
-      }
-      console.log("지워질 애들!!", id);
-      console.log("지워지는 리스트", this.listToDelete);
-      this.clearSelectCol();
     },
-    clearSelectCol() {
+    clearCol() {
       for (let i = 0; i < this.$refs.showCol.length; i++) {
         this.$refs.showCol[i].selected = false;
       }
-      this.listToDelete = [];
-      this.selectMode = false;
-    }, 
-    saveCol() {
-      if(!(this.sampleData.Collection.find((data) => data.title == ''))) {
-        console.log(this.sampleData);
-      }
+      this.listToSave.Collection = [];
+      this.listToSave.Curation = [];
+      this.colIdList.Collection = [];
+      this.colIdList.Curation = [];
+      this.toDeleteIdxList = [];
     },
     selectCol() {
-      if(this.selectMode == true) {
-        this.clearSelectCol();
-      }
+      this.clearCol();
       this.selectMode == true ? this.selectMode = false : this.selectMode = true;
     },
-    selectToDeleteCol(id, colId) {
+    makeIdx(idx, col) {
+      let obj = {
+        id: idx,
+        colId: col.id,
+        dataName: col.cuCo
+      }
+      return obj;
+    },
+    makeSelectIdxList(list, idx, text) {
+      var findIndex;
+      if (text == 'Collection') {
+        findIndex = list.Collection.findIndex(v => v == idx);
+        if(findIndex != -1) list.Collection.splice(findIndex, 1);
+        else list.Collection.push(idx);
+        
+        } else if (text == 'Curation') {
+        findIndex = list.Curation.findIndex(v => v == idx);
+        if(findIndex != -1) list.Curation.splice(findIndex, 1); 
+        else list.Curation.push(idx);
+
+      } else if (text == null) {
+        findIndex = list.findIndex(v => v == idx);
+        if(findIndex != -1) list.splice(findIndex, 1); 
+        else list.push(idx);
+      }
+    },
+    selectMethods(id, col) {
       this.$refs.showCol[id].selectedMethod();
 
-      let arr = Array.from(this.listToDelete);
-      let findIndex = arr.findIndex(v => v == colId);
+      if(col.cuCo != 'Folder') {
+        let obj = this.makeIdx(id, col);
+        
+        // indexList : 전체에 대한 idx 리스트로 만들었음
+        this.makeSelectIdxList(this.indexList, obj.id, col.cuCo);
+
+        // colIdList : 전체에 대한 colId 리스트로 만들었음
+        this.makeSelectIdxList(this.colIdList, obj.colId, col.cuCo);
       
-      if(findIndex == -1) arr.push(colId);
-      else arr.splice(findIndex, 1);
-
-      this.listToDelete = arr;
-
-      console.log("arr", arr);
-      console.log("list", this.listToDelete);
+        // toDeleteIdxList : 일괄적으로 지우기 위한 리스트
+        this.makeSelectIdxList(this.toDeleteIdxList, obj.id);
+        this.toDeleteIdxList.sort((a, b) => {
+          if(a > b) return 1;
+          if(a === b) return 0;
+          if(a < b) return -1;
+        });
+        console.log('indexList', this.indexList);
+        console.log('colIdList', this.colIdList);
+        console.log('toDeleteIdxList', this.toDeleteIdxList);
+      }
     },
     addFolder() {
+      console.log('this.sampleData.Collection before', this.sampleData.Collection);
         let sampleFolder = {};
         let random = Math.floor(Math.random()*20);
         let i = random;
@@ -258,11 +351,26 @@ export default {
 
         sampleFolder.cuCo = 'Folder';
 
-      this.sampleData.Collection.unshift(sampleFolder);
-      console.log(this.sampleData.Collection);
+        this.sampleData.Collection.unshift(sampleFolder);
+        this.increaseListValue(this.indexList);
+
+      console.log('this.sampleData.Collection after', this.sampleData.Collection);
+
+    },
+    increaseListValue(list) {
+      let comp;
+      for(let i = 0; i < 2; i++) {
+        comp = list[Object.keys(list)[i]];
+        for(let j = 0; j < comp.length; j++) {
+          comp[j] = comp[j] + 1;
+        }
+      }
     },
     receivedFolderData(folderName, id) {
-      this.sampleData.Collection.find((data) => data.id == id).title = folderName;
+      console.log('received > ', folderName, id)
+      console.log(this.sampleData.Collection.findIndex((data, idx) => idx == id))
+      let findIndex = this.sampleData.Collection.findIndex((data, idx) => idx == id);
+      this.sampleData.Collection[findIndex].title = folderName;
     },
 
 

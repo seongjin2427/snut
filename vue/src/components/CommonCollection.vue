@@ -16,16 +16,23 @@
 
     <div class="img-area" v-if="info.cuCo == 'Folder'">
       <div id="folder" :class="folderSelect">
-        <textarea type="text" 
-            rows="4"
-            col="10"
-            maxlength="40"
-            @keyup.enter="confirmFolderName(info.id)"
-            :readonly="folderNameIsDisabled"
-            placeholder="폴더명을 입력해주세요" 
-            v-model="folderName" />
+        <textarea 
+            class="folderName"
+            type="text" 
+            rows="3"
+            col="2"
+            maxlength="28"
+            :value="info.title"
+            :readonly="info.folderNameIsDisabled"
+            placeholder="폴더명을 입력해주세요"
+            />
+        <button 
+            class="folder-confirm-btn"
+            v-if="!info.folderNameIsDisabled"
+            @click="confirmFolderName(id)">
+            확인
+        </button>
       </div>
-      <div class="check-icon" v-if="selected"></div>
     </div>
 
     <div class="text1" 
@@ -45,11 +52,11 @@
       <button @click.stop="shareCol()">공유</button>
     </div>
     <div class="text1" 
-        v-if="!selectMode && info.cuCo == 'Folder' && folderNameIsDisabled && storeBool && delColBoolean && loginBool"
+        v-if="!selectMode && info.cuCo == 'Folder' && info.folderNameIsDisabled && storeBool && delColBoolean && loginBool"
         @click="!selectMode && moveToPage()"
         > 
       <button @click.stop="deleteCol()">삭제</button>
-      <button @click.stop="modifyFolderName()">수정</button>
+      <button @click.stop="modifyFolderName(id)">수정</button>
     </div>
   </div>
 </template>
@@ -62,8 +69,7 @@ export default {
     return {
       cuSelect: 'cu-img' + this.id,
       folderSelect: 'folder' + this.id,
-      folderNameIsDisabled: false,
-      folderName: '',
+      // folderNameIsDisabled: false,
       
       // hashTag들만 뜨게 만들기
       hoverBool: false,
@@ -79,7 +85,7 @@ export default {
     inCuration(cuCo) {
       this.hoverBool = true;
       this.storeBool = true;
-      if(cuCo == 'Folder' && this.folderNameIsDisabled) {
+      if(cuCo == 'Folder' && this.info.folderNameIsDisabled) {
         document.querySelector('.'+this.folderSelect).classList.add('lowerBrightness');
       } 
       if(cuCo != 'Folder') {
@@ -89,7 +95,7 @@ export default {
     outCuration(cuCo) {
       this.hoverBool = false;
       this.storeBool = false;
-      if(cuCo == 'Folder'&& this.folderNameIsDisabled) {
+      if(cuCo == 'Folder'&& this.info.folderNameIsDisabled) {
         document.querySelector('.'+this.folderSelect).classList.remove('lowerBrightness');
       } 
       if(cuCo != 'Folder') {
@@ -97,12 +103,17 @@ export default {
       }
     },
     confirmFolderName(id) {
-      console.log(this.folderName);
-      if(this.folderName != '') this.folderNameIsDisabled = true;
-      this.$emit('sendFolderData', this.folderName, id);
+      let folderName = document.querySelector('.folderName').value;
+      console.log(folderName)
+      console.log(id);
+      // if(folderName.trim() != '') this.folderNameIsDisabled = true;
+      if(folderName.trim() != '') this.$emit('convertDisabled', true, id);
+      
+      this.$emit('sendFolderData', folderName, id);
     },
-    modifyFolderName() {
-      this.folderNameIsDisabled = false;
+    modifyFolderName(id) {
+      // this.folderNameIsDisabled = false;
+      this.$emit('convertDisabled', false, id);
       document.querySelector('.'+this.folderSelect).classList.remove('lowerBrightness');
     },
     deleteCol() {
@@ -129,6 +140,7 @@ export default {
 }
 .img-area {
   position: relative;
+  background: none;
 }
 .collection img:nth-child(1) {
   position: relative;
@@ -192,16 +204,19 @@ export default {
   height: 180px;
   background: lightgrey;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   box-shadow: 5px 5px 5px grey;
   border-radius: 20px;
 }
 #folder textarea {
+  height: 60px;
   background: none;
   border: none;
   text-align: center;
   resize: none;
+  margin-bottom: 10px;
 }
 #folder textarea::placeholder, #folder textarea:focus {
   outline: none;
@@ -225,6 +240,16 @@ export default {
   position: relative;
 }
 .text1 button {
+  width: 70px;
+  height: 35px;
+  margin: 10px;
+  background: #DC8552;
+  color: white;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+}
+.folder-confirm-btn {
   width: 70px;
   height: 35px;
   margin: 10px;

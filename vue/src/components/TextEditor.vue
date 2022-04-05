@@ -109,13 +109,13 @@ export default {
       this.$refs.dragModal.openModal();
     },
     receiveNoteImg(imgs) {
-      if(imgs.length != 0) {
-        console.log(imgs[0].src)
-
-        for(let i = 0; i < imgs.length; i++) {
-          this.editor.chain().focus().setImage({ src: imgs[i].src }).run();
+      let imgArr = Array.from(imgs);
+      if(imgArr.length != 0) {
+        console.log(imgArr);
+        for(let i = 0; i < imgArr.length; i++) {
+          this.editor.chain().focus().setImage({ src: imgArr[i].src }).run();
         }
-        console.log(this.editor.getHTML())
+        this.imgList = imgArr;
       }
     },
     sendContents() {
