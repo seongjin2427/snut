@@ -15,11 +15,13 @@
     </div>
     <table border="1">
         <thead>
+            <th>no</th>
             <th>커뮤이름</th>
             <th>댓글갯수</th>
         </thead>
         <tbody>
             <tr th:each="cList: ${cList}">
+                <td th:text="${cList.no}"></td>
                 <td>
                     <a th:text="${cList.title}" th:href="@{/comment(no=${cList.no})}"></a>
                 </td>
