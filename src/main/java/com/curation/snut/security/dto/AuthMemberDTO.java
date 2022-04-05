@@ -15,7 +15,6 @@ import lombok.ToString;
 public class AuthMemberDTO extends User {
     private String email;
     private String name;
-    private String pw;
     private String mobile;
     private String birth;
     private String gender;
@@ -28,7 +27,6 @@ public class AuthMemberDTO extends User {
         super(username, password, authorities);
         this.email = username;
         this.name = name;
-        this.pw = password;
         this.mobile = mobile;
         this.birth = birth;
         this.gender = gender;

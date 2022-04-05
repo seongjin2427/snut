@@ -18,8 +18,6 @@ public interface CommentService {
 
         Long commnetCnt(Long no);
 
-        public Page<CommentDTO> commentList2(Pageable pageable, Long no); // 실험리스트
-
         public Page<CommentDTO> commentList(Pageable pageable, Long no);
 
         default CommunityComment dtoToEntity(CommentDTO dto) {

@@ -55,16 +55,6 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.deleteAllCommunutyComment(no);
     }
 
-    // 실험용
-    @Override
-    public Page<CommentDTO> commentList2(Pageable pageable, Long no) {
-        Page<CommunityComment> communityComments = commentRepository.list2(pageable, no);
-        List<CommentDTO> commentDTOList = communityComments.stream()
-                .map(comment -> entityToDTO(comment)).collect(Collectors.toList());
-        return new PageImpl<>(commentDTOList, pageable, communityComments.getTotalElements());
-
-    }
-
     @Override
     public Long commnetCnt(Long no) {
         return commentRepository.commentCnt(no);

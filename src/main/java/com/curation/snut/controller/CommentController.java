@@ -30,25 +30,6 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    // 실험용
-    @GetMapping("/comment2")
-    public String comment2(Model model,
-            @PageableDefault(page = 0, size = 2, sort = "cno", direction = Direction.ASC) Pageable pageable,
-            Long no) {
-        log.info("comment2......");
-        Page<CommentDTO> commentDTOList = commentService.commentList2(pageable, no);
-        model.addAttribute("commentList", commentDTOList);
-
-        int nowPage = pageable.getPageNumber() + 1;
-        int startPage = Math.max(nowPage - 4, 1);
-        int endPage = Math.min(nowPage + 5, commentDTOList.getTotalPages());
-        model.addAttribute("nowPage", nowPage);
-        model.addAttribute("startPage", startPage);
-        model.addAttribute("endPage", endPage);
-
-        return "comment2.html";
-    }
-
     @GetMapping("/comment")
     public String comment(Model model,
             @PageableDefault(size = 2, sort = "cno", direction = Direction.ASC) Pageable pageable,

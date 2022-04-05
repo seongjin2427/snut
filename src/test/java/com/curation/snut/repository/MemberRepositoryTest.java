@@ -1,5 +1,7 @@
 package com.curation.snut.repository;
 
+import java.util.Optional;
+
 import com.curation.snut.entity.Member;
 import com.curation.snut.security.role.MemberRole;
 
@@ -45,6 +47,13 @@ public class MemberRepositoryTest {
                 .build();
         member.addMemberRole(MemberRole.USER);
         memberRepository.save(member);
+    }
+
+    @Test
+    public void testRead() {
+        Optional<Member> result = memberRepository.findByEmail("456@456.456");
+        Member member = result.get();
+        System.out.println(member);
     }
 
 }

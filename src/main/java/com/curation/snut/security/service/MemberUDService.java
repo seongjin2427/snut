@@ -14,27 +14,33 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class MemberUDService implements UserDetailsService {
     private final MemberRepository memberRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        log.info("ClubUserDetailsService loadUserByUsername " + username);
 
-        Optional<Member> result = memberRepository.findyByEmail(username);
+        Optional<Member> result = memberRepository.findByEmail(username);
 
-        if (result.isPresent()) {
+        if (!result.isPresent()) {
             throw new UsernameNotFoundException("check Email");
         }
-
         Member member = result.get();
+
+        log.info("Member...." + member);
 
         AuthMemberDTO authMemberDTO = new AuthMemberDTO(
                 member.getEmail(), member.getName(),
-                member.getPw(), member.getMobile(), member.getBirth(), member.getGender(), member.getNickname(),
-                member.getRoleSet().stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
+                member.getPw(), member.getMobile(), member.getBirth(), member.getGender(),
+                member.getNickname(),
+                member.getRoleSet().stream().map(role -> new SimpleGrantedAuthority("ROLE_" +
+                        role.name()))
                         .collect(Collectors.toSet()));
 
         authMemberDTO.setEmail(member.getEmail());

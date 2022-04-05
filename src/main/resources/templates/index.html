@@ -10,5 +10,10 @@
     <!-- <a href="/comment">메인</a><br>
     <a href="/comment2">실험</a><br><br> -->
     <a href="/communityList">커뮤목록</a>
+
+
+    <div sec:authorize="hasRole('USER')">USER권한</div>
+    <div sec:authorize="hasRole('ADMIN')">ADMIN권한</div>
+    <div sec:authentication="principal.username"></div>
 </body>
 </html>

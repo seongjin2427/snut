@@ -11,10 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface CommentRepository extends JpaRepository<CommunityComment, Long> {
 
-    // 실험용
-    @Query("select c from CommunityComment c where c.communityName.no = :no order by if(isnull(parentNo), cno, parentNo)")
-    Page<CommunityComment> list2(Pageable pageable, Long no);
-
     @Query("select c from CommunityComment c where c.communityName.no = :no order by if(isnull(parentNo), cno, parentNo)")
     Page<CommunityComment> list(Pageable pageable, Long no);
 
