@@ -73,8 +73,8 @@
         :value="editor.getAttributes('textStyle').color">
       </div>
     </div>
-    <editor-content ref="textEditor" :editor="editor" class="edit-content"/>
-    <div class="sample"></div>
+    <editor-content 
+        ref="textEditor" :editor="editor" class="edit-content" />
   </div>
 </template>
 
@@ -93,18 +93,23 @@ export default {
     EditorContent,
     DragAndDropModal,
   },
-  props: ['isEditable'],
+  props: ['isEditable', 'extend'],
   data() {
     return {
       editor: null,
+      extendsHeight: this.extend,
       contents: '<p>내용을 입력해 주세요</p>',
       toolBar: this.isEditable,
       editable: this.isEditable,
-      imgList: []
+      imgList: [],
     }
   },
 
   methods: {
+    extendsEditor() {
+      let a = document.querySelector('.ProseMirror').style;
+      a.height = 700+'px';
+    },
     addImage() {
       this.$refs.dragModal.openModal();
     },
@@ -149,6 +154,9 @@ export default {
 </script>
 
 <style lang="scss">
+$height1: 370px;
+$height2: 700px;
+
 .text-editor-btn-area {
   display: flex;
   flex-wrap: wrap;
@@ -189,7 +197,7 @@ button img {
 .ProseMirror{
 
   padding: 20px;
-  height: 370px;
+  height: $height2;
   overflow: scroll;
 
 > * + * {
