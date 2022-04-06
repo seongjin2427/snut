@@ -1,154 +1,246 @@
 <template>
-  <div class="collections">
-    <div class="main-header">
-      <button @click="testClick()">테스트ㅎㅎ</button>
-      <img class="main-logo-text" src="@/assets/logo_text.png" alt="logo_text">
-      <common-input-box placeholderContent="SEARCH" />
-      <common-button class="sort-btn" buttonName="정렬"/>
-      <hamburger-button @click="occurNavBarEvent"/>
-    </div>
-    <div class="col-container">
-      <div class="col-area">
-        <common-curation :info="info" v-for="(info, idx) in testContent" :key="idx" @click="sendInfo(info.id)" />
-      </div>
-    </div>
+  <div class="search-collections">
+    <div class="search-collections-body">
+      <header>
+        <div class="logo-area header-area">
+          <img class="main-logo-text" src="@/assets/logo_text.png" @click="$router.push('/')" alt="text_logo">
+        </div>
+        <div class="input-area">
+          <input-box 
+              ref="inputBox"
+              class="search-input"
+              @doSearch="doSearch"
+              placeholder="SEARCH"
+              width="100"
+              height="38" />
+        </div>
+        <div class="button-area">
+          <common-button buttonName="정렬" width="80" height="35" marginTop="5" marginRight="20" />
+          <img src="@/assets/btn_hamburger.png" alt="nav_btn" @click="openNavBar">
+        </div>
+      </header>
+      <main>
 
-    <!-- 푸터 구간 -->
-    <main-footer />
-    <!-- 네브 바 구역 -->
-    <navigator-bar ref="navbar" />
-    <!-- 모달창 구역 -->
-    <common-modal 
-        @returnModal="returnShow" 
-        :curShow="curInfo" 
-        :curationInfo="testCuration" 
-        :involedPic="testCuration.involvePicBoolean" />
+        <div class="main-col">
+          <div class="main-col-area">
+            <common-collection 
+                class="main-searched-col"
+                @click="openModal(col, true)"
+                v-for="(col, idx) in sampleData.Collection" 
+                :info="col" 
+                :id="idx"
+                :loginBool="loginBool"
+                :key="idx" />
+          </div>
+        </div>
 
+        <navigator-bar ref="navBar" />
+      </main>
+      
+      <footer>
+        <main-footer/>
+        <common-modal ref="modal" />
+      </footer>
+
+    </div>
   </div>
 </template>
 
 <script>
-import CommonInputBox from '@/components/CommonInputBox.vue';
-import HamburgerButton from '@/components/HamburgerButton.vue';
-import NavigatorBar from '@/components/NavigatorBar.vue';
-import CommonCuration from '@/components/CommonCuration.vue';
-import MainFooter from '@/components/MainFooter.vue';
 import CommonButton from '@/components/CommonButton.vue';
-import CommonModal from '@/components/CommonModal.vue';
-
-import sampleData from '@/assets/sampleData.json';
+import CommonCollection from '@/components/CommonCollection.vue';
+import InputBox from '@/components/InputBox.vue';
+import MainFooter from '@/components/MainFooter.vue'
+import NavigatorBar from '../components/NavigatorBar.vue';
+import SampleData from '@/assets/sampleData.json';
+import CommonModal from '../components/CommonModal.vue';
 
 
 export default {
-  name: 'SearchCurations',
-  components: {
-    CommonInputBox, 
-    HamburgerButton, 
-    NavigatorBar, 
-    CommonCuration, 
-    MainFooter,
-    CommonButton,
-    CommonModal
-  },
+  components: { InputBox, CommonButton, CommonCollection, MainFooter, NavigatorBar, CommonModal },
+  name: "SearchCollections",
   data() {
     return {
-      number3: [],
-      curInfo: false,
-      testContent: {},
-      testCuration: {}
+      loginBool: false,
+      sampleData: { 
+        Collection: [],
+        Curation: [],
+        Folder: {
+          Curation:[],
+          Collection: []
+        },
+      }, 
+      loginSignText: 'If You Want To See More, Just Sign In!',
+      searchedWord: ''
     }
   },
   methods: {
-    occurNavBarEvent() {
-      this.$refs.navbar.openNavBar();
+    openNavBar() {
+      console.log('a');
+      this.$refs.navBar.openNavBar()
     },
-    sendInfo(id) {
-      this.curInfo = true;
-      this.testCuration = this.testContent[id];
-      this.$refs.navbar.closeNavBar();
+    openModal(cuData, moveToPageBool) {
+      this.$refs.modal.openModal(cuData, moveToPageBool);
+    },
+    doSearch(searchWord) {
+      if(searchWord != '') {
+        this.$router.push(`/col/${searchWord}`);
+        this.$refs.inputBox.clearWord();
+      }
+    },
+    createDummies(store) {
+      const INPUT_NUMBER = 11;
 
-    },
-    returnShow() {
-      this.curInfo = false;
-    },
-    testClick() {
-      console.log(this.testContent);
+      // 큐레이션 구간
+      let sampleCuration = [];
+      for(let i = 0; i < INPUT_NUMBER; i++) {
+        let random = Math.floor(Math.random()*10);
+        let date = Math.floor(Math.random()*8)+1;
+        sampleCuration[i] = {};
+        sampleCuration[i].id = i;
+        sampleCuration[i].author = 'Author....' + i;
+        sampleCuration[i].nickName = 'NickName....' + i;
+        sampleCuration[i].title = 'Title....' + i;
+        sampleCuration[i].content = `Lorem ipsum` + i;
+        sampleCuration[i].folder = 'FolderNo...' + i;
+        sampleCuration[i].src = [SampleData.imgUrl[random], SampleData.imgUrl[random]];
+        sampleCuration[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
+        sampleCuration[i].regDate = '2022-03-0'+date;
+        sampleCuration[i].modDate = '2022-03-0'+date;
+        sampleCuration[i].cuCo = 'Curation';
+      }
+
+
+
+      // Curation
+      let Collection = [];
+      for(let i = 0; i < INPUT_NUMBER; i++) {
+        let random = Math.floor(Math.random()*9);
+        let date = Math.floor(Math.random()*8)+1;
+        Collection[i] = {};
+        Collection[i].id = i;
+        Collection[i].author = 'Author....' + i;
+        Collection[i].nickName = 'NickName....' + i;
+        Collection[i].title = 'Title....' + i;
+        Collection[i].content = `Lorem ipsum` + i;
+        Collection[i].folder = 'FolderNo...' + i;
+        Collection[i].src = [sampleCuration[random].src[0], sampleCuration[random].src[0]];
+        Collection[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
+        Collection[i].regDate = '2022-03-0'+date;
+        Collection[i].modDate = '2022-03-0'+date;
+        Collection[i].cuCo = 'Collection';
+      }
+
+      // 큐레이션 구간
+      let Curation = [];
+      for(let i = 0; i < INPUT_NUMBER; i++) {
+        let random = Math.floor(Math.random()*10);
+        let date = Math.floor(Math.random()*8)+1;
+        Curation[i] = {};
+        Curation[i].id = i;
+        Curation[i].author = 'Author....' + i;
+        Curation[i].nickName = 'NickName....' + i;
+        Curation[i].title = 'Title....' + i;
+        Curation[i].content = `Lorem ipsum` + i;
+        Curation[i].folder = 'FolderNo...' + i;
+        Curation[i].src = [SampleData.imgUrl[random], SampleData.imgUrl[random]];
+        Curation[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
+        Curation[i].regDate = '2022-03-0'+date;
+        Curation[i].modDate = '2022-03-0'+date;
+        Curation[i].cuCo = 'Curation';
+      }
+
+      // console.log(this.sampleData);
+      
+      let a = Array.from(Collection);
+      let b = Array.from(Curation);
+      let c = Array.from(this.sampleData.Folder);
+      
+      let arr = [];
+      let d = arr.concat(a, b, c);
+
+      d.sort((a, b) => {
+        if(a.modDate > b.modDate) return -1;
+        if(a.modDate === b.modDate) return 0;
+        if(a.modDate < b.modDate) return 1;
+      });
+
+      
+      store.Collection = d;
     }
   },
   created() {
-    for(let i = 0; i < 100; i++) {
-      sampleData.data[i] = {};
-      sampleData.data[i].id = i;
-      sampleData.data[i].email = "user" + i + "@naver.com"; 
-      sampleData.data[i].nickName = "nickName" + i; 
-      sampleData.data[i].colNum = "colId" + i;
-      sampleData.data[i].title = "Title..." + i;
-      sampleData.data[i].content = "Content..." + i;
-
-      sampleData.data[i].open = true;
-
-      if(i < 50) {
-        sampleData.data[i].involvePicBoolean = true;
-      } else {
-        sampleData.data[i].involvePicBoolean = false;
-      }
-
-
-      sampleData.data[i].redDate = "2022-01-01";
-      sampleData.data[i].modDate = "2022-01-02";
-      
-      sampleData.data[i].hashtag = [];
-      sampleData.data[i].imgUrl = [];
-      for(let j = 0; j < 3; j++) {
-        let random = Math.floor(Math.random() * 9) + 1;
-        sampleData.data[i].hashtag[j] = `Hash${i}${j}`;
-        sampleData.data[i].imgUrl[j] = sampleData.imgUrl[random];
-      }
-    }
-    this.testContent = sampleData.data;
-    // console.log(sampleData.data[0].imgUrl)
+    this.createDummies(this.sampleData);
   }
 }
 </script>
 
 <style scoped>
+.search-collections-body {
+  max-width: 1200px;
+  min-width: 1200px;
+  /* width: 100vw;
+  height: 100vh; */
+  /* background: lightcoral; */
+  margin: 0 auto;
+}
+
+/* header 구간 */
+header {
+  width: 100%;
+  height: 200px;
+  /* background: lightblue; */
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+}
+.header-area {
+  width: 30%;
+}
 .main-logo-text {
-    height: 59px;
-    margin-left: 117px;
-    margin-top: 49px;
-    width: 169px;
-}
-input:focus {
-  outline: none;
-}
-.sort-btn {
-  position: absolute;
-  left: 1318px;
-  top: 70px;
-}
-.hamburgerBtn {
-  position: absolute;
-  left: 1768px;
-  top: 66px;
-  height: 50px;
-  width: 40px;
+  width: 113px;
+  height: 39px;
+  margin-top: 60px;
+  /* position: absolute; */
+  left: 0;
+  top: 0;
   cursor: pointer;
 }
-.col-container {
-  margin-top: 180px;
-  margin-left: 160px;
-  overflow: hidden;
-  position: relative;
+.input-area {
+  width: 40%;
+  text-align: center;
 }
-.col-area {
-  width: 1700px;
+.search-input {
+  margin-top: 67px;
+  margin-right: 5%;
+}
+.button-area {
+  width: 30%;
+  /* background: red; */
   display: flex;
-  flex-wrap: wrap;
-  flex-basis: 6;
-  margin-top: 20px;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 63px;
 }
-.common-collection {
+.button-area img {
   margin-right: 20px;
-  margin-bottom: 22px;
+  cursor: pointer;
+}
+
+/* 컬렉션 구간 */
+.main-col {
+  width: 100%;
+  max-width: 1200px;
+  /* background: green; */
+}
+.main-col-area {
+  width: 100%;
+  display: flex;
+  /* justify-content: space-between; */
+  flex-wrap: wrap;
+}
+.main-searched-col {
+  margin-top: 20px;
+  margin-right: 20px;
 }
 </style>

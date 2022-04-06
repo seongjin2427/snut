@@ -1,5 +1,19 @@
 <template>
-  <div class="button" :style=" { width: width+'px', height: height+'px', border: border, background: bgcolor }">
+  <div class="button" :style="{ 
+    width: width+'px', 
+    height: height+'px', 
+    marginTop: marginTop+'px' , 
+    marginRight: marginRight+'px',
+    background: background,
+    fontSize: fontSize+'px',
+    borderRadius: borderRadius+'px',
+    border: border,
+    color: color,
+    margin: margin+'px',
+    fontWeight: fontWeight,
+    boxShadow: boxShadow
+
+  }">
     {{ buttonName }}
   </div>
 </template>
@@ -7,24 +21,37 @@
 <script>
 export default {
   name: "CommonButton",
-  props: ['buttonName', 'width', 'height', 'border', 'bgcolor']
+  props: [
+          'buttonName',
+          'width',
+          'height',
+          'margin-top',
+          'margin-right',
+          'background',
+          'fontSize',
+          'borderRadius',
+          'border',
+          'color',
+          'margin',
+        'fontWeight',
+      'boxShadow'
+
+        ]
 }
 </script>
 
 <style scoped>
-.button {
+.button {  
+  font-family: AlegreyaSans, sans-serif;
+  /*min-width: 80px;*/
+  min-height: 35px;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 130px;
-  height: 40px;
-  background-color: rgb(232, 236, 230);
-  font-family: 'Alegreya';
-  font-weight: 700;
-  color: black;
-  font-size: 16px;
+  border: 1px black solid;
   border-radius: 20px;
-  border: 1px solid black;
+  font-weight: bold;
+  font-size: 14px;
   cursor: pointer;
 }
 </style>

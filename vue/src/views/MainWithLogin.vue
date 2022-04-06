@@ -1,341 +1,271 @@
 <template>
   <div class="main-with-login">
+    <div class="main-with-login-body">
+      <header>
+        <div class="logo-area header-area">
+          <img class="main-logo-text" src="@/assets/logo_text.png" @click="$router.push('/')" alt="text_logo">
+        </div>
+        <div class="input-area">
+          <input-box 
+              class="main-input" 
+              @doSearch="doSearch"
+              placeholder="SEARCH"
+              width="100"
+              height="38"/>
+        </div>
+        <div class="button-area">
+          <input type="button" value="test" @click="sample">
+          <common-button buttonName="Log out" width="80" height="35" marginTop="5" marginRight="20" v-if="loginBool"/>
+          <common-button buttonName="Log in" width="80" height="35" marginTop="5" marginRight="20" v-if="!loginBool"
+                          @click="gotoLogin"/>
+          <common-button buttonName="Register" width="80" height="35" marginTop="5" marginRight="42" @click="gotoJoin"/>
+          <img src="@/assets/btn_hamburger.png" alt="nav_btn" @click="openNavBar">
+        </div>
+      </header>
+      <main>
 
-    <div class="main-body">
+        <div class="main-with-login-main">
+          <img src="@/assets/large_logo.png" alt="main_logo">
+          <div class="pick-your-snut">
+            <div>PICK YOUR "<span>S</span><span>N</span><span>UT</span>"</div>
+          </div>
+        </div>
+
+        <div class="main-col">
+          <div class="main-col-title">
+            <p>
+              인기컬렉션
+            </p>
+            <p>
+              더보기
+            </p>
+          </div>
+          <div class="main-col-area">
+            <common-collection 
+                @click="openModal(col, true)"
+                v-for="(col, idx) in sampleData.dataSet" 
+                :info="col" 
+                :id="col.id"
+                :key="idx" />
+          </div>
+        </div>
+        <div class="main-col">
+          <p class="main-col-title" >
+            개인 추천 컬렉션
+          </p>
+          <div class="main-col-area" v-if="loginBool">
+            <common-collection 
+                @click="openModal(col, true)"
+                v-for="(col, idx) in sampleData2.dataSet" 
+                :info="col" 
+                :id="col.id"
+                :loginBool="loginBool"
+                :key="idx" />
+          </div>
+          <div class="main-col-area" v-if="!loginBool">
+            <div class="loginSign">
+              {{ loginSignText }}
+            </div>
+          </div>
+        </div>
+
+        <navigator-bar ref="navBar" />
+      </main>
       
-      <!-- header 구간 -->
-      <div class="main-header">
-        <img class="main-logo-text" src="@/assets/logo_text.png" alt="logo_text">
-        <common-input-box placeholderContent="SEARCH" @mainDoSearch="mainDoSearch" />
-        <!-- 미 로그인 시 Login 버튼 활성화 -->
-        <common-button v-if="!loginBool" class="commonBtn" buttonName="Log in" />
-        <!-- 로그인 시 Log out 버튼 활성화 -->
-        <common-button v-if="loginBool" class="commonBtn" buttonName="Log out" />
-        <common-button class="registerBtn" buttonName="Register" />
-        <hamburger-button @click="occurNavBarEvent"/>
-        <!-- 미 로그인/로그인 전환 테스트용 버튼 -->
-        <br>
-        <button @click="testBtn">test</button><br>
-        <button @click="getUserInfo">getUserInfo</button><br>
-        <!-- <input type="text" v-model="userId"><br> -->
-        <button @click="getAllUserInfo">gitAllUserInfo</button>
-      </div>
-      <!-- 메인 로고 -->
-      <div class="main-logo">
-        <pick-your-snut />
-      </div>
-      <!-- 인기 컬렉션 구간 -->
-      <div class="col-container1">
-        <div class="text-area1">
-          <span class="hot-col1 text-area-text">인기컬렉션</span>
-          <span class="more-col1 text-area-text"><a href="#">더보기</a></span>
-        </div>
-        <div class="col-area1">
-            <common-collection class="recom-col" :info="num1" v-for="(num1, idx) in number1" :key="idx"/>
-        </div>
-      </div>
-      <!-- 개인 추천 컬렉션 구간 -->
-      <div class="col-container2" v-if="loginBool">
-        <div class="text-area2">
-          <span class="hot-col2 text-area-text">개인 추천 컬렉션</span>
-        </div>
-        <div class="col-area2">
-            <common-collection class="personal-col" :info="num2" v-for="(num2, idx) in number2" :key="idx"/>
-        </div>
-      </div>
-      
-      <!-- 로그인 안됐을 때, 회원가입 유도 버튼 -->
-      <div class="sign-recommend" v-if="!loginBool">
-        <p class="sign-recommend-area">{{ signText }}</p>
-      </div>
-      <!-- 네브 바 구역 -->
-      <navigator-bar ref="navbar" />
-      <!-- 푸터 구간 -->
-      <main-footer class="main-footer" />
+      <footer>
+        <main-footer />
+        <common-modal ref="modal" />
+      </footer>
 
     </div>
-
   </div>
 </template>
 
 <script>
-import CommonButton from "@/components/CommonButton.vue";
-import CommonInputBox from "@/components/CommonInputBox.vue";
-import PickYourSnut from "@/components/PickYourSnut.vue";
+import CommonButton from '@/components/CommonButton.vue';
 import CommonCollection from '@/components/CommonCollection.vue';
-import MainFooter from '@/components/MainFooter.vue';
-import HamburgerButton from '@/components/HamburgerButton.vue';
-import NavigatorBar from '../components/NavigatorBar.vue';
-
-import sampleData from '@/assets/sampleData.json';
-
-// import axios from 'axios';
+import InputBox from '@/components/InputBox.vue';
+import MainFooter from '@/components/MainFooter.vue'
+import NavigatorBar from '@/components/NavigatorBar.vue';
+import CommonModal from '@/components/CommonModal.vue';
+import SampleData from '@/assets/sampleData.json';
 
 
 export default {
+  components: { InputBox, CommonButton, CommonCollection, MainFooter, NavigatorBar, CommonModal },
   name: "MainWithLogin",
-  components: {
-    CommonButton, 
-    CommonInputBox, 
-    PickYourSnut, 
-    CommonCollection, 
-    MainFooter, 
-    HamburgerButton,
-    NavigatorBar
-  },
   data() {
     return {
-      loginBool: true,
-      signText: 'If you want to see more, just sign in!',
-      number1: {},
-      number2: {},
+      loginBool: false,
+      sampleData: {dataSet:[]},
+      sampleData2: {dataSet:[]},
+      loginSignText: 'If You Want To See More, Just Sign In!',
     }
   },
   methods: {
-    testBtn() {
-      console.log(this.loginBool);
-      this.loginBool = !this.loginBool;
+    openNavBar() {
+      this.$refs.navBar.openNavBar()
     },
-    occurNavBarEvent() {
-      this.$refs.navbar.openNavBar();
+    openModal(colData, moveToPageBool) {
+      this.$refs.modal.openModal(colData, moveToPageBool);
     },
-    getUserInfo() {
-      // axios.get("http://localhost:8080/get/" + this.userId).then((res) => {
-      //   var data = res.data;
-      //   console.log(data);
-      // });
+    sample() {
+      this.loginBool == true ? this.loginBool = false : this.loginBool =true;
     },
-    getAllUserInfo() {
-      // axios.get("http://localhost:8080/get/all").then((res) => {
-      //   console.log(res.data);
-      // })
-    },
-    mainDoSearch(searchWord) {
-      // this.$router.push(`/col/${searchWord}`);
+    doSearch(searchWord) {
       console.log(searchWord);
-      if (searchWord != '') {
-        this.$router.push(`/col/${searchWord}`);
+        this.$router.push({
+          path: `/col/${searchWord}`
+        });
+    },
+    gotoLogin(){
+      this.$router.push('/logi')
+    },
+    gotoJoin(){
+      this.$router.push('/regi')
+    },
+    createDummies(store, start) {
+      for(var i = 0; i < 5; i++) {
+        var random = Math.floor(Math.random()*10);
+        store.dataSet[i] = {};
+        store.dataSet[i].id = start;
+        store.dataSet[i].author = 'Author....' + i;
+        store.dataSet[i].nickName = 'NickName....' + i;
+        store.dataSet[i].title = 'Title....' + i;
+        store.dataSet[i].content = 'Content...' + i;
+        store.dataSet[i].folder = 'FolerNo...' + i;
+        store.dataSet[i].src = [SampleData.imgUrl[random], SampleData.imgUrl[random+1], SampleData.imgUrl[random+2]];
+        store.dataSet[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
+        store.dataSet[i].cuCo = 'Collection';
+        store.dataSet[i].regDate = '2022-03-01';
+        store.dataSet[i].modDate = '2022-03-02';
+
+        start++;
       }
     }
   },
-  mounted() {
-    for(var i = 0; i < 5; i++) {
-      var random = Math.floor(Math.random() * 9) + 1;
-      sampleData.data[i] = {};
-      sampleData.data[i].id = i;
-      sampleData.data[i].email = "user" + i + "@naver.com"; 
-      sampleData.data[i].nickName = "nickName" + i; 
-      sampleData.data[i].colNum = "colId" + i;
-      sampleData.data[i].title = "Title..." + i;
-      sampleData.data[i].content = "Content..." + i;
-      sampleData.data[i].open = true;
-      sampleData.data[i].redDate = "2022-01-01";
-      sampleData.data[i].modDate = "2022-01-02";
-      sampleData.data[i].imgUrl = sampleData.imgUrl[random];
-    }
-    this.number1 = sampleData.data;
+  created() {
+    this.createDummies(this.sampleData, 1);
+    this.createDummies(this.sampleData2, 6);
+  },
 
-    sampleData.data = {};
-    for(let i = 5; i < 10; i++) {
-      let random = Math.floor(Math.random() * 9) + 1;
-      console.log(i);
-      sampleData.data[i] = {};
-      sampleData.data[i].id = i;
-      sampleData.data[i].email = "user" + i + "@naver.com"; 
-      sampleData.data[i].nickName = "nickName" + i; 
-      sampleData.data[i].colNum = "colId" + i;
-      sampleData.data[i].title = "Title..." + i;
-      sampleData.data[i].content = "Content..." + i;
-      sampleData.data[i].open = true;
-      sampleData.data[i].redDate = "2022-01-01";
-      sampleData.data[i].modDate = "2022-01-02";
-      sampleData.data[i].imgUrl = sampleData.imgUrl[random];
-    }
-    this.number2 = sampleData.data;
-    console.log("this.number2 : ")
-    console.log(this.number2)
-    
-  }
 }
 </script>
 
 <style scoped>
-.main-with-login {
+.main-with-login-body {
+  max-width: 1200px;
+  min-width: 1200px;
+  width: 100vw;
+  height: 100vh;
+  /* background: lightcoral; */
   margin: 0 auto;
 }
-.main-body {
-  max-width: 1720px;
-  height: 100%;
-  background: grey;
+/* header 구간 */
+header {
+  width: 100%;
+  height: 150px;
+  /* background: lightblue; */
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+}
+.header-area {
+  width: 30%;
 }
 .main-logo-text {
-    height: 59px;
-    margin-left: 117px;
-    margin-top: 49px;
-    width: 169px;
-}
-input:focus {
-  outline: none;
-}
-.commonBtn {
-  left: 1430px;
-  top: 70px;
-  position: absolute;
+  width: 113px;
+  height: 39px;
+  margin-top: 60px;
+  /* position: absolute; */
+  left: 0;
+  top: 0;
   cursor: pointer;
 }
-.registerBtn {
-  left: 1588px;
-  top: 70px;
-  position: absolute;
-  cursor: pointer;
-}
-.hamburgerBtn {
-  position: absolute;
-  left: 1768px;
-  top: 66px;
-  height: 50px;
-  width: 40px;
-  cursor: pointer;
-}
-.main-logo {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 230px;
-  left: 700px;
-  height: 700px;
-  margin: 0 auto;
+.input-area {
+  width: 40%;
   text-align: center;
 }
-.col-container1 {
-  position: absolute;
-  top: 920px;
-  width: 1720px;
+.main-input {
+  margin-top: 67px;
+  margin-right: 5%;
 }
-.text-area1 {
+.button-area {
+  width: 30%;
+  /* background: red; */
   display: flex;
-  width: 90%;
-  margin: 0 auto;
+  justify-content: flex-end;
+  align-items: flex-start;
+  margin-top: 63px;
 }
-.text-area-text {
-  font-family: 'Noto-sans KR','Apple SD Gothic Neo', sans-serif ;
-  font-weight: 600;
+.button-area img {
+  margin-right: 20px;
+  cursor: pointer;
+}
+/* main 구간 */
+.main-with-login-main {
+  max-width: 1200px;
+  height: 700px;
+  /* background: blue; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.main-with-login-main img {
+  width: 341px;
+  height: 274px;
+  object-fit: cover;
+}
+.pick-your-snut *{
+  margin-top: 30px;
+  font-family: 'AlegreyaSans', 'sans-serif';
+  font-size: 40px;
+  letter-spacing: 2.5px;
+  font-weight: 800;
+}
+.pick-your-snut span:nth-child(1) {
+  color: #292F6D;
+}
+.pick-your-snut span:nth-child(2) {
+  color: #4F4F4F;
+}
+.pick-your-snut span:nth-child(3) {
+  color: #FBE017;
+}
+/* 컬렉션 구간 */
+.main-col {
+  width: 1000px;
+  max-width: 1200px;
+  height: 420px;
+  /* background: green; */
+  padding: 0 100px;
+}
+.main-col-title {
+  margin-bottom: 100px;
+  display: flex;
+  justify-content: space-between;
   font-size: 30px;
-  margin-bottom: 40px;
+  font-weight: bold;
 }
-.hot-col1 {
-  display: inline-block;
-  width: 70%;
-  margin-left: 3rem;
-}
-.more-col1{
-  display: inline-block;
-  width: 30%;
-  text-align: right;
-  margin-right: 60px;
-}
-.more-col1 a {
-  text-decoration: none;
-  outline: none;
-  color: rgba(102, 102, 102, 1);
-}
-.col-area1 {
+.main-col-area {
+  width: 100%;
   display: flex;
-  margin: 0 auto;
-  justify-content: space-around;
+  justify-content: space-between;
 }
-.recom-col {
-  top: 90px;
-  mix-blend-mode: normal;
-  position: absolute;
+.main-col-title p:nth-child(2) {
+  color: #666666;
+  cursor: pointer;
 }
-.recom-col:nth-child(1) {
-    left: 136px;
-}
-.recom-col:nth-child(2) {
-    left: 484px;
-}
-.recom-col:nth-child(3) {
-    left: 832px;
-}
-.recom-col:nth-child(4) {
-    left: 1180px;
-}
-.recom-col:nth-child(5) {
-    left: 1528px;
-}
-.col-container2 {
-  position: absolute;
-  top: 1325px;
-  width: 1920px;
-}
-.text-area2 {
-  display: flex;
-  width: 90%;
-  margin: 0 auto;
-}
-.hot-col2 {
-  display: inline-block;
-  width: 70%;
-  margin-left: 3rem;
-}
-.more-col2{
-  display: inline-block;
-  width: 30%;
-  text-align: right;
-  margin-right: 40px;
-}
-.more-col2 a {
-  text-decoration: none;
-  outline: none;
-  color: rgba(102, 102, 102, 1);
-}
-.col-area2 {
-  display: flex;
-  margin: 0 auto;
-  justify-content: space-around;
-}
-.personal-col {
-  top: 90px;
-  mix-blend-mode: normal;
-  position: absolute;
-}
-.personal-col:nth-child(1) {
-    left: 136px;
-}
-.personal-col:nth-child(2) {
-    left: 484px;
-}
-.personal-col:nth-child(3) {
-    left: 832px;
-}
-.personal-col:nth-child(4) {
-    left: 1180px;
-}
-.personal-col:nth-child(5) {
-    left: 1528px;
-}
-.sign-recommend {
+.loginSign {
+  width: 980px;
+  height: 250px;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 1142px;
-  height: 250px;
-  position: absolute;
-  top: 1376px;
-  left: 397px;
-  background-color: #AED8ED;
+  background: #AED8EA;
   border-radius: 12px;
-  cursor: pointer;
-}
-.sign-recommend-area {
-  font-family: 'alegreya';
   font-size: 30px;
   font-weight: 800;
-}
-.main-footer {
-  top: 1600px;
 }
 </style>

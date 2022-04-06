@@ -1,115 +1,142 @@
 <template>
-  <div class="common-modal" v-if="openModal()">
+  <div class="common-modal" v-if="showBool">
     <div class="modal-bg" @click="closeModal()"></div>
-    <div class="modal-container">
-      <img src="../assets/sample/Close-Line.png" alt="x-button" class="xButton" @click="closeModal()">
+    <div class="modal-area">
+      <img class="x-button" src="@/assets/modal/Close-Line.png" alt="x_img" @click="closeModal()">
+      <div class="modal-container">
 
-      <div class="modal-container-body">
+        <!-- modal-header 구간 -->
         <div class="modal-header">
-
-          <div class="mainHashTag">
+          <div class="modal-hashTag">
             <common-tag 
-                class="component-tag" 
-                @saveText="saveText"
-                :tagName="[idx, tag, editMode]" 
-                v-for="(tag, idx) in curationInfo.hashtag" 
+                v-for="(tag, idx) in colCuData.hashTag" 
+                width="150" 
+                height="40"
+                marginRight="15"
+                :tagName="tag" 
                 :key="idx" />
           </div>
-          <div class="iconBox" v-if="!editMode">
-            <img src="../assets/sample/Like-Line.png" alt="heart">
-            <img src="../assets/sample/Pin-Line.png" alt="pin">
-            <img src="../assets/sample/Save-Line.png" alt="share">
-          </div>
-          <div class="iconBox iconBoxCenter" v-if="editMode">
-
+          <div class="modal-iconSet">
+            <img src="@/assets/modal/Like-Line.png" alt="like_img">
+            <img src="@/assets/modal/Pin-Line.png" alt="pin_img">
+            <img src="@/assets/modal/Share-Line.png" alt="share_img">
           </div>
         </div>
-        
+
+        <!-- modal-body 구간 -->
         <div class="modal-body">
-          <div class="modal-body-picture" v-if="involedPic">
-            <div class="moveImg">
-              <img :src="img" alt="img" v-for="(img, idx) in curationInfo.imgUrl" :key="idx">
+
+          <!-- modal 사진 구간 -->
+          <div class="modal-pic" 
+              v-if="(sampleImg.length > 0)"
+              @click="moveToPageBoolean && moveToPage(colCuData)">
+            <div class="img-container" 
+                style="{cursor: pointer}" ref="imgContainer">
+              <img
+                v-for="(name, idx) in sampleImg"
+                :src="require(`@/assets/sample/img_${name}.jpg`)"
+                alt="cu_img"
+                :key="idx" />
             </div>
-          <button @click="previousImg" class="previous">&#60;</button>
-          <button @click="nextImg" class="next">&#62;</button>
+            <input class="previous" type="button" value="<" @click.stop="previous()" ref="previous" disabled />
+            <input class="next" type="button" value=">" @click.stop="next()" ref="next" />
           </div>
 
-          <div :class="{modalBodyContents: involedPic, noPic: !involedPic, fontSize16:true}">
-            <p><b>{{ curationInfo.nickName }}</b></p>
-            <p><b>{{ curationInfo.title }}</b></p>
-            <p>{{ curationInfo.content }}</p>
+          <!-- modal 사진+글 구간 -->
+          <div class="modal-content-pic" v-if="sampleImg.length > 0">
+            <p><b>{{ colCuData.title }}</b></p>
+            <p><b>{{ colCuData.nickName }}</b></p>
+            <p>{{ colCuData.content }}</p>
           </div>
+
+          <!-- modal only 글 구간 -->
+          <div class="modal-content-nonPic" v-if="!(sampleImg.length > 0)">
+            <p><b>{{ colCuData.title }}</b></p>
+            <p><b>{{ colCuData.nickName }}</b></p>
+            <p>{{ colCuData.content }}</p>
+          </div>
+
         </div>
-      </div>
 
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import CommonTag from './CommonTag.vue';
+import CommonTag from '@/components/CommonTag.vue'
 
 export default {
-  components: { CommonTag },
   name: 'CommonModal',
-  props: ['curShow', 'curationInfo', 'involedPic'],
+  components: {
+    CommonTag
+  },
   data() {
     return {
-      editMode: false,
-      showModal: false,
-      isInvolvePic: this.involedPic,
-      modalHashTags: ['aa', 'bb', 'cc']
+      showBool: false,
+      colCuData: {},
+      moveToPageBoolean: false,
+      sampleImg: [1, 2, 3 ,4],
+      imgSlideData: {
+        curPos: 0,
+        position: 0,
+        IMAGE_WIDTH: 400
+      }
     }
   },
   methods: {
-    previousImg() {
-      // var temp = '';
-      // let imageList = this.curationInfo.imgUrl;
-      console.log(this.curationInfo)
-      
-      // console.log(imageList);
-
-      // for(let i = 0; i < imageList.length; i++) {
-      //   if(i == 0) {
-      //     temp = imageList[i];
-      //     imageList[i] = imageList[imageList.length - 1];
-      //   } else {
-        //     imageList[i-1] = imageList[i]
-      //     imageList[i] = temp;
-      //   }
-      // }
-    },
-    nextImg() {
-
-    },
-    openModal() {
-      this.showModal = this.curShow;
-      return this.showModal;
+    openModal(colCuData, moveToPageBool) {
+      this.moveToPageBoolean = moveToPageBool;
+      this.showBool = true;
+      this.colCuData = colCuData;
     },
     closeModal() {
-      this.$emit('returnModal');
+      this.imgSlideData.curPos = 0;
+      this.imgSlideData.position = 0;
+      this.showBool = false;
     },
-    saveText(text) {
-      this.modalHashTags[text[0]] = text[1];
+    moveToPage(dataSet) {
+      if(dataSet.cuCo == 'Collection') {
+        this.$router.push({
+          path: `/mcol/store/${dataSet.id}/${dataSet.nickName}`
+        });
+      }
+    },
+    previous() {
+      if(this.imgSlideData.curPos > 0) {
+      this.$refs.next.removeAttribute("disabled");
+      this.imgSlideData.position += this.imgSlideData.IMAGE_WIDTH;
+      this.$refs.imgContainer.style.transform = `translateX(${this.imgSlideData.position}px`;
+      this.imgSlideData.curPos -= 1;
+      }
+      if(this.imgSlideData.curPos == 0) {
+        this.$refs.previous.setAttribute('disabled', 'true');
+      }
+    },
+    next() {
+      if(this.imgSlideData.curPos < this.sampleImg.length - 1 ) {
+      this.$refs.previous.removeAttribute("disabled");
+      this.imgSlideData.position -= this.imgSlideData.IMAGE_WIDTH;
+      this.$refs.imgContainer.style.transform = `translateX(${this.imgSlideData.position}px`;
+      this.imgSlideData.curPos += 1;
+      }
+      if(this.imgSlideData.curPos == this.sampleImg.length - 1 ) {
+        this.$refs.next.setAttribute('disabled', 'true');
+      }
     }
-  },
-  computed: {
-    inspect() {
-      return this.curationInfo.involvePicBoolean;
-    } 
   }
 }
 </script>
 
 <style scoped>
 .common-modal {
-  font-family: 'alegreya';
   position: fixed;
   left: 0;
   top: 0;
   display: block;
   width: 100%;
   height: 100%;
+  z-index: 4;
 }
 .modal-bg {
   background: rgba(0, 0, 0, 0.3);
@@ -120,111 +147,121 @@ export default {
   left: 0;
   z-index: -1;
 }
-.modal-container {
-  width: 1300px;
-  height: 750px;
-  background: #FFFFFF;
-  border: solid 1px black;
-  margin: 100px 300px;
-}
-.xButton {
-  position: absolute;
-  top: 130px;
-  left: 1535px;
-}
-.modal-container-body {
-  width: 1200px;
+.modal-area {
+  width: 1000px;
   height: 650px;
-  padding: 50px;
+  background: white;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  z-index: 10;
 }
+.modal-container {
+  width: 850px;
+  height: 500px;
+  margin: 60px 75px 90px 75px;
+}
+
+
+/* modal header 구간 */
 .modal-header {
   width: 100%;
   height: 100px;
-  /* background: lightblue; */
+  /* background: gray; */
   display: flex;
-  /* justify-content: space-between; */
 }
-.mainHashTag {
-  display: flex;
-  justify-content: right;
-  width: 80%;
-  text-align: right;
-}
-.component-tag {
+.modal-hashTag {
+  width: 590px;
+  height: 100%;
   margin-top: 5px;
   margin-right: 20px;
+  display: flex;
+  justify-content: flex-end;
+  /* background: lightyellow; */
 }
-.iconBox {
-  width: 20%;
-  margin-right: 250px;
+.modal-iconSet {
+  width: 260px;
+  height: 100%;
+  /* background: lightcoral; */
+
 }
-.iconBoxCenter {
-  width: 8%;
-}
+
+
+/* modal body 구간 */
 .modal-body {
   width: 100%;
-  height: 550px;
-  /* background: lightcoral; */
+  height: 400px;
   display: flex;
-  justify-content: center;
+  justify-content:space-between ;
 }
-.modal-body-picture {
-  /* background: lightgrey; */
-  margin: 25px 25px 50px 50px;
-  display: flex;
-  position: relative;
-  width: 500px;
-  height: 500px;
+
+
+/* modal-pic 구간 */
+.modal-pic {
   overflow: hidden;
+  position: relative;
+  z-index: 2;
 }
-.moveImg {
-  width: 100px;
-  height: 100%;
+.img-container {
+  width: 400px;
+  height: 400px;
   display: flex;
+  /* flex-direction: row-reverse; */
+  position: relative;
+  transition: all 0.5s;
+  z-index: 1;
 }
-.modal-body-picture img {
-  width: 500px;
-  height: 500px;
-  object-fit: contain;
-  transition: all .5s;;
-}
-.moveX {
-  transform: translateX(-500px);
-  transition: all .5s;;
+.modal-pic img {
+  width: 100%;
+  height: 100%;
+  object-fit:fill;
 }
 .previous {
+  width: 50px;
+  height: 50px;
   position: absolute;
-  top: 200px;
+  top: 175px;
   left: 20px;
-  width: 100px;
-  height: 100px;
-  font-size: 50px;
+  z-index: 2;
 }
 .next {
+  width: 50px;
+  height: 50px;
   position: absolute;
-  top: 200px;
-  left: 375px;
-  width: 100px;
-  height: 100px;
-  font-size: 50px;
+  top: 175px;
+  right: 20px;
+  z-index: 2;
 }
-.modalBodyContents  {
-  width: 470px;
-  height: 440px;
-  /* background: lightgreen; */
-  margin: 25px 50px 50px 25px;
+
+
+/* modal-content 구간 */
+.modal-content-pic {
+  width: calc(400px - (20px * 2));
+  height: calc(400px - (45px * 2));
+  padding: 45px 20px;
   border: 1px solid black;
   border-radius: 12px;
-  padding: 30px 15px;
+  overflow: scroll;
 }
-.noPic {
-  width: 990px;
-  height: 440px;
-  /* background: lightgreen; */
-  margin: 25px 50px 50px 50px;
+.modal-content-nonPic {
+  width: 100%;
+  height: 100%;
+  padding: 45px 20px;
   border: 1px solid black;
   border-radius: 12px;
-  padding: 30px;
+  overflow: scroll;
+}
+
+/* 기타 구간 */
+.x-button {
+  position: absolute;
+  top: 35px;
+  right: 40px;
 }
 .modalBodyContents * {
   font-size: 20px;

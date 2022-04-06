@@ -1,9 +1,17 @@
 <template>
-  <div class="footer-area">
-    <div class="rectangle"></div>
-    <img src="../assets/small_logo.png" alt="footer_logo">
-    <br>
-    <p class="footer-text">{{ cText }}</p>
+  <div class="footer">
+
+    <div class="footer-line"></div>
+
+    <div class="footer-body">
+      <div class="footerMenu" v-for="(title, idx) in footerTitle" :key="idx">
+        <p><a :href="title.src">{{ title.name }}</a></p>
+      </div>
+      <div class="footer-logo">
+        <img src="@/assets/small_logo.png" alt="footer_img">
+        {{ writeCmt }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -12,41 +20,77 @@ export default {
   name: 'MainFooter',
   data() {
     return {
-      cText: "© snut. 2021 We love our users!"
+      footerTitle: [
+        { name: 'ABOUT', 
+          src: '/ab'
+        },
+        { name: 'FAQ', 
+          src: '/faq'
+        },
+        { name: 'FEEDBACK', 
+          src: '/fb'
+        },
+        { name: 'MY PROFILE', 
+          src: '/pf'
+        },
+      ],
+      writeCmt: '© snut. 2021 We love our users!'
     }
   }
 }
 </script>
 
 <style scoped>
-.footer-area {
-  margin-top: 200px;
-  position: absolute;
+.footer {
+  /* background: lightgreen; */
   display: flex;
-  width: 100vw;
+  width: 100%;
   flex-direction: column;
+  margin-top: 150px;
+}
+.footer-body {
+  height: 300px;
+  position: relative;
+  display: flex;
+  padding: 0 100px;
+  justify-content: center;
   align-items: center;
 }
-.rectangle {
+.footer-line {
   width: 100vw;
-  height: 2px;
-  background: rgba(196, 196, 196, 1);
+  position: absolute;
+  left: 0;
+  height: 1px;
+  background: black;
 }
-img {
-  width: 10.5625rem;
-  height: 8.5rem;
-  object-fit: cover;
-  margin-top: 50px;
+.footerMenu {
+  width: 300px;
+  height: calc(100%-30px);
+  /* background: lightgray; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #292F6D;
+  font-size: 25px;
+  padding-bottom: 30px;
 }
-.footer-text {
-  width: 301px;
-  font-family: 'Noto-sans KR','Apple SD Gothic Neo', sans-serif ;
-  font-size: 15px;
-  letter-spacing: -0.23px;
-  line-height: 24px;
-  min-height: 24px;
-  text-align: center;
-  white-space: nowrap;
-  margin-bottom: 20px;
+.footerMenu:nth-child(2) {
+  margin-right: 200px;
+}
+.footer-logo {
+  height: 100%;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items:flex-start;
+}
+.footer-logo img {
+  margin-left: 20px;
+  margin-bottom: 30px;
+}
+a {
+  text-decoration: none;
+  color: #292F6D;
 }
 </style>

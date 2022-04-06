@@ -1,24 +1,20 @@
 <template>
   <div class="navigator closeNavBar">
     <div class="hamburgerBtn-area">
-      <hamburger-btn @click="closeNavBar" />
+      <img class="hamburgerBtn" src="@/assets/btn_hamburger.png" alt="nav_btn" @click="closeNavBar">
     </div>
     <ul>
-      <li><router-link to="/mcol/main">My collection</router-link></li>
-      <li>Community</li>
-      <li>My Page</li>
-      <li><router-link to="/fb">Feedback</router-link></li>
+      <li><router-link to="/mcol/main">MY COLLECTION</router-link></li>
+      <li><router-link to="/com">COMMUNITY</router-link></li>
+      <li><router-link to="/mc">MY PAGE</router-link></li>
+      <li><router-link to="/ab">ABOUT</router-link></li>
     </ul>
   </div>
 </template>
 
 <script>
-import HamburgerBtn from '@/components/HamburgerButton.vue'
 export default {
   name: 'NavigatorBar',
-  components: {
-    HamburgerBtn
-  },
   methods: {
     openNavBar() {
       var a = document.querySelector('.navigator');
@@ -44,7 +40,8 @@ export default {
   background: #FFFFFF;
   transition: all .2s;
   right: -400px;
-  z-index: 9999
+  z-index: 9999;
+  border-left: 1px black solid;
 }
 .openNavBar {
   right: 0px;
@@ -56,6 +53,7 @@ export default {
   position: absolute;
   top: 66px;
   right: 124px;
+  cursor: pointer;
 }
 ul {
   margin-top: 300px;
@@ -65,11 +63,14 @@ li {
   display: block;
   margin: 85px auto;
   text-align: center;
-  font-family: 'alegreya';
-  font-weight: 700;
+  font-family: 'AlegreyaSans';
+  font-weight: 800;
   font-size: 30px;
 }
-a {
+li * {
+  font-family: 'AlegreyaSans';
+  font-weight: 800;
+  font-size: 30px;
   text-decoration: none;
   color: black;
 }
