@@ -10,6 +10,7 @@ import MakeNote from '@/views/MakeNote.vue'
 import StoreCollections from '@/views/StoreCollections.vue';
 import StoreColCurations from '@/views/StoreColCurations.vue';
 import MakeCommunity from '@/views/MakeCommunity.vue';
+import MakeCollection from '@/views/MakeCollection.vue';
 
 import About from "@/views/About.vue";
 import Faq from "@/views/Faq.vue";
@@ -50,6 +51,11 @@ const routes = [
     path: '/mcol/note/makenote',
     component: MakeNote,
     name: "MakeNote"
+  },
+  { 
+    path: '/mcol/mc',
+    component: MakeCollection,
+    name: "MakeCollection"
   },
   { 
     path: '/mcol/note',

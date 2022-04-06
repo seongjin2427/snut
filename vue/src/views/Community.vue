@@ -27,7 +27,7 @@
       </div>
       <div class="com-form">
         <div class="com-list-block">
-          <community-list v-for="(list,idx) in commuBlockData" :key="idx" :list="list" @click="moveToPage(list,src)" />
+          <community-list v-for="(list,idx) in commuBlockData" :key="idx" :list="list" @click="moveToPage(list.src)" />
         </div>
       </div>
     </div>
@@ -106,6 +106,9 @@ export default {
     doSearch() {
       this.$router.push('/comlist');
     },
+    moveToPage(src) {
+      console.log(src);
+    }
   },
 
 }
