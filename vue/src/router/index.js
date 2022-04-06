@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory  } from 'vue-router';
 
 import MainWithLogin from "@/views/MainWithLogin.vue";
-
 import UserCollection from "@/views/UserCollection.vue";
 import SearchCollections from '@/views/SearchCollections.vue';
 
@@ -10,7 +9,7 @@ import MyNote from "@/views/MyNote.vue";
 import MakeNote from '@/views/MakeNote.vue'
 import StoreCollections from '@/views/StoreCollections.vue';
 import StoreColCurations from '@/views/StoreColCurations.vue';
-import MakeCollection from '@/views/MakeCollection.vue';
+import MakeCommunity from '@/views/MakeCommunity.vue';
 
 import About from "@/views/About.vue";
 import Faq from "@/views/Faq.vue";
@@ -20,13 +19,11 @@ import Feedback from "@/views/Feedback";
 import MyCommunity from "@/views/MyCommunity";
 import Community from "@/views/Community";
 import CommunityInside from "@/views/CommunityInside.vue";
-import MakeCommunity from "@/views/MakeCommunity.vue";
 
 import Login from "@/views/Login.vue";
 import Forgotpw from "@/views/Forgotpw.vue";
 import Changepw from "@/views/Changepw.vue";
 import Join from "@/views/Join.vue";
-
 
 const routes = [
   {
@@ -35,12 +32,7 @@ const routes = [
     name: "MainWithLogin"
   },
   {
-    path: "/col/",
-    component: SearchCollections,
-    name: "SearchCollections"
-  },
-  {
-    path: "/col/:word",
+    path: "/col",
     component: SearchCollections,
     name: "SearchCollections"
   },
@@ -73,11 +65,6 @@ const routes = [
     path: '/mcol/store/:colId/:nickName',
     component: StoreColCurations,
     name: "StoreColCurations"
-  },
-  { 
-    path: '/mcol/mc',
-    component: MakeCollection,
-    name: "MakeCollection"
   },
   {
     path:"/ab",
