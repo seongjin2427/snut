@@ -30,14 +30,14 @@
           <div class="span">
             <div class="repw2">Re-Password</div>
             <div class="flex">
-              <img class="icon" src="@/assets/icon/Key-Line.png" alt="pw">
+              <img class="icon" src="@/assets/icon/Key-Line.png" width="24" height="24" alt="pw">
               <input placeholder="Re-Password">
             </div>
           </div>
           <div class="span">
             <div class="repw3">Confirm-Password</div>
             <div class="flex">
-              <img class="icon" src="@/assets/icon/Key-Line.png" alt="pw">
+              <img class="icon" src="@/assets/icon/Key-Line.png" width="24" height="24" alt="pw">
               <input placeholder="Confirm-Password">
             </div>
           </div>
@@ -48,7 +48,8 @@
           <div class="span">
             <div class="mail2">Email</div>
             <div class="flex">
-              <img class="icon" src="@/assets/icon/Mail-Closed-Line.png" alt="email">
+              <img class="icon" src="@/assets/icon/Mail-Closed-Line.png" width="18" height="18"
+                      viewBox="0 0 18 16" alt="email"/>
               <input placeholder="Email">
             </div>
           </div>
@@ -59,7 +60,7 @@
           <div class="span">
             <div class="mobile2">Mobile</div>
             <div class="flex">
-              <img class="icon" src="@/assets/icon/Call-Line.png" alt="mobile">
+              <img class="icon" src="@/assets/icon/Call-Line.png" width="24" height="24" alt="mobile">
               <input placeholder="Mobile">
             </div>
           </div>
@@ -70,7 +71,7 @@
           <div class="span">
             <div class="nick2">Nickname</div>
             <div class="flex">
-              <img class="icon" src="@/assets/icon/Flag-Triangular-Line.png" alt="nick">
+              <img class="icon" src="@/assets/icon/Flag-Triangular-Line.png" width="24" height="24" alt="nick">
               <input placeholder="Nickname">
             </div>
           </div>
@@ -97,6 +98,7 @@
 <script>
 import CommonButton from "@/components/CommonButton.vue";
 import SmallModal from "@/components/SmallModal";
+
 
 export default {
   name: "Myprofile-page",
@@ -191,12 +193,13 @@ header {
 }
 .profile-form-wrapper{
 
+
 }
 .profile-form {
   display: flex;
-  flex-direction: column;
   width: 1000px;
   height: 620px;
+  flex-direction: column;
   justify-content: center;
 }
 

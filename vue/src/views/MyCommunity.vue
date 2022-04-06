@@ -157,6 +157,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 60px;
 }
 .bookmark-wrapper{
   display: inline-block;

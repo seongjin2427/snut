@@ -20,7 +20,7 @@
               border="none"
               fontSize="20" />
           <div class="addBtn" @click="!selectMode && addFolder()">
-            <p>+</p>
+            <img src="@/assets/icon/plus.png" alt="plus_button">
           </div>
         </div>
         <div class="button-area">
@@ -508,11 +508,13 @@ header {
 .addBtn {
   width: 40px;
   height: 40px;
-  position: relative;
-  background: white;
-  border-radius: 20px;
   margin-left: 10px;
   cursor: pointer;
+}
+.addBtn img{
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
 }
 .addBtn p {
   position: absolute;

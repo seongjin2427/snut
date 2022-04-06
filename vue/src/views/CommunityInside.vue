@@ -3,17 +3,22 @@
     <div class="com-inside-wrapper">
 
       <div class="com-form-wrapper">
-        <div class="com-btn-area">
-          <common-button class="com-btn" :buttonName="btn.name" v-for="(btn,idx) in comInBtnData" :key="idx" width="150"
-                        height="40" border-radius="12" background="white" border="none"
-                        fontWeight="400" font-size="16" marginTop="50" marginRight="20"/>
+        <div class="com-btn-area" v-if="!modifyBool">
+          <common-button @click="separateMethods(idx)" class="com-btn" :buttonName="btn.name" v-for="(btn,idx) in comInBtnData" 
+                        :key="idx" width="150" height="40" border-radius="12" background="white" border="none"
+                        fontWeight="400" font-size="16" marginTop="50" marginRight="20" />
+        </div>
+        <div class="com-btn-area" v-if="modifyBool">
+          <common-button @click="separateMethods(idx)" class="com-btn" :buttonName="btn.name" v-for="(btn,idx) in comInBtnData" 
+                        :key="idx" width="150" height="40" border-radius="12" background="white" border="none"
+                        fontWeight="400" font-size="16" marginTop="50" marginRight="20" />
         </div>
 
         <div class="com-form-main-wrapper">
           <div class="com-form-main">
 
             <div class="com-body">
-              <TipTap :isEditable="false" />
+              <TipTap :isEditable="modifyBool" />
             </div>
 
             <div class="com-form-comment-wrapper">
@@ -41,6 +46,7 @@ export default {
   components: { CommonButton, ComInsideComment, TipTap },
   data() {
     return {
+      modifyBool: false,
       comInBtnData: [
         {
           name: '수정하기',
@@ -54,7 +60,25 @@ export default {
           name: '북마크',
           src: ''
         }
+      ],
+      modifyBtnData: [
+        {
+          name: '확인',
+          src: ''
+        },
+        {
+          name: '취소',
+          src: ''
+        }
       ]
+    }
+  },
+  methods: {
+    separateMethods(idx) {
+      console.log(idx);
+      if(idx == 0) {
+        this.modifyBool = true;
+      }
     }
   }
 }

@@ -23,6 +23,9 @@ import CommunityInside from "@/views/CommunityInside.vue";
 import MakeCommunity from "@/views/MakeCommunity.vue";
 
 import Login from "@/views/Login.vue";
+import Forgotpw from "@/views/Forgotpw.vue";
+import Changepw from "@/views/Changepw.vue";
+import Join from "@/views/Join.vue";
 
 
 const routes = [
@@ -119,7 +122,22 @@ const routes = [
   {
     path: "/logi",
     component: Login,
-    name: "Login"
+    name:"Login"
+  },
+  {
+    path:"/fgpw",
+    component: Forgotpw,
+    name: "Forgotpw"
+  },
+  {
+    path:"/chpw",
+    component: Changepw,
+    name: "Changepw"
+  },
+  {
+  path:"/regi",
+    component: Join,
+    name:"Join"
   }
 
 ];
