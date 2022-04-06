@@ -38,44 +38,6 @@
           <div class="write-body">
 
             <div class="write-wrapper">
-              
-              <div class="write-area">
-
-                <div class="emoji-view">
-                  <emoji-face 
-                      class="emoji-face" 
-                      :color="communityDataSet.pickedColor" />
-                  <img 
-                      class="emoji-expression" 
-                      :src="require(`@/assets/face-emoji/emoji${communityDataSet.pickedEmoji}.png`)" 
-                      alt="expression">
-                </div>
-                <div class="emoji-color-container">
-                  <div class="picker-box">
-                    <p>emoji</p>
-                    <div class="picker emoji-picker">
-                      <img 
-                          :src="require(`@/assets/face-emoji/emoji${imgNo}.png`)" 
-                          @click="communityDataSet.pickedEmoji = idx"
-                          v-for="(imgNo, idx) in imgNumberSet" :key="idx"
-                          alt="emoji_img">
-                    </div>
-                  </div>
-                  <div class="picker-box">
-                    <p>
-                      color &nbsp;
-                      <color-picker @getColors="getColors"/>
-                    </p>
-                      
-                    <div class="picker color-picker">
-                      <div class="picked-color" :style="{ background: communityDataSet.pickedColor }"></div>
-                        &nbsp; &nbsp; 
-                      <p> {{ communityDataSet.pickedColor }}</p>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
 
               <div class="write-wrapper-title">
                 <input type="text" placeholder="제목을 입력하세요" v-model="communityDataSet.title">
@@ -133,8 +95,6 @@
 import CommonButton from '@/components/CommonButton.vue';
 import MainFooter from '@/components/MainFooter.vue'
 import TipTap from '@/components/TextEditor.vue'
-import ColorPicker from '@/components/ColorPicker.vue'
-import EmojiFace from '../components/EmojiFace.vue';
 import SmallModal from '../components/SmallModal.vue';
 
 export default {
@@ -142,14 +102,12 @@ export default {
     CommonButton, 
     MainFooter, 
     TipTap, 
-    ColorPicker,
-    EmojiFace,
     SmallModal
     },
   name: "MakeNote",
   data() {
     return {
-      modifyBool: false,
+      modifyBool: true,
       imgNumberSet: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
       communityDataSet: {
         title: '',
@@ -255,104 +213,18 @@ header {
 }
 .write-title {
   display: flex;
-  height: 100px;
+  height: 40px;
 }
 .write-wrapper {
-  width: 960px;
-  height: 970px;
-  padding: 0 70px;
-}
-
-/* No Picture 구간 */
-.write-area {
-  width: calc(100%-40px);
-  height: 280px;
-  padding: 0 20px;
-  display: flex;  
-}
-.emoji-view {
-  width: 300px;
-  height: 100%;
-  margin-right: 50px;
-  position: relative;  
-}
-.emoji-face {
-  width: 200px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-45%, -50%);
-}
-.emoji-expression {
-  width: 80px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-.emoji-color-container {
-  width: 660px;
-  display: flex;
-  justify-content: space-between;
-  background: white;
-  padding: 15px 25px 5px 25px;
-  border: 1px solid black;
-  border-radius: 12px;
-}
-.emoji-color-container  p{
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-.picker-box {
-  width: 260px;
-}
-.picker-box > p {
-  display: flex;
-  align-items: center;
-}
-.picker {
-  width: calc(100%-40px);
-  height: 160px;
-  padding:  20px;
-  border: 1px solid black;
-  overflow: scroll;
-}
-.emoji-picker {
-  display: flex;
-  flex-wrap: wrap;
-}
-.emoji-picker img {
-  width: 40px;
-  padding: 15px;
-  object-fit: contain;
-}
-.emoji-picker img:hover {
-  cursor: pointer;
-  border: 1px solid black;
-  padding: 15px;
-}
-/* .emoji-face {
-
-} */
-.color-picker {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-}
-.picked-color {
-  width: 30px;
-  height: 30px;
-}
-.color-picker p {
-  font-size: 16px;
+  width: 1020px;
+  height: 740px;
+  padding: 0 40px;
 }
 .write-wrapper-title {
-  width: calc(100%-40px);
+  /* width: calc(100%-40px); */
   height: 130px;
-  padding: 0 20px;
   display: flex;
+  padding-left: 10px;
   align-items: center;
 }
 .write-wrapper-title input {
@@ -371,7 +243,7 @@ header {
   font-weight: 300
 }
 .textEditor-area {
-  width: 920px;
+  width: 980px;
   height: 500px;
   background: white;
   border-radius: 12px;
@@ -380,7 +252,7 @@ header {
 
 .btnSet {
   width: calc(100%-120px);
-  height: 150px;
+  height: 120px;
   padding: 0 60px;
   /* background: lightgreen; */
   display: flex;
