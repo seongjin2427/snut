@@ -9,7 +9,7 @@
                         fontWeight="400" font-size="16" marginTop="50" marginRight="20" />
         </div>
         <div class="com-btn-area" v-if="modifyBool">
-          <common-button @click="separateMethods(idx)" class="com-btn" :buttonName="btn.name" v-for="(btn,idx) in comInBtnData" 
+          <common-button @click="modifyMethods(idx)" class="com-btn" :buttonName="btn.name" v-for="(btn,idx) in modifyBtnData" 
                         :key="idx" width="150" height="40" border-radius="12" background="white" border="none"
                         fontWeight="400" font-size="16" marginTop="50" marginRight="20" />
         </div>
@@ -18,7 +18,11 @@
           <div class="com-form-main">
 
             <div class="com-body">
-              <TipTap :isEditable="modifyBool" />
+              <TipTap 
+                  ref="textEditor" 
+                  :isEditable="modifyBool"
+                  @sendContents="receiveContent"
+                  :key="modifyBool" />
             </div>
 
             <div class="com-form-comment-wrapper">
@@ -75,9 +79,22 @@ export default {
   },
   methods: {
     separateMethods(idx) {
-      console.log(idx);
       if(idx == 0) {
         this.modifyBool = true;
+        this.$refs.textEditor.extendsEditor();
+      }
+    },
+    receiveContent(content) {
+      console.log(content);
+    },
+    modifyMethods(idx) {
+      if(idx == 0) {
+        console.log('확인을 눌렀다!, 서버로 데이터를 보내자!');
+        this.$refs.textEditor.sendContents();
+        
+        this.modifyBool = false;
+      } else if (idx == 1) {
+        this.modifyBool = false;
       }
     }
   }
@@ -113,10 +130,10 @@ export default {
 }
 
 .com-body {
+  height: 800px;
   background: white;
   margin: 50px 50px auto;
-  height: 800px;
-
+  padding: 20px;
 }
 
 .com-form-comment {
