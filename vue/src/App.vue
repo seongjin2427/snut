@@ -81,6 +81,9 @@ export default {
   padding: 0;
   font-family: 'AlegreyaSans', 'NotoSansKR', 'Apple SD Gothic Neo', sans-serif;
 }
+html, body {
+  max-width: 1680px;
+}
 
 html, body {
   width: 100vw;

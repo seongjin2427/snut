@@ -263,4 +263,7 @@ export default {
   top: 35px;
   right: 40px;
 }
+.modalBodyContents * {
+  font-size: 20px;
+}
 </style>

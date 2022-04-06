@@ -31,35 +31,6 @@
             </div>
           </div>
         </li>
-
-      <!--list-->
-        <li>
-          <div class="comment-section">
-            <div class="comment-info">
-              <div class="comment-post">
-
-                <div class="profile-info">
-                  <div class="nickName" >{{ communityDataSet.nickName }}</div>
-                  <span class="time">{{ communityDataSet.getTime }}</span>
-                </div>
-
-                <div class="box-post">
-                  <p class="desc-info">
-                    <span class="origin-comment" tabindex="0"> 이건 댓글입니다.</span>
-                  </p>
-                </div>
-
-                <div class="comment-more">
-                  <div class="reply">reply</div>
-                  <button class="action" @click="modify">
-                    <img src="@/assets/icon/com-button.png" alt="com-button">
-                  </button>
-                </div>
-
-              </div>
-            </div>
-          </div>
-        </li>
       
         <!-- 하나의 댓글 끝 -->
       </ul>
