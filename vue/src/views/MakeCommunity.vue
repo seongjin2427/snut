@@ -21,7 +21,7 @@
               marginRight="30" background="white" border="none" fontSize="20" fontWeight="300"
               />
           <common-button 
-              @click="modifyCommunity()"
+              @click="saveCommunity()"
               width="150" height="40" 
               buttonName="저장"
               background="white" border="none" fontSize="20" fontWeight="300"
@@ -45,7 +45,7 @@
 
               <div class="textEditor-area">
                 <div class="textEditor-wrapper">
-                  <TipTap ref="textEditor" isEditable="'true'" @sendContents="receivedEditorContents"/>
+                  <TipTap ref="textEditor" :isEditable="true" @sendContents="receivedEditorContents"/>
                 </div>
               </div>
 
@@ -107,13 +107,11 @@ export default {
   name: "MakeNote",
   data() {
     return {
-      modifyBool: true,
-      imgNumberSet: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+      modifyBool: false,
       communityDataSet: {
         title: '',
         contents: '',
-        pickedEmoji: 0,
-        pickedColor: 'rgb(240, 230, 190)',
+        imgList: ''
       },
       modalBtnData: [
         {
@@ -131,23 +129,22 @@ export default {
     },
     registerCommunity() {
       console.log('생성하기 버튼을 눌렀다!');
+      this.saveCommunity();
     },
     saveCommunity() {
       this.$refs.textEditor.sendContents();
       console.log(this.communityDataSet);
     },
     modifyCommunity() {
-      console.log('저장 버튼을 눌렀다');
+      console.log(this.communityDataSet);
       this.$refs.modal.openModal();
     },
     moveToPreview() {
       console.log('미리보기 버튼을 눌렀다!');
     },
-    receivedEditorContents(contents) {
+    receivedEditorContents(contents, imgList) {
       this.communityDataSet.contents = contents;
-    },
-    getColors(color) {
-      this.communityDataSet.pickedColor = color;
+      this.communityDataSet.imgList = imgList;
     }
   }
 }

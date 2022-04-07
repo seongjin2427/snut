@@ -38,34 +38,40 @@
     <div class="comment-paging">
       <pagenationnum scale="scale(0.5, 0.5)" ></pagenationnum>
     </div>
-
-    <!-- 댓글 페이징 처리-->
+  
+  <!-- 댓글 페이징 처리-->
     <div class="comment-text-write">
       <div class="inner-text-write">
+
         <div class="box-text-area">
           <textarea maxlength="800" placeholder="Enter your comments">
           </textarea>
         </div>
+
         <div class="wrap-menu">
           <div class="area">
+
             <span class="num-text-area">
-            <span class="num-text">글자 수</span>
-            <span class="num-count-empty">0</span>
+              <span class="num-text">글자 수</span>
+              <span class="num-count-empty">0</span>
               /
-            <span class="num-text">총 글자 개수</span>
+              <span class="num-text">총 글자 개수</span>
               600
             </span>
+
             <div class="btn-post">
               <common-button class="post-btn" buttonName="post" width="40" height="20" border-radius="12" font-size="14"
-                              background="#FBBC05"
-                              color="white" border="none"></common-button>
+                            background="#FBBC05"
+                            color="white" border="none"></common-button>
             </div>
+
           </div>
         </div>
+
       </div>
     </div>
-  </div>
 
+  </div>
 </template>
 
 <script>
@@ -82,6 +88,7 @@ export default {
       communityDataSet:{
         getTime: "time",
         nickName: "nickName"
+
       }
     }
   }
@@ -156,10 +163,15 @@ button {
   background: none;
 }
 
+button img {
+  object-fit: contain;
+}
+
 .area {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  margin-top: 20px;
 
 }
 

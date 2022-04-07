@@ -217,7 +217,8 @@ export default {
         contents: '',
         imgs: {},
         hashTag: [],
-        openBoolean: true
+        openBoolean: true,
+        cuCo: 'Curation'
       },
       contentsWithNonPic: {
         title: '',
@@ -225,7 +226,9 @@ export default {
         pickedEmoji: 0,
         pickedColor: 'rgb(240, 230, 190)',
         hashTag: ['', '', ''],
-        openBoolean: true
+        openBoolean: true,
+        imgList:[],
+        cuCo: 'Curation'
       },
       inputImg: true
     }
@@ -278,26 +281,27 @@ export default {
               console.log('Save with Image')
               console.log(this.contentsWithPic)
 
-        } else if (this.withPic == false 
-            ) {
-              this.$refs.textEditor.sendContents();
-              if (this.contentsWithNonPic.title
-                  && this.contentsWithNonPic.contents != '<p></p>') {
-                    
-                    console.log('Save with No Image')
-                    this.$refs.hashTag.map((tag, id) => { 
-                      this.contentsWithNonPic.hashTag[id] = tag.value;
-                    });
-                    console.log(this.contentsWithNonPic)
-                  }
+        } else if (this.withPic == false) {
+            this.$refs.textEditor.sendContents();
+            if (this.contentsWithNonPic.title
+                && this.contentsWithNonPic.contents != '<p></p>') {
+                  
+                  console.log('Save with No Image')
+                  this.$refs.hashTag.map((tag, id) => { 
+                    this.contentsWithNonPic.hashTag[id] = tag.value;
+                  });
+                  console.log(this.contentsWithNonPic)
+                }
 
             } else {
               console.log('제목 또는 내용에 빈공간이 있습니다.')
             }
         
     },
-    receivedEditorContents(contents) {
+    receivedEditorContents(contents, imgList) {
       this.contentsWithNonPic.contents = contents;
+      this.contentsWithNonPic.imgList = imgList;
+      console.log('makeNote', imgList)
     },
     openBoolToggle(e, idx) {
       if (idx == 4) {

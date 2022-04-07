@@ -21,7 +21,7 @@
                 <div class="name2">Name</div>
                 <div class="flex">
                   <img class="icon" src="@/assets/icon/User-Line.png" width="24" height="24" alt="name"/>
-                  <input class="put" placeholder="Name">
+                  <input class="put" placeholder="Name" v-model="urname">
                 </div>
               </div>
             </div>
@@ -31,8 +31,9 @@
               <div class="span">
                 <div class="mail2">Email</div>
                 <div class="flex">
-                  <img class="icon" src="@/assets/icon/Mail-Closed-Line.png" width="18" height="18" alt="email"/>
-                  <input class="put" placeholder="Email">
+                  <img class="icon" src="@/assets/icon/Mail-Closed-Line.png" width="18" height="18" alt="email" margin-right="20"/>
+                  <input class="put" placeholder="Email" v-model="uremail">
+
                 </div>
               </div>
             </div>
@@ -44,7 +45,7 @@
                 <div class="pw2">Password</div>
                 <div class="flex">
                   <img class="icon" src="@/assets/icon/Key-Line.png" width="24" height="24" alt="pw">
-                  <input class="put" placeholder="Password">
+                  <input class="put" placeholder="Password" type="password" v-model="urpw">
                 </div>
               </div>
             </div>
@@ -55,7 +56,8 @@
                 <div class="pw2">Confirm Password</div>
                 <div class="flex">
                   <img class="icon" src="@/assets/icon/Key-Line.png" width="24" height="24" alt="pw">
-                  <input class="put" placeholder="Confirm Password">
+                  <input class="put" placeholder="Confirm Password" type="password" v-model="urpwcheck"
+                  @blur="checkpw()">
                 </div>
               </div>
             </div>
@@ -66,11 +68,12 @@
                 <div class="mobile2">Mobile</div>
                 <div class="flex">
                   <img class="icon" src="@/assets/icon/Call-Line.png" width="24" height="24" alt="mobile">
-                  <input placeholder="Mobile">
+                  <input class="put" placeholder="Mobile" v-model="urmobile">
                 </div>
               </div>
               <div class="mobile-bu">
-                <common-button buttonName="인증하기" background="white" border="none" width="85" height="35" font-weight="400"></common-button>
+                <common-button buttonName="인증하기" background="white" border="none" width="85" height="35"
+                               margin-left="40" font-weight="400"></common-button>
               </div>
             </div>
 
@@ -80,18 +83,18 @@
                 <div class="nick2">Nickname</div>
                 <div class="flex">
                   <img class="icon" src="@/assets/icon/Flag-Triangular-Line.png" width="24" height="24" alt="nick">
-                  <input placeholder="Nickname">
+                  <input class="put" placeholder="Nickname" v-model="urnick">
                 </div>
               </div>
             </div>
 
             <!--Gender-->
             <div class="gen flex">
-              <div class="span">
+              <div class="type">
                 <div class="gen2">Gender</div>
                 <div class="flex">
-                  <input type="radio">남
-                  <input type="radio">여
+                  <input type="radio" v-model="urgender">&nbsp;남&nbsp;
+                  <input type="radio" v-model="urgender">&nbsp;여
                 </div>
               </div>
             </div>
@@ -104,7 +107,7 @@
     <!--send button-->
     <div class="send-button-wrapper">
       <common-button button-name="REGISTER" width="300" height="62" background="#DC8552" color="white" border="none"
-                     border-radius="0" margin-top="30" font-size="16"></common-button>
+                     border-radius="0" margin-top="30" font-size="16" @click="btnRegister()"></common-button>
     </div>
   </div>
 </div>
@@ -114,8 +117,81 @@
 import CommonButton from "@/components/CommonButton.vue";
 export default {
   name: "Join-page",
-  components:{CommonButton}
-}
+  components:{CommonButton},
+data(){
+    return{
+      urname:'',
+      uremail:'',
+      urpw:'',
+      urpwcheck: '',
+      urmobile:'',
+      urnick:'',
+      urgender:'',
+      password_check: false,
+    }
+},
+  methods:{
+    checkpw(){
+      if(this.urpw === '' || this.urpwcheck === ''){
+        alert('비밀번호를 입력해주세요.');
+      }else{
+        if(this.urpw === this.urpwcheck){
+          alert('비밀번호가 일치합니다.');
+          this.password_check = true;
+          return
+        }else{
+          alert('비밀번호가 일치하도록 입력해주세요.');
+          this.password_check =false;
+          return
+        }
+      }
+    },
+    btnRegister(){
+      if(this.urname ==''){
+        alert('이름을 입력하세요.');
+        return;
+      }else if(this.urpw == ''){
+        alert('비밀번호를 입력하세요.');
+        return;
+      }else if(this.urpwcheck ==''){
+        alert('비밀번호를 확인해주세요.');
+        return;
+      }else if(this.uremail=='') {
+        alert('이메일을 입력하세요.');
+        return;
+      }else if(this.urmobile ==''){
+        alert('번호를 확인해주세요.');
+        return;
+      }else if(this.urgender == ''){
+        alert('성별을 선택해주세요.');
+        return;
+      }
+      try{
+        if(this.password_check === true){
+          const sendData ={
+            urname:  this.urname,
+            urpw: this.urpw,
+            uremail: this.uremail,
+            urmobile: this.urmobile,
+            urgender: this.urgender
+          }
+          const result ={
+            ret:1
+          }
+          if(result.ret === 1){
+            alert('회원가입 성공.');
+            this.$router.push({path:'/'});
+          }
+          console.log(sendData);
+        }
+      } catch (error){
+        console.error(error);
+      }
+    }
+  }
+
+
+};
 </script>
 
 <style scoped>
@@ -138,12 +214,19 @@ export default {
   left: 0;
   top: 0;
 }
+.login-form{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .form-body{
   width:1000px;
   height: 700px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+
 }
 .form-title{
   height: 150px;
@@ -151,7 +234,46 @@ export default {
   font-weight: 700;
   display: flex;
   justify-content: center;
+}
+.form-wrapper{
+  display: flex;
+  justify-content: center;
+}
+.flex {
+  display: flex;
+  align-items: center;
+  padding: 10px 0 0 0;
+}
 
+.put {
+  color: #868686;
+  flex: none;
+  order: 0;
+  flex-grow: 1;
+  height: 38px;
+  border: none;
+  font-size: 16px;
+  margin-bottom: 3px;
+  background: #e8ece6;
+  width: 300px;
 
 }
+input:focus {
+  outline: none;
+}
+.span {
+  display: block;
+  border-bottom: 1px solid #000000;
+}
+.send-button-wrapper{
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  margin-bottom: 50px;
+}
+img{
+  padding-right: 10px;
+}
+
+
 </style>

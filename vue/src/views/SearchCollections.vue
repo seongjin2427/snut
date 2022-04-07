@@ -85,6 +85,7 @@ export default {
     doSearch(searchWord) {
       if(searchWord != '') {
         this.$router.push(`/col/${searchWord}`);
+        console.log(searchWord);
         this.$refs.inputBox.clearWord();
       }
     },
