@@ -22,11 +22,11 @@
 
                 <div class="comment-more">
                   <div class="reply">reply</div>
-                  <button class="action" @click="modifyModal($event)">
+                  <button  class="action" @click="modifyModal($event)">
                     <img src="@/assets/icon/com-button.png" alt="com-button" class="actbu">
                   </button>
                   <!-- 더보기 버튼 클릭시 노출될 항목 -->
-                  <div class="modifyCon" :style="{left:modifyleft+140+'px', top:modifytop-80+'px'}">
+                  <div  v-if="show" class="modifyCon" :style="{left:modifyleft+140+'px', top:modifytop-80+'px'}">
 
 
                   <div id="moreContent">
@@ -125,7 +125,8 @@ export default {
         nickName: "nickName"
       },
       modifyleft: 0,
-      modifytop: 0
+      modifytop: 0,
+      show: false
     }
   },
   methods:{
@@ -135,6 +136,7 @@ export default {
       console.log(e.clientY)
       this.modifyleft = e.x
       this.modifytop = e.y
+      this.show = !this.show;
     },
     modifycom(){
 

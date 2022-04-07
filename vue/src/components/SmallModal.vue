@@ -38,7 +38,7 @@ export default {
     }
   },
   props:[
-      'modalBtnData',
+    'modalBtnData',
     'smallModal',
     'width',
     'height',
@@ -56,7 +56,7 @@ export default {
       this.joinBoolean = bool;
     },
     closemodal(e, btn){
-      if(btn.name == "취소" || btn.name =="아니오" || btn.name == "확인"){
+      if(btn.name == "취소" || btn.name =="아니오" || btn.name == "확인" || btn.name =="닫기"){
         this.modalBoolean = false;
       }
     }
@@ -83,6 +83,7 @@ export default {
   box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.12);
   border-radius: 16px;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   padding: 40px;
   position: fixed;

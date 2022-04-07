@@ -87,7 +87,7 @@ html, body {
 
 html, body {
   width: 100vw;
-  height: 100%;
+  height: 100vh;
   background-color: #E8ECE6;
 }
 

@@ -153,6 +153,12 @@ export default {
 </script>
 
 <style scoped>
+.main-with-login{
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+}
 .main-with-login-body {
   max-width: 1200px;
   min-width: 1200px;
