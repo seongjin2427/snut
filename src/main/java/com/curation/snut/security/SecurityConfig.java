@@ -2,6 +2,7 @@ package com.curation.snut.security;
 
 import com.curation.snut.security.filter.ApiCheckFilter;
 import com.curation.snut.security.filter.ApiLoginFilter;
+import com.curation.snut.security.handler.CLogoutSuccessHandler;
 import com.curation.snut.security.handler.LoginFailHandler;
 import com.curation.snut.security.handler.LoginSuccessHandler;
 import com.curation.snut.security.service.MemberUDService;
@@ -31,9 +32,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin();
+        http.formLogin().loginPage("/login").loginProcessingUrl("/login")
+                .failureUrl("/member/login?error").successHandler(successHandler());
         http.csrf().disable();
-        http.logout();
+        http.logout().logoutSuccessHandler(logoutSuccessHandler());
+        ;
         http.rememberMe().tokenValiditySeconds(60 * 60 * 24 * 7).userDetailsService(memberUDService);
         http.addFilterBefore(apiCheckFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(apiLoginFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -41,7 +44,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public LoginSuccessHandler successHandler() {
-        return new LoginSuccessHandler();
+        return new LoginSuccessHandler(passwordEncoder());
+    }
+
+    @Bean
+    public CLogoutSuccessHandler logoutSuccessHandler() {
+        return new CLogoutSuccessHandler();
     }
 
     @Bean
