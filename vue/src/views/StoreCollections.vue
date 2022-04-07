@@ -127,9 +127,9 @@ export default {
         Collection: [],
         Curation: [],
         Folder: {
-          Curation:[],
-          Collection: []
-        },
+
+        }
+        ,
       }, 
       userCollection: [],
       toDeleteIdxList: [],
@@ -218,16 +218,15 @@ export default {
       // this.selectMode = false;
     },
     intoFolder(arr, idx) {
-      let objCol = {};
-      objCol[idx] = arr.Collection;
+      arr.Collection.map((v) => {
+        this.sampleData.Folder[idx].Collection.push(v)
+      });
+      arr.Curation.map((v) => {
+        this.sampleData.Folder[idx].Curation.push(v)
+      });
 
-      let objCu = {};
-      objCu[idx] = arr.Curation;
-
-      this.sampleData.Folder.Collection = objCol;
-      this.sampleData.Folder.Curation = objCu;
-      // arr.Collection.map(v => this.sampleData.Folder.Collection.push(v));
-      // arr.Curation.map(v => this.sampleData.Folder.Curation.push(v));
+      this.colIdList.Collection = [];
+      this.colIdList.Curation = [];
     },
 
     changeTitle(btnData) {
@@ -338,12 +337,10 @@ export default {
     addFolder() {
       console.log('this.sampleData.Collection before', this.sampleData.Collection);
         let sampleFolder = {};
-        let random = Math.floor(Math.random()*20);
-        let i = random;
 
-        sampleFolder.id = i;
-        sampleFolder.author = 'Author....' + i;
-        sampleFolder.nickName = 'NickName....' + i;
+        let keyLength = Object.keys(this.sampleData.Folder).length;
+
+        sampleFolder.id = keyLength;
         sampleFolder.title = '';
         sampleFolder.regDate = '2022-03-01';
         sampleFolder.modDate = '2022-03-11';
@@ -354,7 +351,12 @@ export default {
         this.sampleData.Collection.unshift(sampleFolder);
         this.increaseListValue(this.indexList);
 
-      console.log('this.sampleData.Collection after', this.sampleData.Collection);
+
+        let obj = {
+          Collection: [],
+          Curation: []
+        }
+        this.sampleData.Folder[keyLength] = obj;
 
     },
     increaseListValue(list) {

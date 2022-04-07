@@ -33,7 +33,7 @@ const routes = [
     name: "MainWithLogin"
   },
   {
-    path: "/col",
+    path: "/col/:searchWord",
     component: SearchCollections,
     name: "SearchCollections"
   },

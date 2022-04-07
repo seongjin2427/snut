@@ -93,7 +93,7 @@ export default {
     EditorContent,
     DragAndDropModal,
   },
-  props: ['isEditable', 'extend'],
+  props: ['isEditable'],
   data() {
     return {
       editor: null,
@@ -116,7 +116,6 @@ export default {
     receiveNoteImg(imgs) {
       let imgArr = Array.from(imgs);
       if(imgArr.length != 0) {
-        console.log(imgArr);
         for(let i = 0; i < imgArr.length; i++) {
           this.editor.chain().focus().setImage({ src: imgArr[i].src }).run();
         }
@@ -125,7 +124,7 @@ export default {
     },
     sendContents() {
       var contents = this.editor.getHTML();
-      this.$emit('sendContents', contents);
+      this.$emit('sendContents', contents, this.imgList);
     },
     
   },
@@ -154,9 +153,6 @@ export default {
 </script>
 
 <style lang="scss">
-$height1: 370px;
-$height2: 700px;
-
 .text-editor-btn-area {
   display: flex;
   flex-wrap: wrap;
@@ -197,7 +193,7 @@ button img {
 .ProseMirror{
 
   padding: 20px;
-  height: $height2;
+  height: 370px;
   overflow: scroll;
 
 > * + * {
