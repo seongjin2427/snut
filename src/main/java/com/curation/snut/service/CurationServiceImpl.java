@@ -65,9 +65,9 @@ public class CurationServiceImpl implements CurationService {
 
     }
 
+    // 사용안하는중
     @Override
     public List<CurationDTO> searchCurationTitle(String searchCurationTitle) {
-        // TODO Auto-generated method stub
         return null;
     }
 }

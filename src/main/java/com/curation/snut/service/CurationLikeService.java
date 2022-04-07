@@ -29,4 +29,7 @@ public interface CurationLikeService {
 
                 return dto;
         }
+
+        static void likes(long curationNo, String name) {
+        }
 }

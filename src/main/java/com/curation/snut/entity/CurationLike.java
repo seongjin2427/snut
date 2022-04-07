@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
@@ -26,6 +27,8 @@ import lombok.ToString;
 public class CurationLike implements Serializable {
 
     @Id
+    @GeneratedValue
+    private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
     @Id

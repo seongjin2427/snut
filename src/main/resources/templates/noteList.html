@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko"  xmlns:th="http://www.thymeleaf.org"></html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                 no 
+                </td>
+                <td>
+                    email
+                </td>
+                <td>
+                title
+                </td>
+            </tr>
+            <tr th:each="noteList: ${noteList}">
+                <!-- <td>
+                    image
+                </td> -->
+                <td>
+                    <a th:text="${noteList.noteNo}"></a>
+                </td>
+                <td>
+                    <a th:text="${noteList.email}"></a>
+                </td>
+                <td>
+                    <a th:text="${noteList.noteTitle}" th:href="@{/read(noteNo=${noteList.noteNo})}" ></a>
+                </td>
+                <td>
+                    <a th:href="@{/noteList/noteDelete(id=${noteList.noteNo})}">삭제</a>
+                </td>
+            </tr>
+        </tbody>
+        
+    </table>
+    <form name="search=form" autocomplete="off">
+        <select name="type">
+            <option>제목+내용+작성자</option>
+        </select>
+        <input type="text" name="keyword" value="">
+        <input type="button" onclick="getSearchList()" class="btn btn-outline-primary mr-2" value="검색">
+        <a href="/noteWrite"><button class=""btn btn-ouline-primary mr-3>노트 쓰기</button></a>
+    </form>
+    
+    </div>
+</body>
+<script>
+    function getSearchList(){
+	$.ajax({
+		type: 'GET',
+		url : "/getSearchList",
+		data : $("form[name=search-form]").serialize(),
+		success : function(result){
+			//테이블 초기화
+			$('#boardtable > tbody').empty();
+			if(result.length>=1){
+				result.forEach(function(item){
+					str='<tr>'
+					str += "<td>"+item.idx+"</td>";
+					str+="<td>"+item.writer+"</td>";
+					str+="<td><a href = '/board/detail?idx=" + item.idx + "'>" + item.title + "</a></td>";
+					str+="<td>"+item.date+"</td>";
+					str+="<td>"+item.hit+"</td>";
+					str+="</tr>"
+					$('#boardtable').append(str);
+        		})				 
+			}
+		}
+	})
+}
+</script>
+</html>

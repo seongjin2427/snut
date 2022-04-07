@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+    <h1>Modify Page</h1>
+    <form id="frm" th:action="@{/noteModify}" th:method="post">
+      <div >
+        <label>note No</label>
+        <input type="text" class="form-control" name="noteNo" th:value="${noteList.noteNo}" readonly />
+    </div>
+    <div>
+      <label>email</label>
+      <input type="text" class="form-control" name="email" th:value="${noteList.email}" readonly />
+    </div>
+      <div >
+        <label>note Title</label>
+        <input type="text" class="form-control" name="noteTitle" th:value="${noteList.noteTitle}" />
+      </div>
+      <div>
+        <label>note text</label>
+        <input type="text" class="form-control" name="noteText" th:value="${noteList.noteText}"  /><br>
+    </div>
+       <input type="submit" value="수정" th:href="@{/noteRead(noteNo=${noteList.noteNo})}">
+       <!-- 스티커추가 -->
+      
+
+    </form>

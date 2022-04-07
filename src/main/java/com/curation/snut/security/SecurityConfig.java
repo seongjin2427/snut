@@ -51,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Bean
   public ApiCheckFilter apiCheckFilter() {
+    // club notes가 아니라 다른걸로 수정
     return new ApiCheckFilter("/club/notes/**/*", jwtUtil());
   }
 
@@ -73,21 +74,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     log.info(">>>" + http.headers().getClass().getName());
-    // @@@@@@@@@@@@@@@@@@@
-    // http.authorizeRequests()
-    // .antMatchers("/notes").permitAll()
-    // .antMatchers("/all").permitAll()
-    // .antMatchers("/member").hasRole("MEMBER")
-    // .antMatchers("/admin").hasRole("ADMIN");
-    // @@@@@@@@@@@@@@@@
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    http.authorizeRequests()
+        .antMatchers("/index").permitAll()
+        .antMatchers("/list").permitAll()
+        .antMatchers("/write").hasRole("MEMBER")
+        .antMatchers("/modify").hasRole("MEMBER")
+        .antMatchers("/read/delete").hasRole("MEMBER");
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());
 
     // 1. Security login form 사용
-    http.formLogin();
+    // http.formLogin();
 
     // 2. 사용자 정의에 의한 loginProcessingUrl 사용
-    http.formLogin().loginPage("/login")
-        .loginProcessingUrl("/login");
+    // http.formLogin().loginPage("/login")
+    // .loginProcessingUrl("/login");
 
     // 3.UserDetailsService 로그인 handler :: security의 '/login'
     http.formLogin().loginPage("/login")

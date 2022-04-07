@@ -6,13 +6,16 @@ import java.util.List;
 import com.curation.snut.dto.CurationDTO;
 import com.curation.snut.dto.MemberDTO;
 import com.curation.snut.security.dto.AuthMemberDTO;
+import com.curation.snut.service.CurationLikeService;
 import com.curation.snut.service.CurationService;
 import com.curation.snut.service.MemberService;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -111,5 +114,11 @@ public class CurationController {
         log.info("memberDTO:" + memberDTO);
         memberService.updateMemberDTO(memberDTO);
         return result;
+    }
+
+    @PostMapping("/read/{curationNo}/likes")
+    public void likes(@PathVariable long curationNo, Authentication authentication) {
+        CurationLikeService.likes(curationNo, authentication.getName());
+        log.info("likes");
     }
 }

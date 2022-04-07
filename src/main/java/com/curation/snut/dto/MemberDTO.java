@@ -3,8 +3,6 @@ package com.curation.snut.dto;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
-import org.springframework.security.core.GrantedAuthority;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

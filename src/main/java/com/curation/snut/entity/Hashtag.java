@@ -29,7 +29,3 @@ public class Hashtag extends BaseEntity {
 // 그냥 검색하는거랑
 // 해시태그 눌러서 검색하기 구현(search가 먼저 구현되어야함.)
 // #뒤에 자동으로 태그로 구분하기랑 ','으로 구분하기
-//
-//
-//
-//

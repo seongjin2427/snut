@@ -50,7 +50,4 @@ public interface CurationService {
                 .build();
         return curationDTO;
     }
-
 }
-
-// 롱인지 스트링인지

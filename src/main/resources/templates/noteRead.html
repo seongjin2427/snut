@@ -9,7 +9,7 @@
 <body>
     <table>
         <tbody>
-        <tr th:each="cuList: ${cuList}">
+        <tr th:each="noteList: ${noteList}">
             <tr>
                 <td>
                     no
@@ -25,38 +25,34 @@
                 </td>
             </tr>
             <td>
-                <a th:text="${cuList.curationNo}"></a>
+                <a th:text="${noteList.noteNo}"></a>
             </td>
             <td>
-                <a th:text="${cuList.email}"></a>
+                <a th:text="${noteList.email}"></a>
             </td>
             <td>
-                <a th:text="${cuList.curationTitle}"></a>
+                <a th:text="${noteList.noteTitle}"></a>
             </td>
             <td>
-                <a th:text="${cuList.curationText}"></a>
+                <a th:text="${noteList.noteText}"></a>
             </td>
             <td>
-                <button th:href="@{/read/likes(id=${cuList.curationNo})}">like</button>
+                <a th:text="${noteList.stickerNo}"></a>
             </td>
-                               <!-- /read/{curationNo}/likes -->
-            <!-- <td>
-                해시태그자리 링크걸고 검색되게
-            </td> -->
             
             <tr>
                 <tr>
                     <td>
-                        <a th:href="@{/modify(curationNo=${cuList.curationNo})}"sec:authorize="isAudenticated()">
-                            <input type="hidden" name="email" id="email" th:value="${cuList.email}"/>
-                            <button th:if = "${cuList.email == cuList.email}">수정 </button>    
+                        <a th:href="@{/noteModify(noteNo=${noteList.noteNo})}"sec:authorize="isAudenticated()">
+                            <input type="hidden" name="email" id="email" th:value="${noteList.email}"/>
+                            <button th:if = "${noteList.email == noteList.email}">노트수정</button>    
                         </a>
                     </td>
                     <td>
-                        <a th:href="@{/read/delete(id=${cuList.curationNo})}">삭제</a>
+                        <a th:href="@{/noteRead/noteDelete(id=${noteList.noteNo})}">노트삭제</a>
                     </td>   
                     <td>
-                        <a href="/list">목록</a>
+                        <a href="/noteList">노트목록</a>
                     </td>
                 </tr> 
             </tr>
