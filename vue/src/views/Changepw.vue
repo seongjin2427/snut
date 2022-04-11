@@ -56,8 +56,8 @@
 </template>
 
 <script>
-import CommonButton from "@/components/CommonButton";
-import SmallModal from "@/components/SmallModal";
+import CommonButton from "@/components/CommonButton.vue";
+import SmallModal from "@/components/SmallModal.vue";
 
 export default {
   name: "Changepw-page",

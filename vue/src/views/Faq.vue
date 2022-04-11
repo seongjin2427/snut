@@ -51,12 +51,6 @@ export default {
 </script>
 
 <style scoped>
-.faq-page {
-  width: 100%;
-  height: 100%;
-
-
-}
 
 header {
   height: 160px;

@@ -45,10 +45,7 @@ export default {
 </script>
 
 <style scoped>
-.feedback-page {
-  width: 100%;
-  height: 100%;
-}
+
 
 header {
   height: 160px;
