@@ -30,7 +30,7 @@
               <div class="span">
                 <div class="pw2">Password</div>
                 <div class="flex">
-                  <img class="icon" src="@/assets/icon/Key-Line.png" alt="pw">
+                  <img class="icon" src="@/assets/icon/Key-Line.png" alt="pw" width="24" height="24">
                   <input class="put" placeholder="Password">
                 </div>
               </div>
@@ -84,6 +84,14 @@ export default {
 </script>
 
 <style scoped>
+
+.login wrapper{
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .login-p{
   max-width: 1200px;
   min-width: 1200px;

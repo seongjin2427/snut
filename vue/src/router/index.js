@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory  } from 'vue-router';
 
 import MainWithLogin from "@/views/MainWithLogin.vue";
+
 import UserCollection from "@/views/UserCollection.vue";
 import SearchCollections from '@/views/SearchCollections.vue';
 
@@ -25,6 +26,7 @@ import Login from "@/views/Login.vue";
 import Forgotpw from "@/views/Forgotpw.vue";
 import Changepw from "@/views/Changepw.vue";
 import Join from "@/views/Join.vue";
+
 
 const routes = [
   {
@@ -71,6 +73,11 @@ const routes = [
     path: '/mcol/store/:colId/:nickName',
     component: StoreColCurations,
     name: "StoreColCurations"
+  },
+  { 
+    path: '/mcol/mc',
+    component: MakeCollection,
+    name: "MakeCollection"
   },
   {
     path:"/ab",

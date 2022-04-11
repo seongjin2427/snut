@@ -11,7 +11,7 @@
       </div>
       <div class="mycom-head-bu">
         <common-button width="150" height="40" buttonName="알림" border="none" background="white" margin-right="20" />
-        <common-button width="150" height="40" buttonName="커뮤니티 만들기" border="none" background="black" color="white"/>
+        <common-button width="150" height="40" buttonName="커뮤니티 만들기" border="none" background="black" color="white" @click="moveToPage()"/>
       </div>
     </header>
     <!--header-->
@@ -36,7 +36,7 @@
         </div>
       </div>
     </div>
-<small-modal ref="modal" :modalBtnData="modalBtnData" smallModal="닉네임 가입을 승인하시겠습니까?">
+<small-modal ref="modal" :modalBtnData="modalBtnData" smallModal="닉네임 가입을 승인하시겠습니까?" width="350" height="100">
 
 </small-modal>
 
@@ -102,6 +102,9 @@ export default {
       if (alarm.id == 3) {
         this.$refs.modal.openModal();
       }
+    },
+    moveToPage(){
+      this.$router.push({path:"/com/mcom"});
     }
   }
 
@@ -110,8 +113,8 @@ export default {
 
 <style scoped>
 .mycom-page {
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
 }
 
 .mycom-head {

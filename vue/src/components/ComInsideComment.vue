@@ -10,7 +10,7 @@
               <div class="comment-post">
 
                 <div class="profile-info">
-                  <div class="nickName" >{{ communityDataSet.nickName }}</div>
+                  <div class="nickName">{{ communityDataSet.nickName }}</div>
                   <span class="time">{{ communityDataSet.getTime }}</span>
                 </div>
 
@@ -22,8 +22,49 @@
 
                 <div class="comment-more">
                   <div class="reply">reply</div>
-                  <button class="action" @click="modify">
-                    <img src="@/assets/icon/com-button.png" alt="com-button">
+                  <button  class="action" @click="modifyModal($event)">
+                    <img src="@/assets/icon/com-button.png" alt="com-button" class="actbu">
+                  </button>
+                  <!-- 더보기 버튼 클릭시 노출될 항목 -->
+                  <div  v-if="show" class="modifyCon" :style="{left:modifyleft+140+'px', top:modifytop-80+'px'}">
+
+
+                  <div id="moreContent">
+                  <span id="Content">
+                <span class="moreDetail" id="modifyBoard" @click="modifycom($event)">수정</span><br>
+                    <span class="moreDetail" id="deleteBoard" @click="deletecom($event)">삭제</span><br>
+                  </span>
+                  </div>
+                  </div>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <!--list-->
+        <li>
+          <div class="comment-section">
+            <div class="comment-info">
+              <div class="comment-post">
+
+                <div class="profile-info">
+                  <div class="nickName">{{ communityDataSet.nickName }}</div>
+                  <span class="time">{{ communityDataSet.getTime }}</span>
+                </div>
+
+                <div class="box-post">
+                  <p class="desc-info">
+                    <span class="origin-comment" tabindex="0"> 이건 댓글입니다.</span>
+                  </p>
+                </div>
+
+                <div class="comment-more">
+                  <div class="reply">reply</div>
+                  <button class="action" @click="modifyModal($event)">
+                    <img src="@/assets/icon/com-button.png" alt="com-button" class="actbu">
                   </button>
                 </div>
 
@@ -31,12 +72,12 @@
             </div>
           </div>
         </li>
-      
+
         <!-- 하나의 댓글 끝 -->
       </ul>
     </div>
     <div class="comment-paging">
-      <pagenationnum scale="scale(0.5, 0.5)" ></pagenationnum>
+      <pagenationnum scale="scale(0.5, 0.5)"></pagenationnum>
     </div>
   
   <!-- 댓글 페이징 처리-->
@@ -72,6 +113,7 @@
     </div>
 
   </div>
+
 </template>
 
 <script>
@@ -85,12 +127,31 @@ export default {
   },
   data() {
     return {
-      communityDataSet:{
+      communityDataSet: {
         getTime: "time",
         nickName: "nickName"
-
-      }
+      },
+      modifyleft: 0,
+      modifytop: 0,
+      show: false
     }
+  },
+  methods:{
+    modifyModal(e){
+      console.log(e)
+      console.log(e.clientX)
+      console.log(e.clientY)
+      this.modifyleft = e.x
+      this.modifytop = e.y
+      this.show = !this.show;
+    },
+    modifycom(){
+
+    },
+    deletecom(){
+      alert("정말 삭제하시겠습니까?")
+    }
+
   }
 }
 </script>
@@ -101,22 +162,33 @@ li {
   list-style: none;
   padding-top: 20px;
 }
-li ::after{
-  padding-bottom: 5px;
-  border: 1px solid #868686;
+
+.comment-section::after {
+  content: "";
+  display: block;
+  width: 900px;
+  border-bottom: 1px solid #D9D9D9;
+  margin: 20px auto;
 }
-.box-post{
+
+.box-post {
   margin-left: 20px;
 }
-.comment-more{
+
+.comment-more {
   display: flex;
   justify-content: flex-end;
   padding-right: 20px;
 }
-.reply{
+.comment-more button {
+  cursor: pointer;
+}
+
+.reply {
   padding-right: 10px;
 }
-.profile-info{
+
+.profile-info {
   display: flex;
   align-items: center;
   padding-left: 20px;
@@ -172,7 +244,6 @@ button img {
   justify-content: flex-end;
   align-items: center;
   margin-top: 20px;
-
 }
 
 
@@ -201,10 +272,36 @@ button img {
   color: #959595;
   font-size: 11px;
 }
-.actbu{
-  width: 6px;
-  height: 24px;
-  scale: 0.7;
-}
 
+.actbu {
+  width: 4px;
+  height: 16px;
+  scale: 1;
+}
+.modifyCon{
+  position: fixed;
+}
+#moreContent{
+  display: block;
+  top: 22px;
+  right: 33px;
+  min-width: 56px;
+  background-color: #fff;
+  border-color: #d2d2d2;
+  box-shadow: 0 2px 3px 0 rgba(0,0,0,.1);
+  border: 1px solid #d2d2d2;
+  position: relative;
+  z-index: 10;
+  padding: 5px 0;
+  border-radius: 2px;
+  box-sizing: border-box;
+}
+#Content{
+  display: inline-block;
+  width: 100%;
+  min-height: 34px;
+  padding: 6px 15px 0;
+  font-size: 13px;
+  box-sizing: border-box;
+}
 </style>

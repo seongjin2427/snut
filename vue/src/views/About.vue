@@ -61,9 +61,7 @@ export default {
 </script>
 
 <style scoped>
-.about {
-  width: 100%;
-}
+
 
 header {
   height: 160px;

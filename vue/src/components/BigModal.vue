@@ -1,7 +1,7 @@
 <template>
-<div class="modal wrapper" v-if="modalBoolean">
-  <div class="overlay" @click="modalBoolean = false"></div>
-  <div class="modal-block" :style="{
+  <div class="modal wrapper" v-if="modalBoolean">
+    <div class="overlay" @click="modalBoolean = false"></div>
+    <div class="modal-block" :style="{
     width: width+'px',
     height: height+'px',
     marginTop: marginTop+'px' ,
@@ -12,24 +12,29 @@
     border: border,
     color: color
   }">
-    {{ smallModal }}
-    <div class="modal-btn-area">
-<common-button v-for="(btn, idx) in modalBtnData" :button-name="btn.name" :key="idx" width="145" height="45" border-radius="6" :background="btn.background"
-:color="btn.color" margin="10" @click="closemodal($event,btn)"/>
+      {{ bigModal }}
+      <div v-if="joinBoolean" class="message">
+        <p>닉네임:</p>
+        <p class="joinmessage">가입요청메세지:<textarea> </textarea></p>
+      </div>
+      <div class="modal-btn-area">
+        <common-button v-for="(btn, idx) in modalBtnData" :button-name="btn.name" :key="idx" width="145" height="45" border-radius="6" :background="btn.background"
+                       :color="btn.color" margin="10" @click="closemodal($event,btn)"/>
+      </div>
     </div>
-  </div>
 
-</div>
+  </div>
 </template>
 
 <script>
 import CommonButton from "@/components/CommonButton.vue";
 export default {
-  name: "SmallModal",
+  name: "BigModal",
   components: {CommonButton},
   data() {
     return {
-      modalBoolean: false
+      modalBoolean: false,
+      joinBoolean: false
     }
   },
   props:[
@@ -46,8 +51,9 @@ export default {
     'color'
   ],
   methods: {
-    openModal() {
+    openModal(bool) {
       this.modalBoolean = true;
+      this.joinBoolean = bool;
     },
     closemodal(e, btn){
       if(btn.name == "취소" || btn.name =="아니오" || btn.name == "확인" || btn.name =="닫기"){
@@ -70,8 +76,8 @@ export default {
 }
 
 .modal-block{
-  max-width: 415px;
-  max-height: 215px;
+  width: 415px;
+  height: 215px;
   background: white;
   display: flex;
   box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.12);
@@ -102,8 +108,18 @@ textarea{
   font-size: 16px;
   resize: none;
   width: 400px;
- height: 100px;
+  height: 100px;
 }
-
+.message{
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.joinmessage{
+  margin-top: 20px;
+  display: flex;
+  align-items: flex-start;
+}
 
 </style>

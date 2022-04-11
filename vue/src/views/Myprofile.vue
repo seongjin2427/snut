@@ -132,9 +132,6 @@ export default {
 </script>
 
 <style scoped>
-.myprofile-page {
-  width: 100%;
-}
 
 header {
   height: 160px;

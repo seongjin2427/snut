@@ -7,9 +7,11 @@
           <common-button @click="separateMethods(idx), joincomm($event, btn)" class="com-btn" :buttonName="btn.name" v-for="(btn,idx) in comInBtnData" 
                         :key="idx" width="150" height="40" border-radius="12" background="white" border="none"
                         fontWeight="400" font-size="16" marginTop="50" marginRight="20" />
+
+
         </div>
         <div class="com-btn-area" v-if="modifyBool">
-          <common-button @click="modifyMethods(idx)" class="com-btn" :buttonName="btn.name" v-for="(btn,idx) in modifyBtnData" 
+          <common-button @click="modifyMethods(idx)" class="com-btn" :buttonName="btn.name" v-for="(btn,idx) in modifyBtnData"
                         :key="idx" width="150" height="40" border-radius="12" background="white" border="none"
                         fontWeight="400" font-size="16" marginTop="50" marginRight="20" />
         </div>
@@ -37,9 +39,13 @@
       </div>
       
     </div>
-    <small-modal ref="modal" :modalBtnData="modalBtnData" smallModal="이 커뮤니티에 가입하시겠습니까?" width="600" height="300" margin-top="200">
+    <big-modal
+        ref="modal"
+        :modalBtnData="modalBtnData"
+        smallModal="이 커뮤니티에 가입하시겠습니까?"
+        width="600" height="300" margin-top="200">
 
-    </small-modal>
+    </big-modal>
   </div>
 </template>
 
@@ -47,11 +53,11 @@
 import CommonButton from '@/components/CommonButton.vue';
 import ComInsideComment from '@/components/ComInsideComment.vue';
 import TipTap from '@/components/TextEditor.vue';
-import SmallModal from "@/components/SmallModal";
+import BigModal from '@/components/BigModal.vue'
 
 export default {
   name: "CommunityInside-page",
-  components: {CommonButton, ComInsideComment, TipTap, SmallModal},
+  components: { CommonButton, ComInsideComment, TipTap, BigModal },
   data() {
     return {
       modifyBool: false,
@@ -102,6 +108,9 @@ export default {
         this.modifyBool = true;
         this.$refs.textEditor.extendsEditor();
       }
+    else if (idx == 1){
+        this.$refs.modal.openModal(true);
+      }
     },
     receiveContent(content) {
       console.log(content);
@@ -121,10 +130,10 @@ export default {
       if (join.id == 2) {
         this.$refs.modal.openModal(true);
       }
-    }
+    },
+
   }
 }
-
 </script>
 
 <style scoped>

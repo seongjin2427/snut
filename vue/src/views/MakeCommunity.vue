@@ -55,12 +55,12 @@
                 <common-button 
                     buttonName="취소"
                     width="150" height="40"
-                    background="white" fontSize="20" fontWeight="300" marginRight="30"
+                    background="white" fontSize="20" fontWeight="400" marginRight="30"
                     @click="cancelMake()"
                     />
                 <common-button 
                     buttonName="미리보기"
-                    width="150" height="40" background="white" fontSize="20" fontWeight="300"
+                    width="150" height="40" background="white" fontSize="20" fontWeight="400"
                     @click="moveToPreView()"
                     />
               </div>
@@ -84,7 +84,8 @@
       
       <footer>
         <main-footer/>
-        <small-modal ref="modal" :modalBtnData="modalBtnData" smallModal="수정되었습니다." @backToPage="cancelMake()"/>
+        <small-modal ref="modal" :modalBtnData="modalBtnData" smallModal="수정되었습니다." @backToPage="cancelMake()" width="300" height="150" font-size="24"
+        font-weight="700"/>
       </footer>
       
     </div>
@@ -151,6 +152,12 @@ export default {
 </script>
 
 <style scoped>
+.make-community{
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  display: flex;
+}
 .make-community-body {
   max-width: 1200px;
   min-width: 1200px;
@@ -158,6 +165,7 @@ export default {
   height: 100vh;
   /* background: lightcoral; */
   margin: 0 auto;
+
 }
 
 /* header 구간 */
