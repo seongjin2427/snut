@@ -15,7 +15,7 @@
         </div>
         <div class="button-area">
           <input type="button" value="test" @click="sample">
-          <common-button buttonName="Log out" width="80" height="35" marginTop="5" marginRight="20" v-if="loginBool"/>
+          <common-button buttonName="Log out" width="80" height="35" marginTop="5" marginRight="20" v-if="loginBool" @click="doLogout()"/>
           <common-button buttonName="Log in" width="80" height="35" marginTop="5" marginRight="20" v-if="!loginBool"
                           @click="gotoLogin"/>
           <common-button buttonName="Register" width="80" height="35" marginTop="5" marginRight="42" @click="gotoJoin"/>
@@ -96,7 +96,7 @@ export default {
   name: "MainWithLogin",
   data() {
     return {
-      loginBool: false,
+      loginBool: sessionStorage.getItem("token"),
       sampleData: {dataSet:[]},
       sampleData2: {dataSet:[]},
       loginSignText: 'If You Want To See More, Just Sign In!',
@@ -123,6 +123,11 @@ export default {
     },
     gotoJoin(){
       this.$router.push('/regi')
+    },
+    doLogout() {
+      sessionStorage.clear();
+      alert('로그아웃 되었습니다');
+      location.reload();
     },
     createDummies(store, start) {
       for(var i = 0; i < 5; i++) {

@@ -78,6 +78,17 @@
             </div>
 
             <!--Nickname-->
+            <div class="birth flex">
+              <div class="span">
+                <div class="birth2">BirthDay</div>
+                <div class="flex">
+                  <img class="icon" src="@/assets/icon/Flag-Triangular-Line.png" width="24" height="24" alt="nick">
+                  <input class="put" placeholder="Birthday" v-model="urbirth">
+                </div>
+              </div>
+            </div>
+
+            <!--Nickname-->
             <div class="nick flex">
               <div class="span">
                 <div class="nick2">Nickname</div>
@@ -93,8 +104,8 @@
               <div class="type">
                 <div class="gen2">Gender</div>
                 <div class="flex">
-                  <input type="radio" v-model="urgender">&nbsp;남&nbsp;
-                  <input type="radio" v-model="urgender">&nbsp;여
+                  <input type="radio" name="gender" value="male" v-model="urgender" checked>&nbsp;남&nbsp;
+                  <input type="radio" name="gender" value="female" v-model="urgender">&nbsp;여
                 </div>
               </div>
             </div>
@@ -115,6 +126,8 @@
 
 <script>
 import CommonButton from "@/components/CommonButton.vue";
+import axios from 'axios';
+
 export default {
   name: "Join-page",
   components:{CommonButton},
@@ -126,7 +139,8 @@ data(){
       urpwcheck: '',
       urmobile:'',
       urnick:'',
-      urgender:'',
+      urbirth:'',
+      urgender:'male',
       password_check: false,
     }
 },
@@ -169,20 +183,28 @@ data(){
       try{
         if(this.password_check === true){
           const sendData ={
-            urname:  this.urname,
-            urpw: this.urpw,
-            uremail: this.uremail,
-            urmobile: this.urmobile,
-            urgender: this.urgender
+            name: this.urname,
+            pw: this.urpw,
+            email: this.uremail,
+            mobile: this.urmobile,
+            gender: this.urgender,
+            nickName: this.urnick,
+            birth: this.urbirth
           }
           const result ={
             ret:1
           }
           if(result.ret === 1){
-            alert('회원가입 성공.');
-            this.$router.push({path:'/'});
+            const url = "http://localhost:8080/register"
+            const header = {
+              "Content-Type": "application/json", 
+            }
+            axios.post(url, sendData, header).then((res) => {
+              console.log(res);
+              alert('회원가입 성공.');
+              this.$router.push({path:'/'});
+            });
           }
-          console.log(sendData);
         }
       } catch (error){
         console.error(error);
@@ -221,8 +243,8 @@ data(){
   align-items: center;
 }
 .form-body{
-  width:1000px;
-  height: 700px;
+  width: 1000px;
+  height: 750px;
   display: flex;
   flex-direction: column;
   justify-content: center;

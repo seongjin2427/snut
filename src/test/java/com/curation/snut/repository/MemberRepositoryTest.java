@@ -28,7 +28,7 @@ public class MemberRepositoryTest {
                 .mobile("456456")
                 .birth("456")
                 .gender("male")
-                .nickname("Def")
+                .nickName("Def")
                 .build();
         member.addMemberRole(MemberRole.USER);
         memberRepository.save(member);
@@ -43,7 +43,7 @@ public class MemberRepositoryTest {
                 .mobile("123")
                 .birth("123")
                 .gender("female")
-                .nickname("Abc")
+                .nickName("Abc")
                 .build();
         member.addMemberRole(MemberRole.USER);
         memberRepository.save(member);

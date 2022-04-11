@@ -10,11 +10,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.curation.snut.security.util.JWTUtil;
 
+import lombok.extern.log4j.Log4j2;
 import org.json.simple.JSONObject;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+@Log4j2
 public class ApiCheckFilter extends OncePerRequestFilter {
 
     private AntPathMatcher antPathMatcher;
@@ -32,6 +34,9 @@ public class ApiCheckFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         if (antPathMatcher.match(pattern, request.getRequestURI())) {
+            log.info("ApiCheckFilter..................................");
+            log.info("ApiCheckFilter..................................");
+            log.info("ApiCheckFilter..................................");
             boolean checkHeader = checkAuthHeader(request);
 
             if (checkHeader) {
@@ -55,7 +60,7 @@ public class ApiCheckFilter extends OncePerRequestFilter {
 
     private boolean checkAuthHeader(HttpServletRequest request) {
         boolean checkResult = false;
-        String authHeader = request.getHeader("Authorization");
+        String authHeader = request.getHeader("token");
 
         if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
             try {
@@ -63,7 +68,6 @@ public class ApiCheckFilter extends OncePerRequestFilter {
                 checkResult = email.length() > 0;
             } catch (Exception e) {
                 e.printStackTrace();
-                ;
             }
         }
         return checkResult;

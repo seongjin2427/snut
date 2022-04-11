@@ -21,7 +21,7 @@
                 <div class="mail2">Email</div>
                 <div class="flex">
                   <img class="icon" src="@/assets/icon/Mail-Closed-Line.png" width="18" height="18" alt="email"/>
-                  <input class="put" placeholder="Email">
+                  <input class="put" v-model="userId" placeholder="Email">
                 </div>
               </div>
             </div>
@@ -31,7 +31,7 @@
                 <div class="pw2">Password</div>
                 <div class="flex">
                   <img class="icon" src="@/assets/icon/Key-Line.png" alt="pw" width="24" height="24">
-                  <input class="put" placeholder="Password">
+                  <input class="put" v-model="userPw" placeholder="Password">
                 </div>
               </div>
             </div>
@@ -41,7 +41,7 @@
               <p>Keep me Signed in</p>
             </div>
             <common-button button-name="LOGIN" width="300" height="62" background="#DC8552" color="white" border="none"
-                           border-radius="0" margin-top="30" font-size="16"> </common-button>
+                          border-radius="0" margin-top="30" font-size="16" @click="doLogin()"> </common-button>
 
           </div>
           <div class="bor"></div>
@@ -76,10 +76,47 @@
 
 <script>
 import CommonButton from "@/components/CommonButton";
+import axios from 'axios';
 
 export default {
   name: "Login-page",
-  components: {CommonButton}
+  components: {CommonButton},
+  data() {
+    return {
+      userId: '',
+      userPw: ''
+    }
+  },
+  methods: {
+    doLogin() {
+      const loginData = {
+        email: this.userId,
+        pw: this.userPw
+      }
+  
+      const url = "http://localhost:8080/jwt/login";
+      const header = {
+        "Content-Type": "application/json"
+      }
+      axios.post(url, loginData, header).then((res) => {
+        console.log(res);
+        const data = res.data;
+        sessionStorage.setItem("email", data.email);
+        sessionStorage.setItem("name", data.name);
+        sessionStorage.setItem("gender", data.gender);
+        sessionStorage.setItem("nickName", data.nickname);
+        sessionStorage.setItem("mobile", data.mobile);
+        sessionStorage.setItem("birth", data.birth);
+        sessionStorage.setItem("token", data.token);
+        alert("로그인 완료!");
+        this.$router.push("/");
+      }).catch(res => {
+        console.log(res);
+        alert("ID 또는 비밀번호를 다시 확인해주세요!")
+        });
+      
+    }
+  }
 }
 </script>
 
