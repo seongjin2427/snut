@@ -4,10 +4,7 @@
       <img class="hamburgerBtn" src="@/assets/btn_hamburger.png" alt="nav_btn" @click="closeNavBar">
     </div>
     <ul>
-      <li><router-link to="/mcol/main">MY COLLECTION</router-link></li>
-      <li><router-link to="/com">COMMUNITY</router-link></li>
-      <li><router-link to="/mc">MY PAGE</router-link></li>
-      <li><router-link to="/ab">ABOUT</router-link></li>
+      <li v-for="(menu, idx) in menuDataSet" :key="idx" @click="goToPage(menu)">{{ menu.name }}</li>
     </ul>
   </div>
 </template>
@@ -15,6 +12,32 @@
 <script>
 export default {
   name: 'NavigatorBar',
+  data() {
+    return {
+      menuDataSet: [
+        {
+          id: 1,
+          name: 'MY COLLECTION',
+          path: '/mcol/main'
+        },
+        {
+          id: 2,
+          name: 'COMMUNITY',
+          path: '/com'
+        },
+        {
+          id: 3,
+          name: 'MY PAGE',
+          path: '/mc'
+        },
+        {
+          id: 4,
+          name: 'ABOUT',
+          path: '/ab'
+        },
+      ]
+    }
+  },
   methods: {
     openNavBar() {
       var a = document.querySelector('.navigator');
@@ -25,7 +48,16 @@ export default {
       var a = document.querySelector('.navigator');
       a.classList.remove('openNavBar');
     },
-
+    goToPage(menu) {
+      if(sessionStorage.getItem('token') && menu.id != 4) {
+        this.$router.push(menu.path)
+      } else if(menu.id === 4) {
+        this.$router.push(menu.path)
+      } else {
+        alert("로그인 해주세요");
+        this.$router.push('/logi');
+      }
+    }
   }
 }
 </script>
@@ -66,6 +98,7 @@ li {
   font-family: 'AlegreyaSans';
   font-weight: 800;
   font-size: 30px;
+  cursor: pointer;
 }
 li * {
   font-family: 'AlegreyaSans';
