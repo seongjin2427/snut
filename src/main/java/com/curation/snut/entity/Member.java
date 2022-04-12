@@ -1,9 +1,15 @@
 package com.curation.snut.entity;
 
+import java.util.Set;
+import java.util.HashSet;
+
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+
+import com.curation.snut.security.role.MemberRole;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,6 +32,15 @@ public class Member extends BaseEntity {
     private String mobile;
     private String birth;
     private String gender;
+
+    @Column(unique = true)
     private String nickname;
-    // private String AuthId;
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @Builder.Default
+    private Set<MemberRole> roleSet = new HashSet<>();
+
+    public void addMemberRole(MemberRole memberRole) {
+        roleSet.add(memberRole);
+    }
 }

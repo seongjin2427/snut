@@ -1,4 +1,5 @@
 package com.curation.snut.entity;
+
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -10,12 +11,12 @@ import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
-@EntityListeners(value={AuditingEntityListener.class})
+@EntityListeners(value = { AuditingEntityListener.class })
 @Getter
 abstract public class BaseEntity {
 
   @CreatedDate
-  @Column(name="regdate", updatable = false)
+  @Column(name = "regdate", updatable = false)
   private LocalDateTime regDate;
 
   @LastModifiedDate
