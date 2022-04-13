@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
-// @RestController
-// @RequestMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
 @Controller
 @RequestMapping
 @Log4j2

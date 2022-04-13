@@ -34,7 +34,7 @@ public class Member extends BaseEntity {
     private String gender;
 
     @Column(unique = true)
-    private String nickname;
+    private String nickName;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @Builder.Default

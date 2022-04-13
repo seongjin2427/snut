@@ -4,13 +4,16 @@ import com.curation.snut.entity.CommunityComment;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface CommentRepository extends JpaRepository<CommunityComment, Long> {
 
+    @EntityGraph(attributePaths = { "writer", "communityName" }, type = EntityGraphType.LOAD)
     @Query("select c from CommunityComment c where c.communityName.no = :no order by if(isnull(parentNo), cno, parentNo)")
     Page<CommunityComment> list(Pageable pageable, Long no);
 

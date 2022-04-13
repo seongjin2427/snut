@@ -2,7 +2,6 @@ package com.curation.snut.security;
 
 import com.curation.snut.security.filter.ApiCheckFilter;
 import com.curation.snut.security.filter.ApiLoginFilter;
-import com.curation.snut.security.handler.CLogoutSuccessHandler;
 import com.curation.snut.security.handler.LoginFailHandler;
 import com.curation.snut.security.handler.LoginSuccessHandler;
 import com.curation.snut.security.service.MemberUDService;
@@ -14,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -32,29 +32,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin().loginPage("/login").loginProcessingUrl("/login")
-                .failureUrl("/member/login?error").successHandler(successHandler());
+        http.formLogin().disable();
         http.csrf().disable();
-        http.logout().logoutSuccessHandler(logoutSuccessHandler());
-        ;
-        http.rememberMe().tokenValiditySeconds(60 * 60 * 24 * 7).userDetailsService(memberUDService);
+        http.cors().disable();
+        http.logout().permitAll();
+        http.sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.httpBasic().disable();
+        http.authorizeRequests()
+                .antMatchers("/register").permitAll()
+                .antMatchers("/jwt/login").permitAll()
+                .antMatchers("/test/**/*").permitAll()
+                .antMatchers("/**/*").permitAll()
+                .anyRequest().authenticated();
         http.addFilterBefore(apiCheckFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(apiLoginFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
     public LoginSuccessHandler successHandler() {
-        return new LoginSuccessHandler(passwordEncoder());
-    }
-
-    @Bean
-    public CLogoutSuccessHandler logoutSuccessHandler() {
-        return new CLogoutSuccessHandler();
+        return new LoginSuccessHandler();
     }
 
     @Bean
     public ApiLoginFilter apiLoginFilter() throws Exception {
-        ApiLoginFilter apiLoginFilter = new ApiLoginFilter("/api/login", jwtUtil());
+        ApiLoginFilter apiLoginFilter = new ApiLoginFilter("/jwt/login", jwtUtil());
         apiLoginFilter.setAuthenticationManager(authenticationManager());
 
         apiLoginFilter.setAuthenticationFailureHandler(new LoginFailHandler());
@@ -68,7 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public ApiCheckFilter apiCheckFilter() {
-        return new ApiCheckFilter("/test/**/*", jwtUtil());
+        return new ApiCheckFilter("/api/**/*", jwtUtil());
     }
 
 }

@@ -24,6 +24,7 @@ public class MemberUDService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        log.info("ClubUserDetailsService loadUserByUsername " + username);
 
         Optional<Member> result = memberRepository.findByEmail(username);
 
@@ -37,7 +38,7 @@ public class MemberUDService implements UserDetailsService {
         AuthMemberDTO authMemberDTO = new AuthMemberDTO(
                 member.getEmail(), member.getName(),
                 member.getPw(), member.getMobile(), member.getBirth(), member.getGender(),
-                member.getNickname(),
+                member.getNickName(),
                 member.getRoleSet().stream().map(role -> new SimpleGrantedAuthority("ROLE_" +
                         role.name()))
                         .collect(Collectors.toSet()));
