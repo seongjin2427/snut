@@ -13,7 +13,8 @@
       <main>
           <div class="action-level">
             <div class="action-level-img">
-              <p>활동 레벨</p>
+              <img src="@/assets/level/peanut.png" alt="level" width="150" height="260">
+              <p style="font-weight: 700;">hi! I’m your peanut :)</p>
             </div>
           </div>
           <div class="mcol-button-area">
@@ -209,11 +210,8 @@ header {
   justify-content: center;
 }
 .action-level-img {
-  width: 250px;
-  height: 250px;
-  background: white;
-  border-radius: 125px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   font-size: 30px;

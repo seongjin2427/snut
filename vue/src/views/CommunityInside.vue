@@ -149,8 +149,12 @@ export default {
 .com-btn-area {
   display: flex;
   justify-content: flex-end;
-}
 
+}
+.com-body::-webkit-scrollbar{
+  display: none;
+  width: 0
+}
 .com-form-main-wrapper {
   display: flex;
   justify-content: center;

@@ -16,7 +16,7 @@
 
                 <div class="box-post">
                   <p class="desc-info">
-                    <span class="origin-comment" tabindex="0"> 이건 댓글입니다.</span>
+                    <span class="origin-comment" tabindex="0">{{ communityDataSet.content }}</span>
                   </p>
                 </div>
 
@@ -26,13 +26,13 @@
                     <img src="@/assets/icon/com-button.png" alt="com-button" class="actbu">
                   </button>
                   <!-- 더보기 버튼 클릭시 노출될 항목 -->
-                  <div  v-if="show" class="modifyCon" :style="{left:modifyleft+140+'px', top:modifytop-80+'px'}">
+                  <div  v-if="show" class="modifyCon" :style="{left:modifyleft+40+'px', top:modifytop-40+'px'}">
 
 
                   <div id="moreContent">
                   <span id="Content">
                 <span class="moreDetail" id="modifyBoard" @click="modifycom($event)">수정</span><br>
-                    <span class="moreDetail" id="deleteBoard" @click="deletecom($event)">삭제</span><br>
+                    <span class="moreDetail" id="deleteBoard" @click="deletecom(index)">삭제</span><br>
                   </span>
                   </div>
                   </div>
@@ -57,7 +57,7 @@
 
                 <div class="box-post">
                   <p class="desc-info">
-                    <span class="origin-comment" tabindex="0"> 이건 댓글입니다.</span>
+                    <span class="origin-comment" tabindex="0">{{ communityDataSet.content }}</span>
                   </p>
                 </div>
 
@@ -129,7 +129,8 @@ export default {
     return {
       communityDataSet: {
         getTime: "time",
-        nickName: "nickName"
+        nickName: "nickName",
+        content: "comment"
       },
       modifyleft: 0,
       modifytop: 0,
@@ -139,8 +140,8 @@ export default {
   methods:{
     modifyModal(e){
       console.log(e)
-      console.log(e.clientX)
-      console.log(e.clientY)
+      console.log(e.offsetX)
+      console.log(e.offsetY)
       this.modifyleft = e.x
       this.modifytop = e.y
       this.show = !this.show;
@@ -150,6 +151,8 @@ export default {
     },
     deletecom(){
       alert("정말 삭제하시겠습니까?")
+      console.log('ComInsideComment', this.index , 1);
+      this.$emit('deletecom', this);
     }
 
   }

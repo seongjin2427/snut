@@ -31,14 +31,14 @@
             <div class="repw2">Re-Password</div>
             <div class="flex">
               <img class="icon" src="@/assets/icon/Key-Line.png" width="24" height="24" alt="pw">
-              <input placeholder="Re-Password">
+              <input class="put" placeholder="Re-Password" type="password">
             </div>
           </div>
           <div class="span">
             <div class="repw3">Confirm-Password</div>
             <div class="flex">
               <img class="icon" src="@/assets/icon/Key-Line.png" width="24" height="24" alt="pw">
-              <input placeholder="Confirm-Password">
+              <input class="put" placeholder="Confirm-Password" type="password">
             </div>
           </div>
         </div>

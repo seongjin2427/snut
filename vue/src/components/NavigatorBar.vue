@@ -49,14 +49,16 @@ export default {
       a.classList.remove('openNavBar');
     },
     goToPage(menu) {
-      if(sessionStorage.getItem('token') && menu.id != 4) {
-        this.$router.push(menu.path)
-      } else if(menu.id === 4) {
-        this.$router.push(menu.path)
-      } else {
-        alert("로그인 해주세요");
-        this.$router.push('/logi');
-      }
+      // if(sessionStorage.getItem('token') && menu.id != 4) {
+      //   this.$router.push(menu.path)
+      // } else if(menu.id === 4) {
+      //   this.$router.push(menu.path)
+      // } else {
+      //   alert("로그인 해주세요");
+      //   this.$router.push('/logi');
+      // }
+      this.$router.push(menu.path);
+
     }
   }
 }
