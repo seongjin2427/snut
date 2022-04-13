@@ -8,10 +8,16 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.curation.snut.security.dto.AuthMemberDTO;
+import com.curation.snut.security.service.MemberUDService;
 import com.curation.snut.security.util.JWTUtil;
 
 import lombok.extern.log4j.Log4j2;
 import org.json.simple.JSONObject;
+import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -37,7 +43,9 @@ public class ApiCheckFilter extends OncePerRequestFilter {
             log.info("ApiCheckFilter..................................");
             log.info("ApiCheckFilter..................................");
             log.info("ApiCheckFilter..................................");
+
             boolean checkHeader = checkAuthHeader(request);
+            log.info("header >>>>  " + checkAuthHeader(request));
 
             if (checkHeader) {
                 filterChain.doFilter(request, response);
@@ -62,9 +70,12 @@ public class ApiCheckFilter extends OncePerRequestFilter {
         boolean checkResult = false;
         String authHeader = request.getHeader("token");
 
+        log.info("authHeader >>> " + request.getHeader("token"));
         if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
             try {
                 String email = jwtUtil.validateAndExtract(authHeader.substring(7));
+
+                log.info("email >>> " + email);
                 checkResult = email.length() > 0;
             } catch (Exception e) {
                 e.printStackTrace();

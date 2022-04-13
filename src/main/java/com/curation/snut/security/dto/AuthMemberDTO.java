@@ -20,6 +20,7 @@ public class AuthMemberDTO extends User {
     private String gender;
     private String nickname;
 
+
     public AuthMemberDTO(
             String username, String name, String password,
             String mobile, String birth, String gender, String nickname,

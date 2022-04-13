@@ -15,6 +15,7 @@
         </div>
         <div class="button-area">
           <input type="button" value="test" @click="sample">
+          <input type="button" value="test222" @click="sample2">
           <common-button buttonName="Log out" width="80" height="35" marginTop="5" marginRight="20" v-if="loginBool" @click="doLogout()"/>
           <common-button buttonName="Log in" width="80" height="35" marginTop="5" marginRight="20" v-if="!loginBool"
                           @click="gotoLogin"/>
@@ -89,6 +90,7 @@ import MainFooter from '@/components/MainFooter.vue'
 import NavigatorBar from '@/components/NavigatorBar.vue';
 import CommonModal from '@/components/CommonModal.vue';
 import SampleData from '@/assets/sampleData.json';
+// import axios from 'axios';
 
 
 export default {
@@ -112,6 +114,31 @@ export default {
     sample() {
       this.loginBool == true ? this.loginBool = false : this.loginBool =true;
     },
+
+
+
+
+    sample2() {
+      // const instance = axios.create({
+      //   baseURL: 'http://localhost:8080/api',
+      //   headers: {
+      //     token: sessionStorage.getItem('token'), // header의 속성
+      //   }
+      // });
+
+      let a = this.$store.state.storedAxios;
+
+      a.get('mcol/store', {
+        params: {
+          'collectionId': 1
+        }
+      })
+        .then(res => console.log(res))
+        .catch(error => console.log(error));
+    },
+
+
+    
     doSearch(searchWord) {
       console.log(searchWord);
         this.$router.push({

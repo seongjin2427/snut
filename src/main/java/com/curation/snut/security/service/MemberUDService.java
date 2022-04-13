@@ -27,6 +27,7 @@ public class MemberUDService implements UserDetailsService {
         log.info("ClubUserDetailsService loadUserByUsername " + username);
 
         Optional<Member> result = memberRepository.findByEmail(username);
+        log.info("MemberUDService result >>> " + result);
 
         if (!result.isPresent()) {
             throw new UsernameNotFoundException("check Email");

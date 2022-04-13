@@ -1,26 +1,30 @@
 package com.curation.snut.dto;
 
+import java.time.LocalDateTime;
+import java.util.Collection;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Map;
-
 @Data
-@NoArgsConstructor
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
-public class ApiSessionDTO {
-    private String username;
+public class MemberDTO {
     private String email;
-    private String name;
-    private String mobile;
-    private String nickname;
-    private String birth;
-    private String gender;
-    private String role;
-    private String token;
-    private String curl;
 
-  }
+    private String name;
+    private String pw;
+    private String mobile;
+    private String birth;
+    private LocalDateTime modDate;
+    private LocalDateTime regDate;
+    private String nickname;
+    private String gender;
+    private boolean fromSocial;
+
+    private Collection<String> roleSet;
+
+}

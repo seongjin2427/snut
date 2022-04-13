@@ -86,8 +86,22 @@ export default {
       if(searchWord != '') {
         this.$router.push(`/col/${searchWord}`);
         console.log(searchWord);
+
+        this.doAxios();
+
         this.$refs.inputBox.clearWord();
       }
+    },
+    doAxios() {
+      let calledAxios = this.$store.state.storedAxios;
+      console.log("searchWord", this.$route.params)
+      calledAxios.get('/main',{
+        params: {
+          'searchWord': this.$route.params.searchWord
+        }
+      })
+        .then(res => console.log(res))
+        .catch(error => console.log(error));
     },
     createDummies(store) {
       const INPUT_NUMBER = 11;
@@ -170,8 +184,10 @@ export default {
       store.Collection = d;
     }
   },
-  created() {
+  mounted() {
     this.createDummies(this.sampleData);
+    this.doAxios();
+
   }
 }
 </script>

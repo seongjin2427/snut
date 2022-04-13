@@ -1,14 +1,17 @@
 package com.curation.snut.service;
 
+import com.curation.snut.dto.MemberDTO;
 import com.curation.snut.entity.Member;
 import com.curation.snut.repository.MemberRepository;
 import com.curation.snut.security.role.MemberRole;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService{
@@ -31,4 +34,14 @@ public class MemberServiceImpl implements MemberService{
 
         memberRepository.save(member);
     }
+
+    @Override
+    public void updateMemberDTO(MemberDTO memberDTO) {
+        log.info("updateMemberDTO..MemberDTO:" + memberDTO);
+        memberDTO.setPw(passwordEncoder.encode(memberDTO.getPw()));
+        Member member = dtoToEntity(memberDTO);
+        memberRepository.save(member);
+        log.info("member>>" + member);
+    }
+
 }
