@@ -8,7 +8,7 @@
         <p><a :href="title.src">{{ title.name }}</a></p>
       </div>
       <div class="footer-logo">
-        <img src="@/assets/small_logo.png" alt="footer_img">
+        <img src="@/assets/small_logo.png" alt="footer_img" @click="goToMain()">
         {{ writeCmt }}
       </div>
     </div>
@@ -35,6 +35,11 @@ export default {
         },
       ],
       writeCmt: '© snut. 2021 We love our users!'
+    }
+  },
+  methods:{
+    goToMain(){
+      this.$router.push("/");
     }
   }
 }

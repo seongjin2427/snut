@@ -15,7 +15,10 @@
               height="38" />
         </div>
         <div class="button-area">
-          <common-button buttonName="정렬" width="80" height="35" marginTop="5" marginRight="20" />
+          <common-button @click="list" v-for="(list,idx) in dropdownData" :key="idx" buttonName="정렬" width="80" height="35" marginTop="5" marginRight="20" />
+          <div v-if="active">
+            Menu
+          </div>
           <img src="@/assets/btn_hamburger.png" alt="nav_btn" @click="openNavBar">
         </div>
       </header>
@@ -71,7 +74,16 @@ export default {
         },
       }, 
       loginSignText: 'If You Want To See More, Just Sign In!',
-      searchedWord: ''
+      searchedWord: '',
+      active:false,
+
+      dropdownData: [
+      {list:"전체보기"},
+      {list: "큐레이션"},
+      {list:"컬렉션"},
+      {list:"최신순"},
+      {list:"오래된순"}
+    ]
     }
   },
   methods: {
@@ -89,6 +101,9 @@ export default {
         this.$refs.inputBox.clearWord();
       }
     },
+list(){
+this.active = !this.active
+},
     createDummies(store) {
       const INPUT_NUMBER = 11;
 

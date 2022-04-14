@@ -266,4 +266,8 @@ export default {
 .modalBodyContents * {
   font-size: 20px;
 }
+.modal-content-pic::-webkit-scrollbar{
+  display: none;
+  width: 0
+}
 </style>

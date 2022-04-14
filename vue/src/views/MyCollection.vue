@@ -52,6 +52,7 @@
             <div class="analysis-area">
               <div class="analysis-button-area" 
                   v-for="(btn, idx) in analysis"
+                   @click="moveToPage(btn.src)"
                   :key="idx">
                 <p>{{ btn.name }}</p>
               </div>
@@ -114,7 +115,7 @@ export default {
         },
         {
           name: '내 커뮤니티 보기', 
-          src: ''
+          src: '/mc',
         },
       ]
     }

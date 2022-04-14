@@ -36,7 +36,7 @@
             <p>
               인기컬렉션
             </p>
-            <p>
+            <p @click="gotocol">
               더보기
             </p>
           </div>
@@ -128,6 +128,9 @@ export default {
       sessionStorage.clear();
       alert('로그아웃 되었습니다');
       location.reload();
+    },
+    gotocol(){
+      this.$router.push('/col/:searchWord')
     },
     createDummies(store, start) {
       for(var i = 0; i < 5; i++) {

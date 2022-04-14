@@ -10,7 +10,6 @@
         </div>
       </div>
       <div class="mycom-head-bu">
-        <common-button width="150" height="40" buttonName="알림" border="none" background="white" margin-right="20" />
         <common-button width="150" height="40" buttonName="커뮤니티 만들기" border="none" background="black" color="white" @click="moveToPage()"/>
       </div>
     </header>
@@ -18,9 +17,12 @@
 
 <!--body-->
     <div class="mycom-body-wrapper">
+      <div class="mycom-body">
+
+
 <!--bookmark-->
       <div class="bookmark-wrapper">
-        <div class="mycom-font">북마크</div>
+        <div class="mycom-font">내 커뮤니티</div>
         <div class="bookmark-form">
           <Bookmark
               :bookmarkData="bookmark" v-for="(bookmark, idx) in bookmarkDataSet" :key="idx"/>
@@ -35,12 +37,18 @@
           <alarm :alarmData="alarm" v-for="(alarm, idx) in alarmDataSet" :key="idx" @click="permi($event, alarm)"/>
         </div>
       </div>
-    </div>
 <small-modal ref="modal" :modalBtnData="modalBtnData" smallModal="닉네임 가입을 승인하시겠습니까?" width="350" height="100">
 
 </small-modal>
 
-  </div>
+
+
+      </div>
+
+
+    </div>
+    </div>
+
 </template>
 
 <script>
@@ -153,14 +161,13 @@ header {
 .mycom-head-bu {
   display: flex;
   align-items: center;
-  width: 30%;
+  width: 20%;
 }
 
 .mycom-body-wrapper{
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 60px;
 }
 .bookmark-wrapper{
   display: inline-block;
@@ -194,5 +201,8 @@ header {
   font-weight: 400;
   margin-bottom: 30px;
 }
-
+.mycom-body{
+margin-bottom: 60px;
+  display: flex;
+}
 </style>

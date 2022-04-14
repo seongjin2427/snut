@@ -3,71 +3,43 @@
     <!--  form-->
     <div class="comment-view">
       <ul class="list-comment">
+
         <!--list-->
-        <li>
+        <li v-for="(reply, idx) in communityDataSet" :key="idx" >
           <div class="comment-section">
             <div class="comment-info">
               <div class="comment-post">
 
                 <div class="profile-info">
-                  <div class="nickName">{{ communityDataSet.nickName }}</div>
-                  <span class="time">{{ communityDataSet.getTime }}</span>
+                  <div class="nickName">{{ reply.nickName }}</div>
+                  <span class="time">{{ reply.getTime }}</span>
                 </div>
 
                 <div class="box-post">
                   <p class="desc-info">
-                    <span class="origin-comment" tabindex="0">{{ communityDataSet.content }}</span>
+                    <span class="origin-comment" tabindex="0">{{ reply.content }}</span>
                   </p>
                 </div>
 
                 <div class="comment-more">
                   <div class="reply">reply</div>
-                  <button  class="action" @click="modifyModal($event)">
+                  <button  class="action" @click="modifyModal($event,idx)">
                     <img src="@/assets/icon/com-button.png" alt="com-button" class="actbu">
                   </button>
                   <!-- 더보기 버튼 클릭시 노출될 항목 -->
-                  <div  v-if="show" class="modifyCon" :style="{left:modifyleft+40+'px', top:modifytop-40+'px'}">
+                  <div  v-if="modalnumber==idx" class="modifyCon" :style="{left:modifyleft+40+'px', top:modifytop-40+'px'}">
 
 
                   <div id="moreContent">
                   <span id="Content">
-                <span class="moreDetail" id="modifyBoard" @click="modifycom($event)">수정</span><br>
-                    <span class="moreDetail" id="deleteBoard" @click="deletecom(index)">삭제</span><br>
+                <span class="moreDetail" id="modifyBoard" @click="modifycom($event,idx)">수정</span><br>
+                    <span class="moreDetail" id="deleteBoard" @click="deletecom($event,idx)">삭제</span><br>
                   </span>
                   </div>
                   </div>
 
 
                 </div>
-              </div>
-            </div>
-          </div>
-        </li>
-
-        <!--list-->
-        <li>
-          <div class="comment-section">
-            <div class="comment-info">
-              <div class="comment-post">
-
-                <div class="profile-info">
-                  <div class="nickName">{{ communityDataSet.nickName }}</div>
-                  <span class="time">{{ communityDataSet.getTime }}</span>
-                </div>
-
-                <div class="box-post">
-                  <p class="desc-info">
-                    <span class="origin-comment" tabindex="0">{{ communityDataSet.content }}</span>
-                  </p>
-                </div>
-
-                <div class="comment-more">
-                  <div class="reply">reply</div>
-                  <button class="action" @click="modifyModal($event)">
-                    <img src="@/assets/icon/com-button.png" alt="com-button" class="actbu">
-                  </button>
-                </div>
-
               </div>
             </div>
           </div>
@@ -127,32 +99,50 @@ export default {
   },
   data() {
     return {
-      communityDataSet: {
-        getTime: "time",
-        nickName: "nickName",
-        content: "comment"
-      },
+      communityDataSet: [
+        {
+          getTime: "time1",
+          nickName: "nickName1",
+          content: "comment1"
+        },
+        {
+          getTime: "time2",
+          nickName: "nickName2",
+          content: "comment2"
+        },
+        {
+          getTime: "time3",
+          nickName: "nickName3",
+          content: "comment3"
+        },
+      ],
       modifyleft: 0,
       modifytop: 0,
-      show: false
+      show: false,
+      modalnumber: -1
     }
   },
   methods:{
-    modifyModal(e){
-      console.log(e)
-      console.log(e.offsetX)
-      console.log(e.offsetY)
-      this.modifyleft = e.x
-      this.modifytop = e.y
-      this.show = !this.show;
+    modifyModal(e,idx){
+      if (this.modalnumber == -1) {
+        // console.log(e)
+        // console.log(e.offsetX)
+        // console.log(e.offsetY)
+        this.modifyleft = e.x
+        this.modifytop = e.y
+        this.modalnumber = idx;
+
+      }else {this.modalnumber = -1}
     },
     modifycom(){
 
     },
-    deletecom(){
-      alert("정말 삭제하시겠습니까?")
-      console.log('ComInsideComment', this.index , 1);
-      this.$emit('deletecom', this);
+    deletecom(e,idx){
+      // alert("정말 삭제하시겠습니까?")
+      console.log('ComInsideComment' ,idx);
+      console.log(e)
+      this.communityDataSet.splice(idx,1)
+      // this.$emit('deletecom', this);
     }
 
   }
