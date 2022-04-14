@@ -14,7 +14,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,10 +51,21 @@ public class ControllerTest {
 
     @GetMapping(value = "/test/commentList")
     public ResponseEntity<Page<CommentDTO>> commentListTest(
-            final Pageable pageable,
+            @PageableDefault(size = 2, sort = "cno", direction = Direction.ASC) final Pageable pageable,
             final Long no) {
         Page<CommentDTO> commentDTOList = commentService.commentList(pageable, no);
         return new ResponseEntity<>(commentDTOList, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/test/commentList")
+    public ResponseEntity<?> commentWrite(CommentDTO commentDTO) {
+        commentService.write(commentDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> commentDelete(Long id) {
+        commentService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

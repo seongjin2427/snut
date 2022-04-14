@@ -1,5 +1,6 @@
 package com.curation.snut.controller;
 
+import com.curation.snut.entity.Member;
 import com.curation.snut.repository.MemberRepository;
 import com.curation.snut.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -11,17 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @Log4j2
 @RequiredArgsConstructor
-public class HomeController {
-
-    // @PreAuthorize("hasRole('USER')")
-    // @RequestMapping({ "", "/" })
-    // public String home() {
-    // return "index";
-    // }
+public class MemberController {
 
     private final MemberService memberService;
     private final MemberRepository memberRepository;
@@ -33,9 +29,12 @@ public class HomeController {
         String email = body.get("email").toString();
         String nickName = body.get("nickName").toString();
 
-        if (memberRepository.findByEmail(email) != null) {
+        Optional<Member> anEmail = memberRepository.findByEmail(email);
+        Optional<Member> anNickName = memberRepository.findByEmail(nickName);
+
+        if (anEmail.isPresent()) {
             return new ResponseEntity<>("이메일 중복", HttpStatus.OK);
-        } else if (memberRepository.findByNickName(nickName) != null) {
+        } else if (anNickName.isPresent()) {
             return new ResponseEntity<>("닉네임 중복", HttpStatus.OK);
         } else {
             memberService.register(body);

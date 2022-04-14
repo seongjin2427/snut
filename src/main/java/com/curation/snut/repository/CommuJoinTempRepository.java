@@ -1,0 +1,19 @@
+package com.curation.snut.repository;
+
+import java.util.List;
+
+import com.curation.snut.entity.CommuJoinTemp;
+import com.curation.snut.idclass.CommuJoinTempId;
+
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
+
+public interface CommuJoinTempRepository extends JpaRepository<CommuJoinTemp, CommuJoinTempId> {
+
+    // 신청자 목록
+    @EntityGraph(attributePaths = { "member", "community" }, type = EntityGraphType.LOAD)
+    @Query("select cjt from CommuJoinTemp cjt where cjt.tCommunity.creater.email =:commuEmail")
+    List<CommuJoinTemp> joinAlert(String commuEmail);
+}

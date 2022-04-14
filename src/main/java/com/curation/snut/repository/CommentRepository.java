@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface CommentRepository extends JpaRepository<CommunityComment, Long> {
 
-    @EntityGraph(attributePaths = { "writer", "communityName" }, type = EntityGraphType.LOAD)
+    @EntityGraph(attributePaths = { "writer", "communityName" }, type = EntityGraphType.LOAD) // 연관관계 설정해줘야함
     @Query("select c from CommunityComment c where c.communityName.no = :no order by if(isnull(parentNo), cno, parentNo)")
     Page<CommunityComment> list(Pageable pageable, Long no);
 
