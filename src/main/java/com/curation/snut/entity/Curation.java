@@ -15,6 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 @ToString(exclude = "writer")
 public class Curation extends BaseEntity {
     @Id
@@ -35,6 +36,7 @@ public class Curation extends BaseEntity {
 
     @OneToMany
     private Set<Hashtag> hashtag = new HashSet<>();
+
 
 
 

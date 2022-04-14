@@ -2,14 +2,17 @@ package com.curation.snut.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.curation.snut.dto.CurationDTO;
 import com.curation.snut.entity.Curation;
 import com.curation.snut.entity.CurationImage;
+import com.curation.snut.entity.Hashtag;
 import com.curation.snut.repository.CurationImageRepository;
 import com.curation.snut.repository.CurationRepository;
 
+import com.curation.snut.repository.HashtagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +26,7 @@ import lombok.extern.log4j.Log4j2;
 public class CurationServiceImpl implements CurationService {
     private final CurationRepository curationRepository;
     private final CurationImageRepository curationImageRepository;
+    private final HashtagRepository hashtagRepository;
 
     // 성진
     @Override
@@ -46,13 +50,20 @@ public class CurationServiceImpl implements CurationService {
         Curation curation = (Curation) entityMap.get("curation");
         List<CurationImage> curationImageList = (List<CurationImage>) entityMap.get("imgList");
 
+        Set hashtag = curation.getHashtag();
+        if(hashtag.size() > 0) {
+            hashtag.stream().forEach(tag -> hashtagRepository.save((Hashtag) tag));
+        }
+
         curationRepository.save(curation);
 
-//        curationImageList.forEach(curationImage ->
-//                curationImageRepository.save(curationImage));
-
+        if(curationImageList != null && curationImageList.size() > 0) {
+            curationImageList.forEach(curationImage ->
+                curationImageRepository.save(curationImage));
+        }
         return curation.getCurationNo();
     }
+
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

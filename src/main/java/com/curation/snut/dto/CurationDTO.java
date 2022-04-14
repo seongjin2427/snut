@@ -26,10 +26,11 @@ public class CurationDTO {
 
     private String curationTitle;
     private String curationText;
-    private Set hashtag;
     private Long pickedEmoji;
     private String pickedColor;
     private boolean open;
+
+    private Set hashtag;
 
     private LocalDateTime regDate;
     private LocalDateTime modDate;

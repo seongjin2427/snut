@@ -346,11 +346,11 @@ export default {
             .catch(err => console.log(err));
     },
     saveHashtag(willSendContents) {
-      this.$refs.hashTag.map((tag) => {
+      this.$refs.hashTag.map(tag => {
         if(tag.value.trim()) {
           willSendContents.hashtag.push(tag.value.trim());
-        } 
-      });
+        }
+      })
     },
     sendImage(contentList, imgList) {
       console.log("imgList >>>> ", imgList)

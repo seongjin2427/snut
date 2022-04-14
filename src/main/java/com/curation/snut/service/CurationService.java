@@ -1,8 +1,6 @@
 package com.curation.snut.service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.curation.snut.dto.CurationDTO;
@@ -10,12 +8,19 @@ import com.curation.snut.dto.CurationImageDTO;
 import com.curation.snut.dto.SnutCollectionDTO;
 import com.curation.snut.entity.Curation;
 import com.curation.snut.entity.CurationImage;
+import com.curation.snut.entity.Hashtag;
 import com.curation.snut.entity.Member;
 
+import com.curation.snut.repository.HashtagRepository;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-
 public interface CurationService {
 
     // 성진
@@ -38,9 +43,23 @@ public interface CurationService {
 
     void delete(Long id);
 
+    @Transactional
     default Map<String, Object> dtoToEntity(CurationDTO dto) {
 
         Map<String, Object> entitMap = new HashMap<>();
+
+        System.out.println("dtoToEntity ------------------------------");
+        System.out.println("hashtag >>>> " + dto.getHashtag());
+
+        Set<Hashtag> hashtagSet = new HashSet<>();
+
+        if(dto.getHashtag() != null && dto.getHashtag().size() > 0) {
+            dto.getHashtag().forEach(tag -> {
+                hashtagSet.add(Hashtag.builder().tag((String) tag).build());
+            });
+        }
+
+        System.out.println("hashtagSet >>>>> " + hashtagSet);
 
         Curation curation = Curation.builder()
                 .curationNo(dto.getCurationNo())
@@ -48,8 +67,8 @@ public interface CurationService {
                 .curationTitle(dto.getCurationTitle())
                 .pickedColor(dto.getPickedColor())
                 .pickedEmoji(dto.getPickedEmoji())
-                .hashtag(dto.getHashtag())
                 .open(dto.isOpen())
+                .hashtag(hashtagSet)
                 .writer(Member.builder().email(dto.getEmail()).build())
                 .build();
 
