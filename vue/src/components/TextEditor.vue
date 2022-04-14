@@ -87,6 +87,7 @@ import { Color } from '@tiptap/extension-color';
 import TextAlign from '@tiptap/extension-text-align';
 import Underline from '@tiptap/extension-underline';
 import DragAndDropModal from './DragAndDropModal.vue';
+import axios from 'axios';
 
 export default {
   components: {
@@ -102,6 +103,7 @@ export default {
       toolBar: this.isEditable,
       editable: this.isEditable,
       imgList: [],
+      viewImgList: []
     }
   },
 
@@ -113,13 +115,28 @@ export default {
     addImage() {
       this.$refs.dragModal.openModal();
     },
-    receiveNoteImg(imgs) {
-      let imgArr = Array.from(imgs);
-      if(imgArr.length != 0) {
-        for(let i = 0; i < imgArr.length; i++) {
-          this.editor.chain().focus().setImage({ src: imgArr[i].src }).run();
-        }
-        this.imgList = imgArr;
+    receiveNoteImg(imgList) {
+      const key = this.$store.state.imbbKey;
+
+      let body = new FormData();
+      if(imgList.length != 0) {
+
+        for(let i = 0; i < imgList.length; i++) {
+
+          body.set('key', key);
+          body.append('image', imgList[i]);
+          
+          axios.post(`https://api.imgbb.com/1/upload?key=${key}`, body)
+            .then(res => {
+                // console.log(res)
+                console.log(res.data.data.display_url)
+                this.editor.chain().focus().setImage({ src: res.data.data.display_url }).run();
+                
+              })
+            }
+        
+
+        // this.imgList = imgList;
       }
     },
     sendContents() {

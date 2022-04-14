@@ -1,9 +1,12 @@
 package com.curation.snut.entity;
 
+import com.curation.snut.dto.CurationImageDTO;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -21,6 +24,8 @@ public class Curation extends BaseEntity {
     private String curationTitle;
     private String curationText;
     private boolean open;
+    private Long pickedEmoji;
+    private String pickedColor;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Member writer;

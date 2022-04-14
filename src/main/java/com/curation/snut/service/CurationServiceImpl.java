@@ -1,10 +1,13 @@
 package com.curation.snut.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.curation.snut.dto.CurationDTO;
 import com.curation.snut.entity.Curation;
+import com.curation.snut.entity.CurationImage;
+import com.curation.snut.repository.CurationImageRepository;
 import com.curation.snut.repository.CurationRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +21,8 @@ import lombok.extern.log4j.Log4j2;
 @Service
 @RequiredArgsConstructor
 public class CurationServiceImpl implements CurationService {
-    @Autowired
     private final CurationRepository curationRepository;
+    private final CurationImageRepository curationImageRepository;
 
     // 성진
     @Override
@@ -35,6 +38,22 @@ public class CurationServiceImpl implements CurationService {
         return (List) curations.stream().map(i -> entityToDTO((Curation) i)).collect(Collectors.toList());
     }
 
+    @Transactional
+    @Override
+    public Long register(CurationDTO curationDTO) {
+
+        Map<String, Object> entityMap = dtoToEntity(curationDTO);
+        Curation curation = (Curation) entityMap.get("curation");
+        List<CurationImage> curationImageList = (List<CurationImage>) entityMap.get("imgList");
+
+        curationRepository.save(curation);
+
+//        curationImageList.forEach(curationImage ->
+//                curationImageRepository.save(curationImage));
+
+        return curation.getCurationNo();
+    }
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -47,11 +66,11 @@ public class CurationServiceImpl implements CurationService {
         return curationDTOList;
     }
 
-    @Override
-    public void write(CurationDTO curationDTO) {
-        Curation curation = dtoToEntity(curationDTO);
-        curationRepository.save(curation);
-    }
+//    @Override
+//    public void write(CurationDTO curationDTO) {
+//        Curation curation = dtoToEntity(curationDTO);
+//        curationRepository.save(curation);
+//    }
 
 //    @Override
 //    public void modify(CurationDTO dto) {

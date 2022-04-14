@@ -47,16 +47,16 @@
                 <div class="pictrue-div" v-if="!inputImg">
                   <img 
                       class="pictrue-div-img"
-                      v-for="(img, idx) in contentsWithPic.imgs" 
+                      v-for="(img, idx) in tempImgList" 
                       :src="img.src" 
                       :alt="'pic'+idx"
                       :key="idx" />
                 </div>
 
                 <div class="write-div">
-                  <input type="text" placeholder="Title:" v-model="contentsWithPic.title">
+                  <input type="text" placeholder="Title:" v-model="contentsWithPic.curationTitle">
                   <textarea name="" id="" cols="30" rows="10" maxlength="500" placeholder="Contents"
-                  v-model="contentsWithPic.contents"/>
+                  v-model="contentsWithPic.curationText"/>
                 </div>
               </div>
 
@@ -103,7 +103,7 @@
               </div>
 
               <div class="write-area-nonpic-title">
-                <input type="text" placeholder="Title" v-model="contentsWithNonPic.title">
+                <input type="text" placeholder="Title" v-model="contentsWithNonPic.curationTitle">
               </div>
 
               <div class="write-div nonpic">
@@ -114,7 +114,7 @@
 
 
             <div class="hash-tag-div">
-              <input 
+              <!-- <input 
                   ref="hashTag"
                   class="hash-tag"
                   type="text"
@@ -122,7 +122,19 @@
                   @input="inputAutoWidth($event)"
                   v-model="tag.content" 
                   v-for="(tag, idx) in hashTagSet" 
-                  :key="idx">
+                  :key="idx"> -->
+              <div class="hash-tag"
+                    v-for="(tag, idx) in hashTagSet"
+                    :key="idx">
+                <p>#</p>
+                <input 
+                    type="text"
+                    ref="hashTag"
+                    @input="inputAutoWidth($event)"
+                    v-model="tag.content"
+                    maxlength="14">
+              </div>
+              
             </div>
             
           </div>
@@ -209,25 +221,30 @@ export default {
           content: ''
         },
       ],
+      tempImgList: [],
       openBool: true,
       withPic: true,
       imgNumberSet: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
       contentsWithPic: {
-        title: '',
-        contents: '',
-        imgs: {},
-        hashTag: [],
-        openBoolean: true,
+        email: sessionStorage.getItem('email'),
+        nickname: sessionStorage.getItem('nickName'),
+        curationTitle: '',
+        curationText: '',
+        imageDTOList: [],
+        hashtag: [],
+        open: true,
         cuCo: 'Curation'
       },
       contentsWithNonPic: {
-        title: '',
-        contents: '',
+        email: sessionStorage.getItem('email'),
+        nickname: sessionStorage.getItem('nickName'),
+        curationTitle: '',
+        curationText: '',
         pickedEmoji: 0,
         pickedColor: 'rgb(240, 230, 190)',
-        hashTag: ['', '', ''],
-        openBoolean: true,
-        imgList:[],
+        hashtag: [],
+        open: true,
+        imageDTOList:[],
         cuCo: 'Curation'
       },
       inputImg: true
@@ -238,9 +255,19 @@ export default {
       this.$refs.dndModal.openModal();
     },
     inputAutoWidth(e) {
-      e.target.style.width = 100 + (16 * e.target.value.length)+'px';
-      if(e.target.value.trim() == '') {
-        e.target.style.width = 130+'px';
+      const val = e.target.value;
+      // const kor = /^[ㄱ-ㅎ|가-힣|ㅏ-ㅣ|0-9|]+$/;
+      const eng = /^[a-z|A-Z|0-9|]+$/;
+
+      if(eng.test(val)) {
+        // console.log("eng", eng.test(val));
+        e.target.style.width = 120 + (6 * val.length)+'px';
+      } else {
+        // console.log("kor", kor.test(val));
+        e.target.style.width = 100 + (15 * val.length)+'px';
+      }
+      if(val.trim() == '') {
+        e.target.style.width = 140+'px';
       }
     },
     withPicEvent(id) {
@@ -265,32 +292,34 @@ export default {
       }
     },
     inspectNull() {
-      if(this.contentsWithPic.title
-          && this.contentsWithPic.contents
-          && this.contentsWithPic.imgs.length) return true;
+      if(this.contentsWithPic.curationTitle
+          && this.contentsWithPic.curationText
+          && this.contentsWithPic.imageDTOList.length ) return true;
       else false;
     },
     onSave() {
+      const pic = this.contentsWithPic;
+      const nonPic = this.contentsWithNonPic;
+
         console.log('저장을 눌렀다!')
         if (this.withPic == true && this.inspectNull()) {
-              this.$refs.hashTag.map((tag, id) => { 
-                this.contentsWithPic.hashTag[id] = tag.value;
-              });
+          console.log('Save with Image')
+          console.log(pic)
+          this.saveHashtag(pic);
 
-              console.log(this.hashTagSet);
-              console.log('Save with Image')
-              console.log(this.contentsWithPic)
+          console.log(pic.imageDTOList);
+          this.sendDataUseAxios(pic);
 
         } else if (this.withPic == false) {
-            this.$refs.textEditor.sendContents();
-            if (this.contentsWithNonPic.title
-                && this.contentsWithNonPic.contents != '<p></p>') {
-                  
+          this.$refs.textEditor.sendContents();
+
+            if (nonPic.curationTitle
+                && nonPic.curationText != '<p></p>') {
                   console.log('Save with No Image')
-                  this.$refs.hashTag.map((tag, id) => { 
-                    this.contentsWithNonPic.hashTag[id] = tag.value;
-                  });
-                  console.log(this.contentsWithNonPic)
+                  console.log(nonPic)
+
+                  this.saveHashtag(nonPic);
+                  this.sendDataUseAxios(nonPic);
                 }
 
             } else {
@@ -298,28 +327,78 @@ export default {
             }
         
     },
+    sendDataUseAxios(data) {
+    const calledAxios = this.$store.state.storedAxios;
+
+        console.log("data >>>>>", data)
+        const obj = {
+          email: data.email,
+          curationTitle: data.curationTitle,
+          curationText: data.curationText,
+          imageDTOList: data.imageDTOList[0],
+          hashtag: data.hashtag,
+          pickedEmoji: data.pickedEmoji,
+          pickedColor: data.pickedColor,
+          open: data.open
+        }
+          calledAxios.post('/mcol/note/makenote/picture', obj)
+            .then(res => console.log(res))
+            .catch(err => console.log(err));
+    },
+    saveHashtag(willSendContents) {
+      this.$refs.hashTag.map((tag) => {
+        if(tag.value.trim()) {
+          willSendContents.hashtag.push(tag.value.trim());
+        } 
+      });
+    },
+    sendImage(contentList, imgList) {
+      console.log("imgList >>>> ", imgList)
+      console.log("imgList >>>> ", contentList)
+
+      if(imgList.length !=  0) {
+        const a = this.$store.state.storedAxios;
+
+        let frm = new FormData();
+        for(let i = 0; i < imgList.length; i++) {
+            frm.append("imgList", imgList[i]);
+        }
+
+          a.post('/uploadimg', frm, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(res => {
+          contentList.push(res.data);
+          console.log(res.data);
+        }).catch(err => {
+          console.log(err);
+        });
+      }
+
+    },
     receivedEditorContents(contents, imgList) {
-      this.contentsWithNonPic.contents = contents;
-      this.contentsWithNonPic.imgList = imgList;
-      console.log('makeNote', imgList)
+      this.contentsWithNonPic.curationText = contents;
+      this.tempImgList = imgList;
+      // this.sendImage(this.contentsWithNonPic.imageDTOList, imgList);
+      console.log('receivedEditorContents', imgList)
     },
     openBoolToggle(e, idx) {
       if (idx == 4) {
         this.openBool = true;
-        this.contentsWithPic.openBoolean = this.openBool;
-        this.contentsWithNonPic.openBoolean = this.openBool;
+        this.contentsWithPic.open = this.openBool;
+        this.contentsWithNonPic.open = this.openBool;
 
       } else if (idx == 5) {
         this.openBool = false;
-        this.contentsWithPic.openBoolean = this.openBool;
-        this.contentsWithNonPic.openBoolean = this.openBool;
+        this.contentsWithPic.open = this.openBool;
+        this.contentsWithNonPic.open = this.openBool;
       }
     },
-    receiveNoteImg(imgs) {
-      if(imgs.length != 0) {
-        this.contentsWithPic.imgs = imgs;
-
-        console.log(imgs);
+    receiveNoteImg(imgList) {
+      if(imgList.length != 0) {
+        this.sendImage(this.contentsWithPic.imageDTOList, imgList);
+        this.tempImgList = imgList;
         this.inputImg = false;
       }
     },
@@ -582,18 +661,34 @@ header {
 }
 .hash-tag-div {
   width: 100%;
-  text-align: center;
+  display: flex;
+  justify-content: center;
   margin-top: 30px;
   margin-bottom: 100px;
 }
 .hash-tag {
-  width: 150px;
-  height: 40px;
+  display: flex;
+  align-items: center;
   background: white;
-  border-radius: 20px;;
-  margin-left: 20px;
-  font-size: 18px;
+  border: 1px solid black;
+  border-radius: 20px;
+  margin: 0 10px;
+  padding: 0 20px;
+  font-size: 20px;
   font-weight: bold;
   text-align: center;
+}
+.hash-tag input {
+  width: 130px;
+  height: 40px;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  /* background: red; */
+  margin: 0 5px;
+}
+.hash-tag input:focus {
+  outline: none;
 }
 </style>

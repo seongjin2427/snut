@@ -51,6 +51,14 @@ public class CurationController {
         return new ResponseEntity(a, HttpStatus.OK);
     }
 
+    @PostMapping(value = "/mcol/note/makenote/picture", consumes = MediaType.ALL_VALUE)
+    public ResponseEntity curationRegister(@RequestBody CurationDTO curationDTO) {
+        log.info("curationDTO >>>> " + curationDTO);
+        Long curationNo = curationService.register(curationDTO);
+//        Long curationNo = 1L;
+        return new ResponseEntity(curationNo, HttpStatus.OK);
+    }
+
     /////////////////////////////////////////////////////////////////////////////////
 
 //    @GetMapping("/list")

@@ -1,6 +1,8 @@
 package com.curation.snut.dto;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import com.curation.snut.entity.Member;
@@ -25,11 +27,17 @@ public class CurationDTO {
     private String curationTitle;
     private String curationText;
     private Set hashtag;
+    private Long pickedEmoji;
+    private String pickedColor;
+    private boolean open;
+
     private LocalDateTime regDate;
     private LocalDateTime modDate;
-    private boolean open;
     // 검색용
     private String type;
     private String keyword;
+
+    @Builder.Default
+    private List<CurationImageDTO> imageDTOList = new ArrayList<>();
 
 }
