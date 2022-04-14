@@ -30,8 +30,13 @@ public class Curation extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member writer;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> hashtag = new HashSet<>();
+//    @ElementCollection(fetch = FetchType.EAGER)
+//    private Set<String> hashtag = new HashSet<>();
+
+    @OneToMany
+    private Set<Hashtag> hashtag = new HashSet<>();
+
+
 
 
 //    @ManyToMany(fetch = FetchType.EAGER)

@@ -22,7 +22,7 @@ public interface CurationRepository extends JpaRepository<Curation, Long> {
     List findCurationsByCollectionNo(Long no);
 
 
-    @Query("select distinct cu from Curation cu join cu.hashtag h where h like concat('%', :word, '%')")
+    @Query("select distinct cu from Curation cu join cu.hashtag h where h.tag like concat('%', :word, '%')")
     List findCurationByWord(@Param("word") String word);
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

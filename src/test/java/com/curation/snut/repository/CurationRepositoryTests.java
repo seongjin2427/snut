@@ -1,18 +1,18 @@
 package com.curation.snut.repository;
 
-import com.curation.snut.entity.ColCuration;
-import com.curation.snut.entity.Curation;
-import com.curation.snut.entity.Member;
-import com.curation.snut.entity.SnutCollection;
+import com.curation.snut.entity.*;
 import com.curation.snut.security.role.MemberRole;
 import com.curation.snut.service.CurationService;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.IntStream;
 
@@ -34,6 +34,9 @@ class CurationRepositoryTests {
 
     @Autowired
     private CurationService curationService;
+
+    @Autowired
+    private HashtagRepository hashtagRepository;
 
     @Test
     void makeDummies() {
@@ -57,69 +60,84 @@ class CurationRepositoryTests {
 
     }
 
+    @Transactional
+    @Commit
     @Test
     void makeCurationDummies() {
 
         IntStream.rangeClosed(1, 300).forEach(i -> {
 
             long random5 = (long) (Math.floor(Math.random() * 11)+1);
-            long random1 = (long) (Math.floor(Math.random() * 10)+1);
-            long random2 = (long) (Math.floor(Math.random() * 10)+1);
-            long random3 = (long) (Math.floor(Math.random() * 11)+1);
+            long random1 = (long) (Math.floor(Math.random() * 300)+1);
+            long random2 = (long) (Math.floor(Math.random() * 300)+1);
+            long random3 = (long) (Math.floor(Math.random() * 300)+1);
 
             System.out.println("random5 >>> "+random5);
 
-            Set setString = new HashSet();
-            setString.add("hash"+random1);
-            setString.add("hash"+random2);
-            setString.add("hash"+random3);
+            Hashtag hashtag1 = Hashtag.builder().tag("hashtag"+random1).build();
+            Hashtag hashtag2 = Hashtag.builder().tag("hashtag"+random2).build();
+            Hashtag hashtag3 = Hashtag.builder().tag("hashtag"+random3).build();
+
+            Set hashtagSet = new HashSet();
+            hashtagSet.add(hashtag1);
+            hashtagSet.add(hashtag2);
+            hashtagSet.add(hashtag3);
+
+            hashtagRepository.save(hashtag1);
+            hashtagRepository.save(hashtag2);
+            hashtagRepository.save(hashtag3);
+
             Curation curation = Curation.builder()
                     .curationTitle("Curation Title...." + i)
                     .curationText("Curation Text....." + i)
                     .writer(Member.builder().email("email" + random5 + "@gmail.com").build())
-                    .hashtag(setString)
+                    .hashtag(hashtagSet)
                     .open(true)
                     .build();
 
             curationRepository.save(curation);
 
+            System.out.println(curation);
         });
     }
 
-    @Test
-    void findHashtagTest() {
-
-        Set a = new HashSet<>();
-        a.add("hash1");
-//        List<Curation> list = curationRepository.findCurationByWord(a);
-
-//        System.out.println(list.size());
-//        Curation bb = list.get(30);
-//        System.out.println(bb.getCurationText());
-    }
-
+    @Transactional
+    @Commit
     @Test
     void makeCollectionDummies() {
 
         IntStream.rangeClosed(1, 100).forEach(i -> {
             long random1 = (long) (Math.floor(Math.random() * 100) + 1);
 
-            long random2 = (long) (Math.floor(Math.random() * 100)+1);
-            long random3 = (long) (Math.floor(Math.random() * 100)+1);
-            long random4 = (long) (Math.floor(Math.random() * 100)+1);
+            long random2 = (long) (Math.floor(Math.random() * 300)+1);
+            long random3 = (long) (Math.floor(Math.random() * 300)+1);
+            long random4 = (long) (Math.floor(Math.random() * 300)+1);
 
-            Set setString = new HashSet();
-            setString.add("hash"+random2);
-            setString.add("hash"+random3);
-            setString.add("hash"+random4);
+            Hashtag hashtag1 = Hashtag.builder().tag("hashtag"+random2).build();
+            Hashtag hashtag2 = Hashtag.builder().tag("hashtag"+random3).build();
+            Hashtag hashtag3 = Hashtag.builder().tag("hashtag"+random4).build();
+
+            Set hashtagSet = new HashSet();
+            hashtagSet.add(hashtag1);
+            hashtagSet.add(hashtag2);
+            hashtagSet.add(hashtag3);
+
+            hashtagRepository.save(hashtag1);
+            hashtagRepository.save(hashtag2);
+            hashtagRepository.save(hashtag3);
+
+
                 SnutCollection collection = SnutCollection.builder()
                         .collectionTitle("Collection Title...." + i)
                         .collectionText("Collection Text..." + i)
                         .writer(Member.builder().email("email" + random1 + "@gmail.com").build())
-                        .hashtag(setString)
+                        .hashtag(hashtagSet)
                         .build();
 
                 collectionRepository.save(collection);
+
+            System.out.println(collection);
+            System.out.println(hashtagSet);
         });
     }
 
@@ -159,18 +177,9 @@ class CurationRepositoryTests {
 
 //        Set<String> a = new HashSet<>();
 //        a.add("hash1");
-        List list = curationRepository.findCurationByWord("ash2");
+        List list = curationRepository.findCurationByWord("hashtag168");
 
         System.out.println(list.size());
-        int bb = 0;
-        for(Object a : list) {
-            Curation b = (Curation) a;
-            System.out.println(b.getCurationNo());
-            System.out.println(b.getHashtag());
-            bb++;
-        }
-        System.out.println("bb >> " + bb);
-
     }
 
     @Test

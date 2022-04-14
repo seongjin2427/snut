@@ -25,8 +25,11 @@ public class SnutCollection extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     private Member writer;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> hashtag = new HashSet<>();
+//    @ElementCollection(fetch = FetchType.EAGER)
+//    private Set<String> hashtag = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private Set<Hashtag> hashtag = new HashSet<>();
 
 //    @ManyToMany(fetch = FetchType.EAGER)
 //    @JoinColumn(name = "curation_col_no")
