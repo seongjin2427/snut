@@ -6,6 +6,7 @@ import com.curation.snut.service.CommentService;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 // import org.springframework.http.MediaType;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 // import org.springframework.web.bind.annotation.RequestMapping;
 // import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.data.web.SortDefault;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -30,7 +31,7 @@ public class CommentTest {
 
     @GetMapping("/comment")
     public String comment(Model model,
-            @PageableDefault(size = 2, sort = "cno", direction = Direction.ASC) Pageable pageable,
+            @PageableDefault(size = 2) Pageable pageable,
             Long no) {
         log.info("comment......");
         Page<CommentDTO> commentDTOList = commentService.commentList(pageable, no);

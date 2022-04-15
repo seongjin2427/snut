@@ -37,6 +37,15 @@ public class CommentServiceImpl implements CommentService {
 
     }
 
+    @Override
+    public Page<CommentDTO> ancommentList(Pageable pageable, Long no) {
+        Page<CommunityComment> communityComments = commentRepository.anlist(pageable, no);
+        List<CommentDTO> commentDTOList = communityComments.stream()
+                .map(comment -> entityToDTO(comment)).collect(Collectors.toList());
+        return new PageImpl<>(commentDTOList, pageable, communityComments.getTotalElements());
+
+    }
+
     @Transactional
     @Override
     public void delete(Long id) {
@@ -59,4 +68,5 @@ public class CommentServiceImpl implements CommentService {
     public Long commnetCnt(Long no) {
         return commentRepository.commentCnt(no);
     }
+
 }

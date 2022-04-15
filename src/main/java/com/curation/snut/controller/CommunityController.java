@@ -6,6 +6,7 @@ import java.util.Map;
 import com.curation.snut.dto.CommuJoinDTO;
 import com.curation.snut.dto.CommunityDTO;
 import com.curation.snut.entity.CommuJoin;
+import com.curation.snut.entity.CommuJoinTemp;
 import com.curation.snut.service.CommuJoinService;
 import com.curation.snut.service.CommuJoinTempService;
 import com.curation.snut.service.CommunityService;
@@ -38,6 +39,13 @@ public class CommunityController {
         }
     }
 
+    @GetMapping(value = "/myCommuList") // 내가 가입한 커뮤 (내가 만든 커뮤 제외)
+    public ResponseEntity<List<CommuJoin>> mycommuList(@RequestBody Map body) {
+        String memberEmail = body.get("memberEmail").toString();
+        List<CommuJoin> list = commuJoinService.findJoinCommu(memberEmail);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
     @PostMapping(value = "/commuList", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> commuReg(CommunityDTO communityDTO) {
         communityService.write(communityDTO);
@@ -59,27 +67,34 @@ public class CommunityController {
 
     }
 
-    @PostMapping(value = "/commuJoinApply")
-    public ResponseEntity<String> commuJoinApply(@RequestBody Map body) {
-        commuJoinTempService.joinApply(body);
-        return new ResponseEntity<>("신청완료", HttpStatus.OK);
+    @PostMapping(value = "/commuJoinApply") // 커뮤가입신청
+    public ResponseEntity<String> commuJoinApply(CommuJoinDTO commuJoinDTO) {
+        String message = commuJoinTempService.joinApply(commuJoinDTO);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/commuJoinAccept")
+    @GetMapping(value = "/commuMyPage") // 가입신청보는 페이지
+    public ResponseEntity<List<CommuJoinTemp>> commuMyPage(@RequestBody Map body) {
+        String memberEmail = body.get("memberEmail").toString();
+        List<CommuJoinTemp> joinAlertList = commuJoinTempService.joinAlertList(memberEmail);
+        return new ResponseEntity<>(joinAlertList, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/commuJoinAccept") // 가입신청 수락
     public ResponseEntity<?> commuJoinAccept(CommuJoinDTO commuJoinDTO) {
         commuJoinService.joinAccept(commuJoinDTO);
         commuJoinTempService.joinAcceptAfterProcess(commuJoinDTO);
         return new ResponseEntity<>("수락 완료", HttpStatus.OK);
     }
 
-    @GetMapping(value = "/commuJoinList", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/commuJoinList", produces = MediaType.APPLICATION_JSON_VALUE) // 내가 관리자인 커뮤니티에 가입한 유저 목록
     public ResponseEntity<List<CommuJoin>> commuJoinList(@RequestBody Map body) {
         String memberEmail = body.get("memberEmail").toString();
         List<CommuJoin> joinList = commuJoinService.joinList(memberEmail);
         return new ResponseEntity<>(joinList, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/commuJoinList/commuJoinDelete")
+    @PostMapping(value = "/commuJoinList/commuJoinDelete") // 가입한 유저 강퇴 (권한 삭제)
     public ResponseEntity<?> commuJoinDelete(CommuJoinDTO commuJoinDTO) {
         commuJoinService.joinDelete(commuJoinDTO);
         return new ResponseEntity<>("강퇴 완료", HttpStatus.OK);

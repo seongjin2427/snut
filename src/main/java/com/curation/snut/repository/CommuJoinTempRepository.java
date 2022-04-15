@@ -13,7 +13,7 @@ import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
 public interface CommuJoinTempRepository extends JpaRepository<CommuJoinTemp, CommuJoinTempId> {
 
     // 신청자 목록
-    @EntityGraph(attributePaths = { "member", "community" }, type = EntityGraphType.LOAD)
-    @Query("select cjt from CommuJoinTemp cjt where cjt.tCommunity.creater.email =:commuEmail")
-    List<CommuJoinTemp> joinAlert(String commuEmail);
+    @EntityGraph(attributePaths = { "tMember", "tCommunity" }, type = EntityGraphType.LOAD)
+    @Query("select cjt from CommuJoinTemp cjt where cjt.tCommunity.creater.email =:memberEmail")
+    List<CommuJoinTemp> joinAlert(String memberEmail);
 }

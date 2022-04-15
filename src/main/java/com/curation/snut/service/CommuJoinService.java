@@ -8,7 +8,9 @@ import com.curation.snut.entity.CommuJoin;
 public interface CommuJoinService {
     void joinAccept(CommuJoinDTO commuJoinDTO);
 
-    public void joinDelete(CommuJoinDTO commuJoinDTO);
+    void joinDelete(CommuJoinDTO commuJoinDTO);
 
-    public List<CommuJoin> joinList(Long no, String email);
+    List<CommuJoin> findJoinCommu(String email);
+
+    List<CommuJoin> joinList(String email);
 }

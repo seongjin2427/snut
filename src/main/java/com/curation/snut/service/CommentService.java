@@ -20,6 +20,8 @@ public interface CommentService {
 
         public Page<CommentDTO> commentList(Pageable pageable, Long no);
 
+        public Page<CommentDTO> ancommentList(Pageable pageable, Long no);
+
         default CommunityComment dtoToEntity(CommentDTO dto) {
 
                 Member member = Member.builder()

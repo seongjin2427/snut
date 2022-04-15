@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.curation.snut.entity.CommuJoin;
+import com.curation.snut.entity.Member;
 import com.curation.snut.idclass.CommuJoinId;
 
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -20,5 +21,9 @@ public interface CommuJoinRepository extends JpaRepository<CommuJoin, CommuJoinI
     @EntityGraph(attributePaths = { "jMember", "jCommunity" }, type = EntityGraphType.LOAD)
     @Query("select cj from CommuJoin cj where cj.jCommunity.creater.email =:email")
     List<CommuJoin> findMyCommu(String email);
+
+    @EntityGraph(attributePaths = { "jMember", "jCommunity" }, type = EntityGraphType.LOAD)
+    @Query("select cj from CommuJoin cj where cj.jMember.email =:email")
+    List<CommuJoin> findJoinCommu(String email);
 
 }

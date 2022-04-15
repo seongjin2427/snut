@@ -1,12 +1,15 @@
 package com.curation.snut.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.curation.snut.dto.CommuJoinDTO;
 import com.curation.snut.entity.CommuJoinTemp;
 import com.curation.snut.entity.Community;
 import com.curation.snut.entity.Member;
+import com.curation.snut.idclass.CommuJoinId;
 import com.curation.snut.idclass.CommuJoinTempId;
+import com.curation.snut.repository.CommuJoinRepository;
 import com.curation.snut.repository.CommuJoinTempRepository;
 
 import org.springframework.stereotype.Service;
@@ -19,20 +22,33 @@ import lombok.RequiredArgsConstructor;
 public class CommuJoinTempServiceImpl implements CommuJoinTempService {
 
         private final CommuJoinTempRepository commuJoinTempRepository;
+        private final CommuJoinRepository commuJoinRepository;
 
         @Override
-        public void joinApply(Map body) {
-                Member member = Member.builder()
-                                .email(body.get("email").toString())
-                                .build();
-                Community community = Community.builder()
-                                .no(Long.valueOf(body.get("no").toString()))
-                                .build();
+        public String joinApply(CommuJoinDTO commuJoinDTO) {
+                CommuJoinTempId id = CommuJoinTempId.builder().tMember(commuJoinDTO.getMember().getEmail())
+                                .tCommunity(commuJoinDTO.getCommunity().getNo()).build();
+                CommuJoinId id2 = CommuJoinId.builder().jMember(commuJoinDTO.getMember().getEmail())
+                                .jCommunity(commuJoinDTO.getCommunity().getNo()).build();
+                if (commuJoinTempRepository.findById(id).isPresent()) {
+                        return "중복신청";
+                } else if (commuJoinRepository.findById(id2).isPresent()) {
+                        return "이미 가입";
+                } else {
+                        Member member = Member.builder()
+                                        .email(commuJoinDTO.getMember().getEmail())
+                                        .build();
+                        Community community = Community.builder()
+                                        .no(commuJoinDTO.getCommunity().getNo())
+                                        .build();
 
-                CommuJoinTemp commuJoinTemp = CommuJoinTemp.builder()
-                                .tMember(member)
-                                .tCommunity(community).build();
-                commuJoinTempRepository.save(commuJoinTemp);
+                        CommuJoinTemp commuJoinTemp = CommuJoinTemp.builder()
+                                        .tMember(member)
+                                        .tCommunity(community).build();
+                        commuJoinTempRepository.save(commuJoinTemp);
+                        return "가입 완료";
+                }
+
         }
 
         @Transactional
@@ -42,6 +58,11 @@ public class CommuJoinTempServiceImpl implements CommuJoinTempService {
                                 .tCommunity(commuJoinDTO.getCommunity().getNo()).build();
                 commuJoinTempRepository.deleteById(id);
 
+        }
+
+        @Override
+        public List<CommuJoinTemp> joinAlertList(String memberEmail) {
+                return commuJoinTempRepository.joinAlert(memberEmail);
         }
 
 }

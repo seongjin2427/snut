@@ -22,21 +22,27 @@ public class CommuJoinServiceImpl implements CommuJoinService {
 
     @Override
     public void joinAccept(CommuJoinDTO commuJoinDTO) {
-        Member member = Member.builder()
-                .email(commuJoinDTO.getMember().getEmail())
-                .build();
-        Community community = Community.builder()
-                .no(commuJoinDTO.getCommunity().getNo())
-                .build();
 
-        CommuJoin commuJoin = CommuJoin.builder().jMember(member).jCommunity(community).build();
+        CommuJoinId id = CommuJoinId.builder().jMember(commuJoinDTO.getMember().getEmail())
+                .jCommunity(commuJoinDTO.getCommunity().getNo()).build();
 
-        commuJoinRepository.save(commuJoin);
+        if (!(commuJoinRepository.findById(id).isPresent())) {
+            Member member = Member.builder()
+                    .email(commuJoinDTO.getMember().getEmail())
+                    .build();
+            Community community = Community.builder()
+                    .no(commuJoinDTO.getCommunity().getNo())
+                    .build();
+
+            CommuJoin commuJoin = CommuJoin.builder().jMember(member).jCommunity(community).build();
+
+            commuJoinRepository.save(commuJoin);
+        }
     }
 
     @Override
-    public List<CommuJoin> joinList(Long no, String email) {
-        return commuJoinRepository.findMyCommu(no, email);
+    public List<CommuJoin> joinList(String email) {
+        return commuJoinRepository.findMyCommu(email);
     }
 
     @Transactional
@@ -46,6 +52,11 @@ public class CommuJoinServiceImpl implements CommuJoinService {
                 .jCommunity(commuJoinDTO.getCommunity().getNo()).build();
         commuJoinRepository.deleteById(id);
 
+    }
+
+    @Override
+    public List<CommuJoin> findJoinCommu(String email) {
+        return commuJoinRepository.findJoinCommu(email);
     }
 
 }
