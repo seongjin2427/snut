@@ -15,9 +15,11 @@
               height="38" />
         </div>
         <div class="button-area">
-          <common-button @click="list" v-for="(list,idx) in dropdownData" :key="idx" buttonName="정렬" width="80" height="35" marginTop="5" marginRight="20" />
-          <div v-if="active">
-            Menu
+<!--   dropdown menu-->
+          <div  >
+            <div v-for="(list, idx) in dropdownData" :key="idx" class="dropdown">
+              <common-button @click="openlist(idx)"  v-if=" openData || active == idx"  :buttonName="list" width="80" height="35" marginTop="5" marginRight="20" />
+            </div>
           </div>
           <img src="@/assets/btn_hamburger.png" alt="nav_btn" @click="openNavBar">
         </div>
@@ -75,15 +77,10 @@ export default {
       }, 
       loginSignText: 'If You Want To See More, Just Sign In!',
       searchedWord: '',
-      active:false,
 
-      dropdownData: [
-      {list:"전체보기"},
-      {list: "큐레이션"},
-      {list:"컬렉션"},
-      {list:"최신순"},
-      {list:"오래된순"}
-    ]
+      dropdownData: ["전체보기","큐레이션","컬렉션","최신순","오래된순"],
+      active: 0,
+      openData: false
     }
   },
   methods: {
@@ -101,8 +98,12 @@ export default {
         this.$refs.inputBox.clearWord();
       }
     },
-list(){
-this.active = !this.active
+    openlist(idx){
+      console.log(idx)
+      let temp = this.dropdownData[0];
+      this.dropdownData[0] = this.dropdownData[idx];
+      this.dropdownData[idx] = temp;
+      this.openData = !this.openData
 },
     createDummies(store) {
       const INPUT_NUMBER = 11;
@@ -259,4 +260,5 @@ header {
   margin-top: 20px;
   margin-right: 20px;
 }
+
 </style>
