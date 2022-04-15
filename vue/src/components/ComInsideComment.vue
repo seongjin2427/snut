@@ -17,7 +17,10 @@
 
                 <div class="box-post">
                   <p class="desc-info">
-                    <span class="origin-comment" tabindex="0">{{ reply.content }}</span>
+                    <span v-if="!reply.editcomment" class="origin-comment" tabindex="0">{{ reply.content }}</span>
+                  <textarea v-if="reply.editcomment">
+
+                  </textarea>
                   </p>
                 </div>
 
@@ -74,7 +77,7 @@
 
                     <div id="moreContent">
                   <span id="Content">
-                <span class="moreDetail" id="modifyBoard"  @click="modifycom">수정</span><br>
+                <span class="moreDetail" id="modifyBoard"  @click="modifycom(idx)">수정</span><br>
                     <span class="moreDetail" id="deleteBoard" @click="deletecom($event,idx)">삭제</span><br>
                   </span>
                     </div>
@@ -148,17 +151,20 @@ export default {
         {
           getTime: "time1",
           nickName: "nickName1",
-          content: "comment1"
+          content: "comment1",
+          editcomment: false
         },
         {
           getTime: "time2",
           nickName: "nickName2",
-          content: "comment2"
+          content: "comment2",
+          editcomment: false
         },
         {
           getTime: "time3",
           nickName: "nickName3",
-          content: "comment3"
+          content: "comment3",
+          editcomment: false
         },
       ],
       modifyleft: 0,
@@ -182,8 +188,8 @@ export default {
         this.modalnumber = -1
       }
     },
-    modifycom() {
-
+    modifycom(idx) {
+      this.communityDataSet[idx].editcomment =!this.communityDataSet[idx].editcomment
     },
     deletecom(e, idx) {
       // alert("정말 삭제하시겠습니까?")
