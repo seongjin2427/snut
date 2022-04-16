@@ -1,9 +1,13 @@
 package com.curation.snut.controller;
 
 import com.curation.snut.dto.UploadResultDTO;
+import io.github.classgraph.Resource;
 import lombok.extern.log4j.Log4j2;
 import net.coobird.thumbnailator.Thumbnailator;
+import nonapi.io.github.classgraph.utils.FileUtils;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,9 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,15 +30,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+@CrossOrigin("*")
 @RestController
 @Log4j2
-@RequestMapping("/api")
+@RequestMapping
 public class UploadController {
 
     @Value("${com.curation.snut.path}")
     private String uploadPath;
 
-    @PostMapping(value = "/uploadimg")
+    @PostMapping(value = "/api/uploadimg")
     public ResponseEntity<List<UploadResultDTO>> uploadImages(@RequestParam("imgList") MultipartFile[] uploadFiles) {
 
         for(MultipartFile uploadFile : uploadFiles) {
@@ -84,11 +87,12 @@ public class UploadController {
 //        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
-    @GetMapping("/getimg")
-    public ResponseEntity<byte[]> getFiles(String fileName) {
+
+    @GetMapping(value = "/get/img", produces = MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody ResponseEntity<byte[]> getFiles(@RequestParam Map<String, Object> params) {
 
         ResponseEntity<byte[]> result = null;
-
+        String fileName = (String) params.get("fileName");
         try {
             String srcFileName = URLDecoder.decode(fileName, "UTF-8");
             log.info("fileName >>> " + srcFileName);
@@ -100,13 +104,13 @@ public class UploadController {
             HttpHeaders header = new HttpHeaders();
 
             header.add("Content-Type", Files.probeContentType(file.toPath()));
+
             result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
         } catch (Exception e) {
             log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return result;
-
     }
 
     @PostMapping("/removeFile")

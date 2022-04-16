@@ -91,24 +91,15 @@ export default {
         }
       ],
       selectedCurationsData: [],
-      sendToCuration: [[]]
+      sendToCuration: [],
     }
   },
   methods: {
     openNavBar() {
       this.$refs.navBar.openNavBar()
     },
-    openModal(cuData, moveToPageBool) {
-      this.$refs.modal.openModal(cuData, moveToPageBool);
-      
-      // if (cuData.cuCo == 'Curation') {
-      //   this.$refs.modal.openModal(cuData, moveToPageBool);
-      // } else if (cuData.cuCo == "Collection") {
-      //   console.log("StoreCollections id", cuData.id);
-      //   this.$router.push({
-      //     path: `/mcol/store/${cuData.id}/${cuData.nickName}`
-      //   });
-      // }
+    openMakeModal() {
+      this.$refs.makeModal.openModal();
     },
     startDrag(event, item) {
       event.dataTransfer.dropEffect = "move";
@@ -150,7 +141,6 @@ export default {
       this.selectedCurationsData = arr;
             
       console.log("data", this.selectedCurationsData);
-      console.log("arr", arr);
     
     },
     btnMethods(idx){
@@ -158,6 +148,9 @@ export default {
         console.log('발행하기 버튼을 눌렀다!');
         let sendArr = Array.from(this.selectedCurationsData);
         console.log("sendArr", sendArr);
+        
+        this.$store.commit('setSendToCuration', sendArr);
+        this.$router.push('/mcol/mc/save');
 
         this.resetSelectMode();
       } else {

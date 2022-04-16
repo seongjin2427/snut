@@ -117,7 +117,7 @@ export default {
     },
     receiveNoteImg(imgList) {
       const key = this.$store.state.imbbKey;
-
+      let sendImgList = [];
       let body = new FormData();
       if(imgList.length != 0) {
 
@@ -128,15 +128,17 @@ export default {
           
           axios.post(`https://api.imgbb.com/1/upload?key=${key}`, body)
             .then(res => {
-                // console.log(res)
+                console.log(res)
                 console.log(res.data.data.display_url)
-                this.editor.chain().focus().setImage({ src: res.data.data.display_url }).run();
-                
+                const imgUrl = res.data.data.display_url
+                this.editor.chain().focus().setImage({ src: imgUrl }).run();
+
+                sendImgList[i] = {};
+                sendImgList[i].path = imgUrl;
               })
             }
         
-
-        // this.imgList = imgList;
+        // this.imgList = sendImgList;
       }
     },
     sendContents() {

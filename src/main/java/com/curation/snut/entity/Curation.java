@@ -34,7 +34,7 @@ public class Curation extends BaseEntity {
 //    @ElementCollection(fetch = FetchType.EAGER)
 //    private Set<String> hashtag = new HashSet<>();
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<Hashtag> hashtag = new HashSet<>();
 
 

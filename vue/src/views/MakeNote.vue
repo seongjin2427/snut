@@ -317,7 +317,8 @@ export default {
                 && nonPic.curationText != '<p></p>') {
                   console.log('Save with No Image')
                   console.log(nonPic)
-
+                  console.log("this.tempImgList", this.tempImgList);
+                  nonPic.imageDTOList = this.tempImgList;
                   this.saveHashtag(nonPic);
                   this.sendDataUseAxios(nonPic);
                 }
@@ -379,7 +380,7 @@ export default {
     },
     receivedEditorContents(contents, imgList) {
       this.contentsWithNonPic.curationText = contents;
-      this.tempImgList = imgList;
+      // this.tempImgList = imgList;
       // this.sendImage(this.contentsWithNonPic.imageDTOList, imgList);
       console.log('receivedEditorContents', imgList)
     },

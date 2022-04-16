@@ -27,11 +27,11 @@ public class CurationController {
 
     // 성진
     @RequestMapping(value = "/mcol/store", method = RequestMethod.GET, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List cuListByCollectionNo(@RequestParam Map body) {
-        log.info("cuListByCollectionNo............");
-        log.info("no >>>" + body.get("collectionId"));
-        Long a = Long.parseLong((String) body.get("collectionId"));
-        return curationService.getCurationsByCollectionNo(a);
+    public CurationDTO cuListByCurationNo(@RequestParam Map body) {
+        log.info("cuListByCurationNo............");
+        log.info("no >>>" + body.get("curationId"));
+        Long a = Long.parseLong((String) body.get("curationId"));
+        return curationService.getCurationsByCurationNo(a);
     }
 
     @RequestMapping(value = "/main", method = RequestMethod.GET, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -58,6 +58,14 @@ public class CurationController {
 //        Long curationNo = 1L;
         return new ResponseEntity(curationNo, HttpStatus.OK);
     }
+
+//    @PostMapping(value = "/mcol/mc", consumes = MediaType.ALL_VALUE)
+//    public ResponseEntity collectionRegister(@RequestBody SnutCollectionDTO collectionDTO) {
+//        log.info("collectionDTO >>>>>>>> " + collectionDTO);
+//        Long collectionNo = snutCollectionService
+//
+//        return new ResponseEntity("굳", HttpStatus.OK);
+//    }
 
     /////////////////////////////////////////////////////////////////////////////////
 

@@ -11,20 +11,27 @@ export const store = createStore({
           token: sessionStorage.getItem('token'), // header의 속성
         },
       }),
-      imbbKey: "8749b3a6ce349d7a69b2f7ad2994ee28"
+      imbbKey: "8749b3a6ce349d7a69b2f7ad2994ee28",
+      sendToCuration: []
     }
   },
   getters: {
     getMessage(state) {
       return state.message;
     },
+    getSendToCuration(state) {
+      return state.sendToCuration;
+    }
   }, 
   mutations: {
     setMessage(state, text) {
       state.message = text;
     },
+    setSendToCuration(state, arr) {
+      console.log("arr", arr);
+      state.sendToCuration = arr;
+    }
   }, 
   actions: {
-
   }
 });

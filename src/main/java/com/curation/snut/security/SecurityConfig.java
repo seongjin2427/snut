@@ -44,6 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/register").permitAll()
                 .antMatchers("/jwt/login").permitAll()
+                .antMatchers("/get/**/*").permitAll()
                 .anyRequest().permitAll();
 //        http.rememberMe().tokenValiditySeconds(60 * 60 * 24 * 7).userDetailsService(memberUDService);
         http.addFilterBefore(apiCheckFilter(), UsernamePasswordAuthenticationFilter.class);

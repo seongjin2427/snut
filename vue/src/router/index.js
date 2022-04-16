@@ -12,6 +12,7 @@ import StoreCollections from '@/views/StoreCollections.vue';
 import StoreColCurations from '@/views/StoreColCurations.vue';
 import MakeCommunity from '@/views/MakeCommunity.vue';
 import MakeCollection from '@/views/MakeCollection.vue';
+import MakeColSave from '@/views/MakeColSave.vue';
 
 import About from "@/views/About.vue";
 import Faq from "@/views/Faq.vue";
@@ -58,6 +59,11 @@ const routes = [
     path: '/mcol/mc',
     component: MakeCollection,
     name: "MakeCollection"
+  },
+  { 
+    path: '/mcol/mc/save',
+    component: MakeColSave,
+    name: "MakeColSave"
   },
   { 
     path: '/mcol/note',

@@ -15,6 +15,8 @@ public interface SnutCollectionService {
     // 성진
     List<SnutCollectionDTO> getCollectionsByWord(String word);
 
+    Long snutCollectionRegister(SnutCollectionDTO snutCollectionDTO);
+
     default SnutCollectionDTO colToColDTO(SnutCollection collection) {
 
         SnutCollectionDTO dto = SnutCollectionDTO.builder()
@@ -30,7 +32,6 @@ public interface SnutCollectionService {
     }
 
     default SnutCollection colDTOToCol(SnutCollectionDTO collectionDTO) {
-
 
         SnutCollection collection = SnutCollection.builder()
                 .collectionNo(collectionDTO.getCollectionNo())

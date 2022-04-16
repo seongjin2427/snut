@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 
 import com.curation.snut.entity.Curation;
 
+import com.curation.snut.entity.CurationImage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -18,12 +19,22 @@ import org.springframework.data.repository.query.Param;
 public interface CurationRepository extends JpaRepository<Curation, Long> {
 
     // 성진
-    @Query("select co.curation from ColCuration co where co.snutCollection.collectionNo = :no order by co.curation.modDate asc")
+//    @Query("select co.curation, ci from ColCuration co left outer join CurationImage ci on co.curation.curationNo = ci.curation.curationNo where co.snutCollection.collectionNo = :no group by co.curation order by co.curation.modDate asc")
+//    List findCurationsByCollectionNo(Long no);
+    @Query("select co.curation from ColCuration co where co.snutCollection.collectionNo = :no")
     List findCurationsByCollectionNo(Long no);
 
+    @Query("select cu from Curation cu where cu.curationNo = :no order by cu.modDate asc")
+    Curation findCurationsByCurationNo(Long no);
 
-    @Query("select distinct cu from Curation cu join cu.hashtag h where h.tag like concat('%', :word, '%')")
-    List findCurationByWord(@Param("word") String word);
+    @Query("select ci from CurationImage ci where ci.curation.curationNo = :no order by ci.ciid asc")
+    List<CurationImage> findCurationImageByCurationNo(Long no);
+
+
+//    @Query("select cu, ci from Curation cu join CurationImage ci on ci.curation.curationNo = cu.curationNo join cu.hashtag h where h.tag like concat('%', :word, '%') group by cu")
+    @Query("select cu.curationNo, ci.ciid from Curation cu join CurationImage ci on ci.curation.curationNo = cu.curationNo join cu.hashtag h where h.tag like concat('%', :word, '%') group by ci")
+    List<List> findCurationByWord(@Param("word") String word);
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 

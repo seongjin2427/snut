@@ -5,6 +5,12 @@
         <div class="logo-area header-area">
           <img class="main-logo-text" src="@/assets/logo_text.png" @click="$router.push('/')" alt="text_logo">
         </div>
+        <div>
+          <button @click="sample2()">asdfsdf</button>
+          <div id="imgArea">
+
+          </div>
+        </div>
         <div class="input-area">
           <input-box 
               class="main-input" 
@@ -90,7 +96,6 @@ import MainFooter from '@/components/MainFooter.vue'
 import NavigatorBar from '@/components/NavigatorBar.vue';
 import CommonModal from '@/components/CommonModal.vue';
 import SampleData from '@/assets/sampleData.json';
-// import axios from 'axios';
 
 
 export default {
@@ -115,28 +120,33 @@ export default {
       this.loginBool == true ? this.loginBool = false : this.loginBool =true;
     },
 
-
-
-
     sample2() {
-      // const instance = axios.create({
-      //   baseURL: 'http://localhost:8080/api',
-      //   headers: {
-      //     token: sessionStorage.getItem('token'), // header의 속성
+      // let a = this.$store.state.storedAxios;
+          
+
+      let c = document.querySelector('#imgArea');
+
+      c.innerHTML = `<img src="http://localhost:8080/get/img?fileName=2022%5C04%5C15%2Fs_69dcce2e-e32c-4ad8-98e3-b73e40f6a554_wallpaperbetter+%282%29.jpg" />`;
+
+      // axios.get('http:/localhost/get/img', {
+      //   params: {
+      //     'fileName': "2022%5C04%5C15%2Fs_69dcce2e-e32c-4ad8-98e3-b73e40f6a554_wallpaperbetter+%282%29.jpg"
       //   }
-      // });
-
-      let a = this.$store.state.storedAxios;
-
-      a.get('mcol/store', {
-        params: {
-          'collectionId': 1
-        }
-      })
-        .then(res => console.log(res))
-        .catch(error => console.log(error));
+      // })
+      //   .then(res => {
+      //     console.log(res)
+      //     // this.inputImg(res);
+      //   })
+      //   .catch(error => console.log(error));
     },
+    inputImg(src) {
+      let a = document.querySelector('#imgArea');
+      console.log(src);
+      // let b = window.btoa(encodeURIComponent(`${src.data}`));
 
+      a.innerHTML = `<img src="http://localhost:8080/api/getimg?fileName" />`;
+
+    },
 
     
     doSearch(searchWord) {

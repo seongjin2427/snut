@@ -1,19 +1,20 @@
 package com.curation.snut.repository;
 
+import com.curation.snut.dto.CurationDTO;
 import com.curation.snut.entity.*;
 import com.curation.snut.security.role.MemberRole;
 import com.curation.snut.service.CurationService;
+import com.curation.snut.service.SnutCollectionService;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.security.core.parameters.P;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.IntStream;
 
 @Log4j2
@@ -37,6 +38,8 @@ class CurationRepositoryTests {
 
     @Autowired
     private HashtagRepository hashtagRepository;
+    @Autowired
+    private SnutCollectionService snutCollectionService;
 
     @Test
     void makeDummies() {
@@ -162,24 +165,50 @@ class CurationRepositoryTests {
     @Test
     void getCollectionTest() {
 
-        List list = curationRepository.findCurationsByCollectionNo(1L);
+        Curation list = curationRepository.findCurationsByCurationNo(332L);
+        List<CurationImage> ciList = curationRepository.findCurationImageByCurationNo(332L);
 
+        System.out.println("list.size() >>> " + list);
+
+        for(CurationImage arr : ciList) {
+            System.out.println(arr);
+        }
+
+//        if(list.size() > 0) {
+//            Curation curationList = (Curation) list.get(0);
+//            List<CurationImage> curationImageList = (List<CurationImage>) list.get(1);
+//
+//            System.out.println(cura   tionList);
+//            System.out.println(curationImageList);
+//        }
+
+//        System.out.println(list.size());
+//        for(CurationImage a : list) {
+//            CurationImage l = (CurationImage) a;
+//            System.out.println(l);
+//        }
+    }
+
+    @Test
+    void curationSearchTest() {
+
+        Set<String> a = new HashSet<>();
+        a.add("hash1");
+        List<List> list = curationRepository.findCurationByWord("쇼ㅕㅏ");
         System.out.println(list.size());
-        for(Object a : list) {
-            Curation l = (Curation) a;
-            System.out.println(l.getCurationTitle());
-            System.out.println(l.getWriter().getEmail());
+
+        for(int i = 0; i < list.size(); i++) {
+            System.out.println(list.get(i));
         }
     }
 
     @Test
     void curationTest() {
-
-//        Set<String> a = new HashSet<>();
-//        a.add("hash1");
-        List list = curationRepository.findCurationByWord("hashtag168");
-
-        System.out.println(list.size());
+        List<CurationDTO> list = curationService.getCurationsByWord("쇼ㅕㅏ");
+        System.out.println(list);
+        for(int i = 0; i < list.size(); i++) {
+            System.out.println(list.get(i));
+        }
     }
 
     @Test
@@ -187,14 +216,24 @@ class CurationRepositoryTests {
         List list = snutCollectionRepository.findCurationByWord("ash2");
 
         System.out.println(list.size());
-        int bb = 0;
-        for(Object a : list) {
-            SnutCollection b = (SnutCollection) a;
-            System.out.println(b.getCollectionNo());
-            System.out.println(b.getHashtag());
-            bb++;
+//        int bb = 0;
+//        for(Object a : list) {
+//            SnutCollection b = (SnutCollection) a;
+//            System.out.println(b.getCollectionNo());
+//            System.out.println(b.getHashtag());
+//            bb++;
+//        }
+//        System.out.println("bb >> " + bb);
+    }
+
+    @Transactional
+    @Test
+    void getCurationsbyCollectionNoTest() {
+        List<CurationDTO> cuList = curationService.getCurationsByCollectionNo(204L);
+
+        for (int i = 0; i < cuList.size(); i++) {
+            System.out.println(cuList.get(i));
         }
-        System.out.println("bb >> " + bb);
     }
 
 }

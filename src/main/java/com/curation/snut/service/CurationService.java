@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface CurationService {
 
     // 성진
+    CurationDTO getCurationsByCurationNo(Long cuId);
     List<CurationDTO> getCurationsByCollectionNo(Long colId);
 
     List<CurationDTO> getCurationsByWord(String word);
@@ -31,17 +32,17 @@ public interface CurationService {
     Long register(CurationDTO curationDTO);
     ///////////////////////////////////////////////////////////////////////////
 
-    public List<CurationDTO> CuList();
-
-    public List<CurationDTO> searchCurationTitle(String searchCurationTitle);
-
-    CurationDTO getCuration(Long curationNo);
+//    public List<CurationDTO> CuList();
+//
+//    public List<CurationDTO> searchCurationTitle(String searchCurationTitle);
+//
+//    CurationDTO getCuration(Long curationNo);
 
 //    void write(CurationDTO curationDTO);
 
 //    void modify(CurationDTO curationDTO);
 
-    void delete(Long id);
+//    void delete(Long id);
 
     @Transactional
     default Map<String, Object> dtoToEntity(CurationDTO dto) {
@@ -94,7 +95,7 @@ public interface CurationService {
         return entitMap;
     }
 
-    default CurationDTO entityToDTO(Curation curation) {
+    default CurationDTO entityToDTO(Curation curation, List<CurationImage> curationImages) {
         CurationDTO curationDTO = CurationDTO.builder()
                 .curationNo(curation.getCurationNo())
                 .curationText(curation.getCurationText())
@@ -107,6 +108,17 @@ public interface CurationService {
                 .regDate(curation.getRegDate())
                 .modDate(curation.getModDate())
                 .build();
+
+        List<CurationImageDTO> curationImageDTO = curationImages.stream().map(img -> {
+           return CurationImageDTO.builder()
+                   .path(img.getPath())
+                   .uuid(img.getUuid())
+                   .imgName(img.getImageName())
+                   .build();
+        }).collect(Collectors.toList());
+
+        curationDTO.setImageDTOList(curationImageDTO);
+
         return curationDTO;
     }
 }

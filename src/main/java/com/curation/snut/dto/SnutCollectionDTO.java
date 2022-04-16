@@ -1,5 +1,6 @@
 package com.curation.snut.dto;
 
+import com.curation.snut.entity.Curation;
 import com.curation.snut.entity.Member;
 import lombok.*;
 
@@ -21,4 +22,6 @@ public class SnutCollectionDTO {
 
     private String email;
     private String nickname;
+
+    private List<Curation> curations;
 }
