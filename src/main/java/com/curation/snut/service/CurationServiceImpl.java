@@ -28,6 +28,19 @@ public class CurationServiceImpl implements CurationService {
     private final HashtagRepository hashtagRepository;
 
     // 성진
+
+
+    @Override
+    public List<CurationDTO> getCurationByEmail(String email) {
+        List<Curation> curations = curationRepository.findCurationByEmail(email);
+
+        return curations.stream().map(cu -> {
+            List<CurationImage> imageList = curationRepository.findCurationImageByCurationNo(cu.getCurationNo());
+            return entityToDTO(cu, imageList);
+        }).collect(Collectors.toList());
+    }
+
+    @Transactional
     @Override
     public CurationDTO getCurationsByCurationNo(Long curationNo) {
         Curation curation = curationRepository.findCurationsByCurationNo(curationNo);

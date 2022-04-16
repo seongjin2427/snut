@@ -7,9 +7,9 @@
 
         <!-- modal-header 구간 -->
         <div class="modal-header">
-          <div class="modal-hashTag">
+          <div class="modal-hashtag">
             <common-tag 
-                v-for="(tag, idx) in colCuData.hashTag" 
+                v-for="(tag, idx) in colCuData.hashtag" 
                 width="150" 
                 height="40"
                 marginRight="15"
@@ -44,16 +44,16 @@
 
           <!-- modal 사진+글 구간 -->
           <div class="modal-content-pic" v-if="sampleImg.length > 0">
-            <p><b>{{ colCuData.title }}</b></p>
-            <p><b>{{ colCuData.nickName }}</b></p>
-            <p>{{ colCuData.content }}</p>
+            <p><b>{{ colCuData.curationTitle }}</b></p>
+            <p><b>{{ colCuData.nickname }}</b></p>
+            <p>{{ colCuData.curationText }}</p>
           </div>
 
           <!-- modal only 글 구간 -->
           <div class="modal-content-nonPic" v-if="!(sampleImg.length > 0)">
-            <p><b>{{ colCuData.title }}</b></p>
-            <p><b>{{ colCuData.nickName }}</b></p>
-            <p>{{ colCuData.content }}</p>
+            <p><b>{{ colCuData.curationTitle }}</b></p>
+            <p><b>{{ colCuData.nickname }}</b></p>
+            <p>{{ colCuData.curationText }}</p>
           </div>
 
         </div>
@@ -98,7 +98,7 @@ export default {
     moveToPage(dataSet) {
       if(dataSet.cuCo == 'Collection') {
         this.$router.push({
-          path: `/mcol/store/${dataSet.id}/${dataSet.nickName}`
+          path: `/mcol/store/${dataSet.id}/${dataSet.nickname}`
         });
       }
     },
@@ -175,7 +175,7 @@ export default {
   /* background: gray; */
   display: flex;
 }
-.modal-hashTag {
+.modal-hashtag {
   width: 590px;
   height: 100%;
   margin-top: 5px;

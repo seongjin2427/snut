@@ -51,7 +51,7 @@ class SnutCollectionRepositoryTests {
                 .collectionText("Collection Text" + num)
                 .hashtag(tagSet)
                 .email("email10@gmail.com")
-                .curations(cuList)
+//                .curations(cuList)
                 .build();
 
         Long result = snutCollectionService.snutCollectionRegister(colDTO);

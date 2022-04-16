@@ -1,14 +1,14 @@
 <template>
   <div class="collection" @mouseover="!selectMode && inCuration()" @mouseleave="outCuration()">
 
-      <img :class="cuSelect" :src="info.src[0]" alt="sample_img">
+      <img :class="cuSelect" :src="inputImage(info)" alt="sample_img">
       <div class="check-icon" v-if="selected">
         <!-- <check-icon width="100" height="100" background="white" /> -->
       </div>
       <div class="text1" v-if="hoverBool && (!storeBool || !delColBoolean || !loginBool || selectMode)">
-        <p>{{ '#'+info.hashTag[0] }}</p>
-        <p>{{ '#'+info.hashTag[1] }}</p>
-        <p>{{ '#'+info.hashTag[2] }}</p>
+        <p>{{ '#'+info.hashtag[0] }}</p>
+        <p>{{ '#'+info.hashtag[1] }}</p>
+        <p>{{ '#'+info.hashtag[2] }}</p>
         <p>{{ info.modDate }}</p>
         <!-- <p>{{ info.cuCo }}</p> -->
       </div>
@@ -21,8 +21,6 @@
 </template>
 
 <script>
-// import checkIcon from '@/assets/icon/checkIcon.vue';
-
 export default {
   name: "CommonCuration",
   components: {
@@ -40,7 +38,7 @@ export default {
       storeBool: false,
 
       // 클릭했을 때 체크버튼 만들기
-      selected: false
+      selected: false,
     }
   },
   methods: {
@@ -64,6 +62,20 @@ export default {
     selectedMethod() {
       this.selected == true ? this.selected = false : this.selected = true;
     },
+    inputImage(info) {
+      // console.log(info.imageDTOList[0])
+      if(!info.imageDTOList == '') {
+        // const url = info.imageDTOList[0].thumbnailURL;
+        // console.log(url)
+        // return `http://localhost:8080/get/img?fileName=${url}`;
+        return 'http://localhost:8080/get/img?fileName=2022%5C04%5C15%2Fs_69dcce2e-e32c-4ad8-98e3-b73e40f6a554_wallpaperbetter+%282%29.jpg';
+
+      }
+      return 'http://localhost:8080/get/img?fileName=2022%5C04%5C15%2Fs_69dcce2e-e32c-4ad8-98e3-b73e40f6a554_wallpaperbetter+%282%29.jpg';
+    },
+  },
+  created() {
+    // console.log(this.info)
   }
 }
 </script>

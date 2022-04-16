@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface CurationService {
 
     // 성진
+    List<CurationDTO> getCurationByEmail(String email);
     CurationDTO getCurationsByCurationNo(Long cuId);
     List<CurationDTO> getCurationsByCollectionNo(Long colId);
 
@@ -111,6 +112,7 @@ public interface CurationService {
 
         List<CurationImageDTO> curationImageDTO = curationImages.stream().map(img -> {
            return CurationImageDTO.builder()
+                   .ciId(img.getCiid())
                    .path(img.getPath())
                    .uuid(img.getUuid())
                    .imgName(img.getImageName())

@@ -19,8 +19,9 @@ import org.springframework.data.repository.query.Param;
 public interface CurationRepository extends JpaRepository<Curation, Long> {
 
     // 성진
-//    @Query("select co.curation, ci from ColCuration co left outer join CurationImage ci on co.curation.curationNo = ci.curation.curationNo where co.snutCollection.collectionNo = :no group by co.curation order by co.curation.modDate asc")
-//    List findCurationsByCollectionNo(Long no);
+    @Query("select cu from Curation cu where cu.writer.email = :email")
+    List<Curation> findCurationByEmail(String email);
+
     @Query("select co.curation from ColCuration co where co.snutCollection.collectionNo = :no")
     List findCurationsByCollectionNo(Long no);
 

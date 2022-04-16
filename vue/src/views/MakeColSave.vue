@@ -132,7 +132,7 @@ export default {
         nickname: sessionStorage.getItem('nickName'),
         collectionTitle: '',
         collectionText: '',
-        curations: this.$store.getters.getSendToCuration,
+        curations: [1, 2, 3],
         hashtag: []
       },
       receivedData:[],
@@ -188,14 +188,30 @@ export default {
           console.log(pic)
           this.saveHashtag(pic);
 
-          // this.sendDataUseAxios(pic);
+          this.sendDataUseAxios(pic);
 
         } else {
           console.log('제목 또는 내용에 빈공간이 있습니다.')
         }
         
     },
-    
+    sendDataUseAxios(data) {
+    const calledAxios = this.$store.state.storedAxios;
+
+      console.log("data >>>>>", data)
+      const collectionDTO = {
+        email: data.email,
+        nickname: data.nickname, 
+        collectionTitle: data.collectionTitle,
+        collectionText: data.collectionText,
+        curations: data.curations,
+        hashtag: data.hashtag
+      }
+      console.log(collectionDTO);
+        calledAxios.post('/mcol/mc', collectionDTO )
+          .then(res => console.log(res))
+          .catch(err => console.log(err));
+    },
     previous() {
       if(this.imgSlideData.curPos > 0) {
       this.$refs.next.removeAttribute("disabled");
@@ -219,22 +235,6 @@ export default {
       }
     },
 
-    sendDataUseAxios(data) {
-    const calledAxios = this.$store.state.storedAxios;
-
-      console.log("data >>>>>", data)
-      const obj = {
-        email: data.email,
-        nickname: data.nickname, 
-        collectionTitle: data.collectionTitle,
-        collectionText: data.collectionText,
-        curations: data.curations,
-        hashtag: data.hashtag
-      }
-        calledAxios.post('/mcol/mc', obj)
-          .then(res => console.log(res))
-          .catch(err => console.log(err));
-    },
     saveHashtag(willSendContents) {
       this.$refs.hashTag.map(tag => {
         if(tag.value.trim()) {
@@ -242,14 +242,13 @@ export default {
         }
       })
     },
-    sample3() {
+    startSave() {
+      this.getCurationData();
+      console.log("this.receivedData", this.receivedData)
+      setTimeout(this.inputImage, 1000);
 
     },
-    sample() {
-      this.getCurationData();
-    },
-    sample2() {
-      console.log("Aeshsrthre", this.receivedData[0])
+    inputImage() {
       const pictureDiv = document.querySelector(".picture-div");
       for(let i = 0; i < 3; i++) {
         let url = this.receivedData[i].imageDTOList[0].imageURL;
@@ -260,23 +259,21 @@ export default {
     },
     getCurationData() {
       const calledAxios = this.$store.state.storedAxios;
-        for(let i = 0; i < 3; i++) {
+        for(let i = 0; i < this.collectionData.curations.length; i++) {
           calledAxios.get('/mcol/store', {
             params: {
-              'curationId': 335+i
+              'curationId': this.collectionData.curations[i]
             }
-          })
-          .then(res => {
-            console.log("res", res.data);
+          }).then(res => {
             this.receivedData.push(res.data);
           })
         }
     }
   },
   created() {
-    console.log("ss", this.$store.getters.getSendToCuration);
-    this.sample()
-    console.log(this.receivedData);
+    console.log("this.collectionData.curations", this.collectionData.curations);
+    console.log("ssss", Array.from(this.$store.getters.getSendToCuration))
+    this.startSave();
   },
 }
 </script>

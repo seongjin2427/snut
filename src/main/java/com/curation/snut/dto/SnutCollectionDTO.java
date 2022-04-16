@@ -23,5 +23,5 @@ public class SnutCollectionDTO {
     private String email;
     private String nickname;
 
-    private List<Curation> curations;
+    private List<Long> curations;
 }

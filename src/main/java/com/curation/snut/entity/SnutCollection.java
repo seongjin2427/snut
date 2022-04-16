@@ -28,7 +28,7 @@ public class SnutCollection extends BaseEntity{
 //    @ElementCollection(fetch = FetchType.EAGER)
 //    private Set<String> hashtag = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Hashtag> hashtag = new HashSet<>();
 
 //    @ManyToMany(fetch = FetchType.EAGER)

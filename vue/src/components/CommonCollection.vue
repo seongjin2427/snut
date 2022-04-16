@@ -40,9 +40,9 @@
               || info.cuCo == 'Collection')
               && hoverBool 
               && (!storeBool || !delColBoolean || !loginBool)">
-      <p>{{ '#'+info.hashTag[0] }}</p>
-      <p>{{ '#'+info.hashTag[1] }}</p>
-      <p>{{ '#'+info.hashTag[2] }}</p>
+      <p>{{ '#'+info.hashtag[0] }}</p>
+      <p>{{ '#'+info.hashtag[1] }}</p>
+      <p>{{ '#'+info.hashtag[2] }}</p>
       <p>{{ info.modDate }}</p>
       <!-- <p>{{ info.cuCo }}</p> -->
     </div>

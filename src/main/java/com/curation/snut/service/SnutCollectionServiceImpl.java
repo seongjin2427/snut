@@ -9,6 +9,8 @@ import com.curation.snut.repository.ColCurationRepository;
 import com.curation.snut.repository.CurationRepository;
 import com.curation.snut.repository.SnutCollectionRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class SnutCollectionServiceImpl implements SnutCollectionService {
 
     private final SnutCollectionRepository snutCollectionRepository;
@@ -36,11 +39,11 @@ public class SnutCollectionServiceImpl implements SnutCollectionService {
     public Long snutCollectionRegister(SnutCollectionDTO snutCollectionDTO) {
 
         SnutCollection snutCollection = colDTOToCol(snutCollectionDTO);
-
+        log.info("snutCollection >>>>" + snutCollection);
         snutCollectionRepository.save(snutCollection);
 
-        snutCollectionDTO.getCurations().stream().forEach(cu -> {
-            Optional<Curation> curation = curationRepository.findById(cu.getCurationNo());
+        snutCollectionDTO.getCurations().stream().forEach(cuId -> {
+            Optional<Curation> curation = curationRepository.findById(cuId);
            ColCuration colCuration = ColCuration.builder()
                    .snutCollection(snutCollection)
                    .curation(curation.get())

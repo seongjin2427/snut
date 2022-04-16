@@ -2,6 +2,7 @@ package com.curation.snut.controller;
 
 import com.curation.snut.dto.CurationDTO;
 import com.curation.snut.dto.SnutCollectionDTO;
+import com.curation.snut.entity.SnutCollection;
 import com.curation.snut.service.CurationService;
 import com.curation.snut.service.MemberService;
 import com.curation.snut.service.SnutCollectionService;
@@ -26,6 +27,17 @@ public class CurationController {
     private final MemberService memberService;
 
     // 성진
+
+    @GetMapping(value = "/mcol/mc")
+    public ResponseEntity getListByEmail(@RequestParam("email") String email) {
+
+        log.info("getListByEmail >>>>>>>>>>> " + email);
+        List<CurationDTO> list = curationService.getCurationByEmail(email);
+        log.info("getListByEmail >>>>>>>>>>> " + list);
+
+        return new ResponseEntity(list, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/mcol/store", method = RequestMethod.GET, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public CurationDTO cuListByCurationNo(@RequestParam Map body) {
         log.info("cuListByCurationNo............");
@@ -59,13 +71,14 @@ public class CurationController {
         return new ResponseEntity(curationNo, HttpStatus.OK);
     }
 
-//    @PostMapping(value = "/mcol/mc", consumes = MediaType.ALL_VALUE)
-//    public ResponseEntity collectionRegister(@RequestBody SnutCollectionDTO collectionDTO) {
-//        log.info("collectionDTO >>>>>>>> " + collectionDTO);
-//        Long collectionNo = snutCollectionService
-//
-//        return new ResponseEntity("굳", HttpStatus.OK);
-//    }
+    @PostMapping(value = "/mcol/mc", consumes = MediaType.ALL_VALUE)
+    public ResponseEntity collectionRegister(@RequestBody SnutCollectionDTO snutCollectionDTO) {
+        log.info("collectionDTO >>>>>>>> " + snutCollectionDTO);
+        Long collectionNo = snutCollectionService.snutCollectionRegister(snutCollectionDTO);
+
+//        return new ResponseEntity(collectionNo, HttpStatus.OK);
+        return new ResponseEntity("a", HttpStatus.OK);
+    }
 
     /////////////////////////////////////////////////////////////////////////////////
 

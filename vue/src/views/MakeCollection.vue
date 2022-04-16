@@ -47,7 +47,7 @@
                 :delColBoolean="true"
                 :loginBool="loginBool"
                 :selectMode="selectMode"
-                :key="idx"
+                :key="col"
                 draggable="true" />
           </div>
         </div>
@@ -80,7 +80,7 @@ export default {
     return {
       loginBool: true,
       selectMode: false,
-      sampleData: {dataSet:[]}, 
+      sampleData: this.$store.state.curationData, 
       userCollection: [],
       btnDataSet: [
         {
@@ -98,8 +98,8 @@ export default {
     openNavBar() {
       this.$refs.navBar.openNavBar()
     },
-    openMakeModal() {
-      this.$refs.makeModal.openModal();
+    openModal(data) {
+      this.$refs.modal.openModal(data);
     },
     startDrag(event, item) {
       event.dataTransfer.dropEffect = "move";
@@ -177,10 +177,10 @@ export default {
         var random = Math.floor(Math.random()*10);
         this.sampleData.dataSet[i] = {};
         this.sampleData.dataSet[i].id = i+1;
-        this.sampleData.dataSet[i].author = 'Author....' + i;
-        this.sampleData.dataSet[i].nickName = 'NickName....' + i;
-        this.sampleData.dataSet[i].title = 'Title....' + i;
-        this.sampleData.dataSet[i].content = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sit amet nisi malesuada ligula accumsan rutrum. In felis velit, ultrices vitae dignissim eu, sollicitudin at mi. Fusce in porttitor libero. Duis gravida ullamcorper eros, eu feugiat dolor ornare sed. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut et libero rhoncus, venenatis quam nec, tempus tellus. Curabitur elementum posuere dignissim. Maecenas eget molestie libero. Fusce sollicitudin metus enim. Integer fringilla posuere dolor sed dignissim. Sed non viverra quam. Pellentesque eros diam, maximus id ex quis, posuere cursus urna. Curabitur sit amet lectus neque. Sed feugiat magna sed risus pharetra, vitae eleifend lectus gravida.
+        this.sampleData.dataSet[i].email = 'Author....' + i;
+        this.sampleData.dataSet[i].nickname = 'NickName....' + i;
+        this.sampleData.dataSet[i].curationTitle = 'Title....' + i;
+        this.sampleData.dataSet[i].curationText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sit amet nisi malesuada ligula accumsan rutrum. In felis velit, ultrices vitae dignissim eu, sollicitudin at mi. Fusce in porttitor libero. Duis gravida ullamcorper eros, eu feugiat dolor ornare sed. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut et libero rhoncus, venenatis quam nec, tempus tellus. Curabitur elementum posuere dignissim. Maecenas eget molestie libero. Fusce sollicitudin metus enim. Integer fringilla posuere dolor sed dignissim. Sed non viverra quam. Pellentesque eros diam, maximus id ex quis, posuere cursus urna. Curabitur sit amet lectus neque. Sed feugiat magna sed risus pharetra, vitae eleifend lectus gravida.
                                           Nam cursus augue ut ante dictum tempor. Duis volutpat dapibus eros id vehicula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus quis dictum odio. Vestibulum et ligula eget nisi commodo aliquam. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Ut ut tincidunt risus. Duis vel velit ante. Morbi sit amet metus convallis elit aliquam viverra.
                                           Mauris congue, libero ac vehicula molestie, risus tellus porttitor ex, quis lobortis lorem odio vitae nibh. Morbi sollicitudin metus at eros mattis, quis finibus quam efficitur. Aliquam erat volutpat. Aliquam ut vestibulum odio. Fusce lorem felis, porttitor quis ultrices eu, commodo eget massa. Vivamus vitae nisl bibendum, vulputate justo sit amet, pellentesque est. Aliquam rhoncus vitae tellus vel lacinia. Curabitur consectetur tempor felis condimentum varius. Integer at lorem in eros sollicitudin fringilla. Nam orci nulla, blandit eget mollis at, ultricies vitae urna.
                                           Aenean id elit a nisi sollicitudin tincidunt. Vivamus sapien enim, mollis sit amet leo nec, porta accumsan nunc. Praesent lorem felis, fermentum sit amet congue sit amet, ornare a ligula. Pellentesque eu malesuada magna. Nunc libero enim, ultrices sit amet rhoncus sollicitudin, sollicitudin pellentesque tortor. Nam sed mattis urna. Maecenas vitae commodo erat. Nullam consequat mauris sodales, accumsan urna ornare, vestibulum nunc. Nullam congue congue ipsum. Aenean imperdiet aliquam urna eget mattis.
@@ -188,7 +188,7 @@ export default {
                                           + i;
         this.sampleData.dataSet[i].folder = 'FolderNo...' + i;
         this.sampleData.dataSet[i].src = [SampleData.imgUrl[random], SampleData.imgUrl[random]];
-        this.sampleData.dataSet[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
+        this.sampleData.dataSet[i].hashtag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
         this.sampleData.dataSet[i].regDate = '2022-03-01';
         this.sampleData.dataSet[i].modDate = '2022-03-02';
 
@@ -199,11 +199,41 @@ export default {
         }
       }
 
-    }
+    },
+    getMyCurations() {
+      const calledAxios = this.$store.state.storedAxios;
+      console.log(sessionStorage.getItem('email'))
+      
+      calledAxios.get('/mcol/mc', {
+        params: {
+          email: sessionStorage.getItem('email'),
+        }
+      })
+      .then(res => {
+        this.sampleData.dataSet = res.data;
+      })
+      .then(() => {
+        console.log(this.sampleData.dataSet);
+        
+      })
+    },
+    // setData() {
+    //   return new Promise((resolve) => {
+    //     let payload = {
+    //       'url': '/mcol/mc',
+    //       'paramName': 'email',
+    //       'email': sessionStorage.getItem('email')
+    //     } 
+    //     this.$store.dispatch('setCurationData', payload);
+    //     console.log("A");
+    //     resolve();
+    //   }); 
+    // },
   },
-  mounted() {
-    this.makeDummies();
-  }
+  created() {
+    // this.makeDummies();
+    this.getMyCurations();
+  },
 }
 </script>
 
@@ -266,11 +296,14 @@ header {
 }
 .main-col-area {
   width: 100%;
+  min-height: 800px;
   display: flex;
   /* justify-content: space-between; */
   flex-wrap: wrap;
 }
 .main-show-col {
+  width: 180px;
+  height: 180px;
   margin-top: 20px;
   margin-right: 20px;
 }

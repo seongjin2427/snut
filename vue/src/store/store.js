@@ -12,7 +12,8 @@ export const store = createStore({
         },
       }),
       imbbKey: "8749b3a6ce349d7a69b2f7ad2994ee28",
-      sendToCuration: []
+      sendToCuration: [],
+      curationData:{}
     }
   },
   getters: {
@@ -21,6 +22,9 @@ export const store = createStore({
     },
     getSendToCuration(state) {
       return state.sendToCuration;
+    },
+    getcurationData(state) {
+      return state.curationData;
     }
   }, 
   mutations: {
@@ -30,8 +34,22 @@ export const store = createStore({
     setSendToCuration(state, arr) {
       console.log("arr", arr);
       state.sendToCuration = arr;
+    },
+    setCurationData(state, data) {
+      state.curationData = data;
     }
   }, 
   actions: {
+    setCurationData({commit, state}, payload) {
+      console.log(payload);
+      state.storedAxios.get(payload.url, {
+        params: {
+          [payload.paramName]: payload.email
+        }
+      }).then(res => {
+        // console.log(res.data);
+        commit('setCurationData', res.data)
+      })
+    }
   }
 });

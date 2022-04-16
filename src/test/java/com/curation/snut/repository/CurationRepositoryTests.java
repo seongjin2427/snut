@@ -173,20 +173,6 @@ class CurationRepositoryTests {
         for(CurationImage arr : ciList) {
             System.out.println(arr);
         }
-
-//        if(list.size() > 0) {
-//            Curation curationList = (Curation) list.get(0);
-//            List<CurationImage> curationImageList = (List<CurationImage>) list.get(1);
-//
-//            System.out.println(cura   tionList);
-//            System.out.println(curationImageList);
-//        }
-
-//        System.out.println(list.size());
-//        for(CurationImage a : list) {
-//            CurationImage l = (CurationImage) a;
-//            System.out.println(l);
-//        }
     }
 
     @Test
@@ -236,4 +222,13 @@ class CurationRepositoryTests {
         }
     }
 
+    @Transactional
+    @Test
+    void getCurationsByEmailTest() {
+        List<CurationDTO> cuDTO = curationService.getCurationByEmail("fo");
+
+        for (int i = 0; i < cuDTO.size(); i++) {
+            System.out.println(cuDTO.get(i));
+        }
+    }
 }
