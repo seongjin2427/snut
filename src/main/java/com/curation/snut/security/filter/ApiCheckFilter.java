@@ -2,6 +2,7 @@ package com.curation.snut.security.filter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -64,8 +65,8 @@ public class ApiCheckFilter extends OncePerRequestFilter {
 
         if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
             try {
-                String email = jwtUtil.validateAndExtract(authHeader.substring(7));
-                checkResult = email.length() > 0;
+                Map email = jwtUtil.validateAndExtract(authHeader.substring(7));
+                checkResult = email.toString().length() > 0;
             } catch (Exception e) {
                 e.printStackTrace();
             }

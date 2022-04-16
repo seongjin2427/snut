@@ -1,9 +1,14 @@
 package com.curation.snut.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import com.curation.snut.dto.CommentDTO;
 import com.curation.snut.dto.CommunityDTO;
+import com.curation.snut.security.util.JWTUtil;
 import com.curation.snut.service.CommentService;
 import com.curation.snut.service.CommunityService;
 
@@ -25,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 public class ControllerTest {
     private final CommentService commentService;
     private final CommunityService communityService;
+    private final JWTUtil jwtUtil;
 
     @GetMapping(value = "/test/commuList", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<CommunityDTO>> testList(String searchTitle) {
@@ -66,6 +72,22 @@ public class ControllerTest {
     public ResponseEntity<?> commentDelete(Long id) {
         commentService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping(value = "test/test")
+    public ResponseEntity<?> testtest(HttpServletRequest request) {
+        String authHeader = request.getHeader("token");
+        Map user = null;
+
+        try {
+            user = jwtUtil.validateAndExtract(authHeader.substring(7));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String email = ((Map) ((List) user.get("authorities")).get(0)).get("authority").toString();
+        // String email = user.get("authorities").toString();
+
+        return new ResponseEntity<>(email, HttpStatus.OK);
     }
 
 }
