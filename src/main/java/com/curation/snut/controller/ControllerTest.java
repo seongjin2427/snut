@@ -21,10 +21,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @RestController
 @RequiredArgsConstructor
 public class ControllerTest {
@@ -75,7 +79,7 @@ public class ControllerTest {
     }
 
     @GetMapping(value = "test/test")
-    public ResponseEntity<?> testtest(HttpServletRequest request) {
+    public ResponseEntity<?> testtest(HttpServletRequest request, @RequestBody Map body) {
         String authHeader = request.getHeader("token");
         Map user = null;
 
@@ -84,10 +88,30 @@ public class ControllerTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String email = ((Map) ((List) user.get("authorities")).get(0)).get("authority").toString();
+        String test = ((Map) ((List) user.get("authorities")).get(0)).get("authority").toString();
         // String email = user.get("authorities").toString();
 
-        return new ResponseEntity<>(email, HttpStatus.OK);
+        String test2 = body.get("aaa").toString();
+
+        Map<String, String> printtest = new HashMap<>();
+        printtest.put("auth", test);
+        printtest.put("aaa", test2);
+
+        return new ResponseEntity<>(printtest, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "test/test2")
+    public ResponseEntity<?> testtest2(@RequestHeader Map header) {
+        String token = header.get("token").toString();
+        Map userDetail = null;
+        try {
+            userDetail = jwtUtil.validateAndExtract(token.substring(7));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        String info = userDetail.get("email").toString();
+        return new ResponseEntity<>(info, HttpStatus.OK);
     }
 
 }
