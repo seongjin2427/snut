@@ -33,10 +33,25 @@ public class CurationController {
     public ResponseEntity getListByEmail(@RequestParam("email") String email) {
 
         log.info("getListByEmail >>>>>>>>>>> " + email);
-        List<CurationDTO> list = curationService.getCurationByEmail(email);
-        log.info("getListByEmail >>>>>>>>>>> " + list);
+        List<CurationDTO> culist = curationService.getCurationByEmail(email);
+        log.info("getListByEmail >>>>>>>>>>> " + culist);
 
-        return new ResponseEntity(list, HttpStatus.OK);
+        return new ResponseEntity(culist, HttpStatus.OK);
+    }
+
+    @GetMapping("/mcol/mn")
+    public ResponseEntity getAllListByEmail(@RequestParam("email") String email) {
+
+        log.info("getAllListByEmail >>>>>>>>>>> " + email);
+        List<CurationDTO> culist = curationService.getCurationByEmail(email);
+        List<SnutCollectionDTO> colList = snutCollectionService.getCollectionsByEmail(email);
+        log.info("culist >>>>>>>>>>> " + culist);
+        log.info("colList >>>>>>>>>>> " + colList);
+        HashMap sendMap = new HashMap();
+        sendMap.put("Curation", culist);
+        sendMap.put("Collection", colList);
+
+        return new ResponseEntity(sendMap, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mcol/store", method = RequestMethod.GET, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

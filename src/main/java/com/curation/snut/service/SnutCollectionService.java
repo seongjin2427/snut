@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 public interface SnutCollectionService {
 
     // 성진
+    List<SnutCollectionDTO> getCollectionsByEmail(String email);
     List<SnutCollectionDTO> getCollectionsByWord(String word);
 
     Long snutCollectionRegister(SnutCollectionDTO snutCollectionDTO);

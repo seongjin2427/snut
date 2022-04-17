@@ -11,6 +11,9 @@ import java.util.List;
 
 public interface SnutCollectionRepository extends JpaRepository<SnutCollection, Long> {
 
+    @Query("select sc from SnutCollection sc where sc.writer.email = :email")
+    List<SnutCollection> findSnutCollectionByEamil(String email);
+
     @Query("select distinct sc from SnutCollection sc join sc.hashtag h where h.tag like concat('%', :word, '%')")
     List findCurationByWord(@Param("word") String word);
 

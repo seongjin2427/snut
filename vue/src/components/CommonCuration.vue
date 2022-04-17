@@ -64,8 +64,8 @@ export default {
       document.querySelector('.'+this.cuSelect).classList.remove('lowerBrightness');
     },
     deleteCol() {
-      console.log('CommonCollection', this.id);
-      this.$emit('deleteCol', this.id);
+      console.log('CommonCuration', this.id);
+      this.$emit('deleteCol', this.id, this.info.curationNo);
     },
     shareCol() {
       console.log("공유 버튼을 눌렀다!");
@@ -79,7 +79,6 @@ export default {
         const url = info.imageDTOList[0].thumbnailURL;
         return `http://localhost:8080/get/img?fileName=${url}`;
       }
-      console.log(info.pickedEmoji)
       const emojiNo = info.pickedEmoji;
       return require(`@/assets/face-emoji/emoji${emojiNo}.png`)
     },

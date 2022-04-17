@@ -4,14 +4,15 @@ import com.curation.snut.dto.CurationDTO;
 import com.curation.snut.dto.PageRequestDTO;
 import com.curation.snut.dto.PageResultDTO;
 import com.curation.snut.dto.SnutCollectionDTO;
-import com.curation.snut.entity.*;
+import com.curation.snut.entity.ColCuration;
+import com.curation.snut.entity.Curation;
+import com.curation.snut.entity.CurationImage;
+import com.curation.snut.entity.SnutCollection;
 import com.curation.snut.repository.ColCurationRepository;
 import com.curation.snut.repository.CurationRepository;
 import com.curation.snut.repository.SnutCollectionRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -34,21 +35,34 @@ public class SnutCollectionServiceImpl implements SnutCollectionService {
     private final CurationService curationService;
 
     @Override
+    public List<SnutCollectionDTO> getCollectionsByEmail(String email) {
+        List<SnutCollection> colList = snutCollectionRepository.findSnutCollectionByEamil(email);
+        return colList.stream().map(i -> {
+            return makeCurationDTOwithCurationImage(i);
+        }).collect(Collectors.toList());
+    }
+
+    @Override
     public List<SnutCollectionDTO> getCollectionsByWord(String word) {
         List<SnutCollection> collections = snutCollectionRepository.findCurationByWord(word);
 
         return collections.stream().map(i -> {
-            List<CurationDTO> cuDTOList = curationService.getCurationsByCollectionNo(i.getCollectionNo());
-            List<Long> cuIdList = colCurationRepository.getCurationNoListByCollectionNo(i.getCollectionNo());
-
-            System.out.println("cuDTOList >>>>> " + cuDTOList);
-            System.out.println("cuDTOList >>>>>> " + cuDTOList);
-            List<CurationDTO> finalCuDTOList = cuDTOList.stream().filter(j -> {
-                return cuIdList.contains(j.getCurationNo());
-            }).collect(Collectors.toList());
-
-            return colToColDTO(i, finalCuDTOList);
+            return makeCurationDTOwithCurationImage(i);
         }).collect(Collectors.toList());
+    }
+
+    // Collection Entity를 넣어주면 알아서 관련 Curation과 CurationImage 정보를 합쳐서 CollectionDTO로 만들어주는 메서드
+    public SnutCollectionDTO makeCurationDTOwithCurationImage(SnutCollection col) {
+        List<CurationDTO> cuDTOList = curationService.getCurationsByCollectionNo(col.getCollectionNo());
+        List<Long> cuIdList = colCurationRepository.getCurationNoListByCollectionNo(col.getCollectionNo());
+
+        System.out.println("cuDTOList >>>>> " + cuDTOList);
+        System.out.println("cuDTOList >>>>>> " + cuDTOList);
+        List<CurationDTO> finalCuDTOList = cuDTOList.stream().filter(j -> {
+            return cuIdList.contains(j.getCurationNo());
+        }).collect(Collectors.toList());
+
+        return colToColDTO(col, finalCuDTOList);
     }
 
     @Transactional

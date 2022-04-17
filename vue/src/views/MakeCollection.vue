@@ -37,7 +37,7 @@
                 class="main-show-col"
                 @click="!selectMode && openModal(col), selectMode && selectCurations(idx, col.curationNo)"
                 @deleteCol="deleteCol"
-                v-for="(col, idx) in sampleData.dataSet"
+                v-for="(col, idx) in sampleData"
                 :info="col"
                 :id="idx"
                 :delColBoolean="true"
@@ -75,7 +75,7 @@ export default {
     return {
       loginBool: true,
       selectMode: false,
-      sampleData: {dataset: this.$store.state.curationData}, 
+      sampleData: {}, 
       userCollection: [],
       btnDataSet: [
         {
@@ -96,9 +96,9 @@ export default {
     openModal(data) {
       this.$refs.modal.openModal(data);
       },
-    deleteCol(id) {
-      // console.log("StoreCollections.info", info);
-      this.sampleData.dataSet.splice(id, 1);
+    deleteCol(id, cuId) {
+      console.log("cuId", cuId);
+      this.sampleData.splice(id, 1);
     },
 
 
@@ -150,7 +150,6 @@ export default {
     },
     getMyCurations() {
       const calledAxios = this.$store.state.storedAxios;
-      console.log(sessionStorage.getItem('email'))
       
       calledAxios.get('/mcol/mc', {
         params: {
@@ -158,11 +157,8 @@ export default {
         }
       })
       .then(res => {
-        this.sampleData.dataSet = res.data;
-      })
-      .then(() => {
-        console.log(this.sampleData.dataSet);
-        
+        this.sampleData = res.data;
+        this.sampleData.map(i => i.cuCo = "Curation");
       })
     },
   },
