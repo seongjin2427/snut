@@ -5,12 +5,6 @@
         <div class="logo-area header-area">
           <img class="main-logo-text" src="@/assets/logo_text.png" @click="$router.push('/')" alt="text_logo">
         </div>
-        <div>
-          <button @click="sample2()">asdfsdf</button>
-          <div id="imgArea">
-
-          </div>
-        </div>
         <div class="input-area">
           <input-box 
               class="main-input" 
@@ -49,10 +43,12 @@
           </div>
           <div class="main-col-area">
             <common-collection 
+                class="main-searched-col"
                 @click="openModal(col, true)"
-                v-for="(col, idx) in sampleData.dataSet" 
+                v-for="(col, idx) in sampleData" 
                 :info="col" 
-                :id="col.id"
+                :id="idx"
+                :loginBool="loginBool"
                 :key="idx" />
           </div>
         </div>
@@ -62,10 +58,11 @@
           </p>
           <div class="main-col-area" v-if="loginBool">
             <common-collection 
+                class="main-searched-col"
                 @click="openModal(col, true)"
-                v-for="(col, idx) in sampleData2.dataSet" 
+                v-for="(col, idx) in sampleData" 
                 :info="col" 
-                :id="col.id"
+                :id="idx"
                 :loginBool="loginBool"
                 :key="idx" />
           </div>
@@ -95,11 +92,13 @@ import InputBox from '@/components/InputBox.vue';
 import MainFooter from '@/components/MainFooter.vue'
 import NavigatorBar from '@/components/NavigatorBar.vue';
 import CommonModal from '@/components/CommonModal.vue';
-import SampleData from '@/assets/sampleData.json';
+import axios from 'axios';
 
 
 export default {
-  components: { InputBox, CommonButton, CommonCollection, MainFooter, NavigatorBar, CommonModal },
+  components: { InputBox, CommonButton, MainFooter, NavigatorBar, CommonModal,
+  CommonCollection,
+  },
   name: "MainWithLogin",
   data() {
     return {
@@ -114,41 +113,12 @@ export default {
       this.$refs.navBar.openNavBar()
     },
     openModal(colData, moveToPageBool) {
-      this.$refs.modal.openModal(colData, moveToPageBool);
+        // this.$router.push(`/ucol/${colData.collectionNo}/${colData.nickname}`)
+        this.$refs.modal.openModal(colData, moveToPageBool);
     },
     sample() {
       this.loginBool == true ? this.loginBool = false : this.loginBool =true;
     },
-
-    sample2() {
-      // let a = this.$store.state.storedAxios;
-          
-
-      let c = document.querySelector('#imgArea');
-
-      c.innerHTML = `<img src="http://localhost:8080/get/img?fileName=2022%5C04%5C15%2Fs_69dcce2e-e32c-4ad8-98e3-b73e40f6a554_wallpaperbetter+%282%29.jpg" />`;
-
-      // axios.get('http:/localhost/get/img', {
-      //   params: {
-      //     'fileName': "2022%5C04%5C15%2Fs_69dcce2e-e32c-4ad8-98e3-b73e40f6a554_wallpaperbetter+%282%29.jpg"
-      //   }
-      // })
-      //   .then(res => {
-      //     console.log(res)
-      //     // this.inputImg(res);
-      //   })
-      //   .catch(error => console.log(error));
-    },
-    inputImg(src) {
-      let a = document.querySelector('#imgArea');
-      console.log(src);
-      // let b = window.btoa(encodeURIComponent(`${src.data}`));
-
-      a.innerHTML = `<img src="http://localhost:8080/api/getimg?fileName" />`;
-
-    },
-
-    
     doSearch(searchWord) {
       console.log(searchWord);
         this.$router.push({
@@ -166,29 +136,19 @@ export default {
       alert('로그아웃 되었습니다');
       location.reload();
     },
-    createDummies(store, start) {
-      for(var i = 0; i < 5; i++) {
-        var random = Math.floor(Math.random()*10);
-        store.dataSet[i] = {};
-        store.dataSet[i].id = start;
-        store.dataSet[i].author = 'Author....' + i;
-        store.dataSet[i].nickName = 'NickName....' + i;
-        store.dataSet[i].title = 'Title....' + i;
-        store.dataSet[i].content = 'Content...' + i;
-        store.dataSet[i].folder = 'FolerNo...' + i;
-        store.dataSet[i].src = [SampleData.imgUrl[random], SampleData.imgUrl[random+1], SampleData.imgUrl[random+2]];
-        store.dataSet[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
-        store.dataSet[i].cuCo = 'Collection';
-        store.dataSet[i].regDate = '2022-03-01';
-        store.dataSet[i].modDate = '2022-03-02';
-
-        start++;
-      }
-    }
+    doAxios() {
+      axios.get('http://localhost:8080/main/hot',)
+        .then(res => { 
+            this.sampleData = res.data.dtoList;
+            this.sampleData.map(i => {
+            i.cuCo = "Collection";
+          })
+        })
+        .catch(error => console.log(error));
+    },
   },
   created() {
-    this.createDummies(this.sampleData, 1);
-    this.createDummies(this.sampleData2, 6);
+    this.doAxios();
   },
 
 }

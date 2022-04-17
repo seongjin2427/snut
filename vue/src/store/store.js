@@ -12,13 +12,18 @@ export const store = createStore({
         },
       }),
       imbbKey: "8749b3a6ce349d7a69b2f7ad2994ee28",
+      imageBaseURL: 'http://localhost:8080/get/img?fileName=',
       sendToCuration: [],
-      curationData:{}
+      curationData:{},
+      searchWord:{}
     }
   },
   getters: {
     getMessage(state) {
       return state.message;
+    },
+    getImageBaseURL(state) {
+      return state.ImageBaseURL;
     },
     getSendToCuration(state) {
       return state.sendToCuration;
@@ -37,6 +42,9 @@ export const store = createStore({
     },
     setCurationData(state, data) {
       state.curationData = data;
+    },
+    setSearchWord(state, word) {
+      state.searchWord = word;
     }
   }, 
   actions: {

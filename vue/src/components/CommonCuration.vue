@@ -1,10 +1,19 @@
 <template>
   <div class="collection" @mouseover="!selectMode && inCuration()" @mouseleave="outCuration()">
-
-      <img :class="cuSelect" :src="inputImage(info)" alt="sample_img">
-      <div class="check-icon" v-if="selected">
-        <!-- <check-icon width="100" height="100" background="white" /> -->
+      <div :class="cuSelect">
+        <emoji-face v-if="info.pickedColor" class="emoji-face" width="180" height="180" :color="info.pickedColor" />
+        <img :src="inputImage(info)" 
+        :style="info.pickedColor && 
+          { background: 'none', 
+            width: 80+'px', 
+            height: 80+'px',
+            position: 'absolute',
+            'z-index': 1,
+            top: 50+'px',
+            left: 44+'px'}" 
+        alt="sample_img">
       </div>
+      <div class="check-icon" v-if="selected"></div>
       <div class="text1" v-if="hoverBool && (!storeBool || !delColBoolean || !loginBool || selectMode)">
         <p>{{ '#'+info.hashtag[0] }}</p>
         <p>{{ '#'+info.hashtag[1] }}</p>
@@ -21,10 +30,12 @@
 </template>
 
 <script>
+import EmojiFace from './EmojiFace.vue';
+
 export default {
   name: "CommonCuration",
   components: {
-    // checkIcon
+    EmojiFace
   },
   props: ['info', 'id', 'delColBoolean', 'loginBool', 'selectMode'],
   data() {
@@ -64,15 +75,15 @@ export default {
     },
     inputImage(info) {
       // console.log(info.imageDTOList[0])
-      if(!info.imageDTOList == '') {
-        // const url = info.imageDTOList[0].thumbnailURL;
-        // console.log(url)
-        // return `http://localhost:8080/get/img?fileName=${url}`;
-        return 'http://localhost:8080/get/img?fileName=2022%5C04%5C15%2Fs_69dcce2e-e32c-4ad8-98e3-b73e40f6a554_wallpaperbetter+%282%29.jpg';
-
+      if(info.imageDTOList.length > 0) {
+        const url = info.imageDTOList[0].thumbnailURL;
+        return `http://localhost:8080/get/img?fileName=${url}`;
       }
-      return 'http://localhost:8080/get/img?fileName=2022%5C04%5C15%2Fs_69dcce2e-e32c-4ad8-98e3-b73e40f6a554_wallpaperbetter+%282%29.jpg';
+      console.log(info.pickedEmoji)
+      const emojiNo = info.pickedEmoji;
+      return require(`@/assets/face-emoji/emoji${emojiNo}.png`)
     },
+    
   },
   created() {
     // console.log(this.info)
@@ -87,7 +98,8 @@ export default {
 img {
   width: 180px;
   height: 180px;
-  object-fit: cover;
+  background: white;
+  object-fit: contain;
   /* margin-right: 0px; */
 }
 .check-icon {

@@ -185,27 +185,22 @@ export default {
       btnSet: [{
         id: 1,
         name: '저장',
-        src: ''
       },
       {
         id: 2,
         name: '글쓰기 취소',
-        src: ''
       },
       {
         id: 3,
         name: '임시저장',
-        src: ''
       },
       {
         id: 4,
         name: '공개',
-        src: ''
       },
       {
         id: 5,
         name: '비공개',
-        src: ''
       }],
       hashTagSet: [
         {
@@ -305,10 +300,11 @@ export default {
         if (this.withPic == true && this.inspectNull()) {
           console.log('Save with Image')
           console.log(pic)
-          this.saveHashtag(pic);
-
           console.log(pic.imageDTOList);
+
+          this.saveHashtag(pic);
           this.sendDataUseAxios(pic);
+          this.$router.push("/mcol/main");
 
         } else if (this.withPic == false) {
           this.$refs.textEditor.sendContents();
@@ -319,8 +315,10 @@ export default {
                   console.log(nonPic)
                   console.log("this.tempImgList", this.tempImgList);
                   nonPic.imageDTOList = this.tempImgList;
+
                   this.saveHashtag(nonPic);
                   this.sendDataUseAxios(nonPic);
+                  this.$router.push("/mcol/main");
                 }
 
             } else {

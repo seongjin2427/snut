@@ -5,8 +5,6 @@
         <div class="logo-area header-area">
           <img class="main-logo-text" src="@/assets/logo_text.png" @click="$router.push('/')" alt="text_logo">
         </div>
-        <button @click="sample()">testgttttt</button>
-        <button @click="sample2()">testgttttt</button>
         <div class="make-col-save-header">
           <common-button 
               ref="makeNoteBtn"
@@ -106,11 +104,6 @@ export default {
         id: 2,
         name: '글쓰기 취소',
         src: ''
-      },
-      {
-        id: 3,
-        name: '임시저장',
-        src: ''
       }],
       hashTagSet: [
         {
@@ -132,7 +125,7 @@ export default {
         nickname: sessionStorage.getItem('nickName'),
         collectionTitle: '',
         collectionText: '',
-        curations: [1, 2, 3],
+        curations: this.$store.state.sendToCuration,
         hashtag: []
       },
       receivedData:[],
@@ -164,14 +157,10 @@ export default {
       console.log("btn", btn);
       if(btn.id == 1) {
         this.onSave();
-
-        } else if (btn.id == 2) {
-          console.log("글쓰기 취소를 눌렀다!")
-          window.history.back();
-
-      } else if (btn.id == 3) {
-        console.log(this.collectionData)
-        console.log("임시저장을 눌렀다!")
+        this.$router.push('/mcol/main');
+      } else if (btn.id == 2) {
+        console.log("글쓰기 취소를 눌렀다!")
+        window.history.back();
       }
     },
     inspectNull() {
@@ -224,13 +213,13 @@ export default {
       }
     },
     next() {
-      if(this.imgSlideData.curPos < this.receivedData.length - 1 ) {
+      if(this.imgSlideData.curPos < this.getImageCount - 1 ) {
       this.$refs.previous.removeAttribute("disabled");
       this.imgSlideData.position -= this.imgSlideData.IMAGE_WIDTH;
       this.$refs.imgContainer.style.transform = `translateX(${this.imgSlideData.position}px`;
       this.imgSlideData.curPos += 1;
       }
-      if(this.imgSlideData.curPos == this.receivedData.length - 1 ) {
+      if(this.imgSlideData.curPos == this.getImageCount - 1 ) {
         this.$refs.next.setAttribute('disabled', 'true');
       }
     },
@@ -250,11 +239,16 @@ export default {
     },
     inputImage() {
       const pictureDiv = document.querySelector(".picture-div");
-      for(let i = 0; i < 3; i++) {
-        let url = this.receivedData[i].imageDTOList[0].imageURL;
-        pictureDiv.innerHTML += 
-          `<img src="http://localhost:8080/get/img?fileName=${url}" 
-              style="width:500px; height: 500px; object-fit:contain;">`
+      for(let i = 0; i < this.receivedData.length; i++) {
+        console.log(this.receivedData[i].imageDTOList.length)
+
+        if(this.receivedData[i].imageDTOList.length) {
+            let url = this.receivedData[i].imageDTOList[0].imageURL;
+            console.log(this.receivedData[i].imageDTOList[0].imageURL);
+            pictureDiv.innerHTML += 
+              `<img src="http://localhost:8080/get/img?fileName=${url}" 
+                  style="width:500px; height: 500px; object-fit:contain;">`
+        }
       }
     },
     getCurationData() {
@@ -268,6 +262,13 @@ export default {
             this.receivedData.push(res.data);
           })
         }
+    }
+  },
+  computed: {
+    getImageCount() {
+      let count = 0;
+      this.receivedData.map(i => {if(i.imageDTOList.length > 0) return count++ });
+      return count;
     }
   },
   created() {

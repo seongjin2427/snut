@@ -4,6 +4,7 @@ import com.curation.snut.entity.Curation;
 import com.curation.snut.entity.Member;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -24,4 +25,9 @@ public class SnutCollectionDTO {
     private String nickname;
 
     private List<Long> curations;
+    private List<CurationDTO> curationList;
+
+    private LocalDateTime regDate;
+    private LocalDateTime modDate;
+
 }

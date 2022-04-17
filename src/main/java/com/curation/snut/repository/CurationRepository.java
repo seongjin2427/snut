@@ -31,10 +31,14 @@ public interface CurationRepository extends JpaRepository<Curation, Long> {
     @Query("select ci from CurationImage ci where ci.curation.curationNo = :no order by ci.ciid asc")
     List<CurationImage> findCurationImageByCurationNo(Long no);
 
+    @Query("select cu from Curation cu join cu.hashtag h where h.tag like concat('%', :word, '%')")
+    List<Curation> findOnlyCurationsByWord(String word);
 
-//    @Query("select cu, ci from Curation cu join CurationImage ci on ci.curation.curationNo = cu.curationNo join cu.hashtag h where h.tag like concat('%', :word, '%') group by cu")
-    @Query("select cu.curationNo, ci.ciid from Curation cu join CurationImage ci on ci.curation.curationNo = cu.curationNo join cu.hashtag h where h.tag like concat('%', :word, '%') group by ci")
-    List<List> findCurationByWord(@Param("word") String word);
+    @Query("select cu.curationNo, ci.ciid from Curation cu join CurationImage ci on ci.curation.curationNo = cu.curationNo join cu.hashtag h where h.tag like concat('%', :word, '%') group by cu")
+    List<List> findCurationByWord(String word);
+
+    @Query("select cu from Curation cu join cu.hashtag h where h.tag like concat('%', :word, '%') group by cu")
+    List<Curation> findCurationByWord22(String word);
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

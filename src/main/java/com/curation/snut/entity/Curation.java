@@ -23,7 +23,10 @@ public class Curation extends BaseEntity {
     private Long curationNo;
 
     private String curationTitle;
+
+    @Column(length = 50000)
     private String curationText;
+
     private boolean open;
     private Long pickedEmoji;
     private String pickedColor;

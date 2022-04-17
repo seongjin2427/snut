@@ -4,7 +4,7 @@
     <div v-if="editor">
       <drag-and-drop-modal ref="dragModal" @receiveNoteImg="receiveNoteImg" />
 
-      <div class="text-editor-btn-area" v-if="toolBar">
+      <div class="text-editor-btn-area" v-if="editable">
         <button @click="editor.chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }">
           <img src="https://img.icons8.com/fluency-systems-regular/344/bold.png" alt="bold">
         </button>
@@ -94,20 +94,22 @@ export default {
     EditorContent,
     DragAndDropModal,
   },
-  props: ['isEditable'],
+  props: ['isEditable', "curationContents"],
   data() {
     return {
       editor: null,
       extendsHeight: this.extend,
       contents: '<p>내용을 입력해 주세요</p>',
-      toolBar: this.isEditable,
       editable: this.isEditable,
       imgList: [],
       viewImgList: []
     }
   },
-
   methods: {
+    sample() {
+      console.log("ASDFASDF");
+      // this.editor.setContents(contents)
+    },
     extendsEditor() {
       let a = document.querySelector('.ProseMirror').style;
       a.height = 700+'px';
@@ -145,7 +147,6 @@ export default {
       var contents = this.editor.getHTML();
       this.$emit('sendContents', contents, this.imgList);
     },
-    
   },
 
   mounted() {
@@ -160,9 +161,11 @@ export default {
           types: ['heading', 'paragraph'],
         }),
       ],
-      content: this.contents,
+      content: this.curationContents || this.contents,
       editable: this.editable
     })
+    console.log(this.contents)
+    console.log(this.editable)
   },
 
   beforeUnmount() {

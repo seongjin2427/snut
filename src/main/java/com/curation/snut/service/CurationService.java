@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import com.curation.snut.dto.CurationDTO;
 import com.curation.snut.dto.CurationImageDTO;
+import com.curation.snut.dto.PageRequestDTO;
 import com.curation.snut.dto.SnutCollectionDTO;
 import com.curation.snut.entity.Curation;
 import com.curation.snut.entity.CurationImage;
@@ -27,7 +28,6 @@ public interface CurationService {
     List<CurationDTO> getCurationByEmail(String email);
     CurationDTO getCurationsByCurationNo(Long cuId);
     List<CurationDTO> getCurationsByCollectionNo(Long colId);
-
     List<CurationDTO> getCurationsByWord(String word);
 
     Long register(CurationDTO curationDTO);

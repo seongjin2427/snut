@@ -59,97 +59,19 @@ public class CurationServiceImpl implements CurationService {
     public List<CurationDTO> getCurationsByCollectionNo(Long colId) {
         List<Curation> cuList = curationRepository.findCurationsByCollectionNo(colId);
 
-        for(int i = 0; i < cuList.size(); i++) {
-            System.out.println(cuList.get(i));
-        }
-
         return cuList.stream().map(cu -> {
            List<CurationImage> curationImageList = curationRepository.findCurationImageByCurationNo(cu.getCurationNo());
            return entityToDTO(cu, curationImageList);
         }).collect(Collectors.toList());
-
-    }
-
-    public List combineList(List curation, List images) {
-        List<List> combinedList = new ArrayList<>();
-
-        List<Curation> cu = new ArrayList<Curation>(curation);
-        List<List<CurationImage>> img = new ArrayList<List<CurationImage>>(images);
-
-        combinedList.add(cu);
-        combinedList.add(img);
-
-        return combinedList;
     }
     @Transactional
     @Override
     public List<CurationDTO> getCurationsByWord(String word) {
-        List<List> data = curationRepository.findCurationByWord(word);
-        List<List> modifiedList = new ArrayList();
-
-        List curationList = new ArrayList<>();
-        List imageList = new ArrayList<>();
-
-        data.stream().reduce(modifiedList, (a, b) -> {
-            if(curationList.size() == 0) {
-                curationList.add(b.get(0));
-                imageList.add(b.get(1));
-                return modifiedList;
-            }
-            if(!curationList.contains(b.get(0))) {
-                modifiedList.add(combineList(curationList, imageList));
-
-                curationList.clear();
-                imageList.clear();
-
-                curationList.add(b.get(0));
-                imageList.add(b.get(1));
-
-            } else {
-                imageList.add(b.get(1));
-            }
-            return modifiedList;
-        });
-
-        if(curationList.size() > 0) {
-            modifiedList.add(combineList(curationList, imageList));
-        }
-        for(int i = 0; i < modifiedList.size(); i++) {
-            System.out.println(modifiedList.get(i));
-        }
-
-//        return null;
-        return modifiedList.stream().map(cu -> {
-            List<Object> cuList = (List<Object>) cu.get(0);
-            List<Long> imgIdList = (List<Long>) cu.get(1);
-
-            // curationNo 기준으로 curation 뽑아오기
-            Long cuId = (long) cuList.get(0);
-            Optional<Curation> curation = curationRepository.findById(cuId);
-
-            // curationImage id 기준으로 curaitonImage 뽑아오기
-            List<CurationImage> imgList = new ArrayList<>();
-            for(int j = 0; j < imgIdList.size(); j++) {
-                Optional<CurationImage> tempImg = curationImageRepository.findById(imgIdList.get(j));
-                imgList.add(tempImg.get());
-            }
-            // DTO 변환시키기
-            return entityToDTO(curation.get(), imgList);
+        List<Curation> cuList = curationRepository.findCurationByWord22(word);
+        return cuList.stream().map(cu -> {
+            List<CurationImage> imgList = curationRepository.findCurationImageByCurationNo(cu.getCurationNo());
+            return entityToDTO(cu, imgList);
         }).collect(Collectors.toList());
-    }
-
-
-
-    public Set<Hashtag> upCount(Set<Hashtag> hashtagSet) {
-        Set modifiedTagSet = hashtagSet.stream().map(tag -> {
-            return Hashtag.builder()
-                    .hid(tag.getHid())
-                    .tag(tag.getTag())
-                    .count(tag.getCount() + 1)
-                    .build();
-        }).collect(Collectors.toSet());
-
-        return modifiedTagSet;
     }
 
     @Transactional

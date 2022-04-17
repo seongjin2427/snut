@@ -36,11 +36,13 @@
               인기컬렉션
             </p>
             <div class="main-col-area">
-              <common-collection
+            <common-collection 
+                class="main-searched-col"
                 @click="openModal(col, true)"
-                v-for="(col, idx) in sampleData.dataSet" 
+                v-for="(col, idx) in sampleData" 
                 :info="col" 
                 :id="idx"
+                :loginBool="loginBool"
                 :key="idx" />
             </div>
           </div>
@@ -73,12 +75,12 @@ import CommonButton from '@/components/CommonButton.vue';
 import CommonCollection from '@/components/CommonCollection.vue';
 import MainFooter from '@/components/MainFooter.vue'
 import NavigatorBar from '../components/NavigatorBar.vue';
-import SampleData from '@/assets/sampleData.json';
 import CommonModal from '@/components/CommonModal.vue'
+import axios from 'axios';
 
 
 export default {
-  components: { CommonButton, CommonCollection, MainFooter, NavigatorBar, CommonModal },
+  components: { CommonButton, MainFooter, NavigatorBar, CommonModal, CommonCollection,},
   name: "MyCollection",
   data() {
     return {
@@ -129,29 +131,20 @@ export default {
       console.log(src);
       this.$router.push(src);
     },
-    createDummies(store, start) {
-      for(var i = 0; i < 5; i++) {
-        var random = Math.floor(Math.random()*10);
-        store.dataSet[i] = {};
-        store.dataSet[i].id = start;
-        store.dataSet[i].author = 'Author....' + i;
-        store.dataSet[i].nickName = 'NickName....' + i;
-        store.dataSet[i].title = 'Title....' + i;
-        store.dataSet[i].content = 'Content...' + i;
-        store.dataSet[i].folder = 'FolerNo...' + i;
-        store.dataSet[i].src = [SampleData.imgUrl[random], SampleData.imgUrl[random+1], SampleData.imgUrl[random+2]];
-        store.dataSet[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
-        store.dataSet[i].cuCo = 'Collection';
-        store.dataSet[i].regDate = '2022-03-01';
-        store.dataSet[i].modDate = '2022-03-02';
-
-        start++;
-      }
-    }
+    doAxios() {
+      axios.get('http://localhost:8080/main/hot',)
+        .then(res => { 
+            this.sampleData = res.data.dtoList;
+            this.sampleData.map(i => {
+            i.cuCo = "Collection";
+          })
+        })
+        .catch(error => console.log(error));
+    },
   },
   created() {
-    this.createDummies(this.sampleData, 1);
-  }
+    this.doAxios();
+  },
 }
 </script>
 

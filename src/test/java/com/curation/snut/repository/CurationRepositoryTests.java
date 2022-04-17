@@ -178,9 +178,7 @@ class CurationRepositoryTests {
     @Test
     void curationSearchTest() {
 
-        Set<String> a = new HashSet<>();
-        a.add("hash1");
-        List<List> list = curationRepository.findCurationByWord("쇼ㅕㅏ");
+        List<CurationDTO> list = curationService.getCurationsByWord("테");
         System.out.println(list.size());
 
         for(int i = 0; i < list.size(); i++) {
@@ -190,8 +188,8 @@ class CurationRepositoryTests {
 
     @Test
     void curationTest() {
-        List<CurationDTO> list = curationService.getCurationsByWord("쇼ㅕㅏ");
-        System.out.println(list);
+        List<CurationDTO> list = curationService.getCurationsByWord("테");
+        System.out.println(list.size());
         for(int i = 0; i < list.size(); i++) {
             System.out.println(list.get(i));
         }
@@ -199,7 +197,7 @@ class CurationRepositoryTests {
 
     @Test
     void collectionTest() {
-        List list = snutCollectionRepository.findCurationByWord("ash2");
+        List list = snutCollectionRepository.findCurationByWord("가");
 
         System.out.println(list.size());
 //        int bb = 0;

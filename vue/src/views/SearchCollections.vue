@@ -26,7 +26,7 @@
             <common-collection 
                 class="main-searched-col"
                 @click="openModal(col, true)"
-                v-for="(col, idx) in sampleData.Collection" 
+                v-for="(col, idx) in sampleData" 
                 :info="col" 
                 :id="idx"
                 :loginBool="loginBool"
@@ -52,7 +52,6 @@ import CommonCollection from '@/components/CommonCollection.vue';
 import InputBox from '@/components/InputBox.vue';
 import MainFooter from '@/components/MainFooter.vue'
 import NavigatorBar from '../components/NavigatorBar.vue';
-import SampleData from '@/assets/sampleData.json';
 import CommonModal from '../components/CommonModal.vue';
 
 
@@ -62,14 +61,15 @@ export default {
   data() {
     return {
       loginBool: false,
-      sampleData: { 
-        Collection: [],
-        Curation: [],
-        Folder: {
-          Curation:[],
-          Collection: []
-        },
-      }, 
+      sampleData: {},
+      // sampleData: { 
+      //   Collection: [],
+      //   Curation: [],
+      //   Folder: {
+      //     Curation:[],
+      //     Collection: []
+      //   },
+      
       loginSignText: 'If You Want To See More, Just Sign In!',
       searchedWord: ''
     }
@@ -88,10 +88,10 @@ export default {
         console.log(searchWord);
 
         this.doAxios();
-
         this.$refs.inputBox.clearWord();
       }
     },
+
     doAxios() {
       let calledAxios = this.$store.state.storedAxios;
       console.log("searchWord", this.$route.params)
@@ -100,92 +100,21 @@ export default {
           'searchWord': this.$route.params.searchWord
         }
       })
-        .then(res => console.log(res))
+        .then(res => { 
+          // console.log(res)
+          console.log(res.data);
+          const combined = res.data.Collection.concat(res.data.Curation)
+          combined.map(i => {
+            if('collectionNo' in i) i.cuCo = "Collection";
+            else if('curationNo' in i) i.cuCo = "Curation";
+          })
+          this.sampleData = combined;
+      
+        })
         .catch(error => console.log(error));
     },
-    createDummies(store) {
-      const INPUT_NUMBER = 11;
-
-      // 큐레이션 구간
-      let sampleCuration = [];
-      for(let i = 0; i < INPUT_NUMBER; i++) {
-        let random = Math.floor(Math.random()*10);
-        let date = Math.floor(Math.random()*8)+1;
-        sampleCuration[i] = {};
-        sampleCuration[i].id = i;
-        sampleCuration[i].author = 'Author....' + i;
-        sampleCuration[i].nickName = 'NickName....' + i;
-        sampleCuration[i].title = 'Title....' + i;
-        sampleCuration[i].content = `Lorem ipsum` + i;
-        sampleCuration[i].folder = 'FolderNo...' + i;
-        sampleCuration[i].src = [SampleData.imgUrl[random], SampleData.imgUrl[random]];
-        sampleCuration[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
-        sampleCuration[i].regDate = '2022-03-0'+date;
-        sampleCuration[i].modDate = '2022-03-0'+date;
-        sampleCuration[i].cuCo = 'Curation';
-      }
-
-
-
-      // Curation
-      let Collection = [];
-      for(let i = 0; i < INPUT_NUMBER; i++) {
-        let random = Math.floor(Math.random()*9);
-        let date = Math.floor(Math.random()*8)+1;
-        Collection[i] = {};
-        Collection[i].id = i;
-        Collection[i].author = 'Author....' + i;
-        Collection[i].nickName = 'NickName....' + i;
-        Collection[i].title = 'Title....' + i;
-        Collection[i].content = `Lorem ipsum` + i;
-        Collection[i].folder = 'FolderNo...' + i;
-        Collection[i].src = [sampleCuration[random].src[0], sampleCuration[random].src[0]];
-        Collection[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
-        Collection[i].regDate = '2022-03-0'+date;
-        Collection[i].modDate = '2022-03-0'+date;
-        Collection[i].cuCo = 'Collection';
-      }
-
-      // 큐레이션 구간
-      let Curation = [];
-      for(let i = 0; i < INPUT_NUMBER; i++) {
-        let random = Math.floor(Math.random()*10);
-        let date = Math.floor(Math.random()*8)+1;
-        Curation[i] = {};
-        Curation[i].id = i;
-        Curation[i].author = 'Author....' + i;
-        Curation[i].nickName = 'NickName....' + i;
-        Curation[i].title = 'Title....' + i;
-        Curation[i].content = `Lorem ipsum` + i;
-        Curation[i].folder = 'FolderNo...' + i;
-        Curation[i].src = [SampleData.imgUrl[random], SampleData.imgUrl[random]];
-        Curation[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
-        Curation[i].regDate = '2022-03-0'+date;
-        Curation[i].modDate = '2022-03-0'+date;
-        Curation[i].cuCo = 'Curation';
-      }
-
-      // console.log(this.sampleData);
-      
-      let a = Array.from(Collection);
-      let b = Array.from(Curation);
-      let c = Array.from(this.sampleData.Folder);
-      
-      let arr = [];
-      let d = arr.concat(a, b, c);
-
-      d.sort((a, b) => {
-        if(a.modDate > b.modDate) return -1;
-        if(a.modDate === b.modDate) return 0;
-        if(a.modDate < b.modDate) return 1;
-      });
-
-      
-      store.Collection = d;
-    }
   },
-  mounted() {
-    this.createDummies(this.sampleData);
+  created() {
     this.doAxios();
 
   }

@@ -1,5 +1,7 @@
 package com.curation.snut.service;
 
+import com.curation.snut.dto.PageRequestDTO;
+import com.curation.snut.dto.PageResultDTO;
 import com.curation.snut.dto.SnutCollectionDTO;
 import com.curation.snut.dto.CurationDTO;
 import com.curation.snut.entity.Hashtag;
@@ -22,15 +24,24 @@ public interface SnutCollectionService {
 
     Long snutCollectionRegister(SnutCollectionDTO snutCollectionDTO);
 
-    default SnutCollectionDTO colToColDTO(SnutCollection collection) {
+    PageResultDTO getList(PageRequestDTO requestDTO);
 
+    PageResultDTO getPopularCollection(PageRequestDTO requestDTO);
+
+    default SnutCollectionDTO colToColDTO(SnutCollection collection, List<CurationDTO> Curations) {
+
+
+//        System.out.println("colToColDTO >>>>>>>> " + Curations);
         SnutCollectionDTO dto = SnutCollectionDTO.builder()
                 .collectionNo(collection.getCollectionNo())
                 .collectionTitle(collection.getCollectionTitle())
                 .collectionText(collection.getCollectionText())
                 .email(collection.getWriter().getEmail())
                 .hashtag(collection.getHashtag())
+                .curationList(Curations)
                 .nickname(collection.getWriter().getNickName())
+                .regDate(collection.getRegDate())
+                .modDate(collection.getModDate())
                 .build();
 
         return dto;

@@ -1,19 +1,35 @@
 <template>
   <div class="collection" @mouseover="!selectMode && inCuration(info.cuCo)" @mouseleave="outCuration(info.cuCo)">
 
+    <!-- Collection 구간 -->
     <div class="img-area" v-if="info.cuCo == 'Collection'">
-      <img :class="cuSelect" :src="info.src[0]" alt="sample_img">
-      <img :class="cuSelect" :src="info.src[1]" alt="sample_img" v-if="info.src[1]">
-      <img :class="cuSelect" :src="info.src[2]" alt="sample_img" v-if="info.src[2]">
-      <div class="replace" v-if="!info.src[1]"></div>
+      <img :class="cuSelect" :src="inputImage(info, 0)" alt="sample_img">
+      <img :class="cuSelect" :src="inputImage(info, 1)" alt="sample_img" v-if="info.curationList[1].imageDTOList[0]">
+      <img :class="cuSelect" :src="inputImage(info, 2)" alt="sample_img" v-if="info.curationList[2].imageDTOList[0]">
+      <div class="replace" v-if="inputImage(info, 1)"></div>
       <div class="check-icon" v-if="selected"></div>
     </div>
 
+    <!-- Curation 구간 -->
     <div class="img-area" v-if="info.cuCo == 'Curation'">
-      <img :class="cuSelect" :src="info.src[0]" alt="sample_img">
+      <emoji-face v-if="info.pickedColor" :class="cuSelect" width="180" height="180" :color="info.pickedColor" />
+      <img :class="cuSelect" :src="inputImage(info)" 
+      :style="info.pickedColor && 
+        {
+          background: 'none', 
+          width: 80+'px', 
+          height: 80+'px',
+          'object-fit': 'contain',
+          position: 'absolute',
+          'z-index': 1,
+          top: 50+'px',
+          left: 44+'px'
+        }" 
+        alt="sample_img">
       <div class="check-icon" v-if="selected"></div>
     </div>
 
+    <!-- Folder 구간 -->
     <div class="img-area" v-if="info.cuCo == 'Folder'">
       <div id="folder" :class="folderSelect">
         <textarea 
@@ -35,22 +51,24 @@
       </div>
     </div>
 
+    <!-- 해시태그 구간 -->
     <div class="text1" 
         v-if="!selectMode && (info.cuCo == 'Curation' 
               || info.cuCo == 'Collection')
               && hoverBool 
               && (!storeBool || !delColBoolean || !loginBool)">
-      <p>{{ '#'+info.hashtag[0] }}</p>
-      <p>{{ '#'+info.hashtag[1] }}</p>
-      <p>{{ '#'+info.hashtag[2] }}</p>
-      <p>{{ info.modDate }}</p>
+      <p v-for="(tag, idx) in info.hashtag" :key="idx" >{{ '#'+tag.tag }}</p>
+      <p>{{ convertDate(info.modDate) }}</p>
       <!-- <p>{{ info.cuCo }}</p> -->
     </div>
     
+    <!-- Hover시 삭제/공유 뜨는 Div 구간  (Curation, Collection-->
     <div class="text1" v-if="!selectMode && info.cuCo != 'Folder' && storeBool && delColBoolean && loginBool"> 
       <button @click.stop="deleteCol()">삭제</button>
       <button @click.stop="shareCol()">공유</button>
     </div>
+
+    <!-- Hover시 삭제/공유 뜨는 Div 구간  (Folder) -->
     <div class="text1" 
         v-if="!selectMode && info.cuCo == 'Folder' && info.folderNameIsDisabled && storeBool && delColBoolean && loginBool"
         @click="!selectMode && moveToPage()"
@@ -62,8 +80,13 @@
 </template>
 
 <script>
+import EmojiFace from '@/components/EmojiFace.vue';
+
 export default {
   name: "CommonCollection",
+  components: {
+    EmojiFace
+  },
   props: ['info', 'id', 'delColBoolean', 'loginBool', 'selectMode'],
   data() {
     return {
@@ -82,6 +105,33 @@ export default {
     }
   },
   methods: {
+    inputImage(info, idx) {
+      let imageURL = null;
+      if(info.cuCo == 'Collection') {
+        if(info.curationList[idx].imageDTOList.length) {
+          imageURL = this.$store.state.imageBaseURL + info.curationList[idx].imageDTOList[0].thumbnailURL;
+        } else return null;
+      } else if (info.cuCo == 'Curation') {
+        if(!info.pickedColor) {
+          imageURL = this.$store.state.imageBaseURL + info.imageDTOList[0].thumbnailURL;
+        } else {
+          const emojiNo = info.pickedEmoji;
+          imageURL = require(`@/assets/face-emoji/emoji${emojiNo}.png`);
+        } 
+      }
+      return imageURL;
+    },
+    convertDate(data) {
+      let date = new Date(data)
+      const formatDate = (date) => {
+        let formatted_date = 
+            date.getFullYear() 
+            + "-" + (date.getMonth() >= 10 ? date.getMonth() : '0'+ (date.getMonth() + 1)) 
+            + "-" + (date.getDate() >= 10 ? date.getDate() : '0' + date.getDate());
+        return formatted_date;
+      }
+      return formatDate(date);
+    },
     inCuration(cuCo) {
       this.hoverBool = true;
       this.storeBool = true;
@@ -130,6 +180,9 @@ export default {
       console.log(this.info);
       console.log('이제 움직여 볼까나?');
     }
+  },
+  created() {
+    // console.log("하하핫", this.info);
   }
 }
 </script>

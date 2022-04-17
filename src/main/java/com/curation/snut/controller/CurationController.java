@@ -1,6 +1,7 @@
 package com.curation.snut.controller;
 
 import com.curation.snut.dto.CurationDTO;
+import com.curation.snut.dto.PageRequestDTO;
 import com.curation.snut.dto.SnutCollectionDTO;
 import com.curation.snut.entity.SnutCollection;
 import com.curation.snut.service.CurationService;
@@ -46,6 +47,8 @@ public class CurationController {
         return curationService.getCurationsByCurationNo(a);
     }
 
+
+
     @RequestMapping(value = "/main", method = RequestMethod.GET, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity dataSetBySearchWord(@RequestParam Map obj) {
         log.info("dataSetBySearchWord............");
@@ -77,7 +80,7 @@ public class CurationController {
         Long collectionNo = snutCollectionService.snutCollectionRegister(snutCollectionDTO);
 
 //        return new ResponseEntity(collectionNo, HttpStatus.OK);
-        return new ResponseEntity("a", HttpStatus.OK);
+        return new ResponseEntity(collectionNo, HttpStatus.OK);
     }
 
     /////////////////////////////////////////////////////////////////////////////////
