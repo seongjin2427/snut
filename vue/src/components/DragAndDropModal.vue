@@ -75,6 +75,10 @@ export default {
   flex-direction: column;
   align-items: center;
 }
+.modal-container::-webkit-scrollbar{
+  display: none;
+  width: 0
+}
 .modal-container {
   width: 850px;
   height: 500px;

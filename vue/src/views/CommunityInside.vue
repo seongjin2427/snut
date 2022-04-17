@@ -6,14 +6,14 @@
         <div class="com-btn-area" v-if="!modifyBool">
           <common-button @click="separateMethods(idx), joincomm($event, btn)" class="com-btn" :buttonName="btn.name" v-for="(btn,idx) in comInBtnData" 
                         :key="idx" width="150" height="40" border-radius="12" background="white" border="none"
-                        fontWeight="400" font-size="16" marginTop="50" marginRight="20" />
+                         marginTop="50" marginRight="20"  />
 
 
         </div>
         <div class="com-btn-area" v-if="modifyBool">
           <common-button @click="modifyMethods(idx)" class="com-btn" :buttonName="btn.name" v-for="(btn,idx) in modifyBtnData"
                         :key="idx" width="150" height="40" border-radius="12" background="white" border="none"
-                        fontWeight="400" font-size="16" marginTop="50" marginRight="20" />
+                         marginTop="50" marginRight="20"/>
         </div>
 
         <div class="com-form-main-wrapper">
@@ -84,11 +84,7 @@ export default {
           name: '가입하기',
           src: ''
         },
-        {
-          id: 3,
-          name: '북마크',
-          src: ''
-        }
+
       ],
       modifyBtnData: [
         {
@@ -149,8 +145,12 @@ export default {
 .com-btn-area {
   display: flex;
   justify-content: flex-end;
-}
 
+}
+.com-body::-webkit-scrollbar{
+  display: none;
+  width: 0
+}
 .com-form-main-wrapper {
   display: flex;
   justify-content: center;

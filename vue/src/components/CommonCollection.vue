@@ -316,4 +316,6 @@ export default {
   transition: all .3s;
   filter: brightness(60%);
 }
+
+
 </style>

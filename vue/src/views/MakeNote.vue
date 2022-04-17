@@ -500,6 +500,10 @@ header {
   overflow: scroll;
   background: #eee;
 }
+.pictrue-div::-webkit-scrollbar{
+  display: none;
+  width: 0
+}
 .pictrue-div > p {
   width: 100%;
   height: calc(100%-50);
@@ -600,6 +604,10 @@ header {
   padding:  20px;
   border: 1px solid black;
   overflow: scroll;
+}
+.picker::-webkit-scrollbar{
+  display: none;
+  width: 0
 }
 .emoji-picker {
   display: flex;

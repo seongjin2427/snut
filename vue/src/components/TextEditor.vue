@@ -218,6 +218,7 @@ button img {
   height: 370px;
   overflow: scroll;
 
+
 > * + * {
     margin-top: 0.75em;
   }
@@ -276,6 +277,10 @@ button img {
 }
 .edit-content *:focus {
   outline: none;
+}
+.ProseMirror::-webkit-scrollbar{
+  display: none;
+  width: 0
 }
 
 </style>

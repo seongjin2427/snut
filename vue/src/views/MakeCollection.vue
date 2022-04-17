@@ -95,7 +95,6 @@ export default {
     },
     openModal(data) {
       this.$refs.modal.openModal(data);
-      this.$refs.modal.setTextEditor();
       },
     deleteCol(id) {
       // console.log("StoreCollections.info", info);

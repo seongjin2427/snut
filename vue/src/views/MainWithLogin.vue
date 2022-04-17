@@ -15,7 +15,6 @@
         </div>
         <div class="button-area">
           <input type="button" value="test" @click="sample">
-          <input type="button" value="test222" @click="sample2">
           <common-button buttonName="Log out" width="80" height="35" marginTop="5" marginRight="20" v-if="loginBool" @click="doLogout()"/>
           <common-button buttonName="Log in" width="80" height="35" marginTop="5" marginRight="20" v-if="!loginBool"
                           @click="gotoLogin"/>
@@ -37,7 +36,7 @@
             <p>
               인기컬렉션
             </p>
-            <p>
+            <p @click="gotocol">
               더보기
             </p>
           </div>

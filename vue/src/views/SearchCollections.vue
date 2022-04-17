@@ -15,7 +15,12 @@
               height="38" />
         </div>
         <div class="button-area">
-          <common-button buttonName="정렬" width="80" height="35" marginTop="5" marginRight="20" />
+<!--   dropdown menu-->
+          <div  >
+            <div v-for="(list, idx) in dropdownData" :key="idx" class="dropdown">
+              <common-button @click="openlist(idx)"  v-if=" openData || active == idx"  :buttonName="list" width="80" height="35" marginTop="5" marginRight="20" />
+            </div>
+          </div>
           <img src="@/assets/btn_hamburger.png" alt="nav_btn" @click="openNavBar">
         </div>
       </header>
@@ -71,7 +76,11 @@ export default {
       //   },
       
       loginSignText: 'If You Want To See More, Just Sign In!',
-      searchedWord: ''
+      searchedWord: '',
+
+      dropdownData: ["전체보기","큐레이션","컬렉션","최신순","오래된순"],
+      active: 0,
+      openData: false
     }
   },
   methods: {
@@ -91,7 +100,13 @@ export default {
         this.$refs.inputBox.clearWord();
       }
     },
-
+    openlist(idx){
+      console.log(idx)
+      let temp = this.dropdownData[0];
+      this.dropdownData[0] = this.dropdownData[idx];
+      this.dropdownData[idx] = temp;
+      this.openData = !this.openData
+    },
     doAxios() {
       let calledAxios = this.$store.state.storedAxios;
       console.log("searchWord", this.$route.params)
@@ -189,4 +204,5 @@ header {
   margin-top: 20px;
   margin-right: 20px;
 }
+
 </style>

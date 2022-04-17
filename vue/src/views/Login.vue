@@ -49,7 +49,7 @@
           <div class="social-login">
 <p class="ifyou">If you don’t already have an account click the button below to create your account.</p>
             <div class="create-acc">
-              <img src="../assets/button/create-acount.png" alt="create">
+              <img src="../assets/button/create-acount.png" alt="create" @click="goJoin()">
             </div>
             <p class="continue">OR contiue with</p>
             <div class="signin-google">
@@ -115,6 +115,9 @@ export default {
         alert("ID 또는 비밀번호를 다시 확인해주세요!")
         });
       
+    },
+    goJoin(){
+      this.$router.push({path:"/regi"});
     }
   }
 }

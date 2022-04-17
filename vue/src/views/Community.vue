@@ -13,7 +13,6 @@
       <input-box class="main-input" @keyup.enter="doSearch" placeholder="Enter a keyword" width="100" height="38"/>
     </div>
     <div class="button-area">
-      <common-button buttonName="정렬" width="80" height="35" marginTop="5" marginRight="20" />
       <img src="@/assets/btn_hamburger.png" alt="nav_btn" @click="openNavBar">
     </div>
   </header>
@@ -23,7 +22,7 @@
     <div class="community-body">
       <div class="button-area-recom">
         <common-button class="recom-bu" v-for="(btn,idx) in comBtnData" :key="idx" :buttonName="btn.name" width="200" height="80"  marginTop="50" marginRight="20" border-radius="12"
-                        background="white" border="none" fontWeight="400" font-size="20" />
+                        background="white" border="none" fontWeight="400" font-size="20" @click="goToCom()"/>
       </div>
       <div class="com-form">
         <div class="com-list-block">
@@ -108,7 +107,11 @@ export default {
     },
     moveToPage(src) {
       console.log(src);
-    }
+    },
+  goToCom(){
+    this.$router.push('/com/in');
+  }
+
   },
 
 }
@@ -162,6 +165,7 @@ header {
 .button-area img {
   margin-right: 20px;
   cursor: pointer;
+  margin-left:80px;
 }
 .community-body{
   display: flex;

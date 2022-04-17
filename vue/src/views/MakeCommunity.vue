@@ -10,7 +10,7 @@
               @click="registerCommunity()"
               width="150" height="40" 
               buttonName="생성하기"
-              background="white" border="none" fontSize="20" fontWeight="300"
+              background="white" border="none"
               />
         </div>
         <div class="make-community-header" v-if="modifyBool">
@@ -18,13 +18,13 @@
               @click="cancelMake()"
               width="150" height="40" 
               buttonName="취소"
-              marginRight="30" background="white" border="none" fontSize="20" fontWeight="300"
+              marginRight="30" background="white" border="none"
               />
           <common-button 
               @click="saveCommunity()"
               width="150" height="40" 
               buttonName="저장"
-              background="white" border="none" fontSize="20" fontWeight="300"
+              background="white" border="none"
               />
         </div>
       </header>
@@ -55,12 +55,12 @@
                 <common-button 
                     buttonName="취소"
                     width="150" height="40"
-                    background="white" fontSize="20" fontWeight="400" marginRight="30"
+                    background="white" marginRight="30"
                     @click="cancelMake()"
                     />
                 <common-button 
                     buttonName="미리보기"
-                    width="150" height="40" background="white" fontSize="20" fontWeight="400"
+                    width="150" height="40" background="white"
                     @click="moveToPreView()"
                     />
               </div>
@@ -68,7 +68,7 @@
                 <common-button 
                     buttonName="등록하기"
                     width="150" height="40" border="none" background="#FBBC05"
-                    fontSize="20" fontWeight="300" color="white"
+                     color="white"
                     @click="saveCommunity()"
                     />
                 
@@ -140,7 +140,7 @@ export default {
       console.log(this.communityDataSet);
       this.$refs.modal.openModal();
     },
-    moveToPreview() {
+    moveToPreView() {
       console.log('미리보기 버튼을 눌렀다!');
     },
     receivedEditorContents(contents, imgList) {

@@ -3,71 +3,88 @@
     <!--  form-->
     <div class="comment-view">
       <ul class="list-comment">
+
         <!--list-->
-        <li>
+        <li v-for="(reply, idx) in communityDataSet" :key="idx">
           <div class="comment-section">
             <div class="comment-info">
               <div class="comment-post">
 
                 <div class="profile-info">
-                  <div class="nickName">{{ communityDataSet.nickName }}</div>
-                  <span class="time">{{ communityDataSet.getTime }}</span>
+                  <div class="nickName">{{ reply.nickName }}</div>
+                  <span class="time">{{ reply.getTime }}</span>
                 </div>
 
                 <div class="box-post">
                   <p class="desc-info">
-                    <span class="origin-comment" tabindex="0"> 이건 댓글입니다.</span>
+                    <span v-if="!reply.editcomment" class="origin-comment" tabindex="0">{{ reply.content }}</span>
+                  <textarea v-if="reply.editcomment">
+
+                  </textarea>
                   </p>
                 </div>
 
                 <div class="comment-more">
-                  <div class="reply">reply</div>
-                  <button  class="action" @click="modifyModal($event)">
-                    <img src="@/assets/icon/com-button.png" alt="com-button" class="actbu">
-                  </button>
+                  <div class="replymore">
+
+                    <!--reply bu-->
+                    <div class="reply">
+                      <p @click="replycom($event,idx)">reply</p>
+
+                    </div>
+                    <!--more bu-->
+                    <button class="action"  @click="modifyModal($event,idx)">
+                      <img src="@/assets/icon/com-button.png" alt="com-button" class="actbu">
+                    </button>
+                  </div>
+
+                  <!-- 대댓글-->
+                  <div class="comment-text-write" v-if="replyOn == idx">
+                    <div class="inner-text-write">
+
+                      <div class="box-text-area">
+          <textarea maxlength="800" placeholder="Enter your comments">
+          </textarea>
+                      </div>
+
+                      <div class="wrap-menu">
+                        <div class="area">
+
+            <span class="num-text-area">
+              <span class="num-text">글자 수</span>
+              <span class="num-count-empty">0</span>
+              /
+              <span class="num-text">총 글자 개수</span>
+              600
+            </span>
+
+                          <div class="btn-post">
+                            <common-button class="post-btn" buttonName="post" width="40" height="20" border-radius="12"
+                                           font-size="14"
+                                           background="#FBBC05"
+                                           color="white" border="none" @click="postReply($event,idx)"></common-button>
+                          </div>
+
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
                   <!-- 더보기 버튼 클릭시 노출될 항목 -->
-                  <div  v-if="show" class="modifyCon" :style="{left:modifyleft+140+'px', top:modifytop-80+'px'}">
+                  <div v-if="modalnumber==idx" class="modifyCon"
+                       :style="{left:modifyleft+40+'px', top:modifytop-40+'px'}">
 
 
-                  <div id="moreContent">
+                    <div id="moreContent">
                   <span id="Content">
-                <span class="moreDetail" id="modifyBoard" @click="modifycom($event)">수정</span><br>
-                    <span class="moreDetail" id="deleteBoard" @click="deletecom($event)">삭제</span><br>
+                <span class="moreDetail" id="modifyBoard"  @click="modifycom(idx)">수정</span><br>
+                    <span class="moreDetail" id="deleteBoard" @click="deletecom($event,idx)">삭제</span><br>
                   </span>
+                    </div>
                   </div>
-                  </div>
 
 
                 </div>
-              </div>
-            </div>
-          </div>
-        </li>
-
-        <!--list-->
-        <li>
-          <div class="comment-section">
-            <div class="comment-info">
-              <div class="comment-post">
-
-                <div class="profile-info">
-                  <div class="nickName">{{ communityDataSet.nickName }}</div>
-                  <span class="time">{{ communityDataSet.getTime }}</span>
-                </div>
-
-                <div class="box-post">
-                  <p class="desc-info">
-                    <span class="origin-comment" tabindex="0"> 이건 댓글입니다.</span>
-                  </p>
-                </div>
-
-                <div class="comment-more">
-                  <div class="reply">reply</div>
-                  <button class="action" @click="modifyModal($event)">
-                    <img src="@/assets/icon/com-button.png" alt="com-button" class="actbu">
-                  </button>
-                </div>
-
               </div>
             </div>
           </div>
@@ -79,8 +96,10 @@
     <div class="comment-paging">
       <pagenationnum scale="scale(0.5, 0.5)"></pagenationnum>
     </div>
-  
-  <!-- 댓글 페이징 처리-->
+
+    <!-- 댓글 페이징 처리-->
+
+
     <div class="comment-text-write">
       <div class="inner-text-write">
 
@@ -102,8 +121,8 @@
 
             <div class="btn-post">
               <common-button class="post-btn" buttonName="post" width="40" height="20" border-radius="12" font-size="14"
-                            background="#FBBC05"
-                            color="white" border="none"></common-button>
+                             background="#FBBC05"
+                             color="white" border="none"></common-button>
             </div>
 
           </div>
@@ -111,6 +130,7 @@
 
       </div>
     </div>
+    <!-- reply form -->
 
   </div>
 
@@ -127,29 +147,69 @@ export default {
   },
   data() {
     return {
-      communityDataSet: {
-        getTime: "time",
-        nickName: "nickName"
-      },
+      communityDataSet: [
+        {
+          getTime: "time1",
+          nickName: "nickName1",
+          content: "comment1",
+          editcomment: false
+        },
+        {
+          getTime: "time2",
+          nickName: "nickName2",
+          content: "comment2",
+          editcomment: false
+        },
+        {
+          getTime: "time3",
+          nickName: "nickName3",
+          content: "comment3",
+          editcomment: false
+        },
+      ],
       modifyleft: 0,
       modifytop: 0,
-      show: false
+      show: false,
+      modalnumber: -1,
+      replyOn: -1
     }
   },
-  methods:{
-    modifyModal(e){
-      console.log(e)
-      console.log(e.clientX)
-      console.log(e.clientY)
-      this.modifyleft = e.x
-      this.modifytop = e.y
-      this.show = !this.show;
-    },
-    modifycom(){
+  methods: {
+    modifyModal(e, idx) {
+      if (this.modalnumber == -1) {
+        // console.log(e)
+        // console.log(e.offsetX)
+        // console.log(e.offsetY)
+        this.modifyleft = e.x
+        this.modifytop = e.y
+        this.modalnumber = idx;
 
+      } else {
+        this.modalnumber = -1
+      }
     },
-    deletecom(){
-      alert("정말 삭제하시겠습니까?")
+    modifycom(idx) {
+      this.communityDataSet[idx].editcomment =!this.communityDataSet[idx].editcomment
+    },
+    deletecom(e, idx) {
+      // alert("정말 삭제하시겠습니까?")
+      console.log('ComInsideComment', idx);
+      console.log(e)
+      this.communityDataSet.splice(idx, 1)
+      // this.$emit('deletecom', this);
+    },
+    replycom(e, idx) {
+      if (this.replyOn == -1) {
+        this.replyOn = idx;
+      } else {
+        this.replyOn = -1
+      }
+    },
+    postReply(e, idx) {
+      if (this.replyOn == idx) {
+
+        this.replyOn = -1
+      }
     }
 
   }
@@ -168,7 +228,7 @@ li {
   display: block;
   width: 900px;
   border-bottom: 1px solid #D9D9D9;
-  margin: 20px auto;
+  padding-bottom: 20px;
 }
 
 .box-post {
@@ -176,10 +236,12 @@ li {
 }
 
 .comment-more {
-  display: flex;
-  justify-content: flex-end;
+
+
   padding-right: 20px;
+
 }
+
 .comment-more button {
   cursor: pointer;
 }
@@ -278,17 +340,19 @@ button img {
   height: 16px;
   scale: 1;
 }
-.modifyCon{
+
+.modifyCon {
   position: fixed;
 }
-#moreContent{
+
+#moreContent {
   display: block;
   top: 22px;
   right: 33px;
   min-width: 56px;
   background-color: #fff;
   border-color: #d2d2d2;
-  box-shadow: 0 2px 3px 0 rgba(0,0,0,.1);
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .1);
   border: 1px solid #d2d2d2;
   position: relative;
   z-index: 10;
@@ -296,12 +360,18 @@ button img {
   border-radius: 2px;
   box-sizing: border-box;
 }
-#Content{
+
+#Content {
   display: inline-block;
   width: 100%;
   min-height: 34px;
   padding: 6px 15px 0;
   font-size: 13px;
   box-sizing: border-box;
+}
+
+.replymore {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

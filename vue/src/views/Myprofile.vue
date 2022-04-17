@@ -20,8 +20,11 @@
         <div class="profile flex">
           <p>프로필 변경</p>
           <div class="pic-bu">
-            <img class="icon" src="@/assets/icon/profile.png" alt="pf">
-            <button class="pf-bu">프로필 변경</button>
+            <div class="pf-pic" v-if="inputImg">
+
+<!--            <img class="icon" src="@/assets/icon/profile.png" alt="pf">-->
+            </div>
+            <button class="pf-bu" @click="openModal()" v-if="inputImg">프로필 변경</button>
           </div>
         </div>
         <!--  password -->
@@ -31,14 +34,14 @@
             <div class="repw2">Re-Password</div>
             <div class="flex">
               <img class="icon" src="@/assets/icon/Key-Line.png" width="24" height="24" alt="pw">
-              <input placeholder="Re-Password">
+              <input class="put" placeholder="Re-Password" type="password">
             </div>
           </div>
           <div class="span">
             <div class="repw3">Confirm-Password</div>
             <div class="flex">
               <img class="icon" src="@/assets/icon/Key-Line.png" width="24" height="24" alt="pw">
-              <input placeholder="Confirm-Password">
+              <input class="put" placeholder="Confirm-Password" type="password">
             </div>
           </div>
         </div>
@@ -92,17 +95,18 @@
 
     </div>
     <!--send button-->
-
+  <drag-and-drop-modal ref="dndModal" @receiveNoteImg="receiveNoteImg" />
 </template>
 
 <script>
 import CommonButton from "@/components/CommonButton.vue";
 import SmallModal from "@/components/SmallModal";
+import DragAndDropModal from "@/components/DragAndDropModal";
 
 
 export default {
   name: "Myprofile-page",
-  components:{ CommonButton, SmallModal },
+  components:{ CommonButton, SmallModal, DragAndDropModal },
   props:['quitData'],
   data(){
     return{
@@ -117,7 +121,8 @@ export default {
           color:'black'
         }
 
-        ]
+        ],
+      inputImg: true
     }
   },
 
@@ -125,6 +130,9 @@ export default {
     quit(){
       console.log();
       this.$refs.modal.openModal();
+    },
+    openModal(){
+      this.$refs.dndModal.openModal();
     }
   }
 
@@ -269,10 +277,20 @@ input {
   outline: none;
   border: none;
 }
-
-.icon {
+.pf-pic{
+  width: 110px;
+  height: 110px;
+  border-radius: 70%;
+  background: white;
+  box-shadow: none;
+  outline: none;
+  border: none;
   margin-right: 10px;
 }
+
+/*.icon {*/
+/*  margin-right: 10px;*/
+/*}*/
 
 .send-button-wrapper {
   width: 100%;

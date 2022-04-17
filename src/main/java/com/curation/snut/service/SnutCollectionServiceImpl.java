@@ -37,7 +37,6 @@ public class SnutCollectionServiceImpl implements SnutCollectionService {
     public List<SnutCollectionDTO> getCollectionsByWord(String word) {
         List<SnutCollection> collections = snutCollectionRepository.findCurationByWord(word);
 
-
         return collections.stream().map(i -> {
             List<CurationDTO> cuDTOList = curationService.getCurationsByCollectionNo(i.getCollectionNo());
             List<Long> cuIdList = colCurationRepository.getCurationNoListByCollectionNo(i.getCollectionNo());

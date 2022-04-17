@@ -17,7 +17,10 @@
                 :key="idx" />
           </div>
           <div class="modal-iconSet">
-            <img src="@/assets/modal/Like-Line.png" alt="like_img">
+            <img src="@/assets/modal/Like-Line.png" alt="unlike_img" v-if="isShowing"
+                 @click="like" >
+            <img src="@/assets/modal/Like-Line2.png" alt="like_img"
+                 @click="like" v-if="!isShowing" width="48" height="48" class="like">
             <img src="@/assets/modal/Pin-Line.png" alt="pin_img">
             <img src="@/assets/modal/Share-Line.png" alt="share_img">
           </div>
@@ -80,7 +83,8 @@ export default {
         curPos: 0,
         position: 0,
         IMAGE_WIDTH: 400
-      }
+      },
+      isShowing: true,
     }
   },
   methods: {
@@ -132,7 +136,15 @@ export default {
       if(this.imgSlideData.curPos == this.sampleImg.length - 1 ) {
         this.$refs.next.setAttribute('disabled', 'true');
       }
+    },
+    like(){
+      if(this.isShowing){
+        this.isShowing= false;
+      }else{
+        this.isShowing = true;
+      }
     }
+
   }
 }
 </script>
@@ -290,5 +302,9 @@ export default {
 }
 .modalBodyContents * {
   font-size: 20px;
+}
+.modal-content-pic::-webkit-scrollbar{
+  display: none;
+  width: 0
 }
 </style>

@@ -8,19 +8,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.curation.snut.security.dto.AuthMemberDTO;
-import com.curation.snut.security.service.MemberUDService;
 import com.curation.snut.security.util.JWTUtil;
 
-import lombok.extern.log4j.Log4j2;
 import org.json.simple.JSONObject;
-import org.springframework.http.HttpHeaders;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class ApiCheckFilter extends OncePerRequestFilter {
@@ -43,7 +38,6 @@ public class ApiCheckFilter extends OncePerRequestFilter {
             log.info("ApiCheckFilter..................................");
             log.info("ApiCheckFilter..................................");
             log.info("ApiCheckFilter..................................");
-
             boolean checkHeader = checkAuthHeader(request);
             log.info("header >>>>  " + checkAuthHeader(request));
 
