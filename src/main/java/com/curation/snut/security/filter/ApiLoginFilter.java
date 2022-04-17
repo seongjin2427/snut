@@ -63,22 +63,27 @@ public class ApiLoginFilter extends AbstractAuthenticationProcessingFilter {
 
         log.info("ApiLoginFilter successfulAuthentication:" + authResult);
         log.info("Principal:" + authResult.getPrincipal());
-        String email = ((AuthMemberDTO) authResult.getPrincipal()).getUsername();
+        // String email = ((AuthMemberDTO) authResult.getPrincipal()).getUsername();
+        AuthMemberDTO userDtail = ((AuthMemberDTO) authResult.getPrincipal());
 
         String token = null;
         ObjectMapper mapper = new ObjectMapper();
         String curl = "";
         try {
-            token = "Bearer "+jwtUtil.generateToken(email);
+            // token = "Bearer "+jwtUtil.generateToken(email);
+            token = "Bearer " + jwtUtil.generateToken(userDtail);
             ApiSessionDTO apiDto = commonDtoToApiDTO((AuthMemberDTO) authResult.getPrincipal(), token, curl);
-            String res = mapper.writeValueAsString(apiDto);
-            log.info("res:::"+res);
+            String res = mapper.writeValueAsString(token);
+            log.info("res:::" + res);
             response.setContentType("application/json");
             response.getOutputStream().write(res.getBytes());
-            log.info("token=> "+token);
-        } catch (Exception e) {e.printStackTrace();}
+            log.info("token=> " + token);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-    private ApiSessionDTO commonDtoToApiDTO(AuthMemberDTO commonDto, String token, String curl){
+
+    private ApiSessionDTO commonDtoToApiDTO(AuthMemberDTO commonDto, String token, String curl) {
         ApiSessionDTO apiDto = ApiSessionDTO.builder()
                 .email(commonDto.getEmail()).token(token).name(commonDto.getName())
                 .birth(commonDto.getBirth()).gender(commonDto.getGender()).nickname(commonDto.getNickname())

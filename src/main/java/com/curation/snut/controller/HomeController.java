@@ -29,13 +29,6 @@ public class HomeController {
     private final CurationService curationService;
     private final SnutCollectionService snutCollectionService;
 
-        @PostMapping("/register")
-        public ResponseEntity<String> register(@RequestBody Map body){
-            log.info("body >>>>> " + body);
-            memberService.register(body);
-            return new ResponseEntity<>("등록 완료", HttpStatus.OK);
-        }
-
         @GetMapping("/ucol")
         public ResponseEntity getCurationDataInCollection(@RequestParam("collectionNo") Long collectionNo) {
             log.info("request collectionNo >>>>>>>>>>> " + collectionNo);

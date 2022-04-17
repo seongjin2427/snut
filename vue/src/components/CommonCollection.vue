@@ -108,7 +108,6 @@ export default {
     inputImage(info, idx) {
       let imageURL = null;
       if(info.cuCo == 'Collection') {
-        console.log("info.curationList[idx]", info)
         if(info.curationList[idx].imageDTOList.length) {
           imageURL = this.$store.state.imageBaseURL + info.curationList[idx].imageDTOList[0].thumbnailURL;
         } else return null;

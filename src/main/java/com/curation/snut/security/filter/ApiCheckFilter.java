@@ -2,6 +2,7 @@ package com.curation.snut.security.filter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.curation.snut.security.util.JWTUtil;
 
+import lombok.extern.log4j.Log4j2;
 import org.json.simple.JSONObject;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
@@ -67,10 +69,8 @@ public class ApiCheckFilter extends OncePerRequestFilter {
         log.info("authHeader >>> " + request.getHeader("token"));
         if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
             try {
-                String email = jwtUtil.validateAndExtract(authHeader.substring(7));
-
-                log.info("email >>> " + email);
-                checkResult = email.length() > 0;
+                Map email = jwtUtil.validateAndExtract(authHeader.substring(7));
+                checkResult = email.toString().length() > 0;
             } catch (Exception e) {
                 e.printStackTrace();
             }
