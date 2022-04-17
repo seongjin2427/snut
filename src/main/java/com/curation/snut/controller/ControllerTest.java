@@ -100,7 +100,7 @@ public class ControllerTest {
         return new ResponseEntity<>(printtest, HttpStatus.OK);
     }
 
-    @GetMapping(value = "test/test2")
+    @GetMapping(value = "api/test/test2")
     public ResponseEntity<?> testtest2(@RequestHeader Map header) {
         String token = header.get("token").toString();
         Map userDetail = null;
@@ -110,8 +110,8 @@ public class ControllerTest {
             e.printStackTrace();
         }
 
-        String info = userDetail.get("email").toString();
-        return new ResponseEntity<>(info, HttpStatus.OK);
+        String info = userDetail.toString();
+        return new ResponseEntity<>(userDetail, HttpStatus.OK);
     }
 
 }

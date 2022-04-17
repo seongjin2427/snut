@@ -10,13 +10,10 @@ import com.curation.snut.entity.Community;
 import com.curation.snut.repository.CommuJoinRepository;
 import com.curation.snut.repository.CommunityRepository;
 import com.curation.snut.service.CommentService;
-import com.curation.snut.service.CommunityService;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
