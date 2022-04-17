@@ -3,13 +3,13 @@ package com.curation.snut.controller;
 import java.util.List;
 import java.util.Map;
 
-import com.curation.snut.dto.CommuJoinDTO;
-import com.curation.snut.dto.CommunityDTO;
-import com.curation.snut.entity.CommuJoin;
-import com.curation.snut.entity.CommuJoinTemp;
-import com.curation.snut.service.CommuJoinService;
-import com.curation.snut.service.CommuJoinTempService;
-import com.curation.snut.service.CommunityService;
+import com.curation.snut.dto.community.CommuJoinDTO;
+import com.curation.snut.dto.community.CommunityDTO;
+import com.curation.snut.entity.community.CommuJoin;
+import com.curation.snut.entity.community.CommuJoinTemp;
+import com.curation.snut.service.community.CommuJoinService;
+import com.curation.snut.service.community.CommuJoinTempService;
+import com.curation.snut.service.community.CommunityService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

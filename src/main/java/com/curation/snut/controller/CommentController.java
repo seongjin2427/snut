@@ -4,12 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import com.curation.snut.dto.CommentDTO;
-import com.curation.snut.entity.CommuJoin;
-import com.curation.snut.entity.Community;
-import com.curation.snut.repository.CommuJoinRepository;
-import com.curation.snut.repository.CommunityRepository;
-import com.curation.snut.service.CommentService;
+import com.curation.snut.dto.community.CommentDTO;
+import com.curation.snut.entity.community.CommuJoin;
+import com.curation.snut.entity.community.Community;
+import com.curation.snut.repository.community.CommuJoinRepository;
+import com.curation.snut.repository.community.CommunityRepository;
+import com.curation.snut.service.community.CommentService;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

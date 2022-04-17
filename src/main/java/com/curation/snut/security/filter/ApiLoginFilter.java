@@ -9,7 +9,7 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.curation.snut.dto.ApiSessionDTO;
+import com.curation.snut.dto.community.ApiSessionDTO;
 import com.curation.snut.security.dto.AuthMemberDTO;
 import com.curation.snut.security.util.JWTUtil;
 

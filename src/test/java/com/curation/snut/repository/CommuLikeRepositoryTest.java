@@ -1,8 +1,9 @@
 package com.curation.snut.repository;
 
-import com.curation.snut.entity.Community;
-import com.curation.snut.entity.CommunityLike;
 import com.curation.snut.entity.Member;
+import com.curation.snut.entity.community.Community;
+import com.curation.snut.entity.community.CommunityLike;
+import com.curation.snut.repository.community.CommuLikeRepository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

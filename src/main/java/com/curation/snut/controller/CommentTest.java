@@ -1,8 +1,7 @@
 package com.curation.snut.controller;
 
-import com.curation.snut.dto.CommentDTO;
-
-import com.curation.snut.service.CommentService;
+import com.curation.snut.dto.community.CommentDTO;
+import com.curation.snut.service.community.CommentService;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

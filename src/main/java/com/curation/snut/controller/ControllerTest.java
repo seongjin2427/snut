@@ -6,11 +6,11 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.curation.snut.dto.CommentDTO;
-import com.curation.snut.dto.CommunityDTO;
+import com.curation.snut.dto.community.CommentDTO;
+import com.curation.snut.dto.community.CommunityDTO;
 import com.curation.snut.security.util.JWTUtil;
-import com.curation.snut.service.CommentService;
-import com.curation.snut.service.CommunityService;
+import com.curation.snut.service.community.CommentService;
+import com.curation.snut.service.community.CommunityService;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
