@@ -8,6 +8,7 @@ import javax.persistence.ManyToOne;
 
 import com.curation.snut.entity.Member;
 import com.curation.snut.idclass.CommuJoinTempId;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,10 +25,12 @@ import lombok.ToString;
 @IdClass(CommuJoinTempId.class)
 public class CommuJoinTemp {
 
+    @JsonIgnore
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     private Member tMember;
 
+    @JsonIgnore
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     private Community tCommunity;

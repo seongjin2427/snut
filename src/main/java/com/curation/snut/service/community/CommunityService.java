@@ -10,6 +10,8 @@ public interface CommunityService {
 
     void delete(Long id);
 
+    public List<CommunityDTO> findMyCommu(String email);
+
     public List<CommunityDTO> CommunityList();
 
     public List<CommunityDTO> communityListWithCnt();

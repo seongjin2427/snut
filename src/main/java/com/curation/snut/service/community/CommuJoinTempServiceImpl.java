@@ -46,7 +46,7 @@ public class CommuJoinTempServiceImpl implements CommuJoinTempService {
                                         .tMember(member)
                                         .tCommunity(community).build();
                         commuJoinTempRepository.save(commuJoinTemp);
-                        return "가입 완료";
+                        return "신청 완료";
                 }
 
         }

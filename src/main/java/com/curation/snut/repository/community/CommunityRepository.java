@@ -26,4 +26,8 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
     @EntityGraph(attributePaths = "creater", type = EntityGraphType.LOAD)
     @Query("select c from Community c where c.creater.email =:email and c.no =:no")
     Optional<Community> findByCreater(String email, Long no);
+
+    @EntityGraph(attributePaths = "creater", type = EntityGraphType.LOAD)
+    @Query("select c from Community c where c.creater.email =:email")
+    List<Community> findMyCommu(String email);
 }

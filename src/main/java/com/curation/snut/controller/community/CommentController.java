@@ -87,7 +87,7 @@ public class CommentController {
         Long cno = Long.valueOf(body.get("cno").toString());
         String commnetEmail = body.get("commentEmail").toString();
 
-        if (memberEmail == commnetEmail) {
+        if (memberEmail.equals(commnetEmail)) {
             commentService.delete(cno);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {

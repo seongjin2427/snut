@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 
 import com.curation.snut.entity.BaseEntity;
 import com.curation.snut.entity.Member;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,6 +31,7 @@ public class Community extends BaseEntity {
     private String title;
     private String thumbnail;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Member creater;
 }

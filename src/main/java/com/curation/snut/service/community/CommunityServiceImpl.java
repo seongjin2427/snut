@@ -58,4 +58,11 @@ public class CommunityServiceImpl implements CommunityService {
         return result;
     }
 
+    @Override
+    public List<CommunityDTO> findMyCommu(String email) {
+        List<Community> commu = communityRepository.findMyCommu(email);
+        List<CommunityDTO> result = commu.stream().map(entity -> entityToDTO(entity)).collect(Collectors.toList());
+        return result;
+    }
+
 }

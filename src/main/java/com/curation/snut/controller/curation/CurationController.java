@@ -22,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(value = "/curation")
 public class CurationController {
     private final CurationService curationService;
-    private final MemberService memberService;
 
     @GetMapping("/list")
     public ResponseEntity<?> cuList(@PathVariable("search") String searchCurationTitle) {

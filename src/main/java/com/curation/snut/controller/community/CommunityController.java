@@ -48,12 +48,19 @@ public class CommunityController {
         }
     }
 
-    @GetMapping(value = "/myCommuList") // 내가 가입한 커뮤 (내가 만든 커뮤 제외)
-    public ResponseEntity<List<CommuJoin>> mycommuList(@RequestHeader Map header) {
+    @GetMapping(value = "/myCommuList") // 내가 가입한 커뮤 , 내가 만든 커뮤
+    public ResponseEntity<?> mycommuList(@RequestHeader Map header) {
         Map userInfo = jwtService.code(header);
         String memberEmail = userInfo.get("email").toString();
         List<CommuJoin> list = commuJoinService.findJoinCommu(memberEmail);
-        return new ResponseEntity<>(list, HttpStatus.OK);
+        List<CommunityDTO> myCommuList = communityService.findMyCommu(memberEmail);
+
+        Map send = new HashMap<>();
+
+        send.put("joinCommunity", list);
+        send.put("myCommunity", myCommuList);
+
+        return new ResponseEntity<>(send, HttpStatus.OK);
     }
 
     @PostMapping(value = "/commuList", produces = MediaType.APPLICATION_JSON_VALUE) // 커뮤니티생성
@@ -66,10 +73,11 @@ public class CommunityController {
     public ResponseEntity<String> communityDelete(@RequestHeader Map header, @RequestBody Map body) {
         Map userInfo = jwtService.code(header);
         String memberEmail = userInfo.get("email").toString();
+
         String commuEmail = body.get("commuCreater").toString();
         Long commuNo = Long.valueOf(body.get("commuNo").toString());
 
-        if (memberEmail == commuEmail) {
+        if (memberEmail.equals(commuEmail)) {
             communityService.delete(commuNo);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {

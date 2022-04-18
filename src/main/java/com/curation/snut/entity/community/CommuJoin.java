@@ -14,6 +14,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Builder
@@ -23,10 +24,13 @@ import lombok.ToString;
 @ToString
 @IdClass(CommuJoinId.class)
 public class CommuJoin {
+
+    @JsonIgnore
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     private Member jMember;
 
+    @JsonIgnore
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     private Community jCommunity;
