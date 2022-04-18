@@ -67,19 +67,4 @@ public class CurationController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    // @GetMapping("/memberModify")
-    // public ResponseEntity<?> modify(@AuthenticationPrincipal AuthMemberDTO
-    // authMemberDTO) {
-    // List<String> roleNames = new ArrayList<>();
-    // authMemberDTO.getAuthorities().forEach(authority -> {
-    // roleNames.add(authority.getAuthority());
-    // });
-    // return new ResponseEntity<>(roleNames, HttpStatus.OK);
-    // } //jwt 방식이라서 @AuthenticationPrincipal 안씀
-
-    // @PostMapping("/read/{curationNo}/likes")
-    // public ResponseEntity<?> likes(@PathVariable long curationNo){
-    // CurationLikeService.likes(curationNo); // 파일이 없음
-    // return new ResponseEntity<>(HttpStatus.OK);
-    // }
 }

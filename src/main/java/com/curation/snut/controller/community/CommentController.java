@@ -9,6 +9,8 @@ import com.curation.snut.entity.community.CommuJoin;
 import com.curation.snut.entity.community.Community;
 import com.curation.snut.repository.community.CommuJoinRepository;
 import com.curation.snut.repository.community.CommunityRepository;
+import com.curation.snut.security.util.JWTUtil;
+import com.curation.snut.service.JWTService;
 import com.curation.snut.service.community.CommentService;
 
 import org.springframework.data.domain.Page;
@@ -19,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,6 +34,7 @@ public class CommentController {
     private final CommentService commentService;
     private final CommuJoinRepository commuJoinRepository;
     private final CommunityRepository communityRepository;
+    private final JWTService jwtService;
 
     @GetMapping(value = "/commentList")
     public ResponseEntity<Map<String, Page<CommentDTO>>> commentListTest(
@@ -76,9 +80,10 @@ public class CommentController {
     }
 
     @PostMapping("/comment/delete")
-    public ResponseEntity<?> commentDelete(@RequestBody Map body) {
+    public ResponseEntity<?> commentDelete(@RequestHeader Map header, @RequestBody Map body) {
+        Map userInfo = jwtService.code(header);
+        String memberEmail = userInfo.get("email").toString();
         Long cno = Long.valueOf(body.get("cno").toString());
-        String memberEmail = body.get("memberEmail").toString();
         String commnetEmail = body.get("commentEmail").toString();
 
         if (memberEmail == commnetEmail) {
