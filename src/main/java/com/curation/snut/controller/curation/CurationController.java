@@ -1,12 +1,9 @@
 package com.curation.snut.controller.curation;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.curation.snut.dto.MemberDTO;
 import com.curation.snut.dto.curation.CurationDTO;
-import com.curation.snut.entity.Member;
-import com.curation.snut.security.dto.AuthMemberDTO;
+
 import com.curation.snut.service.MemberService;
 import com.curation.snut.service.curation.CurationService;
 
@@ -79,12 +76,6 @@ public class CurationController {
     // });
     // return new ResponseEntity<>(roleNames, HttpStatus.OK);
     // } //jwt 방식이라서 @AuthenticationPrincipal 안씀
-
-    @PostMapping("/memberModify")
-    public ResponseEntity<?> modifyForm(MemberDTO memberDTO) {
-        memberService.updateMemberDTO(memberDTO);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 
     // @PostMapping("/read/{curationNo}/likes")
     // public ResponseEntity<?> likes(@PathVariable long curationNo){
