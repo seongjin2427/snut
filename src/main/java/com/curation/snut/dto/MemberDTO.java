@@ -1,4 +1,4 @@
-package com.curation.snut.dto.curation;
+package com.curation.snut.dto;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -23,7 +23,6 @@ public class MemberDTO {
   private LocalDateTime regDate;
   private String nickname;
   private String gender;
-  private boolean fromSocial;
 
   private Collection<String> roleSet;
 

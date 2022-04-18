@@ -1,4 +1,4 @@
-package com.curation.snut.controller;
+package com.curation.snut.controller.community;
 
 import java.util.HashMap;
 import java.util.List;
