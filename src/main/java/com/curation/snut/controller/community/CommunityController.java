@@ -1,13 +1,16 @@
 package com.curation.snut.controller.community;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.curation.snut.dto.community.CommuJoinDTO;
 import com.curation.snut.dto.community.CommunityDTO;
+import com.curation.snut.entity.community.CommentAlert;
 import com.curation.snut.entity.community.CommuJoin;
 import com.curation.snut.entity.community.CommuJoinTemp;
 import com.curation.snut.service.JWTService;
+import com.curation.snut.service.community.CommentAlertService;
 import com.curation.snut.service.community.CommuJoinService;
 import com.curation.snut.service.community.CommuJoinTempService;
 import com.curation.snut.service.community.CommunityService;
@@ -31,6 +34,7 @@ public class CommunityController {
     private final CommunityService communityService;
     private final CommuJoinTempService commuJoinTempService;
     private final CommuJoinService commuJoinService;
+    private final CommentAlertService commentAlertService;
     private final JWTService jwtService;
 
     @GetMapping(value = "/commuList", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -45,20 +49,20 @@ public class CommunityController {
     }
 
     @GetMapping(value = "/myCommuList") // 내가 가입한 커뮤 (내가 만든 커뮤 제외)
-    public ResponseEntity<List<CommuJoin>> mycommuList(@RequestHeader Map header, @RequestBody Map body) {
+    public ResponseEntity<List<CommuJoin>> mycommuList(@RequestHeader Map header) {
         Map userInfo = jwtService.code(header);
         String memberEmail = userInfo.get("email").toString();
         List<CommuJoin> list = commuJoinService.findJoinCommu(memberEmail);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/commuList", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/commuList", produces = MediaType.APPLICATION_JSON_VALUE) // 커뮤니티생성
     public ResponseEntity<String> commuReg(CommunityDTO communityDTO) {
         communityService.write(communityDTO);
         return new ResponseEntity<>("완료", HttpStatus.CREATED);
     }
 
-    @PostMapping(value = "/commuList/delete")
+    @PostMapping(value = "/commuList/delete") // 커뮤니티삭제
     public ResponseEntity<String> communityDelete(@RequestHeader Map header, @RequestBody Map body) {
         Map userInfo = jwtService.code(header);
         String memberEmail = userInfo.get("email").toString();
@@ -80,12 +84,20 @@ public class CommunityController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/commuMyPage") // 가입신청보는 페이지
-    public ResponseEntity<List<CommuJoinTemp>> commuMyPage(@RequestHeader Map header, @RequestBody Map body) {
+    @GetMapping(value = "/commuMyPage") // 가입신청/내댓글알람 보는 페이지
+    public ResponseEntity<?> commuMyPage(@RequestHeader Map header) {
         Map userInfo = jwtService.code(header);
         String memberEmail = userInfo.get("email").toString();
+        String memberNickName = userInfo.get("nickName").toString();
         List<CommuJoinTemp> joinAlertList = commuJoinTempService.joinAlertList(memberEmail);
-        return new ResponseEntity<>(joinAlertList, HttpStatus.OK);
+        List<CommentAlert> commentAlerts = commentAlertService.findMyAlert(memberNickName);
+
+        Map send = new HashMap<>();
+
+        send.put("joinAlertList", joinAlertList);
+        send.put("commentAlerts", commentAlerts);
+
+        return new ResponseEntity<>(send, HttpStatus.OK);
     }
 
     @PostMapping(value = "/commuJoinAccept") // 가입신청 수락
@@ -95,8 +107,14 @@ public class CommunityController {
         return new ResponseEntity<>("수락 완료", HttpStatus.OK);
     }
 
+    @PostMapping(value = "/commentAletDelete") // 알람확인버튼 클릭시 알람엔티티에 내용 삭제
+    public ResponseEntity<?> commentAletDelete(Long id) {
+        commentAlertService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @GetMapping(value = "/commuJoinList", produces = MediaType.APPLICATION_JSON_VALUE) // 내가 관리자인 커뮤니티에 가입한 유저 목록
-    public ResponseEntity<List<CommuJoin>> commuJoinList(@RequestHeader Map header, @RequestBody Map body) {
+    public ResponseEntity<List<CommuJoin>> commuJoinList(@RequestHeader Map header) {
         Map userInfo = jwtService.code(header);
         String memberEmail = userInfo.get("email").toString();
         List<CommuJoin> joinList = commuJoinService.joinList(memberEmail);

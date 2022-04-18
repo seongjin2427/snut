@@ -48,4 +48,5 @@ public class CommunityTest {
         communityService.delete(id);
         return "redirect:/communityList";
     }
+
 }

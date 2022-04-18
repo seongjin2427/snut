@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 
 import com.curation.snut.entity.BaseEntity;
 import com.curation.snut.entity.Member;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +23,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @ToString
+
 public class CommunityComment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,9 +32,11 @@ public class CommunityComment extends BaseEntity {
     private Long parentNo;
     private boolean announcement;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Member writer;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Community communityName;
 }

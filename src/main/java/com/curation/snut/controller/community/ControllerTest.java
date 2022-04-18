@@ -8,8 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.curation.snut.dto.community.CommentDTO;
 import com.curation.snut.dto.community.CommunityDTO;
+import com.curation.snut.entity.community.CommentAlert;
+import com.curation.snut.entity.community.CommuJoinTemp;
+import com.curation.snut.entity.community.CommunityComment;
+import com.curation.snut.repository.community.CommentRepository;
 import com.curation.snut.security.util.JWTUtil;
+import com.curation.snut.service.JWTService;
+import com.curation.snut.service.community.CommentAlertService;
 import com.curation.snut.service.community.CommentService;
+import com.curation.snut.service.community.CommuJoinService;
+import com.curation.snut.service.community.CommuJoinTempService;
 import com.curation.snut.service.community.CommunityService;
 
 import org.springframework.data.domain.Page;
@@ -35,6 +43,11 @@ public class ControllerTest {
     private final CommentService commentService;
     private final CommunityService communityService;
     private final JWTUtil jwtUtil;
+    private final JWTService jwtService;
+    private final CommentRepository commentRepository;
+    private final CommuJoinTempService commuJoinTempService;
+    private final CommuJoinService commuJoinService;
+    private final CommentAlertService commentAlertService;
 
     @GetMapping(value = "/test/commuList", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<CommunityDTO>> testList(String searchTitle) {
@@ -112,6 +125,28 @@ public class ControllerTest {
 
         String info = userDetail.toString();
         return new ResponseEntity<>(userDetail, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "test/test/test", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> testestse(CommentDTO commentDTO) {
+        CommunityComment dto = commentRepository.findCno(commentDTO.getParentNo());
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/test123") // 가입신청/내댓글알람 보는 페이지
+    public ResponseEntity<?> commuMyPage(@RequestHeader Map header) {
+        Map userInfo = jwtService.code(header);
+        String memberEmail = userInfo.get("email").toString();
+        String memberNickName = userInfo.get("nickName").toString();
+        List<CommuJoinTemp> joinAlertList = commuJoinTempService.joinAlertList(memberEmail);
+        List<CommentAlert> commentAlerts = commentAlertService.findMyAlert(memberNickName);
+
+        Map send = new HashMap<>();
+
+        send.put("joinAlertList", joinAlertList);
+        send.put("commentAlerts", commentAlerts);
+
+        return new ResponseEntity<>(send, HttpStatus.OK);
     }
 
 }

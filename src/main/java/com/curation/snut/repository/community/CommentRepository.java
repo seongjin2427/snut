@@ -1,5 +1,8 @@
 package com.curation.snut.repository.community;
 
+import java.util.List;
+
+import com.curation.snut.dto.community.CommentDTO;
 import com.curation.snut.entity.community.CommunityComment;
 
 import org.springframework.data.domain.Page;
@@ -36,5 +39,9 @@ public interface CommentRepository extends JpaRepository<CommunityComment, Long>
 
     @Query("select COUNT(c) from CommunityComment c where c.communityName.no = :no")
     Long commentCnt(Long no);
+
+    @EntityGraph(attributePaths = { "writer", "communityName" }, type = EntityGraphType.LOAD)
+    @Query("select c from CommunityComment c where c.cno =:dtoCno ")
+    CommunityComment findCno(Long dtoCno);
 
 }

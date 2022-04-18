@@ -88,7 +88,7 @@ public class ApiLoginFilter extends AbstractAuthenticationProcessingFilter {
     private ApiSessionDTO commonDtoToApiDTO(AuthMemberDTO commonDto, String token, String curl) {
         ApiSessionDTO apiDto = ApiSessionDTO.builder()
                 .email(commonDto.getEmail()).token(token).name(commonDto.getName())
-                .birth(commonDto.getBirth()).gender(commonDto.getGender()).nickname(commonDto.getNickname())
+                .birth(commonDto.getBirth()).gender(commonDto.getGender()).nickname(commonDto.getNickName())
                 .mobile(commonDto.getMobile()).curl(curl)
                 .username(commonDto.getUsername())
                 .build();

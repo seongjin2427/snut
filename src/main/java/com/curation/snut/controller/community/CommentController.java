@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/commnet")
+@RequestMapping(value = "/comment")
 public class CommentController {
     private final CommentService commentService;
     private final CommuJoinRepository commuJoinRepository;
@@ -48,7 +49,7 @@ public class CommentController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/commentList")
+    @PostMapping(value = "/commentList", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> commentWrite(CommentDTO commentDTO) {
 
         String writer = commentDTO.getWriter().getEmail();
