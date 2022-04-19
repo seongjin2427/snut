@@ -106,7 +106,7 @@ public class CurationController {
     public ResponseEntity curationRegister(@RequestBody CurationDTO curationDTO) {
         log.info("curationDTO >>>> " + curationDTO);
         Long curationNo = curationService.register(curationDTO);
-//        Long curationNo = 1L;
+
         return new ResponseEntity(curationNo, HttpStatus.OK);
     }
 
@@ -115,7 +115,6 @@ public class CurationController {
         log.info("collectionDTO >>>>>>>> " + snutCollectionDTO);
         Long collectionNo = snutCollectionService.snutCollectionRegister(snutCollectionDTO);
 
-//        return new ResponseEntity(collectionNo, HttpStatus.OK);
         return new ResponseEntity(collectionNo, HttpStatus.OK);
     }
 
