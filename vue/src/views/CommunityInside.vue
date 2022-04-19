@@ -5,10 +5,10 @@
       <div class="com-form-wrapper">
         <div class="com-btn-area" v-if="!modifyBool">
           <template v-for="(btn, idx) in comInBtnData" :key="idx">
-          <common-button :buttonName="btn.name" v-if="canModify ? btn.id== 1 : btn.id == 2"
-                        @click="separateMethods(idx), joincomm($event, btn)"
-                        width="150" height="40" border-radius="12" background="white" 
-                        border="none" marginTop="50" marginRight="20"  />
+          <common-button :buttonName="btn.name" v-if="canModify ? (btn.id == 1 || btn.id == 3): btn.id == 2"
+                        @click="separateMethods(idx)"
+                        width="150" height="40" border-radius="12" :background="btn.id == 3 ? '#df0000' : 'white'" 
+                        border="none" marginTop="50" marginRight="20" :color="btn.id == 3 ? 'white' : 'black'" />
           </template>
         </div>
         <div class="com-btn-area" v-if="modifyBool">
@@ -89,6 +89,11 @@ export default {
           name: '가입하기',
           src: ''
         },
+        {
+          id: 3,
+          name: '삭제하기',
+          src: ''
+        },
 
       ],
       modifyBtnData: [
@@ -108,8 +113,10 @@ export default {
       if(idx == 0) {
         this.modifyBool = true;
       }
-    else if (idx == 1){
+      else if (idx == 1){
         this.$refs.modal.openModal(true);
+      } else if (idx == 2) {
+        console.log("삭제")
       }
     },
     receiveContent(content) {
@@ -131,12 +138,6 @@ export default {
         this.modifyBool = false;
       } else if (idx == 1) {
         this.modifyBool = false;
-      }
-    },
-    joincomm(e, join) {
-      console.log(join.id);
-      if (join.id == 2) {
-        this.$refs.modal.openModal(true);
       }
     },
     doAxios(comNo) {
@@ -189,10 +190,10 @@ export default {
 
 .com-form-main {
   width: 1000px;
-  height: 2000px;
   background: #F6F6F6;
   margin-top: 50px;
   margin-bottom: 60px;
+  padding-bottom: 50px;
 }
 
 .com-body {
@@ -205,7 +206,8 @@ export default {
 .com-form-comment {
   background: #F4F0F0;
   margin: 0 50px auto 50px;
-  height: 1100px;
+  min-height: 1100px;
+  padding-bottom: 50px;
 
 }
 

@@ -11,17 +11,14 @@ import com.curation.snut.entity.BaseEntity;
 import com.curation.snut.entity.Member;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 @ToString
 
 public class CommunityComment extends BaseEntity {

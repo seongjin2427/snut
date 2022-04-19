@@ -7,6 +7,8 @@ import java.util.Optional;
 import com.curation.snut.dto.community.CommentDTO;
 import com.curation.snut.entity.community.CommuJoin;
 import com.curation.snut.entity.community.Community;
+import com.curation.snut.entity.community.CommunityComment;
+import com.curation.snut.repository.community.CommentRepository;
 import com.curation.snut.repository.community.CommuJoinRepository;
 import com.curation.snut.repository.community.CommunityRepository;
 import com.curation.snut.security.util.JWTUtil;
@@ -23,6 +25,8 @@ import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
 
+import javax.xml.stream.events.Comment;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api")
@@ -30,11 +34,12 @@ public class CommentController {
     private final CommentService commentService;
     private final CommuJoinRepository commuJoinRepository;
     private final CommunityRepository communityRepository;
+    private final CommentRepository commentRepository;
     private final JWTService jwtService;
 
     @GetMapping(value = "/commentList")
     public ResponseEntity<Map<String, Page<CommentDTO>>> commentListTest(
-            @PageableDefault(size = 6) final Pageable pageable, final Long no) {
+            @PageableDefault(size = 10) final Pageable pageable, final Long no) {
         Page<CommentDTO> commentDTOList = commentService.commentList(pageable, no);
         Page<CommentDTO> commentDTOList2 = commentService.ancommentList(pageable, no);
 
@@ -84,19 +89,36 @@ public class CommentController {
 //        return new ResponseEntity<>("에라이", HttpStatus.OK);
     }
 
-    @PostMapping("/comment/delete")
+    @PostMapping(value = "/comment/mod", consumes = MediaType.ALL_VALUE)
+    public ResponseEntity commentModify(@RequestBody Map obj) {
+        Long num = Long.valueOf(String.valueOf(obj.get("cno")));
+        String content = (String) obj.get("content");
+        Optional<CommunityComment> com = commentRepository.findById(num);
+        System.out.println("com >>>>>>>>>>>>>>>> " + obj);
+        com.get().setText(content);
+        commentRepository.save(com.get());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/comment/delete", consumes = MediaType.ALL_VALUE)
     public ResponseEntity<?> commentDelete(@RequestHeader Map header, @RequestBody Map body) {
         Map userInfo = jwtService.code(header);
-        String memberEmail = userInfo.get("email").toString();
-        Long cno = Long.valueOf(body.get("cno").toString());
+        Map userSub = (Map) userInfo.get("sub");
+        String memberEmail = userSub.get("email").toString();
+
+        System.out.println("body >>>>>>>>>> " + body);
+        Long cno = Long.valueOf(String.valueOf(body.get("cno")));
         String commnetEmail = body.get("commentEmail").toString();
 
+        System.out.println("userInfo  >>>>>> " + userInfo);
+        System.out.println("memberEmail  >>>>>> " + memberEmail);
+        System.out.println("cno  >>>>>> " + cno);
+        System.out.println("commnetEmail  >>>>>> " + commnetEmail);
         if (memberEmail.equals(commnetEmail)) {
             commentService.delete(cno);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>("권한이 없습니다", HttpStatus.OK);
         }
-
     }
 }
