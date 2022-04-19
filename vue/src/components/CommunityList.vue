@@ -1,5 +1,5 @@
 <template>
-  <div class="commu-block" @click="moveToPage()">
+  <div class="commu-block" @click="moveToPage(list.no)">
       <p class="commu-num">
         {{list.no}}
       </p>
@@ -23,8 +23,13 @@ export default {
       "list"
   ],
   methods: {
-    moveToPage() {
-      this.$router.push('/com/in');
+    moveToPage(communityNo) {
+      this.$router.push({
+        path: `/com/in/${communityNo}`,
+        params: {
+          communityNo: communityNo
+        }
+      });
     }
   }
 }

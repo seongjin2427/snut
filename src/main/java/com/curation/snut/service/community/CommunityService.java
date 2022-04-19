@@ -2,6 +2,8 @@ package com.curation.snut.service.community;
 
 import java.util.List;
 
+import com.curation.snut.dto.PageRequestDTO;
+import com.curation.snut.dto.PageResultDTO;
 import com.curation.snut.dto.community.CommunityDTO;
 import com.curation.snut.entity.Member;
 import com.curation.snut.entity.community.Community;
@@ -10,13 +12,17 @@ public interface CommunityService {
 
     void delete(Long id);
 
+    public CommunityDTO getCommunityData(Long no);
+
+    public void modifyCommunityContent(Long no, String content);
+
     public List<CommunityDTO> findMyCommu(String email);
 
     public List<CommunityDTO> CommunityList();
 
-    public List<CommunityDTO> communityListWithCnt();
+    public PageResultDTO communityListWithCnt(PageRequestDTO pageRequestDTO);
 
-    public List<CommunityDTO> searchTitle(String searchTitle);
+    public PageResultDTO searchTitle(PageRequestDTO pageRequestDTO, String searchTitle);
 
     void write(CommunityDTO communityDTO);
 

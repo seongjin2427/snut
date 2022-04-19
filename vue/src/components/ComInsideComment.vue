@@ -6,6 +6,7 @@
 
         <!--list-->
         <li v-for="(reply, idx) in communityDataSet" :key="idx">
+
           <div class="comment-section">
             <div class="comment-info">
               <div class="comment-post">
@@ -16,12 +17,10 @@
                 </div>
 
                 <div class="box-post">
-                  <p class="desc-info">
-                    <span v-if="!reply.editcomment" class="origin-comment" tabindex="0">{{ reply.content }}</span>
+                  <span v-if="!reply.editcomment" class="origin-comment" tabindex="0">{{ reply.content }}</span>
                   <textarea v-if="reply.editcomment">
 
                   </textarea>
-                  </p>
                 </div>
 
                 <div class="comment-more">
@@ -43,26 +42,26 @@
                     <div class="inner-text-write">
 
                       <div class="box-text-area">
-          <textarea maxlength="800" placeholder="Enter your comments">
-          </textarea>
+                        <textarea maxlength="800" placeholder="Enter your comments">
+                        </textarea>
                       </div>
 
                       <div class="wrap-menu">
                         <div class="area">
 
-            <span class="num-text-area">
-              <span class="num-text">글자 수</span>
-              <span class="num-count-empty">0</span>
-              /
-              <span class="num-text">총 글자 개수</span>
-              600
-            </span>
+                          <span class="num-text-area">
+                            <span class="num-text">글자 수</span>
+                            <span class="num-count-empty">0</span>
+                            /
+                            <span class="num-text">총 글자 개수</span>
+                            600
+                          </span>
 
                           <div class="btn-post">
                             <common-button class="post-btn" buttonName="post" width="40" height="20" border-radius="12"
-                                           font-size="14"
-                                           background="#FBBC05"
-                                           color="white" border="none" @click="postReply($event,idx)"></common-button>
+                                          font-size="14"
+                                          background="#FBBC05"
+                                          color="white" border="none" @click="postReply($event,idx)"></common-button>
                           </div>
 
                         </div>
@@ -72,29 +71,31 @@
                   </div>
                   <!-- 더보기 버튼 클릭시 노출될 항목 -->
                   <div v-if="modalnumber==idx" class="modifyCon"
-                       :style="{left:modifyleft+40+'px', top:modifytop-40+'px'}">
+                      :style="{left:modifyleft+40+'px', top:modifytop-40+'px'}">
 
 
                     <div id="moreContent">
-                  <span id="Content">
-                <span class="moreDetail" id="modifyBoard"  @click="modifycom(idx)">수정</span><br>
-                    <span class="moreDetail" id="deleteBoard" @click="deletecom($event,idx)">삭제</span><br>
-                  </span>
+                      <span id="Content">
+                        <span class="moreDetail" id="modifyBoard"  @click="modifycom(idx)">수정</span><br>
+                        <span class="moreDetail" id="deleteBoard" @click="deletecom($event,idx)">삭제</span><br>
+                      </span>
                     </div>
+
                   </div>
 
-
                 </div>
+
               </div>
             </div>
           </div>
+
         </li>
 
         <!-- 하나의 댓글 끝 -->
       </ul>
     </div>
     <div class="comment-paging">
-      <pagenationnum scale="scale(0.5, 0.5)"></pagenationnum>
+      <!-- <pagenationnum scale="scale(0.5, 0.5)"></pagenationnum> -->
     </div>
 
     <!-- 댓글 페이징 처리-->
@@ -121,8 +122,8 @@
 
             <div class="btn-post">
               <common-button class="post-btn" buttonName="post" width="40" height="20" border-radius="12" font-size="14"
-                             background="#FBBC05"
-                             color="white" border="none"></common-button>
+                            background="#FBBC05"
+                            color="white" border="none"></common-button>
             </div>
 
           </div>
@@ -137,13 +138,14 @@
 </template>
 
 <script>
-import Pagenationnum from "@/components/Pagenationnum.vue";
+// import Pagenationnum from "@/components/Pagenationnum.vue";
 import CommonButton from "@/components/CommonButton.vue";
 
 export default {
   name: "ComInsideComment-page",
   components: {
-    Pagenationnum, CommonButton
+    // Pagenationnum,
+    CommonButton
   },
   data() {
     return {
@@ -235,13 +237,6 @@ li {
   margin-left: 20px;
 }
 
-.comment-more {
-
-
-  padding-right: 20px;
-
-}
-
 .comment-more button {
   cursor: pointer;
 }
@@ -264,8 +259,10 @@ li {
 }
 
 .action {
+  width: 20px;
   border: none;
   background: none;
+  margin-right: 20px;
 }
 
 .comment-text-write {

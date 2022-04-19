@@ -94,7 +94,7 @@ export default {
     EditorContent,
     DragAndDropModal,
   },
-  props: ['isEditable', "curationContents"],
+  props: ["isEditable", "curationContents", "expand"],
   data() {
     return {
       editor: null,
@@ -102,17 +102,12 @@ export default {
       contents: '<p>내용을 입력해 주세요</p>',
       editable: this.isEditable,
       imgList: [],
-      viewImgList: []
     }
   },
   methods: {
     sample() {
       console.log("ASDFASDF");
       // this.editor.setContents(contents)
-    },
-    extendsEditor() {
-      let a = document.querySelector('.ProseMirror').style;
-      a.height = 700+'px';
     },
     addImage() {
       this.$refs.dragModal.openModal();
@@ -160,11 +155,14 @@ export default {
           types: ['heading', 'paragraph'],
         }),
       ],
+      editorProps: {
+        attributes: {
+          class: this.expand
+        }
+      },
       content: this.curationContents || this.contents,
       editable: this.editable
     })
-    console.log(this.contents)
-    console.log(this.editable)
   },
 
   beforeUnmount() {
@@ -281,5 +279,7 @@ button img {
   display: none;
   width: 0
 }
-
+.expandable {
+  height: 700px;
+}
 </style>

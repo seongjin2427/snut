@@ -4,16 +4,18 @@
 
       <div class="com-form-wrapper">
         <div class="com-btn-area" v-if="!modifyBool">
-          <common-button @click="separateMethods(idx), joincomm($event, btn)" class="com-btn" :buttonName="btn.name" v-for="(btn,idx) in comInBtnData" 
-                        :key="idx" width="150" height="40" border-radius="12" background="white" border="none"
-                         marginTop="50" marginRight="20"  />
-
-
+          <template v-for="(btn, idx) in comInBtnData" :key="idx">
+          <common-button :buttonName="btn.name" v-if="canModify ? btn.id== 1 : btn.id == 2"
+                        @click="separateMethods(idx), joincomm($event, btn)"
+                        width="150" height="40" border-radius="12" background="white" 
+                        border="none" marginTop="50" marginRight="20"  />
+          </template>
         </div>
         <div class="com-btn-area" v-if="modifyBool">
-          <common-button @click="modifyMethods(idx)" class="com-btn" :buttonName="btn.name" v-for="(btn,idx) in modifyBtnData"
-                        :key="idx" width="150" height="40" border-radius="12" background="white" border="none"
-                         marginTop="50" marginRight="20"/>
+          <common-button v-for="(btn,idx) in modifyBtnData" :buttonName="btn.name" 
+                        @click="modifyMethods(idx)" :key="idx" 
+                        width="150" height="40" border-radius="12" background="white"
+                        border="none" marginTop="50" marginRight="20" />
         </div>
 
         <div class="com-form-main-wrapper">
@@ -21,10 +23,12 @@
 
             <div class="com-body">
               <TipTap 
-                  ref="textEditor" 
+                  expand="expandable"
+                  ref="textEditor"
+                  :curationContents="communityData.text"
                   :isEditable="modifyBool"
                   @sendContents="receiveContent"
-                  :key="modifyBool" />
+                  :key="[communityData.text, modifyBool]" />
             </div>
 
             <div class="com-form-comment-wrapper">
@@ -43,9 +47,7 @@
         ref="modal"
         :modalBtnData="modalBtnData"
         smallModal="이 커뮤니티에 가입하시겠습니까?"
-        width="600" height="300" margin-top="200">
-
-    </big-modal>
+        width="600" height="300" margin-top="200" />
   </div>
 </template>
 
@@ -61,6 +63,9 @@ export default {
   data() {
     return {
       modifyBool: false,
+      canModify: false,
+      communityData: {},
+      modifyContent: '',
       modalBtnData: [
         {
           name: '취소',
@@ -102,14 +107,21 @@ export default {
     separateMethods(idx) {
       if(idx == 0) {
         this.modifyBool = true;
-        this.$refs.textEditor.extendsEditor();
       }
     else if (idx == 1){
         this.$refs.modal.openModal(true);
       }
     },
     receiveContent(content) {
-      console.log(content);
+      this.modifyContent = content;
+      this.communityData.text = content;
+      console.log("this.modifyContent", this.modifyContent);
+
+      const calledAxios = this.$store.state.storedAxios;
+      calledAxios.post('/com/in/mod', {
+          no: this.communityData.no,
+          content: content
+        })
     },
     modifyMethods(idx) {
       if(idx == 0) {
@@ -127,7 +139,26 @@ export default {
         this.$refs.modal.openModal(true);
       }
     },
+    doAxios(comNo) {
+      const calledAxios = this.$store.state.storedAxios;
+      calledAxios.get('/com/in', {
+        params: {
+          no: comNo
+        }
+      })
+        .then(res => {
+          console.log(res.data);
+          this.communityData = res.data;
+          this.canModify = this.communityData.creater.email 
+                            == sessionStorage.getItem('email');
+        })
 
+    }
+  },
+  created() {
+    let comNo = this.$route.params.communityNo;
+    this.doAxios(comNo);
+    console.log("communityNo >>>>> ",this.$route.params.communityNo)
   }
 }
 </script>

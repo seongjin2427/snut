@@ -36,7 +36,7 @@ const routes = [
     name: "MainWithLogin"
   },
   {
-    path: "/col/:searchWord",
+    path: "/col",
     component: SearchCollections,
     name: "SearchCollections"
   },
@@ -116,7 +116,7 @@ const routes = [
     name: "Community"
   },
   {
-    path:"/com/in",
+    path:"/com/in/:communityNo",
     component: CommunityInside,
     name: "CommunityInside"
   },

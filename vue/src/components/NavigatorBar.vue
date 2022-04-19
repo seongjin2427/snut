@@ -23,7 +23,7 @@ export default {
         {
           id: 2,
           name: 'COMMUNITY',
-          path: '/com'
+          path: '/com',
         },
         {
           id: 3,

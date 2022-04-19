@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.curation.snut.dto.PageRequestDTO;
+import com.curation.snut.dto.PageResultDTO;
 import com.curation.snut.dto.community.CommuJoinDTO;
 import com.curation.snut.dto.community.CommunityDTO;
 import com.curation.snut.entity.community.CommentAlert;
@@ -34,15 +35,33 @@ public class CommunityController {
     private final JWTService jwtService;
 
     @GetMapping(value = "/commuList", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CommunityDTO>> commuList(String searchTitle) {
+    public ResponseEntity<PageResultDTO> commuList(PageRequestDTO pageRequestDTO, String searchTitle) {
 
-        if (searchTitle != null) {
-            List<CommunityDTO> searchCommunityList = communityService.searchTitle(searchTitle);
+        if (searchTitle == null) {
+            PageResultDTO list = communityService.communityListWithCnt(pageRequestDTO);
+            return new ResponseEntity<>(list, HttpStatus.OK);
+        } else if (searchTitle != "all") {
+            PageResultDTO searchCommunityList = communityService.searchTitle(pageRequestDTO, searchTitle);
             return new ResponseEntity<>(searchCommunityList, HttpStatus.OK);
         } else {
-            List<CommunityDTO> list = communityService.communityListWithCnt();
-            return new ResponseEntity<>(list, HttpStatus.OK);
+            return null;
         }
+    }
+
+    @GetMapping("/com/in")
+    public ResponseEntity getCommunityData(@RequestParam("no") Long no) {
+        CommunityDTO dto = communityService.getCommunityData(no);
+        return new ResponseEntity(dto, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/com/in/mod", consumes = MediaType.ALL_VALUE)
+    public ResponseEntity modifyCommunityContent(@RequestBody Map data) {
+        Long num = Long.valueOf(String.valueOf(data.get("no")));
+        String content = (String) data.get("content");
+
+        communityService.modifyCommunityContent(num, content);
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping(value = "/myCommuList") // 내가 가입한 커뮤 , 내가 만든 커뮤
