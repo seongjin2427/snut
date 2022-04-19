@@ -1,91 +1,91 @@
 <template>
   <div class="comInsideComment">
     <!--  form-->
-    <div class="comment-view">
       <ul class="list-comment">
 
         <!--list-->
-        <li v-for="(reply, idx) in communityDataSet" :key="idx">
+        <li v-for="(reply, idx) in communityReplySet" :key="idx">
 
           <div class="comment-section">
-            <div class="comment-info">
-              <div class="comment-post">
+            <div class="comment-post">
 
-                <div class="profile-info">
-                  <div class="nickName">{{ reply.nickName }}</div>
-                  <span class="time">{{ reply.getTime }}</span>
-                </div>
-
-                <div class="box-post">
-                  <span v-if="!reply.editcomment" class="origin-comment" tabindex="0">{{ reply.content }}</span>
-                  <textarea v-if="reply.editcomment">
-
-                  </textarea>
-                </div>
-
-                <div class="comment-more">
-                  <div class="replymore">
-
-                    <!--reply bu-->
-                    <div class="reply">
-                      <p @click="replycom($event,idx)">reply</p>
-
-                    </div>
-                    <!--more bu-->
-                    <button class="action"  @click="modifyModal($event,idx)">
-                      <img src="@/assets/icon/com-button.png" alt="com-button" class="actbu">
-                    </button>
-                  </div>
-
-                  <!-- 대댓글-->
-                  <div class="comment-text-write" v-if="replyOn == idx">
-                    <div class="inner-text-write">
-
-                      <div class="box-text-area">
-                        <textarea maxlength="800" placeholder="Enter your comments">
-                        </textarea>
-                      </div>
-
-                      <div class="wrap-menu">
-                        <div class="area">
-
-                          <span class="num-text-area">
-                            <span class="num-text">글자 수</span>
-                            <span class="num-count-empty">0</span>
-                            /
-                            <span class="num-text">총 글자 개수</span>
-                            600
-                          </span>
-
-                          <div class="btn-post">
-                            <common-button class="post-btn" buttonName="post" width="40" height="20" border-radius="12"
-                                          font-size="14"
-                                          background="#FBBC05"
-                                          color="white" border="none" @click="postReply($event,idx)"></common-button>
-                          </div>
-
-                        </div>
-                      </div>
-
-                    </div>
-                  </div>
-                  <!-- 더보기 버튼 클릭시 노출될 항목 -->
-                  <div v-if="modalnumber==idx" class="modifyCon"
-                      :style="{left:modifyleft+40+'px', top:modifytop-40+'px'}">
-
-
-                    <div id="moreContent">
-                      <span id="Content">
-                        <span class="moreDetail" id="modifyBoard"  @click="modifycom(idx)">수정</span><br>
-                        <span class="moreDetail" id="deleteBoard" @click="deletecom($event,idx)">삭제</span><br>
-                      </span>
-                    </div>
-
-                  </div>
-
-                </div>
-
+              <div class="profile-info">
+                <div class="nickName">{{ reply.writer.nickName }}</div>
+                <span class="time">{{ getDateFormat(reply.modDate) }}</span>
               </div>
+
+              <div class="box-post">
+                <span v-if="!reply.editcomment" class="origin-comment" tabindex="0">
+                  {{ reply.text }}
+                </span>
+                <textarea v-if="reply.editcomment">
+                </textarea>
+              </div>
+
+                <div class="replymore">
+
+                  <!--reply bu-->
+                  <div class="reply">
+                    <p @click="replycom($event,idx)">reply</p>
+
+                  </div>
+                  <!--more bu-->
+                  <button class="action" @click="modifyModal($event,idx)">
+                    <img class="actbu" src="@/assets/icon/com-button.png" alt="com-button" >
+                  </button>
+                </div>
+
+                <!-- 대댓글-->
+                <div class="comment-text-write" v-if="replyOn == idx">
+                  <div class="inner-text-write">
+
+                    <div class="box-text-area">
+                      <textarea maxlength="800" placeholder="Enter your comments">
+                      </textarea>
+                    </div>
+
+                    <div class="wrap-menu">
+                      <div class="area">
+
+                        <span class="num-text-area">
+                          <span class="num-text">글자 수</span>
+                          <span class="num-count-empty">0</span>
+                          /
+                          <span class="num-text">총 글자 개수</span>
+                          600
+                        </span>
+
+                        <div class="btn-post">
+                          <common-button class="post-btn" buttonName="post" width="40" height="20" border-radius="12"
+                                        font-size="14"
+                                        background="#FBBC05"
+                                        color="white" border="none" @click="postReply($event,idx)"></common-button>
+                        </div>
+
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <!-- 더보기 버튼 클릭시 노출될 항목 -->
+                <div v-if="modalnumber==idx" class="modifyCon"
+                    :style="{left:modifyleft+40+'px', top:modifytop-40+'px'}">
+
+
+                  <div id="moreContent">
+                    <span id="Content">
+                      <span class="moreDetail" id="modifyBoard"  @click="modifycom(idx)">
+                        수정
+                      </span><br>
+                      <span class="moreDetail" id="deleteBoard" @click="deletecom($event,idx)">
+                        삭제
+                      </span><br>
+                    </span>
+                  </div>
+
+                </div>
+
+
             </div>
           </div>
 
@@ -93,7 +93,6 @@
 
         <!-- 하나의 댓글 끝 -->
       </ul>
-    </div>
     <div class="comment-paging">
       <!-- <pagenationnum scale="scale(0.5, 0.5)"></pagenationnum> -->
     </div>
@@ -105,7 +104,7 @@
       <div class="inner-text-write">
 
         <div class="box-text-area">
-          <textarea maxlength="800" placeholder="Enter your comments">
+          <textarea v-model="replyData.text" maxlength="800" placeholder="Enter your comments">
           </textarea>
         </div>
 
@@ -121,9 +120,9 @@
             </span>
 
             <div class="btn-post">
-              <common-button class="post-btn" buttonName="post" width="40" height="20" border-radius="12" font-size="14"
-                            background="#FBBC05"
-                            color="white" border="none"></common-button>
+              <common-button @click="newPostReply" buttonName="post" class="post-btn"
+                            width="40" height="20" font-size="14" background="#FBBC05"
+                            border-radius="12" color="white" border="none" />
             </div>
 
           </div>
@@ -149,26 +148,17 @@ export default {
   },
   data() {
     return {
-      communityDataSet: [
-        {
-          getTime: "time1",
-          nickName: "nickName1",
-          content: "comment1",
-          editcomment: false
+      communityReplySet: [],
+      replyData: {
+        text: '',
+        writer: {
+          email: sessionStorage.getItem('email'),
         },
-        {
-          getTime: "time2",
-          nickName: "nickName2",
-          content: "comment2",
-          editcomment: false
+        communityName: {
+          no: this.$route.params.communityNo
         },
-        {
-          getTime: "time3",
-          nickName: "nickName3",
-          content: "comment3",
-          editcomment: false
-        },
-      ],
+        parentNo: null,
+      },
       modifyleft: 0,
       modifytop: 0,
       show: false,
@@ -177,11 +167,49 @@ export default {
     }
   },
   methods: {
+    newPostReply() {
+      const calledAxios = this.$store.state.storedAxios;
+      let obj = {
+        text: this.replyData.text,
+        writer: {
+          email: sessionStorage.getItem('email'),
+        },
+        communityName: {
+          no: this.$route.params.communityNo
+        } ,
+        parentNo: this.replyData.parentNo,
+      };
+      calledAxios.post('/commentList',obj)
+        .then(res => {
+          console.log(res.data);
+        })
+    },
+    postReply(e, idx) {
+      if (this.replyOn == idx) {
+
+        this.replyOn = -1
+      }
+    },
+    getDateFormat(data) {
+      let date = new Date(data)
+      const formatDate = (date) => {
+        // let dates = new Date().getDate() - date.getDate();
+        // let hours = new Date().getHours() - date.getHours();
+        // let minutes = new Date().getMinutes() - date.getMinutes();
+        // console.log("dates", dates);
+        // console.log("hours", hours);
+        // console.log("minutes", minutes);
+        let formatted_date = 
+            // (date.getMonth() >= 10 ? date.getMonth() : '0'+ (date.getMonth() + 1)) 
+            // + "/" + (date.getDate() >= 10 ? date.getDate() : '0' + date.getDate())
+            + " " + (date.getHours()+"")
+            + ":" + (date.getMinutes()+"");
+        return formatted_date;
+      }
+      return formatDate(date);
+    },
     modifyModal(e, idx) {
       if (this.modalnumber == -1) {
-        // console.log(e)
-        // console.log(e.offsetX)
-        // console.log(e.offsetY)
         this.modifyleft = e.x
         this.modifytop = e.y
         this.modalnumber = idx;
@@ -191,13 +219,13 @@ export default {
       }
     },
     modifycom(idx) {
-      this.communityDataSet[idx].editcomment =!this.communityDataSet[idx].editcomment
+      this.communityReplySet[idx].editcomment =!this.communityReplySet[idx].editcomment
     },
     deletecom(e, idx) {
       // alert("정말 삭제하시겠습니까?")
       console.log('ComInsideComment', idx);
       console.log(e)
-      this.communityDataSet.splice(idx, 1)
+      this.communityReplySet.splice(idx, 1)
       // this.$emit('deletecom', this);
     },
     replycom(e, idx) {
@@ -207,13 +235,23 @@ export default {
         this.replyOn = -1
       }
     },
-    postReply(e, idx) {
-      if (this.replyOn == idx) {
-
-        this.replyOn = -1
-      }
+    loadCommunity() {
+      const calledAxios = this.$store.state.storedAxios;
+      this.replyData.communityName = this.$route.params.communityNo;
+      calledAxios.get('/commentList', {
+        params: {
+          no: this.$route.params.communityNo
+        }
+      })
+        .then(res => {
+          console.log(res.data.nomal);
+          this.communityReplySet = res.data.nomal.content;
+        });
     }
-
+  },
+  mounted() {
+    console.log(this.replyData.communityName.no);
+    this.loadCommunity();
   }
 }
 </script>
@@ -224,7 +262,6 @@ li {
   list-style: none;
   padding-top: 20px;
 }
-
 .comment-section::after {
   content: "";
   display: block;
@@ -232,51 +269,53 @@ li {
   border-bottom: 1px solid #D9D9D9;
   padding-bottom: 20px;
 }
-
-.box-post {
-  margin-left: 20px;
-}
-
-.comment-more button {
-  cursor: pointer;
-}
-
-.reply {
-  padding-right: 10px;
-}
-
 .profile-info {
   display: flex;
   align-items: center;
   padding-left: 20px;
+  margin-bottom: 5px;
 }
-
 .time {
   padding-left: 10px;
   font-weight: 400;
   font-size: 16px;
   color: #868686;
 }
-
+.box-post {
+  width: 850px;
+  margin-left: 20px;
+  margin-bottom: 5px;
+}
+.replymore {
+  display: flex;
+  justify-content: flex-end;
+}
+.reply {
+  padding-right: 10px;
+  cursor: pointer;
+}
 .action {
   width: 20px;
   border: none;
   background: none;
   margin-right: 20px;
+  cursor: pointer;
 }
-
+.actbu {
+  width: 4px;
+  height: 16px;
+  scale: 1;
+}
 .comment-text-write {
-  margin-top: 30px;
+  margin-top: 20px;
   padding: 0 30px;
 }
-
 .inner-text-write {
   background: white;
   padding: 12px 10px 10px 20px;
   border: 1px solid #e4e4e4;
   border-radius: 2px;
 }
-
 textarea {
   height: 90px;
   resize: none;
@@ -288,32 +327,28 @@ textarea {
   background-color: transparent;
   border: 0 none;
 }
-
-button {
-  border: none;
-  background: none;
+textarea:focus {
+  outline: none;
 }
-
-button img {
-  object-fit: contain;
-}
-
 .area {
   display: flex;
   justify-content: flex-end;
   align-items: center;
   margin-top: 20px;
 }
-
-
+button {
+  border: none;
+  background: none;
+}
+button img {
+  object-fit: contain;
+}
 .num-text-area {
   display: inline-block;
   margin: 10px 10px 0 3px;
   vertical-align: top;
   font-size: 13px;
-
 }
-
 .num-text {
   position: absolute;
   width: 1px;
@@ -323,21 +358,9 @@ button img {
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   border: 0;
-
-}
-
-.num-text-area .num-text {
-
   color: #959595;
   font-size: 11px;
 }
-
-.actbu {
-  width: 4px;
-  height: 16px;
-  scale: 1;
-}
-
 .modifyCon {
   position: fixed;
 }
@@ -362,13 +385,17 @@ button img {
   display: inline-block;
   width: 100%;
   min-height: 34px;
-  padding: 6px 15px 0;
+  text-align: center;
+  padding: 5px 10px;
   font-size: 13px;
   box-sizing: border-box;
 }
 
-.replymore {
-  display: flex;
-  justify-content: flex-end;
+.moreDetail {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
 }
+
+
 </style>

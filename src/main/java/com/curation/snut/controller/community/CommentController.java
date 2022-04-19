@@ -19,18 +19,13 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/comment")
+@RequestMapping(value = "/api")
 public class CommentController {
     private final CommentService commentService;
     private final CommuJoinRepository commuJoinRepository;
@@ -39,9 +34,12 @@ public class CommentController {
 
     @GetMapping(value = "/commentList")
     public ResponseEntity<Map<String, Page<CommentDTO>>> commentListTest(
-            @PageableDefault(size = 2) final Pageable pageable, final Long no) {
+            @PageableDefault(size = 6) final Pageable pageable, final Long no) {
         Page<CommentDTO> commentDTOList = commentService.commentList(pageable, no);
         Page<CommentDTO> commentDTOList2 = commentService.ancommentList(pageable, no);
+
+        System.out.println("commentDTOList >>>>>>> " + commentDTOList);
+        System.out.println("commentDTOList2 >>>>>>> " + commentDTOList2);
 
         Map<String, Page<CommentDTO>> map = new HashMap<>();
         map.put("import", commentDTOList2);
@@ -49,14 +47,20 @@ public class CommentController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/commentList", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> commentWrite(CommentDTO commentDTO) {
+    @PostMapping(value = "/commentList", consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> commentWrite(@RequestBody CommentDTO commentDTO) {
+
+        System.out.println("으아아아아ㅏ어랩쟈ㅓ해 >> " + commentDTO);
 
         String writer = commentDTO.getWriter().getEmail();
         Long commuNo = commentDTO.getCommunityName().getNo();
         Optional<CommuJoin> findWriteAuthority = commuJoinRepository.findWriteAuthority(commuNo, writer);
 
         Optional<Community> findCreater = communityRepository.findByCreater(writer, commuNo);
+        System.out.println("writer >>>>>>>>>>> " + writer);
+        System.out.println("commuNo >>>>>>>>>>> " + commuNo);
+        System.out.println("findWriteAuthority >>>>>>>>>>> " + findWriteAuthority);
+        System.out.println("findCreater >>>>>>>>>>> " + findCreater);
 
         boolean check = commentDTO.isAnnouncement();
         if (!check) {
@@ -67,7 +71,7 @@ public class CommentController {
                 commentService.write(commentDTO);
                 return new ResponseEntity<>("등록", HttpStatus.OK);
             } else {
-                return new ResponseEntity<>("권한 없음", HttpStatus.OK);
+                return new ResponseEntity<>("권한 없음1", HttpStatus.OK);
             }
         } else {
             if (findCreater.isPresent()) {
@@ -77,7 +81,7 @@ public class CommentController {
                 return new ResponseEntity<>("권한 없음", HttpStatus.OK);
             }
         }
-
+//        return new ResponseEntity<>("에라이", HttpStatus.OK);
     }
 
     @PostMapping("/comment/delete")

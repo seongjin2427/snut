@@ -33,7 +33,7 @@
 
             <div class="com-form-comment-wrapper">
               <div class="com-form-comment">
-                <comInsideComment />
+                <comInsideComment :comId="communityData.no" />
               </div>
             </div>
 
