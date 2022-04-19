@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.curation.snut.dto.PageRequestDTO;
 import com.curation.snut.dto.community.CommuJoinDTO;
 import com.curation.snut.dto.community.CommunityDTO;
 import com.curation.snut.entity.community.CommentAlert;
@@ -18,18 +19,13 @@ import com.curation.snut.service.community.CommunityService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/community")
+@RequestMapping(value = "/api")
 public class CommunityController {
     private final CommunityService communityService;
     private final CommuJoinTempService commuJoinTempService;
@@ -39,6 +35,7 @@ public class CommunityController {
 
     @GetMapping(value = "/commuList", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<CommunityDTO>> commuList(String searchTitle) {
+
         if (searchTitle != null) {
             List<CommunityDTO> searchCommunityList = communityService.searchTitle(searchTitle);
             return new ResponseEntity<>(searchCommunityList, HttpStatus.OK);
@@ -63,8 +60,9 @@ public class CommunityController {
         return new ResponseEntity<>(send, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/commuList", produces = MediaType.APPLICATION_JSON_VALUE) // 커뮤니티생성
-    public ResponseEntity<String> commuReg(CommunityDTO communityDTO) {
+    @PostMapping(value = "/commuList", consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) // 커뮤니티생성
+    public ResponseEntity<String> commuReg(@RequestBody CommunityDTO communityDTO) {
+        System.out.println("aowierjgowejorgij >>>>>> " + communityDTO);
         communityService.write(communityDTO);
         return new ResponseEntity<>("완료", HttpStatus.CREATED);
     }

@@ -135,12 +135,11 @@ export default {
                 const imgUrl = res.data.data.display_url
                 this.editor.chain().focus().setImage({ src: imgUrl }).run();
 
-                sendImgList[i] = {};
-                sendImgList[i].path = imgUrl;
+                sendImgList.push(imgUrl);
               })
             }
-        
-        // this.imgList = sendImgList;
+            console.log("sendImgList", sendImgList);
+        this.imgList = sendImgList;
       }
     },
     sendContents() {

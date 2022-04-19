@@ -22,6 +22,7 @@ public class HomeController {
     private final CurationService curationService;
     private final SnutCollectionService snutCollectionService;
 
+        // 컬렉션 번호 기준으로 큐레이션 데이터 모두 가져오기 - UserCollection.vue에서 사용
         @GetMapping("/ucol")
         public ResponseEntity getCurationDataInCollection(@RequestParam("collectionNo") Long collectionNo) {
             log.info("request collectionNo >>>>>>>>>>> " + collectionNo);
@@ -30,6 +31,7 @@ public class HomeController {
             return new ResponseEntity(curationDTOList, HttpStatus.OK);
         }
 
+        // 단어 검색 횟수 기준으로 상위 5개씩 페이징 처리된 컬렉션 가져오기
         @GetMapping(value = "/main/hot")
         public ResponseEntity getCollectionPoPularList(PageRequestDTO pageRequestDTO) {
             log.info("list............................." + pageRequestDTO);

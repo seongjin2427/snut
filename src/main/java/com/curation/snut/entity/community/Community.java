@@ -1,11 +1,6 @@
 package com.curation.snut.entity.community;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import com.curation.snut.entity.BaseEntity;
 import com.curation.snut.entity.Member;
@@ -30,6 +25,9 @@ public class Community extends BaseEntity {
 
     private String title;
     private String thumbnail;
+
+    @Column(length = 200000)
+    private String text;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)

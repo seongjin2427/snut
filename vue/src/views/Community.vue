@@ -71,27 +71,27 @@ export default {
       ],
       commuBlockData:[
         {
-          id: '01',
+          no: '01',
           title: 'title',
           text:'text',
-          comment: 1,
-          img:'',
+          replyCount: 1,
+          thumbnail:'',
           src:''
         },
         {
-          id: '02',
+          no: '02',
           title: 'title2',
           text:'text2',
-          comment: 2,
-          img:'',
+          replyCount: 2,
+          thumbnail:'',
           src:''
         },
         {
-          id: '03',
+          no: '03',
           title: 'title2',
           text:'text3',
-          comment: 1,
-          img:'',
+          replyCount: 1,
+          thumbnail:'',
           src:''
         }
       ]
@@ -108,12 +108,27 @@ export default {
     moveToPage(src) {
       console.log(src);
     },
-  goToCom(){
-    this.$router.push('/com/in');
-  }
-
+    goToCom(){
+      this.$router.push('/com/in');
+    },
+    loadCommunity() {
+      const calledAxios = this.$store.state.storedAxios;
+      calledAxios.get('/commuList')
+        .then(res => {
+          this.commuBlockData = res.data;
+          this.commuBlockData.map(dt => {
+            if(dt.text != null) {
+              dt.text = dt.text.replace(/(<([^>]+)>)/gi, " ");
+            }
+            console.log(dt.text)
+          })
+          
+        });
+    }
   },
-
+  created() {
+    this.loadCommunity();
+  }
 }
 </script>
 
@@ -184,6 +199,7 @@ header {
   background: #F6F6F6;
   border: none;
   margin-top: 50px;
+  overflow: scroll;
 }
 .recom-bu{
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);

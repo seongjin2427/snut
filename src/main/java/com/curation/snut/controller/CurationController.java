@@ -8,25 +8,18 @@ import com.curation.snut.repository.CurationRepository;
 import com.curation.snut.repository.MemberCollectionLikeRepository;
 import com.curation.snut.repository.MemberCurationLikeRepository;
 import com.curation.snut.repository.SnutCollectionRepository;
-import com.curation.snut.security.util.JWTUtil;
 import com.curation.snut.service.CurationService;
 import com.curation.snut.service.HashTagService;
-import com.curation.snut.service.like.MemberCollectionLikeService;
 import com.curation.snut.service.SnutCollectionService;
+import com.curation.snut.service.like.MemberCollectionLikeService;
 import com.curation.snut.service.like.MemberCurationLikeService;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.impl.DefaultClaims;
-import io.jsonwebtoken.impl.DefaultJws;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,9 +40,9 @@ public class CurationController {
     private final MemberCurationLikeService memberCurationLikeService;
     private final MemberCurationLikeRepository memberCurationLikeRepository;
     private final MemberCollectionLikeRepository memberCollectionLikeRepository;
-    private JWTUtil jwtUtil;
-    // 성진
 
+    // 성진
+    // 이메일로 큐레이션 리스트 모두 가져오기 - Make Collection.vue에서 사용 (컬렉션 만들기 페이지)
     @GetMapping(value = "/mcol/mc/em")
     public ResponseEntity getListByEmail(@RequestParam("email") String email) {
 
@@ -60,6 +53,7 @@ public class CurationController {
         return new ResponseEntity(culist, HttpStatus.OK);
     }
 
+    // 이메일 기준으로 모든 큐레이션, 콜렉션 가져오기 - My Note.vue에서 사용 (나만의 기록 페이지)
     @GetMapping("/mcol/mn")
     public ResponseEntity getAllListByEmail(@RequestParam("email") String email) {
 
@@ -75,6 +69,7 @@ public class CurationController {
         return new ResponseEntity(sendMap, HttpStatus.OK);
     }
 
+    // 큐레이션 ID값 기준으로 큐레이션 가져오기 - MakeColSave.vue에서 사용 (컬렉션 만들기 페이지)
     @RequestMapping(value = "/mcol/store", method = RequestMethod.GET, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public CurationDTO cuListByCurationNo(@RequestParam Map body) {
         log.info("cuListByCurationNo............");
@@ -83,7 +78,7 @@ public class CurationController {
         return curationService.getCurationsByCurationNo(a);
     }
 
-
+    // 검색단어 기준으로 컬렉션 및 큐레이션 데이터 가져오기 - SearchCollection.vue에서 사용 (검색 페이지)
     @RequestMapping(value = "/main", method = RequestMethod.GET, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity dataSetBySearchWord(@RequestParam("searchWord") String searchWord) {
         log.info("dataSetBySearchWord............");
@@ -102,6 +97,7 @@ public class CurationController {
         return new ResponseEntity(a, HttpStatus.OK);
     }
 
+    // 큐레이션 등록하기 - MakeNote.vue에서 사용 (큐레이션 등록하기)
     @PostMapping(value = "/mcol/note/makenote/picture", consumes = MediaType.ALL_VALUE)
     public ResponseEntity curationRegister(@RequestBody CurationDTO curationDTO) {
         log.info("curationDTO >>>> " + curationDTO);
@@ -110,6 +106,7 @@ public class CurationController {
         return new ResponseEntity(curationNo, HttpStatus.OK);
     }
 
+    // 컬렉션 등록하기 - MakeCollection.vue에서 사용 (컬렉션 등록하기)
     @PostMapping(value = "/mcol/mc", consumes = MediaType.ALL_VALUE)
     public ResponseEntity collectionRegister(@RequestBody SnutCollectionDTO snutCollectionDTO) {
         log.info("collectionDTO >>>>>>>> " + snutCollectionDTO);
@@ -119,7 +116,9 @@ public class CurationController {
     }
 
 
+
     // 좋아요 구간
+    // 컬렉션 좋아요 등록
     @PostMapping("/col/likes")
     public String collectionlikes(@RequestBody Map data) {
         log.info("likes >>>>>> " + data);
@@ -136,6 +135,7 @@ public class CurationController {
         }
         return "중복";
     }
+    // 컬렉션 좋아요 해제
     @DeleteMapping("/col/unlikes")
     public String collectionUnlikes(@RequestParam Map data) {
         log.info("likes >>>>>> " + data);
@@ -150,6 +150,7 @@ public class CurationController {
         }
         return "좋아요 해제할 데이터 없음";
     }
+    // 큐레이션 좋아요 등록
     @PostMapping("/cu/likes")
     public String curationlikes(@RequestBody Map data) {
         log.info("likes >>>>>> " + data);
@@ -160,12 +161,12 @@ public class CurationController {
             memberCurationLikeService.likes(no, email);
             Optional<Curation> cu = curationRepository.findById(no);
             cu.get().setLike(true);
-            System.out.println("cu다ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ   " + cu.get());
             curationRepository.save(cu.get());
             return "좋아요 완료";
         }
         return "중복";
     }
+    // 큐레이션 좋아요 해제
     @DeleteMapping("/cu/unlikes")
     public String curationUnlikes(@RequestParam Map data) {
         log.info("likes >>>>>> " + data);

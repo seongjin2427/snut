@@ -28,6 +28,7 @@ public interface CommunityService {
         Community community = Community.builder()
                 .no(dto.getNo())
                 .title(dto.getTitle())
+                .text(dto.getText())
                 .thumbnail(dto.getThumbnail())
                 .creater(member)
                 .build();
@@ -40,6 +41,7 @@ public interface CommunityService {
                 .no(community.getNo())
                 .title(community.getTitle())
                 .thumbnail(community.getThumbnail())
+                .text(community.getText())
                 .creater(community.getCreater())
                 .regDate(community.getRegDate())
                 .modDate(community.getModDate())
@@ -53,6 +55,7 @@ public interface CommunityService {
                 .no(community.getNo())
                 .title(community.getTitle())
                 .thumbnail(community.getThumbnail())
+                .text(community.getText())
                 .creater(community.getCreater())
                 .replyCount(replyCount.intValue())
                 .regDate(community.getRegDate())
