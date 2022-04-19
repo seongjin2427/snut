@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import com.curation.snut.dto.MemberDTO;
 
 import java.util.Map;
 import java.util.Optional;
@@ -40,5 +41,11 @@ public class MemberController {
             memberService.register(body);
             return new ResponseEntity<>("등록 완료", HttpStatus.OK);
         }
+    }
+
+    @PostMapping("/memberModify")
+    public ResponseEntity<?> modifyForm(MemberDTO memberDTO) {
+        memberService.updateMemberDTO(memberDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

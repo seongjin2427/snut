@@ -9,7 +9,7 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.curation.snut.dto.ApiSessionDTO;
+import com.curation.snut.dto.community.ApiSessionDTO;
 import com.curation.snut.security.dto.AuthMemberDTO;
 import com.curation.snut.security.util.JWTUtil;
 
@@ -87,7 +87,7 @@ public class ApiLoginFilter extends AbstractAuthenticationProcessingFilter {
     private ApiSessionDTO commonDtoToApiDTO(AuthMemberDTO commonDto, String token, String curl) {
         ApiSessionDTO apiDto = ApiSessionDTO.builder()
                 .email(commonDto.getEmail()).token(token).name(commonDto.getName())
-                .birth(commonDto.getBirth()).gender(commonDto.getGender()).nickname(commonDto.getNickname())
+                .birth(commonDto.getBirth()).gender(commonDto.getGender()).nickname(commonDto.getNickName())
                 .mobile(commonDto.getMobile()).curl(curl)
                 .username(commonDto.getUsername())
                 .build();
