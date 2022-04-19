@@ -41,6 +41,7 @@ public interface SnutCollectionService {
                 .hashtag(collection.getHashtag())
                 .curationList(Curations)
                 .nickname(collection.getWriter().getNickName())
+                .like(collection.isLike())
                 .regDate(collection.getRegDate())
                 .modDate(collection.getModDate())
                 .build();
@@ -60,6 +61,7 @@ public interface SnutCollectionService {
                 .collectionNo(collectionDTO.getCollectionNo())
                 .collectionTitle(collectionDTO.getCollectionTitle())
                 .collectionText(collectionDTO.getCollectionText())
+                .like(collectionDTO.isLike())
                 .hashtag(hashtag)
                 .writer(Member.builder().email(collectionDTO.getEmail()).build())
                 .build();

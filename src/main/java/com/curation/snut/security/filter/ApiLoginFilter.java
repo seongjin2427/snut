@@ -63,7 +63,7 @@ public class ApiLoginFilter extends AbstractAuthenticationProcessingFilter {
 
         log.info("ApiLoginFilter successfulAuthentication:" + authResult);
         log.info("Principal:" + authResult.getPrincipal());
-        // String email = ((AuthMemberDTO) authResult.getPrincipal()).getUsername();
+//         String email = ((AuthMemberDTO) authResult.getPrincipal()).getUsername();
         AuthMemberDTO userDtail = ((AuthMemberDTO) authResult.getPrincipal());
 
         String token = null;
@@ -73,8 +73,9 @@ public class ApiLoginFilter extends AbstractAuthenticationProcessingFilter {
             // token = "Bearer "+jwtUtil.generateToken(email);
             token = "Bearer " + jwtUtil.generateToken(userDtail);
             ApiSessionDTO apiDto = commonDtoToApiDTO((AuthMemberDTO) authResult.getPrincipal(), token, curl);
-            String res = mapper.writeValueAsString(token);
+            String res = mapper.writeValueAsString(apiDto);
             log.info("res:::" + res);
+            log.info("authResult.getPrincipal() >>>>" + authResult.getPrincipal());
             response.setContentType("application/json");
             response.getOutputStream().write(res.getBytes());
             log.info("token=> " + token);

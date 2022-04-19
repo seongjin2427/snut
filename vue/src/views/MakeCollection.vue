@@ -151,7 +151,7 @@ export default {
     getMyCurations() {
       const calledAxios = this.$store.state.storedAxios;
       
-      calledAxios.get('/mcol/mc', {
+      calledAxios.get('/mcol/mc/em', {
         params: {
           email: sessionStorage.getItem('email'),
         }

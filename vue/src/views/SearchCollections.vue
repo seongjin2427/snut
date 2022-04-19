@@ -44,7 +44,7 @@
       
       <footer>
         <main-footer/>
-        <common-modal ref="modal" />
+        <common-modal ref="modal" @applyLike="applyLike"/>
       </footer>
 
     </div>
@@ -106,6 +106,14 @@ export default {
       this.dropdownData[0] = this.dropdownData[idx];
       this.dropdownData[idx] = temp;
       this.openData = !this.openData
+    },
+    applyLike(separate, no) {
+      console.log("separate", separate)
+      console.log("no", no)
+      this.sampleData.map(data => {
+        if(data.cuCo == "Collection" && data.cuCo == separate && data.collectionNo == no) data.like = !data.like;
+        if(data.cuCo == "Curation" && data.cuCo == separate && data.collectionNo == no) data.like = !data.like;
+      });
     },
     doAxios() {
       let calledAxios = this.$store.state.storedAxios;

@@ -5,13 +5,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.curation.snut.dto.CurationDTO;
-import com.curation.snut.entity.Curation;
-import com.curation.snut.entity.CurationImage;
-import com.curation.snut.entity.Hashtag;
-import com.curation.snut.repository.CurationImageRepository;
-import com.curation.snut.repository.CurationRepository;
+import com.curation.snut.entity.*;
+import com.curation.snut.repository.*;
 
-import com.curation.snut.repository.HashtagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,9 +22,10 @@ public class CurationServiceImpl implements CurationService {
     private final CurationRepository curationRepository;
     private final CurationImageRepository curationImageRepository;
     private final HashtagRepository hashtagRepository;
+    private final MemberRepository memberRepository;
+    private final MemberCurationLikeRepository memberCurationLikeRepository;
 
     // 성진
-
 
     @Override
     public List<CurationDTO> getCurationByEmail(String email) {
@@ -58,16 +55,17 @@ public class CurationServiceImpl implements CurationService {
     @Override
     public List<CurationDTO> getCurationsByCollectionNo(Long colId) {
         List<Curation> cuList = curationRepository.findCurationsByCollectionNo(colId);
-
         return cuList.stream().map(cu -> {
            List<CurationImage> curationImageList = curationRepository.findCurationImageByCurationNo(cu.getCurationNo());
            return entityToDTO(cu, curationImageList);
         }).collect(Collectors.toList());
     }
+
     @Transactional
     @Override
     public List<CurationDTO> getCurationsByWord(String word) {
-        List<Curation> cuList = curationRepository.findCurationByWord22(word);
+        List<Curation> cuList = curationRepository.findCurationByWord(word);
+
         return cuList.stream().map(cu -> {
             List<CurationImage> imgList = curationRepository.findCurationImageByCurationNo(cu.getCurationNo());
             return entityToDTO(cu, imgList);
@@ -95,7 +93,6 @@ public class CurationServiceImpl implements CurationService {
         }
         return curation.getCurationNo();
     }
-
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

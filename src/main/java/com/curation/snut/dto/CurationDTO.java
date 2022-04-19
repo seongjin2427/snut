@@ -29,6 +29,7 @@ public class CurationDTO {
     private Long pickedEmoji;
     private String pickedColor;
     private boolean open;
+    private boolean like;
 
     private Set hashtag;
 

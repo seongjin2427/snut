@@ -17,10 +17,10 @@
                 :key="idx" />
           </div>
           <div class="modal-iconSet">
-            <img src="@/assets/modal/Like-Line.png" alt="unlike_img" v-if="isShowing"
-                 @click="like" >
+            <img src="@/assets/modal/Like-Line.png" alt="unlike_img" v-if="!isShowing"
+                @click="like" >
             <img src="@/assets/modal/Like-Line2.png" alt="like_img"
-                 @click="like" v-if="!isShowing" width="48" height="48" class="like">
+                @click="like" v-if="isShowing" width="48" height="48" class="like">
             <img src="@/assets/modal/Pin-Line.png" alt="pin_img">
             <img src="@/assets/modal/Share-Line.png" alt="share_img">
           </div>
@@ -84,11 +84,14 @@ export default {
         position: 0,
         IMAGE_WIDTH: 400
       },
-      isShowing: true,
+      isShowing: false,
     }
   },
   methods: {
     openModal(colCuData, moveToPageBool) {
+      this.colCuData = colCuData;
+      this.isShowing = this.colCuData.like;
+      console.log("this.isShowing", this.isShowing)
       let imgList = null;
       if (colCuData.cuCo == "Collection") {
         let tmp = colCuData.curationList.filter(cu => { if(cu.pickedColor == null) return cu });
@@ -96,11 +99,11 @@ export default {
       } else if (colCuData.cuCo == "Curation") {
         imgList = colCuData.imageDTOList.map(i => i.imageURL );
       }
+      console.log("this.colCuData", this.colCuData)
 
       this.sampleImg = imgList;
       this.moveToPageBoolean = moveToPageBool;
       this.showBool = true;
-      this.colCuData = colCuData;
     },
     closeModal() {
       this.imgSlideData.curPos = 0;
@@ -138,12 +141,47 @@ export default {
       }
     },
     like(){
+      console.log("like > this.isShowing", this.isShowing)
       if(this.isShowing){
-        this.isShowing= false;
+        this.isShowing = false;
+        console.log("like > this.isShowing", this.isShowing)
+        this.separateColCu("unlikes", "delete")
       }else{
         this.isShowing = true;
+        this.separateColCu("likes", "post")
       }
-    }
+    },
+    separateColCu(text, methods) {
+      if (this.colCuData.cuCo == "Collection") {
+        this.getLike(`/col/${text}`, this.colCuData.collectionNo, methods)
+        this.$emit('applyLike', this.colCuData.cuCo, this.colCuData.collectionNo)
+      } else if (this.colCuData.cuCo == "Curation") {
+        console.log("inLike >>>>> ", this.colCuData)
+        this.getLike(`/cu/${text}`,this.colCuData.curationNo, methods);
+        this.$emit('applyLike', this.colCuData.cuCo, this.colCuData.curationNo)
+      }
+    },
+    getLike(url, num, methods) {
+      const calledAxios = this.$store.state.storedAxios;
+      console.log(methods);
+      
+      let obj = {
+        no: num,
+        email: sessionStorage.getItem('email')
+      }
+      if (methods === "post") {
+        calledAxios[methods](url, obj).then(res => {
+            console.log(res.data);
+        });
+      } else if (methods === "delete") {
+        calledAxios[methods](url, {
+          params: obj
+        }).then(res => {
+            console.log(res.data);
+          });
+
+      }
+    },
 
   }
 }

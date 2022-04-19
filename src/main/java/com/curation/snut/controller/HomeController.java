@@ -25,7 +25,6 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class HomeController {
 
-    private final MemberService memberService;
     private final CurationService curationService;
     private final SnutCollectionService snutCollectionService;
 

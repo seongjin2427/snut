@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Commit;
@@ -127,5 +128,23 @@ class SnutCollectionRepositoryTests {
         System.out.println("--------------------------------------------------------------------------");
         resultDTO.getPageList().forEach(i -> System.out.println(i));
         resultDTO.getDtoList().stream().forEach(j -> System.out.println(j));
+    }
+
+    @Transactional
+    @Test
+    void getPopularCollectionListByHashtagCountTest() {
+        PageRequestDTO requestDTO = PageRequestDTO.builder().page(1).size(20).build();
+//        Pageable pageable = requestDTO.getPageable(Sort.by("count").descending());
+        Pageable pageable = PageRequest.of(1, 20);
+        Page<SnutCollection> result = snutCollectionRepository.findSnutCollectionByHashTagCount(pageable);
+        result.stream().forEach(i -> System.out.println("아닛 >> " + i.getHashtag()));
+    }
+
+    @Transactional
+    @Test
+    void hashTagColTest() {
+        PageRequestDTO requestDTO = PageRequestDTO.builder().page(1).size(20).build();
+        PageResultDTO resultDTO = snutCollectionService.getPopularCollection(requestDTO);
+        resultDTO.getDtoList().forEach(i -> System.out.println(i));
     }
 }

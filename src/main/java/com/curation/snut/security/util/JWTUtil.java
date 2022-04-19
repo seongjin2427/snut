@@ -40,7 +40,24 @@ public class JWTUtil {
             log.error(e.getMessage());
             contentValue = null;
         }
+        log.info("contentValue >>>>>>>>>>>> " + contentValue);
         return contentValue;
     }
 
+    public Object getClaims(String tokenStr) throws Exception {
+        Object contentValue = null;
+        try {
+            DefaultJws defaultJws = (DefaultJws) Jwts.parser().setSigningKey(secretKey.getBytes("UTF-8"))
+                    .parseClaimsJws(tokenStr);
+            DefaultClaims claims = (DefaultClaims) defaultJws.getBody();
+            System.out.println("claims >>>>> " + claims);
+            contentValue = claims.get("sub");
+            log.info("contentValue >>>>>>>>> " + contentValue);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+            contentValue = null;
+        }
+        return contentValue;
+    }
 }
