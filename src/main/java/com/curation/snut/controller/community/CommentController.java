@@ -39,7 +39,7 @@ public class CommentController {
 
     @GetMapping(value = "/commentList")
     public ResponseEntity<Map<String, Page<CommentDTO>>> commentListTest(
-            @PageableDefault(size = 10) final Pageable pageable, final Long no) {
+            @PageableDefault(page = 0, size = 10) final Pageable pageable, final Long no) {
         Page<CommentDTO> commentDTOList = commentService.commentList(pageable, no);
         Page<CommentDTO> commentDTOList2 = commentService.ancommentList(pageable, no);
 

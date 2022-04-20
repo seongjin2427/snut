@@ -239,8 +239,8 @@ export default {
         let formatted_date = 
             // (date.getMonth() >= 10 ? date.getMonth() : '0'+ (date.getMonth() + 1)) 
             // + "/" + (date.getDate() >= 10 ? date.getDate() : '0' + date.getDate())
-            + " " + (date.getHours()+"")
-            + ":" + (date.getMinutes()+"");
+            + " " + (date.getHours())
+            + ":" + (date.getMinutes());
         return formatted_date;
       }
       return formatDate(date);
@@ -301,30 +301,34 @@ export default {
       // let showPage = 5
 
       // let total = data.totalElements;
-      let page = data.number+ 1
+      let page = data.number + 1
       // let size = data.size
     
       let totalPage = data.totalPages;
 
       let tempEnd = Math.ceil(page/10) * 10;
       let start = tempEnd - 9
-      let end = totalPage > tempEnd ? tempEnd: totalPage - 1;
+      let end = totalPage > tempEnd ? tempEnd: totalPage;
 
-      let next = page != end;
+      let next = page <= end;
       let prev = page > 1;
 
       let pageList = [];
-      let st = start;
-      for(let i = start - 1 ; i < end; i++) {
-        pageList.push(st + i);
+      for(let i = start-1 ; i < end; i++) {
+        pageList.push(start-1 + i);
       }
-    console.log(page);
+    console.log("tempEnddddddd", tempEnd);
+    console.log("startttttttttt", start);
+    console.log("endddddddddd", end);
+    console.log("pageeeeeeeee", page);
+    console.log("prevvvvvvvvvvv", prev);
+    console.log("nextttttttttt", next);
 
       let pageData = {
         next: next,
         prev : prev,
         pageList: pageList,
-        page: page -2
+        page: page
       }
 
       this.pageData = pageData;

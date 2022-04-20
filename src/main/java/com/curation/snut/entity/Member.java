@@ -1,13 +1,10 @@
 package com.curation.snut.entity;
 
+import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import com.curation.snut.security.role.MemberRole;
 
@@ -43,4 +40,5 @@ public class Member extends BaseEntity {
     public void addMemberRole(MemberRole memberRole) {
         roleSet.add(memberRole);
     }
+
 }

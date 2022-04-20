@@ -48,7 +48,6 @@ public class Curation extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<MemberCurationLike> cuLikeLIst;
 
-
     public void changeCurationTitle(String curationTitle) {
         this.curationTitle = curationTitle;
     }

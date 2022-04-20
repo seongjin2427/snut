@@ -36,6 +36,7 @@ public class SnutCollection extends BaseEntity{
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<MemberCollectionLike> colLikeList;
 
+
 //    @ManyToMany(fetch = FetchType.EAGER)
 //    @JoinColumn(name = "curation_col_no")
 //    private Set<Curation> curation = new LinkedHashSet<>();

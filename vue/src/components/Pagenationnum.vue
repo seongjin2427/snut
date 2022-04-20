@@ -2,8 +2,8 @@
   <div class="btn-container">
     <ul class="btn-list">
       <li class="previous">
-        <img @click="(getStart && moveToPage(pageData.page - 1))
-                  || (pageData.prev && moveToPage(pageData.page - 1))" 
+        <img @click="(getStart && moveToPage(pageData.page - 2))
+                  || (pageData.prev && moveToPage(pageData.page - 2))" 
             src="@/assets/icon/pre-page.png" alt="arrow" />
       </li>
       <li v-for="(page, idx) in pageData.pageList" 
@@ -31,6 +31,7 @@ export default {
   },
   methods: {
     moveToPage(page) {
+      console.log(page);
       this.$emit('move', page);
     }
   },
@@ -43,6 +44,10 @@ export default {
       if (this.pageData.end == this.pageData.page) return false;
       else return true;
     }
+  },
+  created() {
+    console.log("false?", this.pageData.start == this.pageData.page);
+    console.log("pageData.prev", this.pageData)
   }
 }
 </script>
