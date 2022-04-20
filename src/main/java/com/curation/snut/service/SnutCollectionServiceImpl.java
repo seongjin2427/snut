@@ -41,7 +41,6 @@ public class SnutCollectionServiceImpl implements SnutCollectionService {
         }).collect(Collectors.toList());
     }
 
-    @Transactional
     @Override
     public List<SnutCollectionDTO> getCollectionsByWord(String word) {
         List<SnutCollection> collections = snutCollectionRepository.findCurationByWord(word);

@@ -110,6 +110,7 @@ export default {
   },
   methods: {
     separateMethods(idx) {
+      const calledAxios = this.$store.state.storedAxios;
       if(idx == 0) {
         this.modifyBool = true;
       }
@@ -117,6 +118,15 @@ export default {
         this.$refs.modal.openModal(true);
       } else if (idx == 2) {
         console.log("삭제")
+        
+        calledAxios.post('/commuList/delete', {
+          commuCreater: sessionStorage.getItem('email'),
+          commuNo: this.$route.params.communityNo
+        })
+        .then(res => {
+          console.log(res)
+        })
+        this.$router.push('/com');
       }
     },
     receiveContent(content) {

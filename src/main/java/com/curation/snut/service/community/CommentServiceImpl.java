@@ -46,6 +46,7 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.save(communityComment);
     }
 
+    @Transactional
     @Override
     public Page<CommentDTO> commentList(Pageable pageable, Long no) {
         Page<CommunityComment> communityComments = commentRepository.list(pageable, no);

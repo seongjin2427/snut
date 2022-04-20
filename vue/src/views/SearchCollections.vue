@@ -93,10 +93,13 @@ export default {
     },
     doSearch(searchWord) {
       if(searchWord != '') {
-        this.$router.push(`/col/${searchWord}`);
-        console.log(searchWord);
-
-        this.doAxios();
+        this.$router.push(`/col`, {
+          query: {
+            searchWord: searchWord
+          }
+        });
+        console.log("?/????", searchWord);
+        this.doAxios(searchWord);
         this.$refs.inputBox.clearWord();
       }
     },
@@ -115,12 +118,17 @@ export default {
         if(data.cuCo == "Curation" && data.cuCo == separate && data.collectionNo == no) data.like = !data.like;
       });
     },
-    doAxios() {
+    doAxios(word) {
       let calledAxios = this.$store.state.storedAxios;
-      console.log("searchWord", this.$route.params)
-      calledAxios.get('/main',{
+      console.log("searchWord", word)
+      
+      let obj = {
+        searchWord: word
+      }
+      console.log("obj", obj);
+      calledAxios.get('/main', {
         params: {
-          'searchWord': this.$route.params.searchWord
+          word: word
         }
       })
         .then(res => { 
@@ -138,7 +146,7 @@ export default {
     },
   },
   created() {
-    this.doAxios();
+    this.doAxios(this.$route.query.searchWord);
 
   }
 }

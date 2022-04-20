@@ -192,6 +192,7 @@ export default {
   },
   methods: {
     newPostReply(data) {
+      const calledAxios = this.$store.state.storedAxios;
       let obj = {
         text: data.text,
         writer: {
@@ -202,7 +203,7 @@ export default {
         } ,
         parentNo: data.parentNo,
       };
-      this.axios.post('/commentList',obj)
+      calledAxios.post('/commentList',obj)
         .then(res => {
           console.log(res.data);
           this.loadCommunity(this.pageData.page);
@@ -212,13 +213,14 @@ export default {
     postReply(e, idx, data, cno) {
       if (this.replyOn == idx) {
         this.reReplyData.parentNo = cno;
-        
+
         this.newPostReply(data);
         this.replyOn = -1
       }
     },
     modifyReply(cno, content) {
-      this.axios.post('/comment/mod', {
+      const calledAxios = this.$store.state.storedAxios;
+      calledAxios.post('/comment/mod', {
         cno: cno,
         content: content
       }).then(res => {
@@ -257,6 +259,7 @@ export default {
       this.communityReplySet[idx].editcomment =!this.communityReplySet[idx].editcomment
     },
     deletecom(e, idx, reply) {
+      const calledAxios = this.$store.state.storedAxios;
       // alert("정말 삭제하시겠습니까?")
       this.communityReplySet.splice(idx, 1)
       
@@ -266,7 +269,7 @@ export default {
         commentEmail: reply.writer.email
       }
 
-      this.axios.post('/comment/delete', obj)
+      calledAxios.post('/comment/delete', obj)
           .then(res => {
             console.log(res)
           })

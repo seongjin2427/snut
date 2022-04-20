@@ -121,7 +121,10 @@ export default {
     doSearch(searchWord) {
       console.log(searchWord);
         this.$router.push({
-          path: `/col/${searchWord}`
+          path: `/col`,
+          query: {
+            searchWord: searchWord
+          }
         });
     },
     gotoLogin(){

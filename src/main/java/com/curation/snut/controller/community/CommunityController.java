@@ -89,18 +89,22 @@ public class CommunityController {
     @PostMapping(value = "/commuList/delete") // 커뮤니티삭제
     public ResponseEntity<String> communityDelete(@RequestHeader Map header, @RequestBody Map body) {
         Map userInfo = jwtService.code(header);
-        String memberEmail = userInfo.get("email").toString();
+        Map userSub = (Map) userInfo.get("sub");
+        String memberEmail = userSub.get("email").toString();
 
+        System.out.println("memberEmail >>>> " + memberEmail);
         String commuEmail = body.get("commuCreater").toString();
-        Long commuNo = Long.valueOf(body.get("commuNo").toString());
 
+        System.out.println("commuEmail >>>> " + commuEmail);
+        Long commuNo = Long.valueOf(body.get("commuNo").toString());
+        System.out.println("commuNo >>>> " + commuNo);
+//
         if (memberEmail.equals(commuEmail)) {
             communityService.delete(commuNo);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>("권한없음", HttpStatus.OK);
         }
-
     }
 
     @PostMapping(value = "/commuJoinApply") // 커뮤가입신청

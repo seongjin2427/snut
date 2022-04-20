@@ -9,6 +9,7 @@ import com.curation.snut.dto.PageRequestDTO;
 import com.curation.snut.dto.PageResultDTO;
 import com.curation.snut.dto.community.CommunityDTO;
 import com.curation.snut.entity.community.Community;
+import com.curation.snut.repository.community.CommentRepository;
 import com.curation.snut.repository.community.CommunityRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class CommunityServiceImpl implements CommunityService {
     @Autowired
     private CommunityRepository communityRepository;
+    private final CommentRepository commentRepository;
 
     @Override
     public CommunityDTO getCommunityData(Long no) {
@@ -56,6 +58,8 @@ public class CommunityServiceImpl implements CommunityService {
     @Transactional
     @Override
     public void delete(Long id) {
+        System.out.println("id >>>>>" + id);
+        commentRepository.deleteAllCommunutyComment(id);
         communityRepository.deleteById(id);
     }
 

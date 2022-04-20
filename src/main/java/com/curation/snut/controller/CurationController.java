@@ -79,22 +79,26 @@ public class CurationController {
     }
 
     // 검색단어 기준으로 컬렉션 및 큐레이션 데이터 가져오기 - SearchCollection.vue에서 사용 (검색 페이지)
-    @RequestMapping(value = "/main", method = RequestMethod.GET, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity dataSetBySearchWord(@RequestParam("searchWord") String searchWord) {
+    @GetMapping(value = "/main", consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity dataSetBySearchWord(@RequestParam Map searchWord) {
         log.info("dataSetBySearchWord............");
         log.info("searchWord >>>" + searchWord);
-        List<CurationDTO> curations = curationService.getCurationsByWord(searchWord);
-        List<SnutCollectionDTO> collections = snutCollectionService.getCollectionsByWord(searchWord);
+        String word = (String) searchWord.get("word");
+        log.info("searchWord >>>" + word);
+
+        List<CurationDTO> curations = curationService.getCurationsByWord(word);
+        List<SnutCollectionDTO> collections = snutCollectionService.getCollectionsByWord(word);
         log.info("이 큐레이션은 비었나요? " + curations.isEmpty());
         log.info("이 컬렉션은 비었나요? " + collections.isEmpty());
 
-        hashTagService.upCountHashtag(searchWord);
+        hashTagService.upCountHashtag(word);
 
         Map a = new HashMap<>();
         a.put("Collection", collections);
         a.put("Curation", curations);
 
         return new ResponseEntity(a, HttpStatus.OK);
+//        return new ResponseEntity(HttpStatus.OK);
     }
 
     // 큐레이션 등록하기 - MakeNote.vue에서 사용 (큐레이션 등록하기)
