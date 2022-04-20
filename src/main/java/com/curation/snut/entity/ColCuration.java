@@ -17,11 +17,11 @@ public class ColCuration {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long coCuId;
 
-    @ManyToOne
+    @ManyToOne(cascade =CascadeType.ALL)
     @JoinColumn(name = "cu_col_id")
     private Curation curation;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "col_cu_id")
     private SnutCollection snutCollection;
 }

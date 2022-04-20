@@ -79,14 +79,21 @@ public class CurationServiceImpl implements CurationService {
 
         Set hashtag = curation.getHashtag();
         if(hashtag.size() > 0) {
-            hashtag.stream().forEach(tag -> hashtagRepository.save((Hashtag) tag));
+            hashtag.stream().forEach(tag ->{
+                Hashtag tg = Hashtag.builder().tag(tag.toString()).build();
+                hashtagRepository.save(tg);
+            });
         }
 
         curationRepository.save(curation);
 
         if(curationImageList != null && curationImageList.size() > 0) {
-            curationImageList.forEach(curationImage ->
-                curationImageRepository.save(curationImage));
+            curationImageList.forEach(cuImg ->{
+               CurationImage cuImgEntity = CurationImage.builder()
+                       .curation(curation).imageName(cuImg.getImageName()).path(cuImg.getPath()).uuid(cuImg.getUuid())
+                       .build();
+                curationImageRepository.save(cuImgEntity);
+            });
         }
         return curation.getCurationNo();
     }

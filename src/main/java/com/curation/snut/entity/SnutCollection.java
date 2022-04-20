@@ -23,7 +23,7 @@ public class SnutCollection extends BaseEntity{
     private String collectionTitle;
     private String collectionText;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Member writer;
 
     @Column(name = "collection_like")

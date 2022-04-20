@@ -38,10 +38,10 @@ public class Curation extends BaseEntity {
     @Column(name = "cu_like")
     private boolean like;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Member writer;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<Hashtag> hashtag = new HashSet<>();
 
     @JsonIgnoreProperties({"curation"})

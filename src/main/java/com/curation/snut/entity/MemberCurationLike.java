@@ -12,10 +12,10 @@ public class MemberCurationLike {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long mcuId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Curation curation;
 
     @Builder

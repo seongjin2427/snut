@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class CurationImage extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long ciid;
 
     private String uuid;

@@ -12,10 +12,10 @@ public class MemberCollectionLike {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long mcolId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private SnutCollection snutCollection;
 
     @Builder
