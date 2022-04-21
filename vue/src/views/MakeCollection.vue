@@ -108,7 +108,6 @@ export default {
       });
     },
 
-
     selectCol() {
       if (this.selectMode == true) {
         this.selecteMode = false;

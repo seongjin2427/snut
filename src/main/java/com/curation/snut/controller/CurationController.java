@@ -102,8 +102,9 @@ public class CurationController {
     public ResponseEntity curationDelete(@RequestParam Long no) {
         Long num = Long.valueOf(String.valueOf(no));
         System.out.println("no.........." + num);
-        curationRepository.deleteById(num);
-        return new ResponseEntity(HttpStatus.OK);
+        curationService.deleteCurationById(num);
+
+        return new ResponseEntity("삭제 성공!", HttpStatus.OK);
     }
 
     // 좋아요 구간

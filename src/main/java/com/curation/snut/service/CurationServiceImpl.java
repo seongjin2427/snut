@@ -1,14 +1,18 @@
 package com.curation.snut.service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.curation.snut.controller.UploadController;
 import com.curation.snut.dto.CurationDTO;
 import com.curation.snut.entity.*;
 import com.curation.snut.repository.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +26,7 @@ public class CurationServiceImpl implements CurationService {
     private final CurationRepository curationRepository;
     private final CurationImageRepository curationImageRepository;
     private final HashtagRepository hashtagRepository;
+    private final UploadController uploadController;
     // 성진
 
     @Override
@@ -47,6 +52,28 @@ public class CurationServiceImpl implements CurationService {
 
         return entityToDTO(curation, curationImageList);
     }
+
+    @Modifying
+    @Transactional
+    @Override
+    public void deleteCurationById(Long no) {
+
+        List<CurationImage> cuImg = curationImageRepository.findFileDataByCurationNo(no);
+        cuImg.forEach(img -> {
+            try {
+                String fileName = URLEncoder.encode(img.getPath()+"/"+img.getUuid()+"_"+img.getImageName(), "UTF-8");
+                String sFileName = URLEncoder.encode(img.getPath()+"/s_"+img.getUuid()+"_"+img.getImageName(), "UTF-8");
+                uploadController.removeFiles(fileName);
+                uploadController.removeFiles(sFileName);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        });
+        curationImageRepository.deleteByCurationNo(no);
+        curationRepository.deleteByCurationNo(no);
+    }
+
+
 
     @Transactional
     @Override

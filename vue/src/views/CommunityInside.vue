@@ -25,6 +25,7 @@
               <TipTap 
                   expand="expandEditor"
                   ref="textEditor"
+                  toolbar="true"
                   :curationContents="communityData.text"
                   :isEditable="modifyBool"
                   @sendContents="receiveContent"

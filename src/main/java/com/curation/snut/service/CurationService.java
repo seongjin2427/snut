@@ -28,6 +28,7 @@ public interface CurationService {
     CurationDTO getCurationsByCurationNo(Long cuId);
     List<CurationDTO> getCurationsByCollectionNo(Long colId);
     List<CurationDTO> getCurationsByWord(String word);
+    void deleteCurationById(Long no);
 
 
     Long register(CurationDTO curationDTO);

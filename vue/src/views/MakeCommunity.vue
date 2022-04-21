@@ -45,7 +45,10 @@
 
               <div class="textEditor-area">
                 <div class="textEditor-wrapper">
-                  <TipTap ref="textEditor" :isEditable="true" @sendContents="receivedEditorContents"/>
+                  <TipTap ref="textEditor" 
+                    :isEditable="true"
+                    toolbar="true"
+                    @sendContents="receivedEditorContents"/>
                 </div>
               </div>
 

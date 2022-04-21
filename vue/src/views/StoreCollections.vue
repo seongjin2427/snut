@@ -57,7 +57,7 @@
       <main>
         <div class="main-col">
           <div class="main-col-area">
-            <common-collection
+            <!-- <common-collection
                 ref="showCol"
                 class="main-show-col"
                 @dragstart="startDrag($event, idx, col)"
@@ -75,7 +75,7 @@
                 @sendFolderData="receivedFolderData" 
                 @convertDisabled="convertDisabled"
                 :key="idx"
-                draggable="true" />
+                draggable="true" /> -->
           </div>
         </div>
 
@@ -93,7 +93,7 @@
 
 <script>
 import CommonButton from '@/components/CommonButton.vue';
-import CommonCollection from '@/components/CommonCollection.vue';
+// import CommonCollection from '@/components/CommonCollection.vue';
 import MainFooter from '@/components/MainFooter.vue'
 import NavigatorBar from '../components/NavigatorBar.vue';
 import SampleData from '@/assets/sampleData.json';
@@ -101,7 +101,9 @@ import CommonModal from '@/components/CommonModal.vue';
 
 
 export default {
-  components: { CommonButton, CommonCollection, MainFooter, NavigatorBar, CommonModal},
+  components: {  CommonButton, MainFooter, NavigatorBar, CommonModal
+                // ,CommonCollection
+                },
   name: "StoreCollections",
   data() {
     return {

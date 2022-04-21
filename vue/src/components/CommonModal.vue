@@ -36,11 +36,11 @@
               @click="moveToPageBoolean && moveToPage(colCuData)">
             <div class="img-container" 
                 style="cursor: pointer" ref="imgContainer">
-              <img
-                v-for="(url, idx) in sampleImg"
-                :src="$store.state.imageBaseURL + url"
-                alt="cu_img"
-                :key="idx" />
+                <div class="pic" v-for="(url, idx) in sampleImg" :key="idx">
+                  <img
+                    :src="$store.state.imageBaseURL + url"
+                    alt="cu_img" />
+                </div>
             </div>
             <input class="previous" type="button" value="<" @click.stop="previous()" ref="previous" disabled />
             <input class="next" type="button" value=">" @click.stop="next()" ref="next" />
@@ -48,9 +48,16 @@
 
           <!-- modal 사진+글 구간 -->
           <div class="modal-content-pic" v-if="!colCuData.pickedColor">
-            <p><b>{{ colCuData.collectionTitle || colCuData.curationTitle }}</b></p>
-            <p><b>{{ colCuData.nickname }}</b></p>
-            <p>{{ colCuData.collectionText || colCuData.curationText }}</p>
+            <p class="title"><b>{{ colCuData.collectionTitle || colCuData.curationTitle }}</b></p>
+            <p class="nickname"><b>{{ colCuData.nickname }}</b></p>
+            <p>
+              <TipTap 
+                      ref="textEditor" 
+                      unset="scrollUnset"
+                      :isEditable="false" 
+                      :curationContents="colCuData.collectionText || colCuData.curationText"/>
+              <!-- {{ colCuData.collectionText || colCuData.curationText }} -->
+            </p>
           </div>
 
           <!-- modal only 글 구간 -->
@@ -318,15 +325,21 @@ export default {
   width: 400px;
   height: 400px;
   display: flex;
-  /* flex-direction: row-reverse; */
   position: relative;
   transition: all 0.5s;
   z-index: 1;
 }
-.modal-pic img {
-  width: 100%;
-  height: 100%;
-  object-fit:fill;
+.pic {
+  display: block;
+  width: 400px;
+  height: 400px;
+  z-index: 1;
+  object-fit: fill;
+}
+.pic img {
+  width: 400px;
+  height: 400px;
+  object-fit: fill;
 }
 .previous {
   width: 50px;
@@ -371,11 +384,20 @@ export default {
 /* modal-content 구간 */
 .modal-content-pic {
   width: calc(400px - (20px * 2));
-  height: calc(400px - (45px * 2));
-  padding: 45px 20px;
+  height: calc(400px - (30px * 2));
+  padding: 30px 20px;
   border: 1px solid black;
   border-radius: 12px;
   overflow: scroll;
+}
+.title {
+  font-size: 18px;
+  margin-left: 18px;
+  margin-bottom: 5px;
+}
+.nickname {
+  font-size: 17px;
+  margin-left: 18px;
 }
 .modal-content-nonPic {
   /* width: 100%;

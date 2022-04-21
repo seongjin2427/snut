@@ -46,6 +46,14 @@
 
                 <div class="write-div">
                   <input type="text" placeholder="Title:" v-model="collectionData.collectionTitle">
+                  
+                  <TipTap 
+                      ref="textEditor"
+                      :isEditable="true" 
+                      :toolbar="false" 
+                      @sendContents="getTextEditorContents" />
+                  
+              
                   <textarea name="" id="" cols="30" rows="10" maxlength="500" placeholder="Contents"
                   v-model="collectionData.collectionText"/>
                 </div>
@@ -86,11 +94,13 @@
 <script>
 import CommonButton from '@/components/CommonButton.vue';
 import MainFooter from '@/components/MainFooter.vue'
+import TipTap from '@/components/TextEditor.vue';
 
 export default {
   components: { 
     CommonButton, 
-    MainFooter
+    MainFooter,
+    TipTap
     },
   name: "MakeNote",
   data() {
@@ -165,17 +175,19 @@ export default {
     },
     inspectNull() {
       if(this.collectionData.collectionTitle
-          && this.collectionData.collectionText ) return true;
+          && this.collectionData.collectionText != '<p></p>' ) return true;
       else false;
     },
     onSave() {
       const pic = this.collectionData;
+        this.$refs.textEditor.sendContents();
 
         console.log('저장을 눌렀다!')
         if (this.inspectNull()) {
           console.log('Save with Image')
           console.log(pic)
           this.saveHashtag(pic);
+          console.log("oseijrogji", pic)
 
           this.sendDataUseAxios(pic);
 
@@ -183,6 +195,11 @@ export default {
           console.log('제목 또는 내용에 빈공간이 있습니다.')
         }
         
+    },
+    getTextEditorContents(contents, imgList) {
+      console.log("conteoawjioeijawog", contents)
+      this.collectionData.collectionText = contents;
+      console.log('receivedEditorContents', imgList)
     },
     sendDataUseAxios(data) {
     const calledAxios = this.$store.state.storedAxios;
@@ -433,6 +450,10 @@ header {
   background: #FFFFFF;
   display: flex;
   flex-direction: column;
+}
+.write-div > input {
+  width: 350px;
+  margin-bottom: 10px;
 }
 .write-div * {
   background: none;
