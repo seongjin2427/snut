@@ -57,7 +57,7 @@
       <main>
         <div class="main-col">
           <div class="main-col-area">
-            <!-- <common-collection
+            <common-collection
                 ref="showCol"
                 class="main-show-col"
                 @dragstart="startDrag($event, idx, col)"
@@ -65,7 +65,22 @@
                 @dragenter.prevent
                 @dragover.prevent
                 @click="!selectMode && openModal(col, true), selectMode && selectMethods(idx, col)"
-                v-for="(col, idx) in sampleData.Collection"
+                v-for="(col, idx) in sampleData"
+                :info="col"
+                :id="idx"
+                :delColBoolean="true"
+                :loginBool="loginBool"
+                :selectMode="selectMode"
+                @deleteCol="deleteCol"
+                @sendFolderData="receivedFolderData" 
+                @convertDisabled="convertDisabled"
+                :key="idx"
+                draggable="true" />
+            <!-- <common-collection
+                ref="showCol"
+                class="main-show-col"
+                @click="!selectMode && openModal(col, true), selectMode && selectMethods(idx, col)"
+                v-for="(col, idx) in sampleData"
                 :info="col"
                 :id="idx"
                 :delColBoolean="true"
@@ -93,16 +108,15 @@
 
 <script>
 import CommonButton from '@/components/CommonButton.vue';
-// import CommonCollection from '@/components/CommonCollection.vue';
+import CommonCollection from '@/components/CommonCollection.vue';
 import MainFooter from '@/components/MainFooter.vue'
 import NavigatorBar from '../components/NavigatorBar.vue';
-import SampleData from '@/assets/sampleData.json';
 import CommonModal from '@/components/CommonModal.vue';
 
 
 export default {
   components: {  CommonButton, MainFooter, NavigatorBar, CommonModal
-                // ,CommonCollection
+                ,CommonCollection
                 },
   name: "StoreCollections",
   data() {
@@ -125,14 +139,7 @@ export default {
         Collection: [],
         Curation: []
       },
-      sampleData: { 
-        Collection: [],
-        Curation: [],
-        Folder: {
-
-        }
-        ,
-      }, 
+      sampleData: {}, 
       userCollection: [],
       toDeleteIdxList: [],
       toggleBtnTitle: '전부',
@@ -187,9 +194,9 @@ export default {
       if(startIdx != endIdx) {
 
         if (this.selectMode == false) {
-          const comp = this.sampleData.Collection[endIdx];
-          this.sampleData.Collection[endIdx] = this.sampleData.Collection[startIdx];
-          this.sampleData.Collection[startIdx] = comp;
+          const comp = this.sampleData[endIdx];
+          this.sampleData[endIdx] = this.sampleData[startIdx];
+          this.sampleData[startIdx] = comp;
         }
 
         if (this.selectMode == true && dragEndItem.cuCo == 'Folder' && dragStartItem.cuCo != 'Folder') {
@@ -203,12 +210,12 @@ export default {
       let b = [];
       for(let i = arr.length - 1; i >= 0; i--) {
         console.log('arr', arr[i]);
-        b.push(this.sampleData.Collection.splice(arr[i], 1));
+        b.push(this.sampleData.splice(arr[i], 1));
       }
       // console.log(b);
       b.map(v => {
         console.log(v[0].id);
-        this.deletedList.Collection.push(v[0].id);
+        this.deletedList.push(v[0].id);
       });
 
       console.log(this.deletedList);
@@ -221,10 +228,10 @@ export default {
     },
     intoFolder(arr, idx) {
       arr.Collection.map((v) => {
-        this.sampleData.Folder[idx].Collection.push(v)
+        this.sampleData.Folder[idx].push(v)
       });
       arr.Curation.map((v) => {
-        this.sampleData.Folder[idx].Curation.push(v)
+        this.sampleData.Folder[idx].push(v)
       });
 
       this.colIdList.Collection = [];
@@ -377,96 +384,34 @@ export default {
       this.sampleData.Collection[findIndex].title = folderName;
     },
 
-
-    makeDummies() {
-      const INPUT_NUMBER = 11;
-
-      // 큐레이션 구간
-      let sampleCuration = [];
-      for(let i = 0; i < INPUT_NUMBER; i++) {
-        let random = Math.floor(Math.random()*10);
-        let date = Math.floor(Math.random()*8)+1;
-        sampleCuration[i] = {};
-        sampleCuration[i].id = i;
-        sampleCuration[i].author = 'Author....' + i;
-        sampleCuration[i].nickName = 'NickName....' + i;
-        sampleCuration[i].title = 'Title....' + i;
-        sampleCuration[i].content = `Lorem ipsum` + i;
-        sampleCuration[i].folder = 'FolderNo...' + i;
-        sampleCuration[i].src = [SampleData.imgUrl[random], SampleData.imgUrl[random]];
-        sampleCuration[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
-        sampleCuration[i].regDate = '2022-03-0'+date;
-        sampleCuration[i].modDate = '2022-03-0'+date;
-        sampleCuration[i].cuCo = 'Curation';
-      }
-
-
-
-      // Curation
-      let Collection = [];
-      for(let i = 0; i < INPUT_NUMBER; i++) {
-        let random = Math.floor(Math.random()*9);
-        let date = Math.floor(Math.random()*8)+1;
-        Collection[i] = {};
-        Collection[i].id = i;
-        Collection[i].author = 'Author....' + i;
-        Collection[i].nickName = 'NickName....' + i;
-        Collection[i].title = 'Title....' + i;
-        Collection[i].content = `Lorem ipsum` + i;
-        Collection[i].folder = 'FolderNo...' + i;
-        Collection[i].src = [sampleCuration[random].src[0], sampleCuration[random].src[0]];
-        Collection[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
-        Collection[i].regDate = '2022-03-0'+date;
-        Collection[i].modDate = '2022-03-0'+date;
-        Collection[i].cuCo = 'Collection';
-      }
-
-      // 큐레이션 구간
-      let Curation = [];
-      for(let i = 0; i < INPUT_NUMBER; i++) {
-        let random = Math.floor(Math.random()*10);
-        let date = Math.floor(Math.random()*8)+1;
-        Curation[i] = {};
-        Curation[i].id = i;
-        Curation[i].author = 'Author....' + i;
-        Curation[i].nickName = 'NickName....' + i;
-        Curation[i].title = 'Title....' + i;
-        Curation[i].content = `Lorem ipsum` + i;
-        Curation[i].folder = 'FolderNo...' + i;
-        Curation[i].src = [SampleData.imgUrl[random], SampleData.imgUrl[random]];
-        Curation[i].hashTag = ['HashTag...'+i, 'HashTag...'+(i+1), 'HashTag...'+(i+2)];
-        Curation[i].regDate = '2022-03-0'+date;
-        Curation[i].modDate = '2022-03-0'+date;
-        Curation[i].cuCo = 'Curation';
-      }
-
-      // console.log(this.sampleData);
-      
-      let a = Array.from(Collection);
-      let b = Array.from(Curation);
-      let c = Array.from(this.sampleData.Folder);
-      
-      let arr = [];
-      let d = arr.concat(a, b, c);
-
-      d.sort((a, b) => {
-        if(a.modDate > b.modDate) return -1;
-        if(a.modDate === b.modDate) return 0;
-        if(a.modDate < b.modDate) return 1;
-      });
-
-      // console.log(d);
-
-      this.sampleData.Collection = d;
-
-      
-      for(var j = 0; j < this.sampleData.Collection.length; j++) {
-        this.userCollection[j] = j;
-      }
+    doAxios() {
+      const calledAxios = this.$store.state.storedAxios;
+      calledAxios.get('/store', {
+        params: {
+          email: sessionStorage.getItem('email')
+        }
+      })
+        .then(res => {
+          console.log(res.data)
+          this.sampleData = res.data.Collection;
+          let a = res.data.Collection;
+          let b = res.data.Curation;
+          this.sampleData = a.concat(b);
+          this.sampleData.map(i => {
+            if(i.collectionNo) i.cuCo = "Collection"
+            else i.cuCo = "Curation"
+          })
+          console.log("this.sampleData", this.sampleData);
+          console.log(this.$store.state.storedData);
+          this.$store.commit('setStoredData', this.sampleData);
+          console.log(this.$store.state.storedData);
+        });
     }
+
   },
-  mounted() {
-    this.makeDummies();
+  created() {
+    this.doAxios();
+    
   },
 }
 </script>

@@ -22,8 +22,8 @@
                 @click="like" >
             <img src="@/assets/modal/Like-Line2.png" alt="like_img"
                 @click="like" v-if="isShowing" width="48" height="48" class="like">
-            <!-- <img src="@/assets/modal/Pin-Line.png" alt="pin_img">
-            <img src="@/assets/modal/Share-Line.png" alt="share_img"> -->
+            <img @click="storeData" src="@/assets/modal/Pin-Line.png" alt="pin_img">
+            <!-- <img src="@/assets/modal/Share-Line.png" alt="share_img"> -->
           </div>
         </div>
 
@@ -120,6 +120,21 @@ export default {
       this.imgSlideData.position = 0;
       this.showBool = false;
       this.sampleImg = [];
+    },
+    storeData() {
+      const calledAxios = this.$store.state.storedAxios
+      console.log("this.colCuData", this.colCuData);
+
+      let obj = {
+        no: this.colCuData.collectionNo || this.colCuData.curationNo,
+        email: sessionStorage.getItem('email'),
+        cuCo: this.colCuData.cuCo
+      };
+
+      calledAxios.post('/store', obj).then(res => {
+        console.log(res);
+      })
+
     },
     inspectGood(no, cuCo) {
       if(this.loginBool) {
