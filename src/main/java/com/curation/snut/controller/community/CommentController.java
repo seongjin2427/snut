@@ -9,7 +9,6 @@ import com.curation.snut.entity.community.CommuJoin;
 import com.curation.snut.entity.community.Community;
 import com.curation.snut.repository.community.CommuJoinRepository;
 import com.curation.snut.repository.community.CommunityRepository;
-import com.curation.snut.security.util.JWTUtil;
 import com.curation.snut.service.JWTService;
 import com.curation.snut.service.community.CommentService;
 

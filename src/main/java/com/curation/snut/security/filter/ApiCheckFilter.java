@@ -13,6 +13,7 @@ import com.curation.snut.security.util.JWTUtil;
 
 import lombok.extern.log4j.Log4j2;
 import org.json.simple.JSONObject;
+
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;

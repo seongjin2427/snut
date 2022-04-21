@@ -24,7 +24,7 @@ public class CurationController {
     private final CurationService curationService;
 
     @GetMapping("/list")
-    public ResponseEntity<?> cuList(@PathVariable("search") String searchCurationTitle) {
+    public ResponseEntity<?> cuList(String searchCurationTitle) {
 
         if (searchCurationTitle != null) {
             List<CurationDTO> searchCurationList = curationService.searchCurationTitle(searchCurationTitle);

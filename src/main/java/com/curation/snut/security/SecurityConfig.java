@@ -4,6 +4,7 @@ import com.curation.snut.security.filter.ApiCheckFilter;
 import com.curation.snut.security.filter.ApiLoginFilter;
 import com.curation.snut.security.handler.LoginFailHandler;
 import com.curation.snut.security.handler.LoginSuccessHandler;
+import com.curation.snut.security.service.CustomOAuth2UserService;
 import com.curation.snut.security.service.MemberUDService;
 import com.curation.snut.security.util.JWTUtil;
 
@@ -25,6 +26,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private MemberUDService memberUDService;
 
+    @Autowired
+    private LoginSuccessHandler loginSuccessHandler;
+
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -44,6 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/jwt/login").permitAll()
                 .antMatchers("/**/*").permitAll()
                 .anyRequest().permitAll();
+        http.oauth2Login().successHandler(loginSuccessHandler);
         http.addFilterBefore(apiCheckFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(apiLoginFilter(), UsernamePasswordAuthenticationFilter.class);
     }

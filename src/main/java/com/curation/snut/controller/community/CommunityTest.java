@@ -49,4 +49,9 @@ public class CommunityTest {
         return "redirect:/communityList";
     }
 
+    @GetMapping("")
+    public String adssf() {
+        return "index.html";
+    }
+
 }
