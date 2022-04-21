@@ -15,7 +15,7 @@ export const store = createStore({
       imageBaseURL: 'http://localhost:8080/get/img?fileName=',
       sendToCuration: [],
       curationData:{},
-      searchWord:{}
+      searchWord:{},
     }
   },
   getters: {

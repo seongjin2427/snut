@@ -310,7 +310,7 @@ export default {
       let start = tempEnd - 9
       let end = totalPage > tempEnd ? tempEnd: totalPage;
 
-      let next = page <= end;
+      let next = page < end;
       let prev = page > 1;
 
       let pageList = [];
@@ -328,7 +328,8 @@ export default {
         next: next,
         prev : prev,
         pageList: pageList,
-        page: page
+        page: page,
+        totalPage: totalPage
       }
 
       this.pageData = pageData;

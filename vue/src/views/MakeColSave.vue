@@ -247,7 +247,7 @@ export default {
             console.log(this.receivedData[i].imageDTOList[0].imageURL);
             pictureDiv.innerHTML += 
               `<img src="http://localhost:8080/get/img?fileName=${url}" 
-                  style="width:500px; height: 500px; object-fit:contain;">`
+                  style="width:500px; height: 500px; object-fit: fill;">`
         }
       }
     },
@@ -383,21 +383,45 @@ header {
   height: 500px;
   object-fit: cover;
 }
-.previous {
-  width: 50px;
-  height: 50px;
+.previous{
+  width: 75px;
+  height: 75px;
   position: absolute;
-  top: 220px;
+  top: 215px;
   left: 20px;
   z-index: 2;
+  font-size: 30px;
+  background: none;
+  border: 1px solid grey;
+  border-radius: 75px;
+  transition: all 0.5s;
+  color: grey;
+}
+.previous:hover {
+  background: white;
+  font-weight: 200;
+  border: 1px solid black;
+  color: grey;
 }
 .next {
-  width: 50px;
-  height: 50px;
+  width: 75px;
+  height: 75px;
   position: absolute;
-  top: 220px;
+  top: 215px;
   right: 20px;
   z-index: 2;
+  font-size: 30px;
+  background: none;
+  border: 1px solid grey;
+  border-radius: 75px;
+  transition: all 0.5s;
+  color: grey;
+}
+.next:hover {
+  background: white;
+  font-weight: 200;
+  border: 1px solid black;
+  color: grey;
 }
 
 /* 텍스트 구간 */

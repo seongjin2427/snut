@@ -15,6 +15,7 @@ import com.curation.snut.service.like.MemberCollectionLikeService;
 import com.curation.snut.service.like.MemberCurationLikeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -78,28 +79,6 @@ public class CurationController {
         return curationService.getCurationsByCurationNo(a);
     }
 
-    // 검색단어 기준으로 컬렉션 및 큐레이션 데이터 가져오기 - SearchCollection.vue에서 사용 (검색 페이지)
-    @GetMapping(value = "/main", consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity dataSetBySearchWord(@RequestParam Map searchWord) {
-        log.info("dataSetBySearchWord............");
-        log.info("searchWord >>>" + searchWord);
-        String word = (String) searchWord.get("word");
-        log.info("searchWord >>>" + word);
-
-        List<CurationDTO> curations = curationService.getCurationsByWord(word);
-        List<SnutCollectionDTO> collections = snutCollectionService.getCollectionsByWord(word);
-        log.info("이 큐레이션은 비었나요? " + curations.isEmpty());
-        log.info("이 컬렉션은 비었나요? " + collections.isEmpty());
-
-        hashTagService.upCountHashtag(word);
-
-        Map a = new HashMap<>();
-        a.put("Collection", collections);
-        a.put("Curation", curations);
-
-        return new ResponseEntity(a, HttpStatus.OK);
-//        return new ResponseEntity(HttpStatus.OK);
-    }
 
     // 큐레이션 등록하기 - MakeNote.vue에서 사용 (큐레이션 등록하기)
     @PostMapping(value = "/mcol/note/makenote/picture", consumes = MediaType.ALL_VALUE)
@@ -119,9 +98,40 @@ public class CurationController {
         return new ResponseEntity(collectionNo, HttpStatus.OK);
     }
 
-
+    @DeleteMapping("/cu/del")
+    public ResponseEntity curationDelete(@RequestParam Long no) {
+        Long num = Long.valueOf(String.valueOf(no));
+        System.out.println("no.........." + num);
+        curationRepository.deleteById(num);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 
     // 좋아요 구간
+
+    @GetMapping("/find/good")
+    public Long findExistGood(@RequestParam Map body) {
+
+        System.out.println(body);
+        Long num = Long.valueOf(String.valueOf(body.get("no")));
+        String email = (String) body.get("email");
+        String cuCo = (String) body.get("cuCo");
+
+        System.out.println("no......qwdq...." + num);
+        System.out.println("email..qwd......" + email);
+        log.info("cuCo....dqwdqwdqwd...." + cuCo);
+        if (cuCo == "Collection") {
+            Long result = memberCollectionLikeRepository.findCollectionByEmailAndCollectionNo(num, email);
+            System.out.println("col result.........................." + result);
+            return result;
+        } else if(cuCo == "Curation") {
+            Long result = memberCurationLikeRepository.findCurationByEmailAndCurationNo(num, email);
+            log.info("cu result.........................." + result);
+            return result;
+        }
+//        System.out.println("result.........................." + result);
+        return null;
+    }
+
     // 컬렉션 좋아요 등록
     @PostMapping("/col/likes")
     public String collectionlikes(@RequestBody Map data) {

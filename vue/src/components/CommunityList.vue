@@ -38,6 +38,7 @@ export default {
 <style scoped>
 .commu-block{
   display: flex;
+  justify-content: center;
   align-items: center;
   width: 800px;
   height: 135px;
@@ -45,16 +46,22 @@ export default {
   border-bottom: 2px solid #D9D9D9;
   cursor: pointer;
 }
+.commu-block > p:first-child {
+  text-align: center;
+}
 .commu-block:hover{
   background: lightgrey;
+}
+.commu-block:last-child {
+  border: none;
 }
 .commu-num{
   width: 50px;
   font-weight: bold;
   font-size: 30px;
   color: #868686;
-  margin-left: 40px;
-  margin-right: 20px;
+  margin-left: 25px;
+  margin-right: 35px;
 }
 .commu-thum{
   display: flex;

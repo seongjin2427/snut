@@ -44,7 +44,7 @@
       
       <footer>
         <main-footer/>
-        <common-modal ref="modal" @applyLike="applyLike"/>
+        <common-modal ref="modal" @loginBool="loginBool" @applyLike="applyLike"/>
       </footer>
 
     </div>
@@ -58,7 +58,7 @@ import InputBox from '@/components/InputBox.vue';
 import MainFooter from '@/components/MainFooter.vue'
 import NavigatorBar from '../components/NavigatorBar.vue';
 import CommonModal from '../components/CommonModal.vue';
-
+import axios from 'axios';
 
 export default {
   components: { InputBox, CommonButton, CommonCollection, MainFooter, NavigatorBar, CommonModal },
@@ -119,14 +119,15 @@ export default {
       });
     },
     doAxios(word) {
-      let calledAxios = this.$store.state.storedAxios;
+      // let calledAxios = this.$store.state.storedAxios;
       console.log("searchWord", word)
       
       let obj = {
         searchWord: word
       }
       console.log("obj", obj);
-      calledAxios.get('/main', {
+
+      axios.get('http://localhost:8080/main', {
         params: {
           word: word
         }

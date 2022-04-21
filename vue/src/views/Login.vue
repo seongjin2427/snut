@@ -31,7 +31,7 @@
                 <div class="pw2">Password</div>
                 <div class="flex">
                   <img class="icon" src="@/assets/icon/Key-Line.png" alt="pw" width="24" height="24">
-                  <input class="put" v-model="userPw" placeholder="Password">
+                  <input class="put" type="password" v-model="userPw" placeholder="Password">
                 </div>
               </div>
             </div>

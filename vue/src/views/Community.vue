@@ -201,14 +201,14 @@ header {
   background: #F6F6F6;
   border: none;
   margin-top: 50px;
-  overflow: scroll;
+  overflow: hidden;
 }
 .recom-bu{
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
 }
 .com-list-block{
   width: 800px;
-  height: 850px;
+  /* height: 850px; */
   background: #FFFFFF;
   border: none;
   margin: 100px auto;

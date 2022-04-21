@@ -279,7 +279,7 @@ button img {
   display: none;
   width: 0
 }
-.expandable {
+.expandEditor {
   height: 700px;
 }
 </style>

@@ -23,7 +23,7 @@
 
             <div class="com-body">
               <TipTap 
-                  expand="expandable"
+                  expand="expandEditor"
                   ref="textEditor"
                   :curationContents="communityData.text"
                   :isEditable="modifyBool"

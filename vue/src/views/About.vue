@@ -32,7 +32,7 @@
           </div>
         </div>
 
-        <p class="whysnut">왜 "sunt"일까요?</p>
+        <p class="whysnut">왜 "snut"일까요?</p>
         <div class="snut-textarea">
           <p>snut 이란, space+nut 이 합쳐진 의미로,
             <br>공유하는 공간을 담은 space와 가볍게 즐기는 스낵 콘텐츠(snack contents)의 의미를 담은 nut가 합쳐져,<br>

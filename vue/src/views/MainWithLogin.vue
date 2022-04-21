@@ -14,11 +14,11 @@
               height="38"/>
         </div>
         <div class="button-area">
-          <input type="button" value="test" @click="sample">
+          <!-- <input type="button" value="test" @click="sample"> -->
           <common-button buttonName="Log out" width="80" height="35" marginTop="5" marginRight="20" v-if="loginBool" @click="doLogout()"/>
           <common-button buttonName="Log in" width="80" height="35" marginTop="5" marginRight="20" v-if="!loginBool"
                           @click="gotoLogin"/>
-          <common-button buttonName="Register" width="80" height="35" marginTop="5" marginRight="42" @click="gotoJoin"/>
+          <common-button buttonName="Register" width="80" height="35" marginTop="5" marginRight="42" @click="gotoJoin" v-if="!loginBool"/>
           <img src="@/assets/btn_hamburger.png" alt="nav_btn" @click="openNavBar">
         </div>
       </header>
@@ -59,10 +59,11 @@
             <common-collection 
                 class="main-searched-col"
                 @click="openModal(col, true)"
-                v-for="(col, idx) in sampleData" 
+                v-for="(col, idx) in sampleData2" 
                 :info="col" 
                 :id="idx"
                 :loginBool="loginBool"
+                :tempName="'p_'"
                 :key="idx" />
           </div>
           <div class="main-col-area" v-if="!loginBool">
@@ -101,7 +102,7 @@ export default {
   name: "MainWithLogin",
   data() {
     return {
-      loginBool: sessionStorage.getItem("token"),
+      loginBool: sessionStorage.getItem('token'),
       sampleData: {dataSet:[]},
       sampleData2: {dataSet:[]},
       loginSignText: 'If You Want To See More, Just Sign In!',
@@ -139,12 +140,19 @@ export default {
       location.reload();
     },
     doAxios() {
-      axios.get('http://localhost:8080/main/hot',)
+      axios.get('http://localhost:8080/main/hot', {
+        params: {
+          size: 10
+        }
+      })
         .then(res => { 
+          console.log(res.data)
             this.sampleData = res.data.dtoList;
             this.sampleData.map(i => {
             i.cuCo = "Collection";
-          })
+          });
+          this.sampleData2 = this.sampleData.splice(5, 10)
+
         })
         .catch(error => console.log(error));
     },

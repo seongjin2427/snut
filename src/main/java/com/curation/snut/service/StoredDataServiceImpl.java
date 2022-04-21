@@ -28,7 +28,11 @@ public class StoredDataServiceImpl implements StoredDataService{
 
         Optional<Curation> curation = curationRepository.findById(no);
         Optional<Member> member = memberRepository.findById(email);
-        StoredData storedData = StoredData.builder().curation(curation.get()).build();
+        StoredData storedData = StoredData.builder().curation(curation.get()).member(member.get()).build();
+
+        storedDataRepository.save(storedData);
+
+
 
 
     }

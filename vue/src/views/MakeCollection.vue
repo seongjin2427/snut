@@ -97,8 +97,15 @@ export default {
       this.$refs.modal.openModal(data);
       },
     deleteCol(id, cuId) {
+      const calledAxios = this.$store.state.storedAxios;
       console.log("cuId", cuId);
       this.sampleData.splice(id, 1);
+      
+      calledAxios.delete("/cu/del", {
+        params: {
+          no: cuId
+        }
+      });
     },
 
 
