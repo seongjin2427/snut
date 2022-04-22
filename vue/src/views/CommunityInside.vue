@@ -47,8 +47,10 @@
     <big-modal
         ref="modal"
         :modalBtnData="modalBtnData"
-        smallModal="이 커뮤니티에 가입하시겠습니까?"
-        width="600" height="300" margin-top="200" />
+        :nickName="nickName"
+        :commuData="communityData"
+        bigModal="이 커뮤니티에 가입하시겠습니까?"
+        width="600" height="370" margin-top="200" />
   </div>
 </template>
 
@@ -67,6 +69,7 @@ export default {
       canModify: false,
       communityData: {},
       modifyContent: '',
+      nickName: sessionStorage.getItem('nickName'),
       modalBtnData: [
         {
           name: '취소',
@@ -125,7 +128,9 @@ export default {
           commuNo: this.$route.params.communityNo
         })
         .then(res => {
-          console.log(res)
+          console.log(res);
+          alert(res.data);
+          location.reload();
         })
         this.$router.push('/com');
       }

@@ -17,4 +17,5 @@ import lombok.ToString;
 public class CommuJoinDTO {
     private Member member;
     private Community community;
+    private String applyMessage;
 }

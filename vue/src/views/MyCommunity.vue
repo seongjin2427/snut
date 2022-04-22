@@ -25,7 +25,9 @@
         <div class="mycom-font">내 커뮤니티</div>
         <div class="bookmark-form">
           <Bookmark
-              :bookmarkData="bookmark" v-for="(bookmark, idx) in bookmarkDataSet" :key="idx"/>
+              :bookmarkData="bookmark" v-for="(bookmark, idx) in bookmarkDataSet.joinCommunity" :key="idx"/>
+          <Bookmark
+              :bookmarkData="bookmark" v-for="(bookmark, idx) in bookmarkDataSet.myCommunity" :key="idx"/>
         </div>
       </div>
 
@@ -34,14 +36,24 @@
       <div class="alarm-wrapper">
         <div class="mycom-font">알람</div>
         <div class="alarm-form">
-          <alarm :alarmData="alarm" v-for="(alarm, idx) in alarmDataSet" :key="idx" @click="permi($event, alarm)"/>
+          <alarm :alarmData="alarm" 
+              v-for="(alarm, idx) in alarmDataSet.commentAlerts" 
+              @click="alertCheck(alarm.ano, alarm.cmo)"
+              :key="idx" />
+          <alarm :alarmData="alarm" 
+              v-for="(alarm, idx) in alarmDataSet.joinAlertList" 
+              @click="permi(alarm)"
+              :key="idx" />
+          <!-- <alarm :alarmData="alarm" v-for="(alarm, idx) in alarmDataSet" :key="idx" @click="permi($event, alarm)"/> -->
         </div>
       </div>
-<small-modal ref="modal" :modalBtnData="modalBtnData" smallModal="닉네임 가입을 승인하시겠습니까?" width="350" height="100">
 
-</small-modal>
+      <small-modal ref="modal" 
+          :modalBtnData="modalBtnData"
+          smallModal="닉네임 가입을 승인하시겠습니까?"
+          width="350" height="100">
 
-
+      </small-modal>
 
       </div>
 
@@ -64,7 +76,7 @@ export default {
     return {
       modalBtnData: [
         {
-          name: '확인',
+          name: '수락',
           background: 'white',
           color:'black'
         },
@@ -96,24 +108,71 @@ export default {
       ],
       bookmarkDataSet:[
         {
-          id: 1,
-          bookmarkTitle: '커뮤니티 리스트',
-          src:'',
+          title: '커뮤니티 리스트',
           icon: 'circle'
         }
       ]
     }
   },
   methods:{
-    permi(e, alarm){
-      console.log(alarm.id);
-      if (alarm.id == 3) {
-        this.$refs.modal.openModal();
-      }
+    permi(alarmData){
+        this.$refs.modal.openModal(alarmData);
     },
     moveToPage(){
       this.$router.push({path:"/com/mcom"});
+    },
+    alertCheck(ano, cmo) {
+      const calledAxios = this.$store.state.storedAxios;
+
+      calledAxios.post('/commentAletDelete', {
+        id: ano
+      })
+      .then(() => {
+        this.$router.push({
+          path: `/com/in/${cmo}`,
+          params: {
+            communityNo: cmo
+          }
+        });
+      })
+
+    },
+    getCommunityData() {
+      const calledAxios = this.$store.state.storedAxios;
+
+      calledAxios.get('/myCommuList')
+        .then(res => {
+          console.log(res)
+          this.bookmarkDataSet = res.data;
+          this.bookmarkDataSet.myCommunity.map(i => {
+            i.icon = {}
+            i.icon = 'circle';
+          })
+          this.bookmarkDataSet.joinCommunity.map(i => {
+            i.icon = {}
+            i.icon = 'circle';
+          })
+          this.getCommentData(calledAxios);
+        })
+    },
+    getCommentData(calledAxios) {
+      calledAxios.get('/commuMyPage')
+        .then(res => {
+          console.log(res.data)
+          this.alarmDataSet = res.data;
+          this.alarmDataSet.commentAlerts.map(i => {
+            i.icon = {};
+            i.icon = 'Bell-Line';
+          });
+          this.alarmDataSet.joinAlertList.map(i => {
+            i.icon = {};
+            i.icon = 'Users-Line';
+          });
+        });
     }
+  },
+  created() {
+    this.getCommunityData();
   }
 
 }
@@ -181,7 +240,7 @@ header {
   border: 0.5px solid #000000;
   border-radius: 12px;
   background: white;
-
+  overflow: scroll;
 }
 .alarm-wrapper{
   display: inline-block;

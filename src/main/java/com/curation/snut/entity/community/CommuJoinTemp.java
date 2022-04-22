@@ -34,4 +34,6 @@ public class CommuJoinTemp {
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     private Community tCommunity;
+
+    private String applyMessage;
 }

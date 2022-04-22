@@ -261,6 +261,7 @@ export default {
   width: 100%;
   height: 100%;
   z-index: 4;
+  transition: all 1s;
 }
 .modal-bg {
   background: rgba(0, 0, 0, 0.3);

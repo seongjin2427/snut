@@ -33,11 +33,12 @@ public class CommentServiceImpl implements CommentService {
             CommunityComment find = commentRepository.findCno(commentDTO.getParentNo());
             CommentDTO user = entityToDTO(find);
 
-            String alertuser = user.getWriter().getNickName().toString();
-            String commuName = user.getCommunityName().getTitle().toString();
-            String text = user.getText().toString();
+            String alertuser = user.getWriter().getNickName();
+            String commuName = user.getCommunityName().getTitle();
+            String text = user.getText();
+            Long cmo = find.getCommunityName().getNo();
 
-            CommentAlert commentAlert = CommentAlert.builder().nickName(alertuser).commuName(commuName)
+            CommentAlert commentAlert = CommentAlert.builder().nickName(alertuser).commuName(commuName).cmo(cmo)
                     .text(text).build();
             // commuName(커뮤니티이름)의 alertuser(유저닉네임)님의 text(글내용)에 댓글이 달렸습니다.
             commentAlertRepository.save(commentAlert);

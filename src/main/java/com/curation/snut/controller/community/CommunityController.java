@@ -66,8 +66,11 @@ public class CommunityController {
 
     @GetMapping(value = "/myCommuList") // 내가 가입한 커뮤 , 내가 만든 커뮤
     public ResponseEntity<?> mycommuList(@RequestHeader Map header) {
+
         Map userInfo = jwtService.code(header);
-        String memberEmail = userInfo.get("email").toString();
+        System.out.println("userInfo.............." + userInfo);
+        Map sub = (Map) userInfo.get("sub");
+        String memberEmail = sub.get("email").toString();
         List<CommuJoin> list = commuJoinService.findJoinCommu(memberEmail);
         List<CommunityDTO> myCommuList = communityService.findMyCommu(memberEmail);
 
@@ -77,11 +80,11 @@ public class CommunityController {
         send.put("myCommunity", myCommuList);
 
         return new ResponseEntity<>(send, HttpStatus.OK);
+//        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping(value = "/commuList", consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) // 커뮤니티생성
     public ResponseEntity<String> commuReg(@RequestBody CommunityDTO communityDTO) {
-        System.out.println("aowierjgowejorgij >>>>>> " + communityDTO);
         communityService.write(communityDTO);
         return new ResponseEntity<>("완료", HttpStatus.CREATED);
     }
@@ -108,7 +111,8 @@ public class CommunityController {
     }
 
     @PostMapping(value = "/commuJoinApply") // 커뮤가입신청
-    public ResponseEntity<String> commuJoinApply(CommuJoinDTO commuJoinDTO) {
+    public ResponseEntity<String> commuJoinApply(@RequestBody CommuJoinDTO commuJoinDTO) {
+        System.out.println("commuJoinDTO................" + commuJoinDTO);
         String message = commuJoinTempService.joinApply(commuJoinDTO);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
@@ -116,8 +120,9 @@ public class CommunityController {
     @GetMapping(value = "/commuMyPage") // 가입신청/내댓글알람 보는 페이지
     public ResponseEntity<?> commuMyPage(@RequestHeader Map header) {
         Map userInfo = jwtService.code(header);
-        String memberEmail = userInfo.get("email").toString();
-        String memberNickName = userInfo.get("nickName").toString();
+        Map userSub = (Map) userInfo.get("sub");
+        String memberEmail = userSub.get("email").toString();
+        String memberNickName = userSub.get("nickName").toString();
         List<CommuJoinTemp> joinAlertList = commuJoinTempService.joinAlertList(memberEmail);
         List<CommentAlert> commentAlerts = commentAlertService.findMyAlert(memberNickName);
 
@@ -130,15 +135,16 @@ public class CommunityController {
     }
 
     @PostMapping(value = "/commuJoinAccept") // 가입신청 수락
-    public ResponseEntity<?> commuJoinAccept(CommuJoinDTO commuJoinDTO) {
+    public ResponseEntity<?> commuJoinAccept(@RequestBody CommuJoinDTO commuJoinDTO) {
+        System.out.println("CommuJoinDTO................." + commuJoinDTO);
         commuJoinService.joinAccept(commuJoinDTO);
         commuJoinTempService.joinAcceptAfterProcess(commuJoinDTO);
         return new ResponseEntity<>("수락 완료", HttpStatus.OK);
     }
 
     @PostMapping(value = "/commentAletDelete") // 알람확인버튼 클릭시 알람엔티티에 내용 삭제
-    public ResponseEntity<?> commentAletDelete(Long id) {
-        commentAlertService.delete(id);
+    public ResponseEntity<?> commentAletDelete(@RequestBody Map obj) {
+        commentAlertService.delete(Long.valueOf(String.valueOf(obj.get("id"))));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

@@ -78,7 +78,9 @@
       
       <footer>
         <main-footer />
+      <transition name="fade">
         <common-modal ref="modal" />
+      </transition>
       </footer>
 
     </div>
@@ -285,5 +287,13 @@ header {
   border-radius: 12px;
   font-size: 30px;
   font-weight: 800;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
