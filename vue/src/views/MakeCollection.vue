@@ -53,7 +53,9 @@
       
       <footer>
         <main-footer/>
-        <common-modal ref="modal" />
+        <transition name="fade">
+          <common-modal ref="modal" />
+        </transition>
       </footer>
 
     </div>
@@ -97,10 +99,16 @@ export default {
       this.$refs.modal.openModal(data);
       },
     deleteCol(id, cuId) {
+      const calledAxios = this.$store.state.storedAxios;
       console.log("cuId", cuId);
       this.sampleData.splice(id, 1);
+      
+      calledAxios.delete("/cu/del", {
+        params: {
+          no: cuId
+        }
+      });
     },
-
 
     selectCol() {
       if (this.selectMode == true) {
@@ -151,7 +159,7 @@ export default {
     getMyCurations() {
       const calledAxios = this.$store.state.storedAxios;
       
-      calledAxios.get('/mcol/mc', {
+      calledAxios.get('/mcol/mc/em', {
         params: {
           email: sessionStorage.getItem('email'),
         }
@@ -237,5 +245,13 @@ header {
   height: 180px;
   margin-top: 20px;
   margin-right: 20px;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

@@ -21,7 +21,7 @@ public class Hashtag extends BaseEntity{
     private long count;
 
     public void upCount() {
-        this.count++;
+        count++;
     }
 
 }

@@ -1,5 +1,7 @@
 <template>
-  <router-view />
+  <transition name="main">
+    <router-view />
+  </transition>
 </template>
 
 <script>
@@ -87,5 +89,12 @@ html, body {
   height: 100%;
   background-color: #E8ECE6;
 }
-
+.main-enter-active,
+.main-leave-active {
+  transition: opacity .8s ease;
+}
+.main-enter-from,
+.main-leave-to {
+  opacity: 0;
+}
 </style>

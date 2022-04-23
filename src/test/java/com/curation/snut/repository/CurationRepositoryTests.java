@@ -40,6 +40,8 @@ class CurationRepositoryTests {
     private HashtagRepository hashtagRepository;
     @Autowired
     private SnutCollectionService snutCollectionService;
+    @Autowired
+    private MemberCurationLikeRepository memberCurationLikeRepository;
 
     @Test
     void makeDummies() {
@@ -175,10 +177,11 @@ class CurationRepositoryTests {
         }
     }
 
+    @Transactional
     @Test
     void curationSearchTest() {
 
-        List<CurationDTO> list = curationService.getCurationsByWord("테");
+        List<Curation> list = curationRepository.findCurationByWord("테");
         System.out.println(list.size());
 
         for(int i = 0; i < list.size(); i++) {
@@ -186,6 +189,7 @@ class CurationRepositoryTests {
         }
     }
 
+    @Transactional
     @Test
     void curationTest() {
         List<CurationDTO> list = curationService.getCurationsByWord("테");
@@ -228,5 +232,12 @@ class CurationRepositoryTests {
         for (int i = 0; i < cuDTO.size(); i++) {
             System.out.println(cuDTO.get(i));
         }
+    }
+
+    @Transactional
+    @Test
+    void findLikeTest() {
+        Long a = memberCurationLikeRepository.findCurationByEmailAndCurationNo(2L, "fo");
+        System.out.println(a);
     }
 }

@@ -13,16 +13,17 @@
                 width="150" 
                 height="40"
                 marginRight="15"
+                @click="moveWithHashtag(tag.tag)"
                 :tagName="tag.tag" 
                 :key="idx" />
           </div>
-          <div class="modal-iconSet">
-            <img src="@/assets/modal/Like-Line.png" alt="unlike_img" v-if="isShowing"
-                 @click="like" >
+          <div class="modal-iconSet" v-if="loginBool">
+            <img src="@/assets/modal/Like-Line.png" alt="unlike_img" v-if="!isShowing"
+                @click="like" >
             <img src="@/assets/modal/Like-Line2.png" alt="like_img"
-                 @click="like" v-if="!isShowing" width="48" height="48" class="like">
-            <img src="@/assets/modal/Pin-Line.png" alt="pin_img">
-            <img src="@/assets/modal/Share-Line.png" alt="share_img">
+                @click="like" v-if="isShowing" width="48" height="48" class="like">
+            <img @click="storeData" src="@/assets/modal/Pin-Line.png" alt="pin_img">
+            <!-- <img src="@/assets/modal/Share-Line.png" alt="share_img"> -->
           </div>
         </div>
 
@@ -35,11 +36,11 @@
               @click="moveToPageBoolean && moveToPage(colCuData)">
             <div class="img-container" 
                 style="cursor: pointer" ref="imgContainer">
-              <img
-                v-for="(url, idx) in sampleImg"
-                :src="$store.state.imageBaseURL + url"
-                alt="cu_img"
-                :key="idx" />
+                <div class="pic" v-for="(url, idx) in sampleImg" :key="idx">
+                  <img
+                    :src="$store.state.imageBaseURL + url"
+                    alt="cu_img" />
+                </div>
             </div>
             <input class="previous" type="button" value="<" @click.stop="previous()" ref="previous" disabled />
             <input class="next" type="button" value=">" @click.stop="next()" ref="next" />
@@ -47,9 +48,16 @@
 
           <!-- modal 사진+글 구간 -->
           <div class="modal-content-pic" v-if="!colCuData.pickedColor">
-            <p><b>{{ colCuData.collectionTitle || colCuData.curationTitle }}</b></p>
-            <p><b>{{ colCuData.nickname }}</b></p>
-            <p>{{ colCuData.collectionText || colCuData.curationText }}</p>
+            <p class="title"><b>{{ colCuData.collectionTitle || colCuData.curationTitle }}</b></p>
+            <p class="nickname"><b>{{ colCuData.nickname }}</b></p>
+            <p>
+              <TipTap 
+                      ref="textEditor" 
+                      unset="scrollUnset"
+                      :isEditable="false" 
+                      :curationContents="colCuData.collectionText || colCuData.curationText"/>
+              <!-- {{ colCuData.collectionText || colCuData.curationText }} -->
+            </p>
           </div>
 
           <!-- modal only 글 구간 -->
@@ -84,23 +92,28 @@ export default {
         position: 0,
         IMAGE_WIDTH: 400
       },
-      isShowing: true,
+      isShowing: false,
+      loginBool: sessionStorage.getItem('email')
     }
   },
   methods: {
     openModal(colCuData, moveToPageBool) {
+      this.colCuData = colCuData;
+      console.log("this.isShowing", this.isShowing)
       let imgList = null;
       if (colCuData.cuCo == "Collection") {
         let tmp = colCuData.curationList.filter(cu => { if(cu.pickedColor == null) return cu });
         imgList = tmp.map(cu => cu.imageDTOList[0].imageURL);
+        this.inspectGood(colCuData.collectionNo, colCuData.cuCo);
       } else if (colCuData.cuCo == "Curation") {
         imgList = colCuData.imageDTOList.map(i => i.imageURL );
+        this.inspectGood(colCuData.curationNo, colCuData.cuCo);
       }
+      console.log("this.colCuData", this.colCuData)
 
       this.sampleImg = imgList;
       this.moveToPageBoolean = moveToPageBool;
       this.showBool = true;
-      this.colCuData = colCuData;
     },
     closeModal() {
       this.imgSlideData.curPos = 0;
@@ -108,12 +121,56 @@ export default {
       this.showBool = false;
       this.sampleImg = [];
     },
+    storeData() {
+      const calledAxios = this.$store.state.storedAxios
+      console.log("this.colCuData", this.colCuData);
+
+      let obj = {
+        no: this.colCuData.collectionNo || this.colCuData.curationNo,
+        email: sessionStorage.getItem('email'),
+        cuCo: this.colCuData.cuCo
+      };
+
+      calledAxios.post('/store', obj).then(res => {
+        console.log(res);
+      })
+
+    },
+    inspectGood(no, cuCo) {
+      if(this.loginBool) {
+        const calledAxios = this.$store.state.storedAxios;
+        let obj = {
+          no: no, 
+          email: sessionStorage.getItem('email'),
+          cuCo: cuCo
+        }
+        console.log("obj.cuCo", obj.cuCo);
+        calledAxios.get("/find/good", {
+          params: obj
+        }).then(res => { 
+          console.log(res.data == '');
+          if(res.data != '') {
+            this.isShowing = true
+            return true;
+          } else return false
+        }); 
+      }
+    },
     moveToPage(colCuData) {
       if(colCuData.cuCo == 'Collection') {
         this.$router.push({
           path: `/ucol/${colCuData.collectionNo}/${colCuData.nickname}`
         });
       }
+    },
+    moveWithHashtag(tag) {
+      console.log(tag);
+      this.$router.push({
+        path: `/col`,
+        query: {
+          searchWord: tag
+        }
+      });
     },
     previous() {
       if(this.imgSlideData.curPos > 0) {
@@ -138,13 +195,59 @@ export default {
       }
     },
     like(){
+      console.log("like > this.isShowing", this.isShowing)
       if(this.isShowing){
-        this.isShowing= false;
+        this.isShowing = false;
+        this.separateColCu("unlikes", "delete")
       }else{
         this.isShowing = true;
+        this.separateColCu("likes", "post")
+      }
+    },
+    separateColCu(text, methods) {
+      if (this.colCuData.cuCo == "Collection") {
+        this.getLike(`/col/${text}`, this.colCuData.collectionNo, methods)
+        // this.$emit('applyLike', this.colCuData.cuCo, this.colCuData.collectionNo)
+      } else if (this.colCuData.cuCo == "Curation") {
+        console.log("inLike >>>>> ", this.colCuData)
+        this.getLike(`/cu/${text}`,this.colCuData.curationNo, methods);
+        // this.$emit('applyLike', this.colCuData.cuCo, this.colCuData.curationNo)
+      }
+    },
+    getLike(url, num, methods) {
+      const calledAxios = this.$store.state.storedAxios;
+      console.log(methods);
+      
+      let obj = {
+        no: num,
+        email: sessionStorage.getItem('email')
+      }
+      if (methods === "post") {
+        calledAxios[methods](url, obj).then(res => {
+            console.log(res.data);
+        });
+      } else if (methods === "delete") {
+        calledAxios[methods](url, {
+          params: obj
+        }).then(res => {
+            console.log(res.data);
+          });
+
+      }
+    },
+
+  },
+  watch: {
+    isShowing: {
+      immediate: true,
+      handler(aa) {
+        console.log("aaaaa", aa);
+        
+        this.isShowing = aa;
       }
     }
-
+  },
+  mounted() {
   }
 }
 </script>
@@ -158,6 +261,7 @@ export default {
   width: 100%;
   height: 100%;
   z-index: 4;
+  transition: all 1s;
 }
 .modal-bg {
   background: rgba(0, 0, 0, 0.3);
@@ -237,15 +341,21 @@ export default {
   width: 400px;
   height: 400px;
   display: flex;
-  /* flex-direction: row-reverse; */
   position: relative;
   transition: all 0.5s;
   z-index: 1;
 }
-.modal-pic img {
-  width: 100%;
-  height: 100%;
-  object-fit:fill;
+.pic {
+  display: block;
+  width: 400px;
+  height: 400px;
+  z-index: 1;
+  object-fit: fill;
+}
+.pic img {
+  width: 400px;
+  height: 400px;
+  object-fit: fill;
 }
 .previous {
   width: 50px;
@@ -254,6 +364,17 @@ export default {
   top: 175px;
   left: 20px;
   z-index: 2;
+  background: none;
+  border: 1px solid grey;
+  border-radius: 25px;
+  transition: all 0.5s;
+  color: grey;
+}
+.previous:hover {
+  background: white;
+  font-weight: bold;
+  border: 1px solid black;
+  color: black;
 }
 .next {
   width: 50px;
@@ -262,17 +383,37 @@ export default {
   top: 175px;
   right: 20px;
   z-index: 2;
+  background: none;
+  border: 1px solid grey;
+  border-radius: 25px;
+  transition: all 0.5s;
+  color: grey;
+}
+.next:hover {
+  background: white;
+  font-weight: bold;
+  border: 1px solid black;
+  color: black;
 }
 
 
 /* modal-content 구간 */
 .modal-content-pic {
   width: calc(400px - (20px * 2));
-  height: calc(400px - (45px * 2));
-  padding: 45px 20px;
+  height: calc(400px - (30px * 2));
+  padding: 30px 20px;
   border: 1px solid black;
   border-radius: 12px;
   overflow: scroll;
+}
+.title {
+  font-size: 18px;
+  margin-left: 18px;
+  margin-bottom: 5px;
+}
+.nickname {
+  font-size: 17px;
+  margin-left: 18px;
 }
 .modal-content-nonPic {
   /* width: 100%;

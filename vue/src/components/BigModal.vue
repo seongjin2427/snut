@@ -14,12 +14,16 @@
   }">
       {{ bigModal }}
       <div v-if="joinBoolean" class="message">
-        <p>닉네임:</p>
-        <p class="joinmessage">가입요청메세지:<textarea> </textarea></p>
+        
+        <p>닉네임: {{ nickName }} → 커뮤니티장: {{ commuData.creater.nickName }}</p>
+        <div class="joinmessage">
+          <p>가입요청메세지:</p>
+          <textarea v-model="message"> </textarea>
+        </div>
       </div>
       <div class="modal-btn-area">
         <common-button v-for="(btn, idx) in modalBtnData" :button-name="btn.name" :key="idx" width="145" height="45" border-radius="6" :background="btn.background"
-                       :color="btn.color" margin="10" @click="closemodal($event,btn)"/>
+                      :color="btn.color" margin="10" @click="closemodal($event,btn)"/>
       </div>
     </div>
 
@@ -34,12 +38,15 @@ export default {
   data() {
     return {
       modalBoolean: false,
-      joinBoolean: false
+      joinBoolean: false,
+      message: ''
     }
   },
   props:[
     'modalBtnData',
-    'smallModal',
+    'bigModal',
+    'nickName',
+    'commuData',
     'width',
     'height',
     'margin-top',
@@ -58,6 +65,30 @@ export default {
     closemodal(e, btn){
       if(btn.name == "취소" || btn.name =="아니오" || btn.name == "확인" || btn.name =="닫기"){
         this.modalBoolean = false;
+      } else if (btn.name == "가입") {
+        const calledAxios = this.$store.state.storedAxios;
+        let obj = {
+          member: {
+            email: sessionStorage.getItem('email'),
+          },
+          community: {
+            no: this.commuData.no
+          },
+          applyMessage: this.message
+        }
+
+        console.log("obj", obj)
+        calledAxios.post('/commuJoinApply', obj)
+          .then(res => {
+            console.log(res);
+            if(res.data == '신청 완료') {
+              alert("신청이 완료되었습니다!");
+            } else if (res.data == '중복신청') {
+              alert("이미 신청이 완료된 커뮤니티 입니다.");
+            }
+            this.modalBoolean = false;
+          })
+
       }
     }
   }
@@ -116,10 +147,16 @@ textarea{
   flex-direction: column;
   justify-content: center;
 }
+.message p:first-child {
+  margin-bottom: 10px;
+}
 .joinmessage{
   margin-top: 20px;
   display: flex;
   align-items: flex-start;
+}
+.joinmessage p {
+  margin-top: 10px;
 }
 
 </style>

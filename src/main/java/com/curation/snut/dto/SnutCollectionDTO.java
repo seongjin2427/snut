@@ -23,6 +23,7 @@ public class SnutCollectionDTO {
 
     private String email;
     private String nickname;
+    private boolean like;
 
     private List<Long> curations;
     private List<CurationDTO> curationList;

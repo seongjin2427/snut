@@ -93,9 +93,9 @@
         <button class="send-button" type="submit">변경 완료</button>
       </div>
 
+      <drag-and-drop-modal ref="dndModal" @receiveNoteImg="receiveNoteImg" />
     </div>
     <!--send button-->
-  <drag-and-drop-modal ref="dndModal" @receiveNoteImg="receiveNoteImg" />
 </template>
 
 <script>

@@ -18,12 +18,12 @@ public class AuthMemberDTO extends User {
     private String mobile;
     private String birth;
     private String gender;
-    private String nickname;
+    private String nickName;
 
 
     public AuthMemberDTO(
             String username, String name, String password,
-            String mobile, String birth, String gender, String nickname,
+            String mobile, String birth, String gender, String nickName,
             Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
         this.email = username;
@@ -31,6 +31,6 @@ public class AuthMemberDTO extends User {
         this.mobile = mobile;
         this.birth = birth;
         this.gender = gender;
-        this.nickname = nickname;
+        this.nickName = nickName;
     }
 }

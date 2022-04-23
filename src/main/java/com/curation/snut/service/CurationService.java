@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
 public interface CurationService {
 
     // 성진
@@ -29,6 +28,8 @@ public interface CurationService {
     CurationDTO getCurationsByCurationNo(Long cuId);
     List<CurationDTO> getCurationsByCollectionNo(Long colId);
     List<CurationDTO> getCurationsByWord(String word);
+    void deleteCurationById(Long no);
+
 
     Long register(CurationDTO curationDTO);
     ///////////////////////////////////////////////////////////////////////////
@@ -70,6 +71,7 @@ public interface CurationService {
                 .pickedColor(dto.getPickedColor())
                 .pickedEmoji(dto.getPickedEmoji())
                 .open(dto.isOpen())
+                .like(dto.isLike())
                 .hashtag(hashtagSet)
                 .writer(Member.builder().email(dto.getEmail()).build())
                 .build();
@@ -108,6 +110,8 @@ public interface CurationService {
                 .nickname(curation.getWriter().getNickName())
                 .regDate(curation.getRegDate())
                 .modDate(curation.getModDate())
+                .open(curation.isOpen())
+                .like(curation.isLike())
                 .build();
 
         List<CurationImageDTO> curationImageDTO = curationImages.stream().map(img -> {

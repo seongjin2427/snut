@@ -28,14 +28,15 @@
 
         <div class="main-col">
           <div class="main-col-area">
-            <common-collection 
-                class="main-searched-col"
-                @click="openModal(col, true)"
-                v-for="(col, idx) in sampleData" 
-                :info="col" 
-                :id="idx"
-                :loginBool="loginBool"
-                :key="idx" />
+              <common-collection 
+                  class="main-searched-col"
+                  @click="openModal(col, true)"
+                  v-for="(col, idx) in sampleData" 
+                  :info="col" 
+                  :id="idx"
+                  :loginBool="loginBool"
+                  :key="idx" />
+
           </div>
         </div>
 
@@ -44,7 +45,9 @@
       
       <footer>
         <main-footer/>
-        <common-modal ref="modal" />
+        <transition name="fade">
+          <common-modal ref="modal" @loginBool="loginBool" @applyLike="applyLike"/>
+        </transition>
       </footer>
 
     </div>
@@ -58,7 +61,7 @@ import InputBox from '@/components/InputBox.vue';
 import MainFooter from '@/components/MainFooter.vue'
 import NavigatorBar from '../components/NavigatorBar.vue';
 import CommonModal from '../components/CommonModal.vue';
-
+import axios from 'axios';
 
 export default {
   components: { InputBox, CommonButton, CommonCollection, MainFooter, NavigatorBar, CommonModal },
@@ -93,10 +96,13 @@ export default {
     },
     doSearch(searchWord) {
       if(searchWord != '') {
-        this.$router.push(`/col/${searchWord}`);
-        console.log(searchWord);
-
-        this.doAxios();
+        this.$router.push(`/col`, {
+          query: {
+            searchWord: searchWord
+          }
+        });
+        console.log("?/????", searchWord);
+        this.doAxios(searchWord);
         this.$refs.inputBox.clearWord();
       }
     },
@@ -107,12 +113,26 @@ export default {
       this.dropdownData[idx] = temp;
       this.openData = !this.openData
     },
-    doAxios() {
-      let calledAxios = this.$store.state.storedAxios;
-      console.log("searchWord", this.$route.params)
-      calledAxios.get('/main',{
+    applyLike(separate, no) {
+      console.log("separate", separate)
+      console.log("no", no)
+      this.sampleData.map(data => {
+        if(data.cuCo == "Collection" && data.cuCo == separate && data.collectionNo == no) data.like = !data.like;
+        if(data.cuCo == "Curation" && data.cuCo == separate && data.collectionNo == no) data.like = !data.like;
+      });
+    },
+    doAxios(word) {
+      // let calledAxios = this.$store.state.storedAxios;
+      console.log("searchWord", word)
+      
+      let obj = {
+        searchWord: word
+      }
+      console.log("obj", obj);
+
+      axios.get('http://localhost:8080/main', {
         params: {
-          'searchWord': this.$route.params.searchWord
+          word: word
         }
       })
         .then(res => { 
@@ -130,7 +150,7 @@ export default {
     },
   },
   created() {
-    this.doAxios();
+    this.doAxios(this.$route.query.searchWord);
 
   }
 }
@@ -203,6 +223,14 @@ header {
 .main-searched-col {
   margin-top: 20px;
   margin-right: 20px;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 
 </style>

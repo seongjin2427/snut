@@ -23,7 +23,7 @@
       </div>
       <div class="text1" v-if="storeBool && delColBoolean && loginBool && !selectMode">
         <button @click.stop="deleteCol()">삭제</button>
-        <button @click.stop="shareCol()">공유</button>
+        <!-- <button @click.stop="shareCol()">공유</button> -->
       </div>
 
   </div>
@@ -98,7 +98,7 @@ img {
   width: 180px;
   height: 180px;
   background: white;
-  object-fit: contain;
+  object-fit: fill;
   /* margin-right: 0px; */
 }
 .check-icon {

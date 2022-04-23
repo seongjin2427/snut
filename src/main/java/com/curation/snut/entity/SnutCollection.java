@@ -1,5 +1,6 @@
 package com.curation.snut.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -25,11 +26,16 @@ public class SnutCollection extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     private Member writer;
 
-//    @ElementCollection(fetch = FetchType.EAGER)
-//    private Set<String> hashtag = new HashSet<>();
+    @Column(name = "collection_like")
+    private boolean like;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Hashtag> hashtag = new HashSet<>();
+
+    @JsonIgnoreProperties({"snut_collection"})
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<MemberCollectionLike> colLikeList;
+
 
 //    @ManyToMany(fetch = FetchType.EAGER)
 //    @JoinColumn(name = "curation_col_no")

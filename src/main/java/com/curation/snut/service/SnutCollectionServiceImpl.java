@@ -4,13 +4,8 @@ import com.curation.snut.dto.CurationDTO;
 import com.curation.snut.dto.PageRequestDTO;
 import com.curation.snut.dto.PageResultDTO;
 import com.curation.snut.dto.SnutCollectionDTO;
-import com.curation.snut.entity.ColCuration;
-import com.curation.snut.entity.Curation;
-import com.curation.snut.entity.CurationImage;
-import com.curation.snut.entity.SnutCollection;
-import com.curation.snut.repository.ColCurationRepository;
-import com.curation.snut.repository.CurationRepository;
-import com.curation.snut.repository.SnutCollectionRepository;
+import com.curation.snut.entity.*;
+import com.curation.snut.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -33,6 +28,7 @@ public class SnutCollectionServiceImpl implements SnutCollectionService {
     private final ColCurationRepository colCurationRepository;
     private final CurationRepository curationRepository;
     private final CurationService curationService;
+
 
     @Override
     public List<SnutCollectionDTO> getCollectionsByEmail(String email) {
@@ -104,7 +100,7 @@ public class SnutCollectionServiceImpl implements SnutCollectionService {
 
     @Override
     public PageResultDTO getPopularCollection(PageRequestDTO requestDTO) {
-        Pageable pageable = requestDTO.getPageable(Sort.by("collectionNo").descending());
+        Pageable pageable = requestDTO.getPageable(Sort.by("collection_no").descending());
         Page<SnutCollection> result = snutCollectionRepository.findSnutCollectionByHashTagCount(pageable);
         Function<SnutCollection, SnutCollectionDTO> fn = (en -> {
             List<Curation> cuList = curationRepository.findCurationsByCollectionNo(en.getCollectionNo());

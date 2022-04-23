@@ -65,7 +65,7 @@
     <!-- Hover시 삭제/공유 뜨는 Div 구간  (Curation, Collection-->
     <div class="text1" v-if="!selectMode && info.cuCo != 'Folder' && storeBool && delColBoolean && loginBool"> 
       <button @click.stop="deleteCol()">삭제</button>
-      <button @click.stop="shareCol()">공유</button>
+      <!-- <button @click.stop="shareCol()">공유</button> -->
     </div>
 
     <!-- Hover시 삭제/공유 뜨는 Div 구간  (Folder) -->
@@ -87,10 +87,10 @@ export default {
   components: {
     EmojiFace
   },
-  props: ['info', 'id', 'delColBoolean', 'loginBool', 'selectMode'],
+  props: ['info', 'id', 'delColBoolean', 'loginBool', 'selectMode', 'tempName'],
   data() {
     return {
-      cuSelect: 'cu-img' + this.id,
+      cuSelect: this.tempName+this.id || 'cu-img' + this.id,
       folderSelect: 'folder' + this.id,
       // folderNameIsDisabled: false,
       

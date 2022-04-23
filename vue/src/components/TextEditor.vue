@@ -2,9 +2,11 @@
   <div class="editor-body">
     
     <div v-if="editor">
-      <drag-and-drop-modal ref="dragModal" @receiveNoteImg="receiveNoteImg" />
+      <transition name="fade">
+        <drag-and-drop-modal ref="dragModal" @receiveNoteImg="receiveNoteImg" />
+      </transition>
 
-      <div class="text-editor-btn-area" v-if="editable">
+      <div class="text-editor-btn-area" v-if="toolbarBool && editable">
         <button @click="editor.chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }">
           <img src="https://img.icons8.com/fluency-systems-regular/344/bold.png" alt="bold">
         </button>
@@ -94,25 +96,21 @@ export default {
     EditorContent,
     DragAndDropModal,
   },
-  props: ['isEditable', "curationContents"],
+  props: ["isEditable", "curationContents", "expand", "toolbar", "unset"],
   data() {
     return {
       editor: null,
-      extendsHeight: this.extend,
+      // extendsHeight: this.extend,
       contents: '<p>내용을 입력해 주세요</p>',
       editable: this.isEditable,
-      imgList: [],
-      viewImgList: []
+      toolbarBool: this.toolbar,
+      imgList: []
     }
   },
   methods: {
     sample() {
       console.log("ASDFASDF");
       // this.editor.setContents(contents)
-    },
-    extendsEditor() {
-      let a = document.querySelector('.ProseMirror').style;
-      a.height = 700+'px';
     },
     addImage() {
       this.$refs.dragModal.openModal();
@@ -135,12 +133,11 @@ export default {
                 const imgUrl = res.data.data.display_url
                 this.editor.chain().focus().setImage({ src: imgUrl }).run();
 
-                sendImgList[i] = {};
-                sendImgList[i].path = imgUrl;
+                sendImgList.push(imgUrl);
               })
             }
-        
-        // this.imgList = sendImgList;
+            console.log("sendImgList", sendImgList);
+        this.imgList = sendImgList;
       }
     },
     sendContents() {
@@ -161,11 +158,14 @@ export default {
           types: ['heading', 'paragraph'],
         }),
       ],
+      editorProps: {
+        attributes: {
+          class: `${this.unset} ${this.expand}`
+        }
+      },
       content: this.curationContents || this.contents,
       editable: this.editable
     })
-    console.log(this.contents)
-    console.log(this.editable)
   },
 
   beforeUnmount() {
@@ -217,7 +217,6 @@ button img {
   padding: 20px;
   height: 370px;
   overflow: scroll;
-
 
 > * + * {
     margin-top: 0.75em;
@@ -282,5 +281,18 @@ button img {
   display: none;
   width: 0
 }
-
+.expandEditor {
+  height: 700px;
+}
+.scrollUnset {
+  overflow: unset;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
 </style>

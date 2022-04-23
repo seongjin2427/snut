@@ -29,7 +29,8 @@ export default {
   components: {CommonButton},
   data() {
     return {
-      modalBoolean: false
+      modalBoolean: false,
+      alarmData: {}
     }
   },
   props:[
@@ -46,12 +47,33 @@ export default {
     'color'
   ],
   methods: {
-    openModal() {
+    openModal(alarmData) {
       this.modalBoolean = true;
+
+      // MyCommunity에서 사용하는 가입 승락 알람 데이터
+      this.alarmData = alarmData;
+      console.log(this.alarmData);
     },
     closemodal(e, btn){
+      console.log(btn);
       if(btn.name == "취소" || btn.name =="아니오" || btn.name == "확인" || btn.name =="닫기"){
         this.modalBoolean = false;
+      } else if (btn.name == "수락") {
+        const calledAxios = this.$store.state.storedAxios;
+        let obj = {
+          member: this.alarmData.tmember,
+          community: this.alarmData.tcommunity
+        }
+        calledAxios.post('/commuJoinAccept', obj)
+          .then(res => { 
+            alert(res.data);
+            this.$emit('applyJoin', this.alarmData);
+            this.modalBoolean = false;
+          });
+      } else if (btn.name == '삭제') {
+        this.$emit('deleteCom');
+      } else if (btn.name == '거절') {
+        this.$emit('rejectJoin', this.alarmData);
       }
     }
   }

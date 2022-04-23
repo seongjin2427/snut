@@ -3,6 +3,7 @@
     <input 
         type="text" 
         @keyup.enter="doSearch"
+        @input="inputWord"
         v-model="searchWord"
         :placeholder="placeholder"
         :style="{ width: width+'vw', height: height+'px' }">
@@ -20,10 +21,16 @@ export default {
   },
   methods: {
     doSearch() {
-      if(this.searchWord != '') this.$emit('doSearch', this.searchWord);
+      console.log("inputBox >> ", this.searchWord)
+      let word = this.searchWord;
+      this.clearWord();
+      if(word != '') this.$emit('doSearch', word);
     },
     clearWord() {
       this.searchWord = '';
+    },
+    inputWord(e) {
+      this.searchWord = e.target.value;
     }
   }
 }

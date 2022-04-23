@@ -1,16 +1,17 @@
 package com.curation.snut.service;
 
-import com.curation.snut.dto.MemberDTO;
-import com.curation.snut.entity.Member;
-import com.curation.snut.security.role.MemberRole;
-
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.curation.snut.dto.MemberDTO;
+import com.curation.snut.entity.Member;
+import com.curation.snut.security.role.MemberRole;
+
 public interface MemberService {
 
     void register(Map body);
+
     void updateMemberDTO(MemberDTO memberDTO);
 
     default Member dtoToEntity(MemberDTO memberDTO) {
@@ -22,17 +23,13 @@ public interface MemberService {
                 .mobile(memberDTO.getMobile())
                 .birth(memberDTO.getBirth())
                 .gender(memberDTO.getGender())
-                // .roleSet(cMemberDTO.getAuthorities().stream().map(gran->{
-                // System.out.println("gran>>"+gran);
-                // return AuthorityRole.GUEST;
-                // }).collect(Collectors.toSet()))
                 .roleSet(memberDTO.getRoleSet().stream().map(
                         new Function<String, MemberRole>() {
                             @Override
                             public MemberRole apply(String t) {
-                                if (t.equals("ROLE_USER"))
+                                if (t.equals("ROLE_GUEST"))
                                     return MemberRole.USER;
-                                else if (t.equals("ROLE_MANAGER"))
+                                else if (t.equals("ROLE_MEMBER"))
                                     return MemberRole.MANAGER;
                                 else if (t.equals("ROLE_ADMIN"))
                                     return MemberRole.ADMIN;
@@ -51,12 +48,11 @@ public interface MemberService {
                 .name(member.getName())
                 .mobile(member.getMobile())
                 .roleSet(member.getRoleSet().stream().map(
-                                role -> new String("ROLE_" + role.name()))
+                        role -> new String("ROLE_" + role.name()))
                         .collect(Collectors.toSet()))
                 .regDate(member.getRegDate())
                 .modDate(member.getModDate())
                 .build();
         return memberDTO;
     }
-
 }

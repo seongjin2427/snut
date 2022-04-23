@@ -46,6 +46,14 @@
 
                 <div class="write-div">
                   <input type="text" placeholder="Title:" v-model="collectionData.collectionTitle">
+                  
+                  <TipTap 
+                      ref="textEditor"
+                      :isEditable="true" 
+                      :toolbar="false" 
+                      @sendContents="getTextEditorContents" />
+                  
+              
                   <textarea name="" id="" cols="30" rows="10" maxlength="500" placeholder="Contents"
                   v-model="collectionData.collectionText"/>
                 </div>
@@ -86,11 +94,13 @@
 <script>
 import CommonButton from '@/components/CommonButton.vue';
 import MainFooter from '@/components/MainFooter.vue'
+import TipTap from '@/components/TextEditor.vue';
 
 export default {
   components: { 
     CommonButton, 
-    MainFooter
+    MainFooter,
+    TipTap
     },
   name: "MakeNote",
   data() {
@@ -165,17 +175,19 @@ export default {
     },
     inspectNull() {
       if(this.collectionData.collectionTitle
-          && this.collectionData.collectionText ) return true;
+          && this.collectionData.collectionText != '<p></p>' ) return true;
       else false;
     },
     onSave() {
       const pic = this.collectionData;
+        this.$refs.textEditor.sendContents();
 
         console.log('저장을 눌렀다!')
         if (this.inspectNull()) {
           console.log('Save with Image')
           console.log(pic)
           this.saveHashtag(pic);
+          console.log("oseijrogji", pic)
 
           this.sendDataUseAxios(pic);
 
@@ -183,6 +195,11 @@ export default {
           console.log('제목 또는 내용에 빈공간이 있습니다.')
         }
         
+    },
+    getTextEditorContents(contents, imgList) {
+      console.log("conteoawjioeijawog", contents)
+      this.collectionData.collectionText = contents;
+      console.log('receivedEditorContents', imgList)
     },
     sendDataUseAxios(data) {
     const calledAxios = this.$store.state.storedAxios;
@@ -247,7 +264,7 @@ export default {
             console.log(this.receivedData[i].imageDTOList[0].imageURL);
             pictureDiv.innerHTML += 
               `<img src="http://localhost:8080/get/img?fileName=${url}" 
-                  style="width:500px; height: 500px; object-fit:contain;">`
+                  style="width:500px; height: 500px; object-fit: fill;">`
         }
       }
     },
@@ -383,21 +400,45 @@ header {
   height: 500px;
   object-fit: cover;
 }
-.previous {
-  width: 50px;
-  height: 50px;
+.previous{
+  width: 75px;
+  height: 75px;
   position: absolute;
-  top: 220px;
+  top: 215px;
   left: 20px;
   z-index: 2;
+  font-size: 30px;
+  background: none;
+  border: 1px solid grey;
+  border-radius: 75px;
+  transition: all 0.5s;
+  color: grey;
+}
+.previous:hover {
+  background: white;
+  font-weight: 200;
+  border: 1px solid black;
+  color: grey;
 }
 .next {
-  width: 50px;
-  height: 50px;
+  width: 75px;
+  height: 75px;
   position: absolute;
-  top: 220px;
+  top: 215px;
   right: 20px;
   z-index: 2;
+  font-size: 30px;
+  background: none;
+  border: 1px solid grey;
+  border-radius: 75px;
+  transition: all 0.5s;
+  color: grey;
+}
+.next:hover {
+  background: white;
+  font-weight: 200;
+  border: 1px solid black;
+  color: grey;
 }
 
 /* 텍스트 구간 */
@@ -409,6 +450,10 @@ header {
   background: #FFFFFF;
   display: flex;
   flex-direction: column;
+}
+.write-div > input {
+  width: 350px;
+  margin-bottom: 10px;
 }
 .write-div * {
   background: none;
@@ -465,5 +510,13 @@ header {
 }
 .hash-tag input:focus {
   outline: none;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

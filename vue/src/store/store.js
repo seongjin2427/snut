@@ -14,8 +14,8 @@ export const store = createStore({
       imbbKey: "8749b3a6ce349d7a69b2f7ad2994ee28",
       imageBaseURL: 'http://localhost:8080/get/img?fileName=',
       sendToCuration: [],
-      curationData:{},
-      searchWord:{}
+      searchWord: {},
+      storedData: {}
     }
   },
   getters: {
@@ -28,9 +28,6 @@ export const store = createStore({
     getSendToCuration(state) {
       return state.sendToCuration;
     },
-    getcurationData(state) {
-      return state.curationData;
-    }
   }, 
   mutations: {
     setMessage(state, text) {
@@ -40,24 +37,14 @@ export const store = createStore({
       console.log("arr", arr);
       state.sendToCuration = arr;
     },
-    setCurationData(state, data) {
-      state.curationData = data;
-    },
     setSearchWord(state, word) {
       state.searchWord = word;
+    },
+    setStoredData(state, data) {
+      state.storedData = data;
     }
   }, 
   actions: {
-    setCurationData({commit, state}, payload) {
-      console.log(payload);
-      state.storedAxios.get(payload.url, {
-        params: {
-          [payload.paramName]: payload.email
-        }
-      }).then(res => {
-        // console.log(res.data);
-        commit('setCurationData', res.data)
-      })
-    }
+
   }
 });

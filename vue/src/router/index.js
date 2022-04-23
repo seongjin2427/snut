@@ -9,7 +9,6 @@ import MyCollection from '@/views/MyCollection.vue';
 import MyNote from "@/views/MyNote.vue";
 import MakeNote from '@/views/MakeNote.vue'
 import StoreCollections from '@/views/StoreCollections.vue';
-import StoreColCurations from '@/views/StoreColCurations.vue';
 import MakeCommunity from '@/views/MakeCommunity.vue';
 import MakeCollection from '@/views/MakeCollection.vue';
 import MakeColSave from '@/views/MakeColSave.vue';
@@ -36,7 +35,7 @@ const routes = [
     name: "MainWithLogin"
   },
   {
-    path: "/col/:searchWord",
+    path: "/col",
     component: SearchCollections,
     name: "SearchCollections"
   },
@@ -76,11 +75,6 @@ const routes = [
     name: "StoreCollections"
   },
   { 
-    path: '/mcol/store/:colId/:nickName',
-    component: StoreColCurations,
-    name: "StoreColCurations"
-  },
-  { 
     path: '/mcol/mc',
     component: MakeCollection,
     name: "MakeCollection"
@@ -116,7 +110,7 @@ const routes = [
     name: "Community"
   },
   {
-    path:"/com/in",
+    path:"/com/in/:communityNo",
     component: CommunityInside,
     name: "CommunityInside"
   },

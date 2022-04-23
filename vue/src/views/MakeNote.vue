@@ -36,7 +36,7 @@
                   :key="idx"></div>
             </div>
           <div class="write-with-picture">
-
+          
             <div class="write-area" v-if="withPic">
               
               <div class="write-area-with-pic">
@@ -55,10 +55,16 @@
 
                 <div class="write-div">
                   <input type="text" placeholder="Title:" v-model="contentsWithPic.curationTitle">
-                  <textarea name="" id="" cols="30" rows="10" maxlength="500" placeholder="Contents"
+                  <TipTap 
+                      ref="textEditor"
+                      :isEditable="true" 
+                      :toolbar="false" 
+                      @sendContents="receivedEditorContentsWithPic" />
+                  <textarea name="" id="" cols="30" rows="10" placeholder="Contents"
                   v-model="contentsWithPic.curationText"/>
                 </div>
               </div>
+                  {{ contentsWithPic.curationText }}
 
             </div>
 
@@ -107,7 +113,10 @@
               </div>
 
               <div class="write-div nonpic">
-                <TipTap ref="textEditor" isEditable="'true'" @sendContents="receivedEditorContents"/>
+                <TipTap ref="textEditor" 
+                      :toolbar="true" 
+                      isEditable="'true'"
+                      @sendContents="receivedEditorContents"/>
               </div>
 
             </div>
@@ -145,7 +154,9 @@
       
       <footer>
         <main-footer/>
-        <drag-and-drop-modal ref="dndModal" @receiveNoteImg="receiveNoteImg" />
+        <transition name="fade"> 
+          <drag-and-drop-modal ref="dndModal" @receiveNoteImg="receiveNoteImg" />
+        </transition>
       </footer>
       
     </div>
@@ -296,6 +307,7 @@ export default {
       const pic = this.contentsWithPic;
       const nonPic = this.contentsWithNonPic;
 
+      this.$refs.textEditor.sendContents();
         console.log('저장을 눌렀다!')
         if (this.withPic == true && this.inspectNull()) {
           console.log('Save with Image')
@@ -307,7 +319,6 @@ export default {
           this.$router.push("/mcol/main");
 
         } else if (this.withPic == false) {
-          this.$refs.textEditor.sendContents();
 
             if (nonPic.curationTitle
                 && nonPic.curationText != '<p></p>') {
@@ -378,8 +389,13 @@ export default {
     },
     receivedEditorContents(contents, imgList) {
       this.contentsWithNonPic.curationText = contents;
+      console.log('receivedEditorContents', imgList)
       // this.tempImgList = imgList;
       // this.sendImage(this.contentsWithNonPic.imageDTOList, imgList);
+    },
+    receivedEditorContentsWithPic(contents, imgList) {
+      console.log("conteoawjioeijawog", contents)
+      this.contentsWithPic.curationText = contents;
       console.log('receivedEditorContents', imgList)
     },
     openBoolToggle(e, idx) {
@@ -697,5 +713,13 @@ header {
 }
 .hash-tag input:focus {
   outline: none;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

@@ -6,7 +6,6 @@ import com.curation.snut.security.handler.LoginFailHandler;
 import com.curation.snut.security.handler.LoginSuccessHandler;
 import com.curation.snut.security.service.MemberUDService;
 import com.curation.snut.security.util.JWTUtil;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

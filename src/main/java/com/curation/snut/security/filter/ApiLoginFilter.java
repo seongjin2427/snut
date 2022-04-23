@@ -9,7 +9,7 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.curation.snut.dto.ApiSessionDTO;
+import com.curation.snut.dto.community.ApiSessionDTO;
 import com.curation.snut.security.dto.AuthMemberDTO;
 import com.curation.snut.security.util.JWTUtil;
 
@@ -63,7 +63,7 @@ public class ApiLoginFilter extends AbstractAuthenticationProcessingFilter {
 
         log.info("ApiLoginFilter successfulAuthentication:" + authResult);
         log.info("Principal:" + authResult.getPrincipal());
-        // String email = ((AuthMemberDTO) authResult.getPrincipal()).getUsername();
+//         String email = ((AuthMemberDTO) authResult.getPrincipal()).getUsername();
         AuthMemberDTO userDtail = ((AuthMemberDTO) authResult.getPrincipal());
 
         String token = null;
@@ -73,8 +73,9 @@ public class ApiLoginFilter extends AbstractAuthenticationProcessingFilter {
             // token = "Bearer "+jwtUtil.generateToken(email);
             token = "Bearer " + jwtUtil.generateToken(userDtail);
             ApiSessionDTO apiDto = commonDtoToApiDTO((AuthMemberDTO) authResult.getPrincipal(), token, curl);
-            String res = mapper.writeValueAsString(token);
+            String res = mapper.writeValueAsString(apiDto);
             log.info("res:::" + res);
+            log.info("authResult.getPrincipal() >>>>" + authResult.getPrincipal());
             response.setContentType("application/json");
             response.getOutputStream().write(res.getBytes());
             log.info("token=> " + token);
@@ -86,7 +87,7 @@ public class ApiLoginFilter extends AbstractAuthenticationProcessingFilter {
     private ApiSessionDTO commonDtoToApiDTO(AuthMemberDTO commonDto, String token, String curl) {
         ApiSessionDTO apiDto = ApiSessionDTO.builder()
                 .email(commonDto.getEmail()).token(token).name(commonDto.getName())
-                .birth(commonDto.getBirth()).gender(commonDto.getGender()).nickname(commonDto.getNickname())
+                .birth(commonDto.getBirth()).gender(commonDto.getGender()).nickname(commonDto.getNickName())
                 .mobile(commonDto.getMobile()).curl(curl)
                 .username(commonDto.getUsername())
                 .build();

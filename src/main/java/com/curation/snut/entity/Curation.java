@@ -1,7 +1,9 @@
 package com.curation.snut.entity;
 
 import com.curation.snut.dto.CurationImageDTO;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,7 +17,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter
 @ToString(exclude = "writer")
 public class Curation extends BaseEntity {
     @Id
@@ -27,29 +28,25 @@ public class Curation extends BaseEntity {
     @Column(length = 50000)
     private String curationText;
 
-    private boolean open;
     private Long pickedEmoji;
+    @Nullable
     private String pickedColor;
+
+    @Nullable
+    private boolean open;
+
+    @Column(name = "cu_like")
+    private boolean like;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Member writer;
 
-//    @ElementCollection(fetch = FetchType.EAGER)
-//    private Set<String> hashtag = new HashSet<>();
-
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Hashtag> hashtag = new HashSet<>();
 
-
-
-
-
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "collection_cu_no")
-//    private Set<SnutCollection> snutCollection = new LinkedHashSet<>();
-
-    // @OneToMany(cascade = CascadeType.ALL, mappedBy = "curation")
-    // private List<HashtagVariable> hashtag;
+    @JsonIgnoreProperties({"curation"})
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<MemberCurationLike> cuLikeLIst;
 
     public void changeCurationTitle(String curationTitle) {
         this.curationTitle = curationTitle;

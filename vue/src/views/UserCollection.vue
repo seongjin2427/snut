@@ -38,7 +38,9 @@
       
       <footer>
         <main-footer/>
-        <common-modal ref="modal" />
+        <transition name="fade">
+          <common-modal ref="modal" />
+        </transition>
       </footer>
 
     </div>
@@ -162,5 +164,13 @@ header {
   font-family: 'Noto-sans KR','Apple SD Gothic Neo', sans-serif ;
   margin-top: 20px;
   margin-right: 20px;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

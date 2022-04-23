@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
-@Log4j2
 @Service
 @RequiredArgsConstructor
-public class MemberServiceImpl implements MemberService{
+@Log4j2
+public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
@@ -43,5 +43,4 @@ public class MemberServiceImpl implements MemberService{
         memberRepository.save(member);
         log.info("member>>" + member);
     }
-
 }

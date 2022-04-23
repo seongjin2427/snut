@@ -72,8 +72,8 @@
                 </div>
               </div>
               <div class="mobile-bu">
-                <common-button buttonName="인증하기" background="white" border="none" width="85" height="35"
-                               margin-left="40" font-weight="400"></common-button>
+                <!-- <common-button buttonName="인증하기" background="white" border="none" width="85" height="35"
+                              marQgin-left="40" font-weight="400"></common-button> -->
               </div>
             </div>
 

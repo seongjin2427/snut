@@ -30,9 +30,9 @@ public class PageResultDTO<DTO, EN> {
         makePageList(result.getPageable());
     }
 
-    private void makePageList(Pageable pageable) {
+    private void makePageList(Pageable pageable) {  
         this.page = pageable.getPageNumber() + 1;
-        this.size = pageable.getPageSize();
+        this.size = pageable.getPageSize() - 1;
 
         int tempEnd = (int)(Math.ceil(page/(double)size)) * 5;
 

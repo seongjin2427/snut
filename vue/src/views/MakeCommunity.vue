@@ -45,7 +45,10 @@
 
               <div class="textEditor-area">
                 <div class="textEditor-wrapper">
-                  <TipTap ref="textEditor" :isEditable="true" @sendContents="receivedEditorContents"/>
+                  <TipTap ref="textEditor" 
+                    :isEditable="true"
+                    toolbar="true"
+                    @sendContents="receivedEditorContents"/>
                 </div>
               </div>
 
@@ -112,7 +115,8 @@ export default {
       communityDataSet: {
         title: '',
         contents: '',
-        imgList: ''
+        imgList: '',
+        email: sessionStorage.getItem('email')
       },
       modalBtnData: [
         {
@@ -130,11 +134,34 @@ export default {
     },
     registerCommunity() {
       console.log('생성하기 버튼을 눌렀다!');
-      this.saveCommunity();
+      this.saveCommunity(this.communityDataSet);
     },
     saveCommunity() {
       this.$refs.textEditor.sendContents();
+      let data = this.communityDataSet
       console.log(this.communityDataSet);
+      const calledAxios = this.$store.state.storedAxios;
+
+      const obj = {
+        title: data.title,
+        thumbnail: data.imgList[0],
+        text: data.contents,
+        creater: {
+          email: data.email
+        }
+      }
+
+      calledAxios.post('/commuList', obj)
+        .then(res => console.log(res))
+        .catch(err => console.log(err));
+
+      this.$router.push("/mcol/main");
+      
+    },
+    receivedEditorContents(contents, imgList) {
+      this.communityDataSet.contents = contents;
+      this.communityDataSet.imgList = imgList;
+
     },
     modifyCommunity() {
       console.log(this.communityDataSet);
@@ -143,10 +170,6 @@ export default {
     moveToPreView() {
       console.log('미리보기 버튼을 눌렀다!');
     },
-    receivedEditorContents(contents, imgList) {
-      this.communityDataSet.contents = contents;
-      this.communityDataSet.imgList = imgList;
-    }
   }
 }
 </script>
