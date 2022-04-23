@@ -51,7 +51,16 @@
         :commuData="communityData"
         bigModal="이 커뮤니티에 가입하시겠습니까?"
         width="600" height="370" margin-top="200" />
+    <small-modal 
+        ref="sModal" 
+        :modalBtnData="deleteBtnData"
+        @deleteCom="deleteMethod"
+        smallModal="커뮤니티를 삭제하시겠습니까?"
+        width="350"
+        height="130"
+        />
   </div>
+  
 </template>
 
 <script>
@@ -59,10 +68,11 @@ import CommonButton from '@/components/CommonButton.vue';
 import ComInsideComment from '@/components/ComInsideComment.vue';
 import TipTap from '@/components/TextEditor.vue';
 import BigModal from '@/components/BigModal.vue'
+import smallModal from '@/components/SmallModal.vue';
 
 export default {
   name: "CommunityInside-page",
-  components: { CommonButton, ComInsideComment, TipTap, BigModal },
+  components: { CommonButton, ComInsideComment, TipTap, BigModal, smallModal },
   data() {
     return {
       modifyBool: false,
@@ -78,6 +88,18 @@ export default {
         },
         {
           name: '가입',
+          background: 'black',
+          color: 'white'
+        }
+      ],
+      deleteBtnData: [
+        {
+          name: '삭제',
+          background: 'white',
+          color: 'black'
+        },
+        {
+          name: '취소',
           background: 'black',
           color: 'white'
         }
@@ -114,31 +136,19 @@ export default {
   },
   methods: {
     separateMethods(idx) {
-      const calledAxios = this.$store.state.storedAxios;
       if(idx == 0) {
         this.modifyBool = true;
       }
       else if (idx == 1){
         this.$refs.modal.openModal(true);
       } else if (idx == 2) {
-        console.log("삭제")
+        this.$refs.sModal.openModal(true);
         
-        calledAxios.post('/commuList/delete', {
-          commuCreater: sessionStorage.getItem('email'),
-          commuNo: this.$route.params.communityNo
-        })
-        .then(res => {
-          console.log(res);
-          alert(res.data);
-          location.reload();
-        })
-        this.$router.push('/com');
       }
     },
     receiveContent(content) {
       this.modifyContent = content;
       this.communityData.text = content;
-      console.log("this.modifyContent", this.modifyContent);
 
       const calledAxios = this.$store.state.storedAxios;
       calledAxios.post('/com/in/mod', {
@@ -146,9 +156,19 @@ export default {
           content: content
         })
     },
+    deleteMethod() {
+      const calledAxios = this.$store.state.storedAxios;
+        calledAxios.post('/commuList/delete', {
+          commuCreater: sessionStorage.getItem('email'),
+          commuNo: this.$route.params.communityNo
+        })
+        .then(res => {
+          alert(res.data);
+          window.history.back();
+        })
+    },
     modifyMethods(idx) {
       if(idx == 0) {
-        console.log('확인을 눌렀다!, 서버로 데이터를 보내자!');
         this.$refs.textEditor.sendContents();
         
         this.modifyBool = false;
@@ -164,7 +184,6 @@ export default {
         }
       })
         .then(res => {
-          console.log(res.data);
           this.communityData = res.data;
           this.canModify = this.communityData.creater.email 
                             == sessionStorage.getItem('email');
@@ -175,7 +194,6 @@ export default {
   created() {
     let comNo = this.$route.params.communityNo;
     this.doAxios(comNo);
-    console.log("communityNo >>>>> ",this.$route.params.communityNo)
   }
 }
 </script>

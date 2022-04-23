@@ -11,6 +11,8 @@ import com.curation.snut.dto.community.CommunityDTO;
 import com.curation.snut.entity.community.CommentAlert;
 import com.curation.snut.entity.community.CommuJoin;
 import com.curation.snut.entity.community.CommuJoinTemp;
+import com.curation.snut.entity.community.Community;
+import com.curation.snut.repository.community.CommuJoinTempRepository;
 import com.curation.snut.service.JWTService;
 import com.curation.snut.service.community.CommentAlertService;
 import com.curation.snut.service.community.CommuJoinService;
@@ -32,6 +34,7 @@ public class CommunityController {
     private final CommuJoinTempService commuJoinTempService;
     private final CommuJoinService commuJoinService;
     private final CommentAlertService commentAlertService;
+    private final CommuJoinTempRepository commuJoinTempRepository;
     private final JWTService jwtService;
 
     @GetMapping(value = "/commuList", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -58,7 +61,6 @@ public class CommunityController {
     public ResponseEntity modifyCommunityContent(@RequestBody Map data) {
         Long num = Long.valueOf(String.valueOf(data.get("no")));
         String content = (String) data.get("content");
-
         communityService.modifyCommunityContent(num, content);
 
         return new ResponseEntity(HttpStatus.OK);
@@ -93,18 +95,14 @@ public class CommunityController {
     public ResponseEntity<String> communityDelete(@RequestHeader Map header, @RequestBody Map body) {
         Map userInfo = jwtService.code(header);
         Map userSub = (Map) userInfo.get("sub");
+
         String memberEmail = userSub.get("email").toString();
-
-        System.out.println("memberEmail >>>> " + memberEmail);
         String commuEmail = body.get("commuCreater").toString();
-
-        System.out.println("commuEmail >>>> " + commuEmail);
         Long commuNo = Long.valueOf(body.get("commuNo").toString());
-        System.out.println("commuNo >>>> " + commuNo);
 //
         if (memberEmail.equals(commuEmail)) {
             communityService.delete(commuNo);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>("삭제 완료", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("권한없음", HttpStatus.OK);
         }
@@ -117,9 +115,20 @@ public class CommunityController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+    @DeleteMapping(value = "/commuJoinReject")
+    public ResponseEntity<String> commuJoinReject(@RequestParam("num") Long num) {
+        Long no = commuJoinTempRepository.findRejectCommunityNo(num);
+        if(no != null) {
+            commuJoinTempRepository.deleteByCommunityNo(no);
+            return new ResponseEntity<>("거절 처리 되었습니다.", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("잘못된 정보입니다.", HttpStatus.OK);
+    }
+
     @GetMapping(value = "/commuMyPage") // 가입신청/내댓글알람 보는 페이지
     public ResponseEntity<?> commuMyPage(@RequestHeader Map header) {
         Map userInfo = jwtService.code(header);
+
         Map userSub = (Map) userInfo.get("sub");
         String memberEmail = userSub.get("email").toString();
         String memberNickName = userSub.get("nickName").toString();

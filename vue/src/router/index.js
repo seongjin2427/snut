@@ -9,7 +9,6 @@ import MyCollection from '@/views/MyCollection.vue';
 import MyNote from "@/views/MyNote.vue";
 import MakeNote from '@/views/MakeNote.vue'
 import StoreCollections from '@/views/StoreCollections.vue';
-import StoreColCurations from '@/views/StoreColCurations.vue';
 import MakeCommunity from '@/views/MakeCommunity.vue';
 import MakeCollection from '@/views/MakeCollection.vue';
 import MakeColSave from '@/views/MakeColSave.vue';
@@ -74,11 +73,6 @@ const routes = [
     path: '/mcol/store',
     component: StoreCollections,
     name: "StoreCollections"
-  },
-  { 
-    path: '/mcol/store/:colId/:nickName',
-    component: StoreColCurations,
-    name: "StoreColCurations"
   },
   { 
     path: '/mcol/mc',

@@ -10,6 +10,7 @@
         </div>
       </div>
       <div class="mycom-head-bu">
+        <common-button width="150" marginRight="30" height="40" buttonName="커뮤니티 홈" border="none" background="white" color="black" @click="moveToComHome()"/>
         <common-button width="150" height="40" buttonName="커뮤니티 만들기" border="none" background="black" color="white" @click="moveToPage()"/>
       </div>
     </header>
@@ -51,6 +52,8 @@
       <small-modal ref="modal" 
           :modalBtnData="modalBtnData"
           smallModal="닉네임 가입을 승인하시겠습니까?"
+          @applyJoin="applyJoin"
+          @rejectJoin="rejectJoin"
           width="350" height="100">
 
       </small-modal>
@@ -81,7 +84,7 @@ export default {
           color:'black'
         },
         {
-          name: '취소',
+          name: '거절',
           background: 'black',
           color: 'white'
         }
@@ -120,6 +123,32 @@ export default {
     },
     moveToPage(){
       this.$router.push({path:"/com/mcom"});
+    },
+    moveToComHome(){
+      this.$router.push({path:"/com"});
+    },
+    applyJoin(data) {
+      console.log("data", data);
+      this.alarmDataSet.joinAlertList = this.alarmDataSet.joinAlertList.filter(i => {
+        if (i.tcommunity.no != data.tcommunity.no) return i;
+      })
+    },
+    rejectJoin(data) {
+      const calledAxios = this.$store.state.storedAxios;
+      console.log(data);
+
+      calledAxios.delete('/commuJoinReject', {
+        params: {
+          num: data.tcommunity.no
+        }
+      })
+        .then(res => {
+          console.log(res)
+          this.alarmDataSet.joinAlertList = this.alarmDataSet.joinAlertList.filter(i => {
+            if (i.tcommunity.no != data.tcommunity.no) return i;
+          })
+          alert(res.data);
+        }).then(() => this.$refs.modal.modalBoolean = false);
     },
     alertCheck(ano, cmo) {
       const calledAxios = this.$store.state.storedAxios;
@@ -185,8 +214,7 @@ export default {
 }
 
 .mycom-head {
-  width: 70%;
-  max-width: 1200px;
+  width: 800px;
   margin: 0 auto;
   height: 100%;
   position: relative;
@@ -220,7 +248,7 @@ header {
 .mycom-head-bu {
   display: flex;
   align-items: center;
-  width: 20%;
+  width: 400px;
 }
 
 .mycom-body-wrapper{

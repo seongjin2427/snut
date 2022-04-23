@@ -2,7 +2,9 @@
   <div class="editor-body">
     
     <div v-if="editor">
-      <drag-and-drop-modal ref="dragModal" @receiveNoteImg="receiveNoteImg" />
+      <transition name="fade">
+        <drag-and-drop-modal ref="dragModal" @receiveNoteImg="receiveNoteImg" />
+      </transition>
 
       <div class="text-editor-btn-area" v-if="toolbarBool && editable">
         <button @click="editor.chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }">
@@ -284,5 +286,13 @@ button img {
 }
 .scrollUnset {
   overflow: unset;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

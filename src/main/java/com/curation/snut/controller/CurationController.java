@@ -9,13 +9,11 @@ import com.curation.snut.repository.MemberCollectionLikeRepository;
 import com.curation.snut.repository.MemberCurationLikeRepository;
 import com.curation.snut.repository.SnutCollectionRepository;
 import com.curation.snut.service.CurationService;
-import com.curation.snut.service.HashTagService;
 import com.curation.snut.service.SnutCollectionService;
-import com.curation.snut.service.like.MemberCollectionLikeService;
-import com.curation.snut.service.like.MemberCurationLikeService;
+import com.curation.snut.service.memberlike.MemberCollectionLikeService;
+import com.curation.snut.service.memberlike.MemberCurationLikeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +34,6 @@ public class CurationController {
     private final SnutCollectionRepository snutCollectionRepository;
     private final CurationService curationService;
     private final SnutCollectionService snutCollectionService;
-    private final HashTagService hashTagService;
     private final MemberCollectionLikeService memberCollectionLikeService;
     private final MemberCurationLikeService memberCurationLikeService;
     private final MemberCurationLikeRepository memberCurationLikeRepository;
@@ -58,11 +55,8 @@ public class CurationController {
     @GetMapping("/mcol/mn")
     public ResponseEntity getAllListByEmail(@RequestParam("email") String email) {
 
-        log.info("getAllListByEmail >>>>>>>>>>> " + email);
         List<CurationDTO> culist = curationService.getCurationByEmail(email);
         List<SnutCollectionDTO> colList = snutCollectionService.getCollectionsByEmail(email);
-        log.info("culist >>>>>>>>>>> " + culist);
-        log.info("colList >>>>>>>>>>> " + colList);
         HashMap sendMap = new HashMap();
         sendMap.put("Curation", culist);
         sendMap.put("Collection", colList);
@@ -112,7 +106,6 @@ public class CurationController {
     @GetMapping("/find/good")
     public Long findExistGood(@RequestParam Map body) {
 
-        System.out.println(body);
         Long num = Long.valueOf(String.valueOf(body.get("no")));
         String email = (String) body.get("email");
         String cuCo = (String) body.get("cuCo");

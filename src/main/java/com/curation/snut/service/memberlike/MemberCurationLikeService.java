@@ -1,4 +1,4 @@
-package com.curation.snut.service.like;
+package com.curation.snut.service.memberlike;
 
 public interface MemberCurationLikeService {
 

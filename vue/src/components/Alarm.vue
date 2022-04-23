@@ -8,7 +8,7 @@
     </div>
     <div class="com-list">
       {{ alarmData.nickName || alarmData.tmember.nickName}}님 : 
-      {{ alarmData.applyMessage }} / {{alarmData.commuName || alarmData.tcommunity.title}}</div>
+      {{ alarmData.text || alarmData.applyMessage }} <br>/ {{alarmData.commuName || alarmData.tcommunity.title}}</div>
   </div>
 </div>
 </template>
@@ -29,10 +29,9 @@ export default {
 }
 .comment-list {
   display: flex;
-  text-align: center;
-  align-items: center;
-  padding-bottom: 10px;
-  padding-top: 10px;
+  text-align: left;
+  align-items: flex-start;
+  padding: 15px 10px 15px 5px;
   border-bottom: 1px solid black;
 }
 .com-icon{

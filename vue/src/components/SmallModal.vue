@@ -67,8 +67,13 @@ export default {
         calledAxios.post('/commuJoinAccept', obj)
           .then(res => { 
             alert(res.data);
+            this.$emit('applyJoin', this.alarmData);
             this.modalBoolean = false;
           });
+      } else if (btn.name == '삭제') {
+        this.$emit('deleteCom');
+      } else if (btn.name == '거절') {
+        this.$emit('rejectJoin', this.alarmData);
       }
     }
   }

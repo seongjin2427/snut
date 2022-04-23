@@ -1,7 +1,9 @@
+const path = require("path");
 module.exports = {
-  //presets: [    '@vue/cli-plugin-babel/preset'  ]  // default code
-  outputDir: "../src/main/resources/static",
-  indexPath: "index.html",
+  // outputDir: "../src/main/resources/static",
+  // indexPath: "index.html",
+  outputDir: path.resolve(__dirname, "../src/main/resources/static"),
+  indexPath: path.resolve(__dirname, "../src/main/resources/static/index.html"),
   devServer: {
       port : 9091   // 접속 포트 변경
     , proxy: "http://localhost:9091"     // devServer :  Back-End , 즉 Spring Boot의 내장 was의 주소를 작성하게 되면 된다.

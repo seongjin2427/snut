@@ -36,7 +36,7 @@
     <navigator-bar ref="navBar" />
   </div>
 
-    <pagenationnum :pageData="pageData" :word="pageWord" @move="moveTopage" />
+    <pagenationnum :pageData="pageData" :word="pageWord" @move="moveTopage" commuInside="true" />
   </div>
 </div>
 </template>

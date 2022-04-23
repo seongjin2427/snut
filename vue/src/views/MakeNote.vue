@@ -36,7 +36,7 @@
                   :key="idx"></div>
             </div>
           <div class="write-with-picture">
-
+          
             <div class="write-area" v-if="withPic">
               
               <div class="write-area-with-pic">
@@ -154,7 +154,9 @@
       
       <footer>
         <main-footer/>
-        <drag-and-drop-modal ref="dndModal" @receiveNoteImg="receiveNoteImg" />
+        <transition name="fade"> 
+          <drag-and-drop-modal ref="dndModal" @receiveNoteImg="receiveNoteImg" />
+        </transition>
       </footer>
       
     </div>
@@ -711,5 +713,13 @@ header {
 }
 .hash-tag input:focus {
   outline: none;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

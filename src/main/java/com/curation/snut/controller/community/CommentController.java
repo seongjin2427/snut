@@ -76,7 +76,7 @@ public class CommentController {
                 commentService.write(commentDTO);
                 return new ResponseEntity<>("등록", HttpStatus.OK);
             } else {
-                return new ResponseEntity<>("권한 없음1", HttpStatus.OK);
+                return new ResponseEntity<>("권한 없음", HttpStatus.OK);
             }
         } else {
             if (findCreater.isPresent()) {

@@ -28,14 +28,15 @@
 
         <div class="main-col">
           <div class="main-col-area">
-            <common-collection 
-                class="main-searched-col"
-                @click="openModal(col, true)"
-                v-for="(col, idx) in sampleData" 
-                :info="col" 
-                :id="idx"
-                :loginBool="loginBool"
-                :key="idx" />
+              <common-collection 
+                  class="main-searched-col"
+                  @click="openModal(col, true)"
+                  v-for="(col, idx) in sampleData" 
+                  :info="col" 
+                  :id="idx"
+                  :loginBool="loginBool"
+                  :key="idx" />
+
           </div>
         </div>
 
@@ -44,7 +45,9 @@
       
       <footer>
         <main-footer/>
-        <common-modal ref="modal" @loginBool="loginBool" @applyLike="applyLike"/>
+        <transition name="fade">
+          <common-modal ref="modal" @loginBool="loginBool" @applyLike="applyLike"/>
+        </transition>
       </footer>
 
     </div>
@@ -220,6 +223,14 @@ header {
 .main-searched-col {
   margin-top: 20px;
   margin-right: 20px;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 
 </style>

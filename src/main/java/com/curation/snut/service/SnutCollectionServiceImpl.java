@@ -28,9 +28,6 @@ public class SnutCollectionServiceImpl implements SnutCollectionService {
     private final ColCurationRepository colCurationRepository;
     private final CurationRepository curationRepository;
     private final CurationService curationService;
-    private final MemberRepository memberRepository;
-    private final MemberCurationLikeRepository memberCurationLikeRepository;
-    private final MemberCollectionLikeRepository memberCollectionLikeRepository;
 
 
     @Override

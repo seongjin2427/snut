@@ -8,7 +8,7 @@
       </li>
       <li v-for="(page, idx) in pageData.pageList" 
           @click="moveToPage(page)" :key="idx">
-        {{ page }}
+        {{ commuInside && page || page + 1 }}
       </li>
       <li class="next">
         <img @click="(getEnd && moveToPage(pageData.page + 1))
@@ -22,7 +22,7 @@
 <script>
 export default {
   name: "Pagenation-num",
-  props: ['pageData', 'word'],
+  props: ['pageData', 'word', 'commuInside'],
   data() {
     return {
       page: this.pageData,

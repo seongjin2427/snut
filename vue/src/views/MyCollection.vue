@@ -54,7 +54,7 @@
             <div class="analysis-area">
               <div class="analysis-button-area" 
                   v-for="(btn, idx) in analysis"
-                   @click="moveToPage(btn.src)"
+                  @click="moveToPage(btn.src)"
                   :key="idx">
                 <p>{{ btn.name }}</p>
               </div>
@@ -65,7 +65,9 @@
       
       <footer>
         <main-footer/>
-        <common-modal ref="modal" />
+        <transition name="fade">
+          <common-modal ref="modal" />
+        </transition>
       </footer>
 
     </div>
@@ -253,5 +255,13 @@ header {
   font-size: 24px;
   font-weight: bold;
   cursor: pointer;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

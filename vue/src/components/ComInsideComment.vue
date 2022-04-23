@@ -156,10 +156,17 @@ export default {
   name: "ComInsideComment-page",
   components: {
     Pagenationnum,
-    CommonButton
+    CommonButton,
   },
   data() {
     return {
+      modalBtnData: [
+        {
+          name: '확인',
+          background: 'white',
+          color: 'black'
+        }
+      ],
       pageData: {},
       communityReplySet: [],
       replyData: {
@@ -187,7 +194,8 @@ export default {
       show: false,
       modalnumber: -1,
       replyOn: -1,
-      axios: this.$store.state.storedAxios
+      axios: this.$store.state.storedAxios,
+      respondMessage: ''
     }
   },
   methods: {
@@ -206,8 +214,15 @@ export default {
       calledAxios.post('/commentList',obj)
         .then(res => {
           console.log(res.data);
-          this.loadCommunity(this.pageData.page);
-          location.reload();
+          
+          if (res.data == '권한 없음') {
+            this.respondMessage = res.data;
+            this.replyData.text = '';
+            alert("가입 신청을 해주세요!");
+          } else {
+            this.loadCommunity(this.pageData.page);
+            location.reload();
+          }
         })
     },
     postReply(e, idx, data, cno) {
@@ -221,8 +236,8 @@ export default {
     modifyReply(cno, content) {
       const calledAxios = this.$store.state.storedAxios;
       calledAxios.post('/comment/mod', {
-        cno: cno,
-        content: content
+        cno,
+        content
       }).then(res => {
         console.log(res)
       })
@@ -317,20 +332,8 @@ export default {
       for(let i = start-1 ; i < end; i++) {
         pageList.push(start-1 + i);
       }
-    console.log("tempEnddddddd", tempEnd);
-    console.log("startttttttttt", start);
-    console.log("endddddddddd", end);
-    console.log("pageeeeeeeee", page);
-    console.log("prevvvvvvvvvvv", prev);
-    console.log("nextttttttttt", next);
 
-      let pageData = {
-        next: next,
-        prev : prev,
-        pageList: pageList,
-        page: page,
-        totalPage: totalPage
-      }
+      let pageData = { next, prev, pageList, page, totalPage }
 
       this.pageData = pageData;
     },

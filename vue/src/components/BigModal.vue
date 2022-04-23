@@ -81,6 +81,12 @@ export default {
         calledAxios.post('/commuJoinApply', obj)
           .then(res => {
             console.log(res);
+            if(res.data == '신청 완료') {
+              alert("신청이 완료되었습니다!");
+            } else if (res.data == '중복신청') {
+              alert("이미 신청이 완료된 커뮤니티 입니다.");
+            }
+            this.modalBoolean = false;
           })
 
       }

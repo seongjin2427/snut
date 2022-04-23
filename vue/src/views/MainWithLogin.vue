@@ -290,7 +290,7 @@ header {
 }
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.3s ease;
+  transition: opacity .2s ease;
 }
 .fade-enter-from,
 .fade-leave-to {

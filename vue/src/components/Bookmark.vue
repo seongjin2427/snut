@@ -1,7 +1,7 @@
 <template>
-  <div class="bookmark-block" @click="moveToPage(bookmarkData.no)">
+  <div class="bookmark-block" @click="moveToPage( bookmarkData.no || bookmarkData.jcommunity.no )">
     <div class="icon"><img :src="require(`@/assets/icon/${bookmarkData.icon}.png`)" width="20" height="20" alt="circle"></div>
-    <div class="bookmark">{{ bookmarkData.title }}</div>
+    <div class="bookmark">{{ bookmarkData.title || bookmarkData.jcommunity.title }}</div>
   </div>
 </template>
 
@@ -28,8 +28,7 @@ export default {
   display: flex;
   text-align: center;
   align-items: center;
-  padding-bottom: 10px;
-  padding-top: 10px;
+  padding: 15px 10px 15px 5px;
   border-bottom: 1px solid black;
   cursor: pointer;
 }

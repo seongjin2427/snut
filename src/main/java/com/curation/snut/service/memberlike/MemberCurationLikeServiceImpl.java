@@ -1,7 +1,7 @@
-package com.curation.snut.service.like;
+package com.curation.snut.service.memberlike;
 
 import com.curation.snut.entity.Member;
-import com.curation.snut.repository.MemberCollectionLikeRepository;
+import com.curation.snut.repository.MemberCurationLikeRepository;
 import com.curation.snut.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,21 +11,21 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class MemberCollectionLikeServiceImpl implements MemberCollectionLikeService {
+public class MemberCurationLikeServiceImpl implements MemberCurationLikeService {
 
-    private final MemberCollectionLikeRepository memberCollectionLikeRepository;
+    private final MemberCurationLikeRepository memberCurationLikeRepository;
     private final MemberRepository memberRepository;
 
     @Transactional
     @Override
-    public void likes(Long mcolId, String email) {
+    public void likes(Long mcuId, String email) {
         Optional<Member> member = memberRepository.findById(email);
-        memberCollectionLikeRepository.likes(mcolId, member.get().getEmail());
+        memberCurationLikeRepository.likes(mcuId, member.get().getEmail());
     }
     @Transactional
     @Override
-    public void unlikes(Long mcolId, String email) {
+    public void unlikes(Long mcuId, String email) {
         Optional<Member> member = memberRepository.findById(email);
-        memberCollectionLikeRepository.unlikes(mcolId, member.get().getEmail());
+        memberCurationLikeRepository.unlikes(mcuId, member.get().getEmail());
     }
 }

@@ -21,6 +21,4 @@ public class StoredData extends BaseEntity{
     private Long cuCoId;
     private String cuCo;
 
-    private Long dataOrder;
-
 }
