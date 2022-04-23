@@ -55,8 +55,6 @@ public class CommentController {
     @PostMapping(value = "/commentList", consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> commentWrite(@RequestBody CommentDTO commentDTO) {
 
-        System.out.println("으아아아아ㅏ어랩쟈ㅓ해 >> " + commentDTO);
-
         String writer = commentDTO.getWriter().getEmail();
         Long commuNo = commentDTO.getCommunityName().getNo();
         Optional<CommuJoin> findWriteAuthority = commuJoinRepository.findWriteAuthority(commuNo, writer);

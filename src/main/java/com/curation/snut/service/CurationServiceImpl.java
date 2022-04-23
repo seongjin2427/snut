@@ -27,6 +27,7 @@ public class CurationServiceImpl implements CurationService {
     private final CurationImageRepository curationImageRepository;
     private final HashtagRepository hashtagRepository;
     private final UploadController uploadController;
+    private final MemberRepository memberRepository;
     // 성진
 
     @Override
@@ -98,6 +99,15 @@ public class CurationServiceImpl implements CurationService {
 
     @Transactional
     @Override
+    public void setMemberLevel(String email) {
+        Optional<Member> member = memberRepository.findByEmail(email);
+        member.get().confirmMemberLevel(curationRepository.getCountCurationByEmail(email));
+        memberRepository.save(member.get());
+    }
+
+
+    @Transactional
+    @Override
     public Long register(CurationDTO curationDTO) {
 
         Map<String, Object> entityMap = dtoToEntity(curationDTO);
@@ -108,8 +118,6 @@ public class CurationServiceImpl implements CurationService {
         if(hashtag.size() > 0) {
             hashtag.stream().forEach(tag -> hashtagRepository.save((Hashtag) tag));
         }
-
-        curationRepository.save(curation);
 
         if(curationImageList != null && curationImageList.size() > 0) {
             curationImageList.forEach(curationImage ->

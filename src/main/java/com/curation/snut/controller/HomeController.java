@@ -42,7 +42,7 @@ public class HomeController {
         public ResponseEntity getCollectionPoPularList(PageRequestDTO pageRequestDTO) {
             log.info("list............................." + pageRequestDTO);
 
-            return new ResponseEntity<>(snutCollectionService.getPopularCollection(pageRequestDTO), HttpStatus.OK);
+            return new ResponseEntity(snutCollectionService.getPopularCollection(pageRequestDTO), HttpStatus.OK);
         }
 
     // 검색단어 기준으로 컬렉션 및 큐레이션 데이터 가져오기 - SearchCollection.vue에서 사용 (검색 페이지)

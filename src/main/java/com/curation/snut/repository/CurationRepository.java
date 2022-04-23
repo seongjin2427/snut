@@ -37,6 +37,9 @@ public interface CurationRepository extends JpaRepository<Curation, Long> {
     @Query("select cu from Curation cu join cu.hashtag h where h.tag like concat('%', :word, '%') group by cu")
     List<Curation> findCurationByWord(String word);
 
+    @Query("select count(cu) from Curation cu where cu.writer.email = :email")
+    int getCountCurationByEmail(String email);
+
     @Modifying
     @Query("delete from Curation co where co.curationNo = :no")
     void deleteByCurationNo(Long no);

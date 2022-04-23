@@ -25,6 +25,7 @@ public interface CurationService {
 
     // 성진
     List<CurationDTO> getCurationByEmail(String email);
+    void setMemberLevel(String email);
     CurationDTO getCurationsByCurationNo(Long cuId);
     List<CurationDTO> getCurationsByCollectionNo(Long colId);
     List<CurationDTO> getCurationsByWord(String word);

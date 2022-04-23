@@ -12,10 +12,18 @@
 
       <main>
           <div class="action-level">
+              <input ref="previous" class="previous" type="button" value="<" @click="previous" >
             <div class="action-level-img">
-              <img src="@/assets/level/peanut.png" alt="level" width="150" height="260">
-              <p style="font-weight: 700;">hi! I’m your peanut :)</p>
+              <div ref="imgContainer" class="charactor-container" >
+                <img
+                    v-for="(img, idx) in levelList"
+                    :src="require(`@/assets/level/${img}.png`)" alt="level"
+                    v-show="idx <= userLevel"
+                    :key="idx">
+              </div>
+              <input ref="next" class="next" type="button" value=">" @click="next" disabled>
             </div>
+            <p style="font-weight: 700;">hi! I’m your {{ levelList[messageIndex] }} :)</p>
           </div>
           <div class="mcol-button-area">
             <common-button
@@ -121,7 +129,17 @@ export default {
           name: '내 커뮤니티 보기', 
           src: '/mc',
         },
-      ]
+      ],
+      userLevel: 0,
+      messageIndex: 0,
+      levelList: [
+        'peanut', 'walnut', 'cashew-nut', 'pistachio', 'ginkgo', 'chestnut', 'almond', 'macadamia', 'sunflower-seed', 'pecan'
+      ],
+      imgSlideData: {
+        curPos: 0,
+        position: 0,
+        IMAGE_WIDTH: 280
+      },
     }
   },
   methods: {
@@ -135,6 +153,30 @@ export default {
       console.log(src);
       this.$router.push(src);
     },
+    previous() {
+      if(this.imgSlideData.curPos > 0) {
+        this.$refs.next.removeAttribute("disabled");
+        this.messageIndex--;
+        this.imgSlideData.position += this.imgSlideData.IMAGE_WIDTH;
+        this.$refs.imgContainer.style.transform = `translateX(${this.imgSlideData.position}px`;
+        this.imgSlideData.curPos -= 1;
+      }
+      if(this.imgSlideData.curPos == 0) {
+        this.$refs.previous.setAttribute('disabled', 'true');
+      }
+    },
+    next() {
+      if(this.imgSlideData.curPos < this.userLevel ) {
+        this.messageIndex++;
+        this.$refs.previous.removeAttribute("disabled");
+        this.imgSlideData.position -= this.imgSlideData.IMAGE_WIDTH;
+        this.$refs.imgContainer.style.transform = `translateX(${this.imgSlideData.position}px`;
+        this.imgSlideData.curPos += 1;
+      }
+      if(this.imgSlideData.curPos == this.userLevel ) {
+        this.$refs.next.setAttribute('disabled', 'true');
+      }
+    },
     doAxios() {
       axios.get('http://localhost:8080/main/hot',)
         .then(res => { 
@@ -145,9 +187,26 @@ export default {
         })
         .catch(error => console.log(error));
     },
+    getLevel() {
+      const calledAxios = this.$store.state.storedAxios;
+      console.log("aoweojif")
+      calledAxios.get('http://localhost:8080/api/level')
+        .then(res => {
+          console.log(res);
+          this.userLevel = res.data - 1;
+
+          if(this.userLevel == 0) 
+            this.$refs.previous.setAttribute('disabled', 'true');
+          this.messageIndex = this.userLevel;
+          this.imgSlideData.position = -this.imgSlideData.IMAGE_WIDTH * this.userLevel
+          this.imgSlideData.curPos = this.userLevel;
+          this.$refs.imgContainer.style.transform = `translateX(${this.imgSlideData.position}px`;
+        })
+    }
   },
   created() {
     this.doAxios();
+    this.getLevel();
   },
 }
 </script>
@@ -203,13 +262,51 @@ header {
   height: 450px;
   /* background: lightgreen; */
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  position: relative;
+}
+.previous {
+  position: absolute;
+  left: 380px;
+  top: 180px;
+  width: 50px;
+  height: 50px;
+  background: white;
+  border-radius: 25px;
 }
 .action-level-img {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
+}
+.charactor-container {
+  width: 260px;
+  height: 260px;
+  display: flex;
+  justify-content: flex-start;
+  transition: all .5s;
+  /* overflow: hidden; */
+}
+.charactor-container img {
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  margin: 0 10px;
+}
+.next {
+  position: absolute;
+  left: 780px;
+  top: 180px;
+  width: 50px;
+  height: 50px;
+  background: white;
+  border-radius: 25px;
+}
+.action-level p {
   font-size: 30px;
 }
 .mcol-button-area {

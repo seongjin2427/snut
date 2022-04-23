@@ -3,12 +3,11 @@ package com.curation.snut.controller;
 import com.curation.snut.dto.CurationDTO;
 import com.curation.snut.dto.SnutCollectionDTO;
 import com.curation.snut.entity.Curation;
+import com.curation.snut.entity.Member;
 import com.curation.snut.entity.SnutCollection;
-import com.curation.snut.repository.CurationRepository;
-import com.curation.snut.repository.MemberCollectionLikeRepository;
-import com.curation.snut.repository.MemberCurationLikeRepository;
-import com.curation.snut.repository.SnutCollectionRepository;
+import com.curation.snut.repository.*;
 import com.curation.snut.service.CurationService;
+import com.curation.snut.service.JWTService;
 import com.curation.snut.service.SnutCollectionService;
 import com.curation.snut.service.memberlike.MemberCollectionLikeService;
 import com.curation.snut.service.memberlike.MemberCurationLikeService;
@@ -38,8 +37,26 @@ public class CurationController {
     private final MemberCurationLikeService memberCurationLikeService;
     private final MemberCurationLikeRepository memberCurationLikeRepository;
     private final MemberCollectionLikeRepository memberCollectionLikeRepository;
+    private final JWTService jwtService;
+    private final MemberRepository memberRepository;
 
     // 성진
+    // 이메일에 대한 큐레이션 갯수 산정하기 - MyCollection.vue에서 사용
+    @GetMapping("/level")
+    public ResponseEntity getMemberLevel(@RequestHeader Map header) {
+        log.info("getMemberLevel...............................");
+        Map userInfo = jwtService.code(header);
+        Map userSub = (Map) userInfo.get("sub");
+        String email = userSub.get("email").toString();
+
+        Optional<Member> member = memberRepository.findByEmail(email);
+        member.get().confirmMemberLevel(curationRepository.getCountCurationByEmail(email));
+        memberRepository.save(member.get());
+
+        int level = member.get().getMemberLevel();
+        return new ResponseEntity(level, HttpStatus.OK);
+    }
+
     // 이메일로 큐레이션 리스트 모두 가져오기 - Make Collection.vue에서 사용 (컬렉션 만들기 페이지)
     @GetMapping(value = "/mcol/mc/em")
     public ResponseEntity getListByEmail(@RequestParam("email") String email) {
@@ -102,7 +119,6 @@ public class CurationController {
     }
 
     // 좋아요 구간
-
     @GetMapping("/find/good")
     public Long findExistGood(@RequestParam Map body) {
 
